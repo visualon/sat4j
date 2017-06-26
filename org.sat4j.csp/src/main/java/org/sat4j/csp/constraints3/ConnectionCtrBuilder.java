@@ -344,4 +344,62 @@ public class ConnectionCtrBuilder {
 		return false;
 	}
 
+	public boolean buildCtrElement(String id, int[] list, int startIndex, XVarInteger index, TypeRank rank, XVarInteger value) {
+		if(rank == TypeRank.ANY) {
+			return buildCtrElementForceIndex(list, startIndex, index, value);
+		} else if(rank == TypeRank.FIRST) {
+			return buildCtrElementFirstIndex(list, startIndex, index, value);
+		} else if(rank == TypeRank.LAST) {
+			return buildCtrElementLastIndex(list, startIndex, index, value);
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	private boolean buildCtrElementForceIndex(int[] list, int startIndex, XVarInteger index, XVarInteger value) {
+		final int len = list.length;
+		final String[] subexprs = new String[list.length];
+		final String normIndex = CtrBuilderUtils.normalizeCspVarName(index.id);
+		final String normValue = CtrBuilderUtils.normalizeCspVarName(value.id);
+		for(int i=0; i<len; ++i) {
+			final String lImpl = "eq("+Integer.toString(i+startIndex)+","+normIndex+")";
+			final String rImpl = "eq("+normValue+","+Integer.toString(list[i])+")";
+			subexprs[i] = "imp("+lImpl+","+rImpl+")";
+		}
+		final String expr = CtrBuilderUtils.chainExpressionsForAssociativeOp(subexprs, "and");
+		this.intensionCtrEncoder.encode(expr);
+		return false;
+	}
+	
+	private boolean buildCtrElementFirstIndex(int[] list, int startIndex, XVarInteger index, XVarInteger value) {
+		for(int i=0; i<list.length; ++i) {
+			// or(ne(i,index),and(eq(i,index),eq(xi,value),ne(x0,value),...,ne(xi-1,value)))
+			String normIndex = CtrBuilderUtils.normalizeCspVarName(index.id);
+			String normValue = CtrBuilderUtils.normalizeCspVarName(value.id);
+			StringBuilder sbuf = new StringBuilder();
+			sbuf.append("or(ne(").append(i+startIndex).append(',').append(normIndex).append("),and(eq(").append(i+startIndex).append(',').append(normIndex).append("),eq(").append(Integer.toString(list[i])).append(',').append(normValue).append(')');
+			for(int j=0; j<i; ++j) {
+				sbuf.append(",ne(").append(Integer.toString(list[j])).append(',').append(normValue).append(')'); // end NE operator
+			}
+			sbuf.append("))");
+			this.intensionCtrEncoder.encode(sbuf.toString());
+		}
+		return false;
+	}
+	
+	private boolean buildCtrElementLastIndex(int[] list, int startIndex, XVarInteger index, XVarInteger value) {
+		for(int i=0; i<list.length; ++i) {
+			// or(ne(i,index),and(eq(i,index),eq(xi,value),ne(xi+1,value),...,ne(xn,value)))
+			String normIndex = CtrBuilderUtils.normalizeCspVarName(index.id);
+			String normValue = CtrBuilderUtils.normalizeCspVarName(value.id);
+			StringBuilder sbuf = new StringBuilder();
+			sbuf.append("or(ne(").append(i+startIndex).append(',').append(normIndex).append("),and(eq(").append(i+startIndex).append(',').append(normIndex).append("),eq(").append(Integer.toString(list[i])).append(',').append(normValue).append(')'); // end EQ2 operator
+			for(int j=i+1; j<list.length; ++j) {
+				sbuf.append(",ne(").append(Integer.toString(list[j])).append(',').append(normValue).append(')');
+			}
+			sbuf.append("))");
+			this.intensionCtrEncoder.encode(sbuf.toString());
+		}
+		return false;
+	}
+
 }

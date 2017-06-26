@@ -846,6 +846,12 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 	public void buildCtrElement(String id, XVarInteger[] list, int startIndex, XVarInteger index, TypeRank rank, XVarInteger value) {
 		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, startIndex, index, rank, value);
 	}
+	
+	@Override
+	public void buildCtrElement(String id, int[] list, int startIndex, XVarInteger index, TypeRank rank,
+			XVarInteger value) {
+		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, startIndex, index, rank, value);
+	}
 
 	/**
 	 * @see {@link XCallbacks2#buildCtrStretch(String, XVarInteger[], int[], int[], int[])}
