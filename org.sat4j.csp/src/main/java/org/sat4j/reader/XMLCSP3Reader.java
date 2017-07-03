@@ -176,10 +176,9 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 		case OPTIMUM_FOUND:
 			final ObjectiveFunction obj = this.solver.getObjectiveFunction();
 			BigInteger degree = obj.calculateDegree(this.solver);
-			final BigInteger correction = obj.getCorrection();
-			if(!correction.equals(BigInteger.ZERO)) {
-				degree = degree.multiply(correction);
-			}
+			final BigInteger offset = obj.getCorrectionOffset();
+            final BigInteger factor = obj.getCorrectionFactor();
+			degree = degree.multiply(factor).add(offset);
 			strModelBuffer.append("<instantiation type=\"optimum\" cost=\"")
 				.append(degree.toString())
 				.append("\">\n");

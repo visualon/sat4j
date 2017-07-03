@@ -95,7 +95,7 @@ public class ObjBuilder {
 			coeffs.push(BigInteger.valueOf(val));
 		}
 		final ObjectiveFunction obj = new ObjectiveFunction(literals, coeffs);
-		obj.setCorrection(BigInteger.ONE);
+//		obj.setCorrection(BigInteger.ONE);
 		return obj;
 	}
 
@@ -160,6 +160,7 @@ public class ObjBuilder {
 			throw new UnsupportedOperationException();
 		}
 		if(negate) {
+			obj.setCorrectionFactor(BigInteger.ONE.negate());
 			obj.negate();
 		}
 		addObjectiveFunction(obj);
@@ -210,7 +211,7 @@ public class ObjBuilder {
 		}
 		if(min < 0) throw new UnsupportedOperationException("negative coeff");
 		final ObjectiveFunction obj = new ObjectiveFunction();
-		obj.setCorrection(BigInteger.ONE);
+//		obj.setCorrection(BigInteger.ONE);
 		final BigInteger step = BigInteger.valueOf(max+1);
 		BigInteger fact = BigInteger.ONE;
 		for(int i=xlist.length; i>=0; --i) {
@@ -226,16 +227,17 @@ public class ObjBuilder {
 	
 	private ObjectiveFunction buildExprObjToMinimize(String expr, boolean negate) {
 		final ObjectiveFunction obj = this.intensionEnc.encodeObj(expr);
-		obj.setCorrection(BigInteger.ONE);
+//		obj.setCorrection(BigInteger.ONE);
 		if(negate) {
 			obj.negate();
+			obj.setCorrectionFactor(BigInteger.ONE.negate());
 		}
 		return obj;
 	}
 
 	private ObjectiveFunction buildSumObjToMinimize(final XVarInteger[] xlist, final int[] xcoeffs) {
 		final ObjectiveFunction obj = new ObjectiveFunction();
-		obj.setCorrection(BigInteger.ONE);
+//		obj.setCorrection(BigInteger.ONE);
 		final int size = xlist.length;
 		for(int i=0; i<size; ++i) {
 			obj.add(buildObjForVar(xlist[i]).multiply(BigInteger.valueOf(xcoeffs[i])));
