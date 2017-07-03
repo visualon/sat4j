@@ -184,21 +184,22 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 				.append(degree.toString())
 				.append("\">\n");
 			appendModel(strModelBuffer, model);
+			strModelBuffer.append("v </instantiation>\n");
 			break;
 		case UPPER_BOUND:
 		case SATISFIABLE:
 			strModelBuffer.append("<instantiation type=\"solution\">\n");
 			appendModel(strModelBuffer, model);
+			strModelBuffer.append("v </instantiation>\n");
 			break;
 		case UNSATISFIABLE:
-			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" no model");
+			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" no model\n");
 			break;
 		case UNKNOWN:
 		default:
-			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" unknown state");
+			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" unknown state\n");
 			break;
 		}
-		strModelBuffer.append("v </instantiation>");
 		return strModelBuffer.toString();
 	}
 
