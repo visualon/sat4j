@@ -52,7 +52,7 @@ import org.sat4j.tools.LexicoDecorator;
  */
 final class OptimizationMode implements ILauncherMode {
     private int nbSolutions;
-    private ExitCode exitCode = ExitCode.UNKNOWN;
+    private volatile ExitCode exitCode = ExitCode.UNKNOWN;
     private boolean isIncomplete = false;
     private PrintWriter out;
     private long beginTime;
@@ -62,8 +62,8 @@ final class OptimizationMode implements ILauncherMode {
         this.isIncomplete = isIncomplete;
     }
 
-    public void displayResult(ISolver solver, IProblem problem,
-            ILogAble logger, PrintWriter out, Reader reader, long beginTime,
+    public void displayResult(ISolver solver, IProblem problem, ILogAble logger,
+            PrintWriter out, Reader reader, long beginTime,
             boolean displaySolutionLine) {
         if (solver == null) {
             return;
@@ -73,8 +73,8 @@ final class OptimizationMode implements ILauncherMode {
         solver.printStat(out);
         out.println(ANSWER_PREFIX + exitCode);
         if (exitCode == ExitCode.SATISFIABLE
-                || exitCode == ExitCode.OPTIMUM_FOUND || isIncomplete
-                && exitCode == ExitCode.UPPER_BOUND) {
+                || exitCode == ExitCode.OPTIMUM_FOUND
+                || isIncomplete && exitCode == ExitCode.UPPER_BOUND) {
             assert this.nbSolutions > 0;
             logger.log("Found " + this.nbSolutions + " solution(s)");
 
