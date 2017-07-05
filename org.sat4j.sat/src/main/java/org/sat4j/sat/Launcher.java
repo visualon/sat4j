@@ -344,7 +344,6 @@ public class Launcher extends AbstractLauncher implements ILogAble {
         } catch (IOException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());
         } catch (ContradictionException e) {
-            this.exitCode = ExitCode.UNSATISFIABLE;
             getLauncherMode().setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
         } catch (ParseFormatException e) {

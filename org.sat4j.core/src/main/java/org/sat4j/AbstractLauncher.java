@@ -74,8 +74,6 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
 
     protected long beginTime;
 
-    protected ExitCode exitCode = ExitCode.UNKNOWN;
-
     protected Reader reader;
 
     protected boolean feedWithDecorated = false;
@@ -265,7 +263,6 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
         } catch (IOException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());
         } catch (ContradictionException e) {
-            this.exitCode = ExitCode.UNSATISFIABLE;
             this.launcherMode.setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
         } catch (ParseFormatException e) {
@@ -319,7 +316,6 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
 
     protected void solve(IProblem problem) throws TimeoutException {
         launcherMode.solve(problem, reader, this, out, beginTime);
-        this.setExitCode(launcherMode.getCurrentExitCode());
     }
 
     /**
@@ -340,7 +336,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
      *            the new ExitCode
      */
     public final void setExitCode(ExitCode exitCode) {
-        this.exitCode = exitCode;
+        this.launcherMode.setExitCode(exitCode);
     }
 
     /**
@@ -349,7 +345,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
      * @return the current value of the Exitcode
      */
     public final ExitCode getExitCode() {
-        return this.exitCode;
+        return this.launcherMode.getCurrentExitCode();
     }
 
     /**
