@@ -74,8 +74,10 @@ public final class SearchOptimizerListener extends
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
         if (obj != null) {
             this.currentValue = obj.calculateDegree(lazyModel);
+            final BigInteger offset = obj.getCorrectionOffset();
+            final BigInteger factor = obj.getCorrectionFactor();
             System.out.println(ILauncherMode.CURRENT_OPTIMUM_VALUE_PREFIX
-                    + this.currentValue.add(obj.getCorrection()));
+                    + this.currentValue.multiply(factor).add(offset));
             if (this.prevConstr != null) {
                 this.solverService.removeSubsumedConstr(prevConstr);
             }

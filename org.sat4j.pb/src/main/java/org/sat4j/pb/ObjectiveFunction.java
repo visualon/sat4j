@@ -66,6 +66,8 @@ public class ObjectiveFunction implements Serializable {
 
     private BigInteger correction = BigInteger.ZERO;
 
+    private BigInteger correctionFactor = BigInteger.ONE;
+
     public ObjectiveFunction() {
         this.vars = new VecInt();
         this.coeffs = new Vec<BigInteger>();
@@ -142,12 +144,30 @@ public class ObjectiveFunction implements Serializable {
         return this.vars;
     }
 
+    @Deprecated // replaced by setCorrectionOffset()
     public void setCorrection(BigInteger correction) {
         this.correction = correction;
     }
 
+    public void setCorrectionOffset(BigInteger correction) {
+        this.correction = correction;
+    }
+
+    @Deprecated // replaced by getCorrectionOffset()
     public BigInteger getCorrection() {
         return this.correction;
+    }
+
+    public BigInteger getCorrectionOffset() {
+        return this.correction;
+    }
+
+    public void setCorrectionFactor(final BigInteger correctionFactor) {
+        this.correctionFactor = correctionFactor;
+    }
+
+    public BigInteger getCorrectionFactor() {
+        return this.correctionFactor;
     }
 
     @Override
@@ -164,7 +184,8 @@ public class ObjectiveFunction implements Serializable {
                 lit = -lit;
                 coef = coef.negate();
             }
-            stb.append((coef.signum() < 0 ? "" : "+") + coef + " x" + lit + " ");
+            stb.append(
+                    (coef.signum() < 0 ? "" : "+") + coef + " x" + lit + " ");
         }
         return stb.toString();
     }

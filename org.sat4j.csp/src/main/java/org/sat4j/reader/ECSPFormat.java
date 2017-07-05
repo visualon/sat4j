@@ -19,7 +19,6 @@
 package org.sat4j.reader;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -101,7 +100,10 @@ public enum ECSPFormat {
 			if(shouldOnlyDisplayEncoding) {
 				return pw;
 			}
-			XMLCommentPrintWriter commentPrintWriter = new XMLCommentPrintWriter(pw);
+			if(System.getProperty("CompetitionOutput") != null) {
+				return pw;
+			}
+			final XMLCommentPrintWriter commentPrintWriter = new XMLCommentPrintWriter(pw);
 			commentPrintWriter.addDncPrefix("v ");
 			return commentPrintWriter;
 		}

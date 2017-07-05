@@ -21,6 +21,7 @@ package org.sat4j.reader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import org.sat4j.csp.intension.ICspToSatEncoder;
 import org.sat4j.csp.intension.IIntensionCtrEncoder;
 import org.sat4j.csp.intension.IntensionCtrEncoderFactory;
 import org.sat4j.pb.IPBSolver;
+import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
@@ -172,25 +174,31 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 		StringBuilder strModelBuffer = new StringBuilder();
 		switch(this.launcher.getExitCode()) {
 		case OPTIMUM_FOUND:
+			final ObjectiveFunction obj = this.solver.getObjectiveFunction();
+			BigInteger degree = obj.calculateDegree(this.solver);
+			final BigInteger offset = obj.getCorrectionOffset();
+            final BigInteger factor = obj.getCorrectionFactor();
+			degree = degree.multiply(factor).add(offset);
 			strModelBuffer.append("<instantiation type=\"optimum\" cost=\"")
-				.append(this.solver.getObjectiveFunction().calculateDegree(this.solver).toString())
+				.append(degree.toString())
 				.append("\">\n");
 			appendModel(strModelBuffer, model);
+			strModelBuffer.append("v </instantiation>\n");
 			break;
 		case UPPER_BOUND:
 		case SATISFIABLE:
 			strModelBuffer.append("<instantiation type=\"solution\">\n");
 			appendModel(strModelBuffer, model);
+			strModelBuffer.append("v </instantiation>\n");
 			break;
 		case UNSATISFIABLE:
-			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" no model");
+			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" no model\n");
 			break;
 		case UNKNOWN:
 		default:
-			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" unknown state");
+			strModelBuffer.append(AbstractLauncher.COMMENT_PREFIX).append(" unknown state\n");
 			break;
 		}
-		strModelBuffer.append("v </instantiation>");
 		return strModelBuffer.toString();
 	}
 
@@ -570,6 +578,11 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 		this.contradictionFound |= this.countingCtrBuilder.buildCtrSum(id, list, coeffs, condition);
 	}
 
+	@Override
+	public void buildCtrSum(String id, XVarInteger[] list, XVarInteger[] coeffs, Condition condition) {
+		this.contradictionFound |= this.countingCtrBuilder.buildCtrSum(id, list, coeffs, condition);
+	}
+
 	/**
 	 * @see XCallbacks2#buildCtrLex(String, XVarInteger[][], TypeOperator)
 	 */
@@ -607,7 +620,7 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 	 */
 	@Override
 	public void buildCtrChannel(String id, XVarInteger[] list, int startIndex, XVarInteger value) {
-		unimplementedCase(id); // TODO: check (again) set variables are not supported yet 
+		this.contradictionFound |= this.connectionCtrBuilder.buildCtrChannel(id, list, startIndex, value); 
 	}
 
 	/**
@@ -807,7 +820,7 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 	 */
 	@Override
 	public void buildCtrElement(String id, XVarInteger[] list, int value) {
-		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, 0, null, TypeRank.ANY, value);
+		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, value);
 	}
 
 	/**
@@ -823,7 +836,7 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 	 */
 	@Override
 	public void buildCtrElement(String id, XVarInteger[] list, XVarInteger value) {
-		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, 0, null, TypeRank.ANY, value);
+		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, value);
 	}
 
 	/**
@@ -831,6 +844,12 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 	 */
 	@Override
 	public void buildCtrElement(String id, XVarInteger[] list, int startIndex, XVarInteger index, TypeRank rank, XVarInteger value) {
+		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, startIndex, index, rank, value);
+	}
+	
+	@Override
+	public void buildCtrElement(String id, int[] list, int startIndex, XVarInteger index, TypeRank rank,
+			XVarInteger value) {
 		this.contradictionFound |= this.connectionCtrBuilder.buildCtrElement(id, list, startIndex, index, rank, value);
 	}
 
@@ -928,6 +947,23 @@ public class XMLCSP3Reader extends Reader implements XCallbacks2 {
 	@Override
 	public void buildCtrClause(String id, XVarInteger[] pos, XVarInteger[] neg) { // TODO: externalize
 		this.contradictionFound |= this.elementaryCtrBuilder.buildCtrClause(id, pos, neg);
+	}
+
+	@Override
+	public void buildCtrCircuit(String id, XVarInteger[] list, int startIndex, int size) {
+		unimplementedCase(id); // TODO
+//		this.contradictionFound |= this.packingCtrBuilder.buildCtrCircuit(id, list, startIndex, size);
+	}
+
+	@Override
+	public void buildCtrCircuit(String id, XVarInteger[] list, int startIndex, XVarInteger size) {
+		unimplementedCase(id); // TODO
+//		this.contradictionFound |= this.packingCtrBuilder.buildCtrCircuit(id, list, startIndex, size);
+	}
+
+	@Override
+	public void buildCtrCircuit(String id, XVarInteger[] list, int startIndex) {
+		this.contradictionFound |= this.schedulingCtrBuilder.buildCtrCircuit(id, list, startIndex);
 	}
 
 	public void buildVarSymbolic(XVarSymbolic x, String[] values) {
