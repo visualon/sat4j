@@ -82,7 +82,8 @@ public class BasicLauncher<T extends ISolver> extends AbstractLauncher {
             asolver = this.factory.defaultSolver();
         }
         asolver.setTimeout(Integer.MAX_VALUE);
-        if (!"BRESIL".equals(System.getProperty("prime"))) {
+        if (!"BRESIL".equals(System.getProperty("prime"))
+                && System.getProperty("all") == null) {
             asolver.setDBSimplificationAllowed(true);
         }
         getLogWriter().println(asolver.toString(COMMENT_PREFIX));

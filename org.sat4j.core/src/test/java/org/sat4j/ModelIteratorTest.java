@@ -171,7 +171,8 @@ public class ModelIteratorTest {
     @Test
     public void testInplicantCoverIterator() {
         try {
-            ModelIterator solver = new ModelIterator(SolverFactory.newDefault());
+            ModelIterator solver = new ModelIterator(
+                    SolverFactory.newDefault());
             solver.newVar(3);
             IVecInt clause = new VecInt();
             clause.push(1);
@@ -422,8 +423,8 @@ public class ModelIteratorTest {
     }
 
     @Test(timeout = 12000)
-    public void testSpecificValues() throws ContradictionException,
-            TimeoutException {
+    public void testSpecificValues()
+            throws ContradictionException, TimeoutException {
         assertEquals(3L, count(2));
         assertEquals(7L, count(3));
         assertEquals(15L, count(4));
@@ -434,8 +435,8 @@ public class ModelIteratorTest {
         assertEquals(511L, count(9));
     }
 
-    private long count(int size) throws ContradictionException,
-            TimeoutException {
+    private long count(int size)
+            throws ContradictionException, TimeoutException {
         SolutionCounter counter = new SolutionCounter(
                 SolverFactory.newDefault());
         IVecInt clause = new VecInt();
@@ -445,5 +446,105 @@ public class ModelIteratorTest {
         counter.addClause(clause);
         counter.setTimeout(10);
         return counter.countSolutions();
+    }
+
+    @Test
+    public void testInternalEnumerationOnExampleForRomain() {
+        try {
+            ISolver solver = SolverFactory.newDefault();
+            SolutionFoundListener sfl = new SolutionFoundListener() {
+
+                public void onSolutionFound(int[] solution) {
+                    // do nothing
+                }
+
+                public void onSolutionFound(IVecInt solution) {
+                    throw new UnsupportedOperationException(
+                            "Not implemented yet!");
+                }
+
+                public void onUnsatTermination() {
+                    // do nothing
+                }
+
+            };
+            SearchEnumeratorListener enumerator = new SearchEnumeratorListener(
+                    sfl);
+            solver.setSearchListener(enumerator);
+            solver.newVar(6);
+            IVecInt clause = new VecInt();
+            clause.push(1).push(3).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(1).push(3).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(1).push(4).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(1).push(4).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(3).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(3).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(4).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(4).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            assertTrue(solver.isSatisfiable());
+            assertEquals(37, enumerator.getNumberOfSolutionFound());
+        } catch (ContradictionException e) {
+            fail();
+        } catch (TimeoutException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testExternalEnumerationOnExampleForRomain() {
+        try {
+            ISolver solver = SolverFactory.newDefault();
+            ModelIterator iterator = new ModelIterator(solver);
+            solver.newVar(6);
+            IVecInt clause = new VecInt();
+            clause.push(1).push(3).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(1).push(3).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(1).push(4).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(1).push(4).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(3).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(3).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(4).push(5);
+            solver.addClause(clause);
+            clause.clear();
+            clause.push(2).push(4).push(6);
+            solver.addClause(clause);
+            clause.clear();
+            while (iterator.isSatisfiable()) {
+                iterator.model();
+            }
+            assertEquals(37, iterator.numberOfModelsFoundSoFar());
+        } catch (ContradictionException e) {
+            fail();
+        } catch (TimeoutException e) {
+            fail();
+        }
     }
 }
