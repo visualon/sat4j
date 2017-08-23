@@ -31,6 +31,8 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import java.util.*;
+
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.constraints.cnf.Lits;
 import org.sat4j.minisat.core.ILits;
