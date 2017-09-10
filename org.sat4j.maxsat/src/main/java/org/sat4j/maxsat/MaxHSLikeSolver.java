@@ -182,7 +182,6 @@ public class MaxHSLikeSolver extends SolverDecorator<ISolver>
     @Override
     public boolean isSatisfiable() throws TimeoutException {
         IVecInt hs = new VecInt(hsfinder.findModel());
-        hs = new VecInt(hsfinder.model());
         while (!decorated().isSatisfiable(hs)) {
             IVecInt core = decorated().unsatExplanation();
             IVecInt clause = new VecInt(core.size());
