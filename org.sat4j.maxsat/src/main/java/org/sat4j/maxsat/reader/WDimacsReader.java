@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 import org.sat4j.maxsat.WeightedMaxSatDecorator;
+import org.sat4j.maxsat.WeightedPartialMaxsat;
 import org.sat4j.reader.DimacsReader;
 import org.sat4j.reader.ParseFormatException;
 import org.sat4j.specs.ContradictionException;
@@ -72,14 +73,14 @@ public class WDimacsReader extends DimacsReader {
      */
     private static final long serialVersionUID = 1L;
 
-    private final WeightedMaxSatDecorator decorator;
+    private final WeightedPartialMaxsat decorator;
 
-    public WDimacsReader(WeightedMaxSatDecorator solver) {
+    public WDimacsReader(WeightedPartialMaxsat solver) {
         super(solver, "wcnf");
         this.decorator = solver;
     }
 
-    public WDimacsReader(WeightedMaxSatDecorator solver, String format) {
+    public WDimacsReader(WeightedPartialMaxsat solver, String format) {
         super(solver, format);
         this.decorator = solver;
     }
