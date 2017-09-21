@@ -99,9 +99,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 		<module>org.sat4j.pb</module>
 		<module>org.sat4j.maxsat</module>
 		<module>org.sat4j.sat</module>
-		<module>org.sat4j.csp</module>
 		<module>org.sat4j.csp.xmlparser</module>
-		<module>org.sat4j.scala</module>
 	</modules>
 
 	<dependencies>
