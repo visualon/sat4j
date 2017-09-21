@@ -27,4 +27,4 @@ java7:
     image: maven:3.3.9-jdk-7
     stage: build
     script: 
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.failure.ignore=true 
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.failure.ignore=true -Dmaven.javadoc.skip=true
