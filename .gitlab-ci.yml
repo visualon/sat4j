@@ -15,9 +15,10 @@ java8:
     script: 
       - mvn $MAVEN_CLI_OPTS clean org.jacoco:jacoco-maven-plugin:prepare-agent --settings settings.xml deploy -Dmaven.test.failure.ignore=true 
       - mvn $MAVEN_CLI_OPTS sonar:sonar
+      - ant -Drelease=NIGHTLY sat
     artifacts:
        paths:
-        - org.*/target/*.jar
+        - dist/NIGHTLY/*.jar
        expire_in: 4 weeks
     cache:
        paths:
@@ -25,6 +26,12 @@ java8:
 
 java7:
     image: maven:3.3.9-jdk-7
+    stage: build
+    script: 
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.failure.ignore=true -Dmaven.javadoc.skip=true
+
+java9:
+    image: maven:3.5.0-jdk-9
     stage: build
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.failure.ignore=true -Dmaven.javadoc.skip=true
