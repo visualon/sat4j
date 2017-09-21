@@ -201,7 +201,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 					<dependency>
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-compiler-jdt</artifactId>
-						<version>0.26.0</version>
+						<version>0.23.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
