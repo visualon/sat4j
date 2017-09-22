@@ -40,3 +40,4 @@ java9:
     stage: test
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.failure.ignore=true -Dmaven.javadoc.skip=true
+    allow_failure: true
