@@ -93,7 +93,7 @@ public class PBSolverCPLongRounding extends PBSolverCPLong {
     @Override
     public String toString(String prefix) {
         return super.toString(prefix) + "\n" + prefix
-                + "Performs rounding over coefficients during conflict analysis - Jakob Nordström's algorithm (ConflictMapRounding)";
+                + "Performs rounding over coefficients during conflict analysis - Jakob Nordstrom's algorithm (ConflictMapRounding)";
     }
 
 }
