@@ -11,6 +11,11 @@ import org.sat4j.pb.constraints.pb.PostProcessDivideBy2;
 
 public class PBSolverCPLongDivideByGCD extends PBSolverCPLong {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public PBSolverCPLongDivideByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, IOrder order) {
@@ -35,30 +40,31 @@ public class PBSolverCPLongDivideByGCD extends PBSolverCPLong {
 
     public PBSolverCPLongDivideByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
-        super(learner, dsf, order, noRemove);
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
+        super(learner, dsf, order, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     public PBSolverCPLongDivideByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
-        super(learner, dsf, params, order, restarter, noRemove);
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, restarter, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     public PBSolverCPLongDivideByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
-        super(learner, dsf, params, order, noRemove);
+            boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMap.createConflict(myconfl, level, noRemove,
+        return ConflictMap.createConflict(myconfl, level, noRemove, skipAllow,
                 PostProcessDivideBy2.instance(), stats);
     }
 

@@ -15,20 +15,20 @@ public class ConflictMapReduceByGCD extends ConflictMap {
     }
 
     public ConflictMapReduceByGCD(PBConstr cpb, int level, boolean noRemove,
-            IPostProcess postProcessing, PBSolverStats stats) {
-        super(cpb, level, noRemove, postProcessing, stats);
+            boolean skip, IPostProcess postProcessing, PBSolverStats stats) {
+        super(cpb, level, noRemove, skip, postProcessing, stats);
         // TODO Auto-generated constructor stub
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             PBSolverStats stats) {
-        return new ConflictMapReduceByGCD(cpb, level, true,
+        return new ConflictMapReduceByGCD(cpb, level, true, false,
                 NoPostProcess.instance(), stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, PBSolverStats stats) {
-        return new ConflictMapReduceByGCD(cpb, level, noRemove,
+            boolean noRemove, boolean skip, PBSolverStats stats) {
+        return new ConflictMapReduceByGCD(cpb, level, noRemove, skip,
                 NoPostProcess.instance(), stats);
     }
 

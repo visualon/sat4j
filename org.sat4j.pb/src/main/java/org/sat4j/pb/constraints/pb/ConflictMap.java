@@ -51,6 +51,8 @@ public class ConflictMap extends MapPb implements IConflict {
 
     protected boolean hasBeenReduced = false;
     protected long numberOfReductions = 0;
+    private boolean allowSkipping = false;
+    private boolean endingSkipping = true;
 
     /**
      * to store the slack of the current resolvant
@@ -84,33 +86,47 @@ public class ConflictMap extends MapPb implements IConflict {
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove) {
-        return new ConflictMap(cpb, level, noRemove, NoPostProcess.instance(),
-                null);
+        return new ConflictMap(cpb, level, noRemove, false,
+                NoPostProcess.instance(), null);
+    }
+
+    public static IConflict createConflict(PBConstr cpb, int level,
+            boolean noRemove, boolean skip, PBSolverStats stats) {
+        return new ConflictMap(cpb, level, noRemove, skip,
+                NoPostProcess.instance(), stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, IPostProcess postProcessing) {
-        return new ConflictMap(cpb, level, noRemove, postProcessing, null);
+        return new ConflictMap(cpb, level, noRemove, false, postProcessing,
+                null);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, IPostProcess postProcessing,
+            boolean noRemove, boolean skip, IPostProcess postProcessing,
             PBSolverStats stats) {
-        return new ConflictMap(cpb, level, noRemove, postProcessing, stats);
+        return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
+                stats);
     }
 
     ConflictMap(PBConstr cpb, int level) {
-        this(cpb, level, false, NoPostProcess.instance(), null);
+        this(cpb, level, false, false, NoPostProcess.instance(), null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove) {
-        this(cpb, level, noRemove, NoPostProcess.instance(), null);
+        this(cpb, level, noRemove, false, NoPostProcess.instance(), null);
     }
 
-    ConflictMap(PBConstr cpb, int level, boolean noRemove,
+    ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
+            PBSolverStats stats) {
+        this(cpb, level, noRemove, skip, NoPostProcess.instance(), stats);
+    }
+
+    ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
             IPostProcess postProcessing, PBSolverStats stats) {
         super(cpb, level, noRemove);
         this.stats = stats;
+        this.allowSkipping = skip;
         this.voc = cpb.getVocabulary();
         this.currentLevel = level;
         initStructures();
@@ -270,6 +286,29 @@ public class ConflictMap extends MapPb implements IConflict {
                 this.byLevel[0].push(lit);
             }
             return this.degree;
+        }
+
+        if (this.allowSkipping) {
+            if (this.weightedLits.get(nLitImplied).negate()
+                    .compareTo(currentSlack.subtract(degree)) > 0) {
+                if (this.endingSkipping)
+                    stats.numberOfEndingSkipping++;
+                else
+                    stats.numberOfInternalSkipping++;
+
+                // no resolution
+                // undo operation should be anticipated
+                int litLevel = levelToIndex(this.voc.getLevel(litImplied));
+                this.byLevel[litLevel].remove(nLitImplied);
+                if (this.byLevel[0] == null) {
+                    this.byLevel[0] = new VecInt();
+                }
+                this.byLevel[0].push(nLitImplied);
+                assert slackConflict().signum() < 0;
+                return this.degree;
+            } else
+                this.endingSkipping = false;
+
         }
 
         assert slackConflict().signum() < 0;

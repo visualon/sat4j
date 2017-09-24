@@ -65,28 +65,35 @@ public class PBSolverCPLongRounding extends PBSolverCPLong {
 
     public PBSolverCPLongRounding(
             LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
-        super(learner, dsf, order, noRemove);
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
+        super(learner, dsf, order, noRemove, skipAllow);
     }
 
     public PBSolverCPLongRounding(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
-        super(learner, dsf, params, order, restarter, noRemove);
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, restarter, noRemove, skipAllow);
     }
 
     public PBSolverCPLongRounding(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
-        super(learner, dsf, params, order, noRemove);
+            boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, noRemove, skipAllow);
     }
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapRounding.createConflict(myconfl, level, noRemove,
-                stats);
+                skipAllow, stats);
+    }
+
+    @Override
+    public String toString(String prefix) {
+        return super.toString(prefix) + "\n" + prefix
+                + "Performs rounding over coefficients during conflict analysis - Jakob Nordström's algorithm (ConflictMapRounding)";
     }
 
 }

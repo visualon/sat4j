@@ -61,32 +61,33 @@ public class PBSolverCPLong extends PBSolverCP {
     }
 
     public PBSolverCPLong(LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
-        super(learner, dsf, order, noRemove);
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
+        super(learner, dsf, order, noRemove, skipAllow);
     }
 
     public PBSolverCPLong(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
-        super(learner, dsf, params, order, restarter, noRemove);
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, restarter, noRemove, skipAllow);
     }
 
     public PBSolverCPLong(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
-        super(learner, dsf, params, order, noRemove);
+            boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, noRemove, skipAllow);
     }
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapReduceToClause.createConflict(myconfl, level,
-                noRemove);
+                noRemove, skipAllow, stats);
     }
 
     @Override
     public String toString(String prefix) {
         return super.toString(prefix) + "\n" + prefix
-                + "Reduce coefficients of asserted PB constraints from BigInteger to Long and reduce to clauses during conflict analysis if necessary";
+                + "Reduce coefficients of asserted PB constraints from BigInteger to Long and reduce to clauses during conflict analysis if necessary (ConflictMapReduceToClause) ";
     }
 
 }
