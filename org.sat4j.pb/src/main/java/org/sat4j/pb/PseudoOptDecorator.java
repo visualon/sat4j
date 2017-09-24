@@ -308,8 +308,11 @@ public class PseudoOptDecorator extends PBSolverDecorator
     }
 
     public Number getObjectiveValue() {
-        return this.objectiveValue
-                .add(decorated().getObjectiveFunction().getCorrection());
+        final BigInteger offset = decorated().getObjectiveFunction()
+                .getCorrectionOffset();
+        final BigInteger factor = decorated().getObjectiveFunction()
+                .getCorrectionFactor();
+        return this.objectiveValue.multiply(factor).add(offset);
     }
 
     public void discard() throws ContradictionException {

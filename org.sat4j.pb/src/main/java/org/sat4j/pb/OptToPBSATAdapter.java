@@ -104,8 +104,8 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
                     System.out.println(getLogPrefix()
                             + "Current objective function value: "
                             + this.problem.getObjectiveValue() + "("
-                            + (System.currentTimeMillis() - this.begin)
-                            / 1000.0 + "s)");
+                            + (System.currentTimeMillis() - this.begin) / 1000.0
+                            + "s)");
                 }
             }
             expireTimeout();
@@ -131,6 +131,22 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
             sfl.onUnsatTermination();
         }
         return satisfiable;
+    }
+
+    @Override
+    public int[] findModel() throws TimeoutException {
+        if (isSatisfiable()) {
+            return this.problem.model();
+        }
+        return null;
+    }
+
+    @Override
+    public int[] findModel(IVecInt assumps) throws TimeoutException {
+        if (isSatisfiable(assumps)) {
+            return this.problem.model();
+        }
+        return null;
     }
 
     @Override

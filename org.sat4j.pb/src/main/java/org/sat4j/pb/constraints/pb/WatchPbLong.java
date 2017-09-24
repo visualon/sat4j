@@ -48,12 +48,12 @@ import org.sat4j.specs.Propagatable;
 import org.sat4j.specs.UnitPropagationListener;
 import org.sat4j.specs.VarMapper;
 
-public abstract class WatchPbLong implements Propagatable, Constr, Undoable,
-        Serializable {
+public abstract class WatchPbLong
+        implements Propagatable, Constr, Undoable, Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private static final int LIMIT_SELECTION_SORT = 15;
@@ -142,9 +142,8 @@ public abstract class WatchPbLong implements Propagatable, Constr, Undoable,
     public boolean isAssertive(int dl) {
         long slack = 0;
         for (int i = 0; i < this.lits.length; i++) {
-            if (this.coefs[i] > 0
-                    && (!this.voc.isFalsified(this.lits[i]) || this.voc
-                            .getLevel(this.lits[i]) >= dl)) {
+            if (this.coefs[i] > 0 && (!this.voc.isFalsified(this.lits[i])
+                    || this.voc.getLevel(this.lits[i]) >= dl)) {
                 slack = slack + this.coefs[i];
             }
         }
@@ -154,8 +153,8 @@ public abstract class WatchPbLong implements Propagatable, Constr, Undoable,
         }
         for (int i = 0; i < this.lits.length; i++) {
             if (this.coefs[i] > 0
-                    && (this.voc.isUnassigned(this.lits[i]) || this.voc
-                            .getLevel(this.lits[i]) >= dl)
+                    && (this.voc.isUnassigned(this.lits[i])
+                            || this.voc.getLevel(this.lits[i]) >= dl)
                     && slack < this.coefs[i]) {
                 return true;
             }
@@ -362,7 +361,7 @@ public abstract class WatchPbLong implements Propagatable, Constr, Undoable,
             for (j = i + 1; j < to; j++) {
                 if (this.coefs[j] > this.coefs[bestIndex]
                         || this.coefs[j] == this.coefs[bestIndex]
-                        && this.lits[j] > this.lits[bestIndex]) {
+                                && this.lits[j] > this.lits[bestIndex]) {
                     bestIndex = j;
                 }
             }
@@ -445,12 +444,12 @@ public abstract class WatchPbLong implements Propagatable, Constr, Undoable,
             for (;;) {
                 do {
                     i++;
-                } while (this.coefs[i] > pivot || this.coefs[i] == pivot
-                        && this.lits[i] > litPivot);
+                } while (this.coefs[i] > pivot
+                        || this.coefs[i] == pivot && this.lits[i] > litPivot);
                 do {
                     j--;
-                } while (pivot > this.coefs[j] || this.coefs[j] == pivot
-                        && this.lits[j] < litPivot);
+                } while (pivot > this.coefs[j]
+                        || this.coefs[j] == pivot && this.lits[j] < litPivot);
 
                 if (i >= j) {
                     break;

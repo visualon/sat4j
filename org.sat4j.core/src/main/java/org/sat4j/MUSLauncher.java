@@ -47,8 +47,8 @@ import org.sat4j.tools.xplain.Xplain;
 public class MUSLauncher extends AbstractLauncher {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private int[] mus;
@@ -94,8 +94,8 @@ public class MUSLauncher extends AbstractLauncher {
             this.xplain = hlxp;
             solver = hlxp;
         } else {
-            Xplain<ISolver> xp = new Xplain<ISolver>(
-                    SolverFactory.newDefault(), false);
+            Xplain<ISolver> xp = new Xplain<ISolver>(SolverFactory.newDefault(),
+                    false);
             this.xplain = xp;
             solver = xp;
         }
@@ -109,9 +109,9 @@ public class MUSLauncher extends AbstractLauncher {
                 String className = "org.sat4j.tools.xplain." + args[0]
                         + "Strategy";
                 try {
-                    this.xplain
-                            .setMinimizationStrategy((MinimizationStrategy) Class
-                                    .forName(className).newInstance());
+                    this.xplain.setMinimizationStrategy(
+                            (MinimizationStrategy) Class.forName(className)
+                                    .newInstance());
                 } catch (Exception e) {
                     log(e.getMessage());
                 }
@@ -125,16 +125,17 @@ public class MUSLauncher extends AbstractLauncher {
     @Override
     protected void displayResult() {
         if (this.solver != null) {
-            double wallclocktime = (System.currentTimeMillis() - this.beginTime) / 1000.0;
+            double wallclocktime = (System.currentTimeMillis() - this.beginTime)
+                    / 1000.0;
             this.solver.printStat(this.out);
             this.solver.printInfos(this.out);
-            this.out.println(ILauncherMode.ANSWER_PREFIX + this.exitCode);
-            if (this.exitCode == ExitCode.SATISFIABLE) {
+            this.out.println(ILauncherMode.ANSWER_PREFIX + this.getExitCode());
+            if (this.getExitCode() == ExitCode.SATISFIABLE) {
                 int[] model = this.solver.model();
                 this.out.print(ILauncherMode.SOLUTION_PREFIX);
                 this.reader.decode(model, this.out);
                 this.out.println();
-            } else if (this.exitCode == ExitCode.UNSATISFIABLE
+            } else if (this.getExitCode() == ExitCode.UNSATISFIABLE
                     && this.mus != null) {
                 this.out.print(ILauncherMode.SOLUTION_PREFIX);
                 this.reader.decode(this.mus, this.out);
@@ -148,8 +149,9 @@ public class MUSLauncher extends AbstractLauncher {
     public void run(String[] args) {
         this.mus = null;
         super.run(args);
-        double wallclocktime = (System.currentTimeMillis() - this.beginTime) / 1000.0;
-        if (this.exitCode == ExitCode.UNSATISFIABLE) {
+        double wallclocktime = (System.currentTimeMillis() - this.beginTime)
+                / 1000.0;
+        if (this.getExitCode() == ExitCode.UNSATISFIABLE) {
             try {
                 log("Unsat detection wall clock time (in seconds) : "
                         + wallclocktime);

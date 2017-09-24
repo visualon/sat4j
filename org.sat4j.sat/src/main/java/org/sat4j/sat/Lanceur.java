@@ -345,8 +345,8 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 setExitCode(ExitCode.OPTIMUM_FOUND);
             }
         } else {
-            this.exitCode = problem.isSatisfiable() ? ExitCode.SATISFIABLE
-                    : ExitCode.UNSATISFIABLE;
+            this.setExitCode(problem.isSatisfiable() ? ExitCode.SATISFIABLE
+                    : ExitCode.UNSATISFIABLE);
         }
     }
 
@@ -429,7 +429,7 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
         } catch (IOException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());
         } catch (ContradictionException e) {
-            this.exitCode = ExitCode.UNSATISFIABLE;
+            this.setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
         } catch (ParseFormatException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());

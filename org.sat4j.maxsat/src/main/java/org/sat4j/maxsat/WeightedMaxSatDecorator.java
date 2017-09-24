@@ -54,10 +54,7 @@ import org.sat4j.specs.IteratorInt;
  * @author daniel
  * 
  */
-public class WeightedMaxSatDecorator extends PBSolverDecorator {
-
-    public static final BigInteger SAT4J_MAX_BIG_INTEGER = new BigInteger(
-            "100000000000000000000000000000000000000000");
+public class WeightedMaxSatDecorator extends PBSolverDecorator implements WeightedPartialMaxsat {
 
     protected int nbnewvar;
 
@@ -135,50 +132,37 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator {
         return addSoftClause(1, literals);
     }
 
-    /**
-     * Add a hard clause in the solver, i.e. a clause that must be satisfied.
-     * 
-     * @param literals
-     *            the clause
-     * @return the constraint is it is not trivially satisfied.
-     * @throws ContradictionException
+    /* (non-Javadoc)
+     * @see org.sat4j.maxsat.WeightedPartialMaxsat#addHardClause(org.sat4j.specs.IVecInt)
      */
+    @Override
     public IConstr addHardClause(IVecInt literals)
             throws ContradictionException {
         return super.addClause(literals);
     }
 
-    /**
-     * Add a soft clause in the solver, i.e. a clause with a weight of 1.
-     * 
-     * @param literals
-     *            the clause.
-     * @return the constraint is it is not trivially satisfied.
-     * @throws ContradictionException
+    /* (non-Javadoc)
+     * @see org.sat4j.maxsat.WeightedPartialMaxsat#addSoftClause(org.sat4j.specs.IVecInt)
      */
+    @Override
     public IConstr addSoftClause(IVecInt literals)
             throws ContradictionException {
         return addSoftClause(1, literals);
     }
 
-    /**
-     * Add a soft clause to the solver.
-     * 
-     * if the weight of the clause is greater of equal to the top weight, the
-     * clause will be considered as a hard clause.
-     * 
-     * @param weight
-     *            the weight of the clause
-     * @param literals
-     *            the clause
-     * @return the constraint is it is not trivially satisfied.
-     * @throws ContradictionException
+    /* (non-Javadoc)
+     * @see org.sat4j.maxsat.WeightedPartialMaxsat#addSoftClause(int, org.sat4j.specs.IVecInt)
      */
+    @Override
     public IConstr addSoftClause(int weight, IVecInt literals)
             throws ContradictionException {
         return addSoftClause(BigInteger.valueOf(weight), literals);
     }
 
+    /* (non-Javadoc)
+     * @see org.sat4j.maxsat.WeightedPartialMaxsat#addSoftClause(java.math.BigInteger, org.sat4j.specs.IVecInt)
+     */
+    @Override
     public IConstr addSoftClause(BigInteger weight, IVecInt literals)
             throws ContradictionException {
         checkMaxVarId();
@@ -216,7 +200,7 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator {
                             this.lits.delete(index);
                             this.coefs.delete(index);
                         }
-                        this.obj.setCorrection(this.falsifiedWeight);
+                        this.obj.setCorrectionOffset(this.falsifiedWeight);
 
                     } else {
                         registerLiteral(lit);
@@ -499,6 +483,11 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator {
      */
     public void setNoNewVarForUnitSoftClauses(boolean noNewVarForUnitSoftClauses) {
         this.noNewVarForUnitSoftClauses = noNewVarForUnitSoftClauses;
+    }
+
+    @Override
+    public BigInteger violatedWeight() {
+        return decorated().getObjectiveFunction().calculateDegree(decorated());
     }
 
 }

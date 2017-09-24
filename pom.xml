@@ -99,9 +99,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 		<module>org.sat4j.pb</module>
 		<module>org.sat4j.maxsat</module>
 		<module>org.sat4j.sat</module>
-		<module>org.sat4j.csp</module>
 		<module>org.sat4j.csp.xmlparser</module>
-		<module>org.sat4j.scala</module>
 	</modules>
 
 	<dependencies>
@@ -203,7 +201,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 					<dependency>
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-compiler-jdt</artifactId>
-						<version>0.26.0</version>
+						<version>0.23.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -277,7 +275,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 							<tasks>
 								<echo>Changing ${bundle-manifest}</echo>
 								<copy file="META-INF/MANIFEST.MF" tofile="${bundle-manifest}"
-									overwrite="true" />
+									overwrite="true" failonerror="false"/>
 								<replace file="${bundle-manifest}" token="9.9.9.token"
 									value="${sat4j.custom.version}">
 								</replace>

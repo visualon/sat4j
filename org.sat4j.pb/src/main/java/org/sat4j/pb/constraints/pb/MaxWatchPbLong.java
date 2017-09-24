@@ -145,6 +145,11 @@ public final class MaxWatchPbLong extends WatchPbLong {
 
         assert this.watchCumul >= computeLeftSide();
         if (!this.learnt && this.watchCumul < this.degree) {
+            for (int i = 0; i < this.lits.length; i++) {
+                if (!this.voc.isFalsified(this.lits[i])) {
+                    this.voc.watches(this.lits[i] ^ 1).remove(this);
+                }
+            }
             throw new ContradictionException("non satisfiable constraint");
         }
     }
