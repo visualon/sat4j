@@ -221,15 +221,15 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
+				<version>3.0.0-M1</version>
 				<configuration>
 					<source>${javaSource}</source>
 					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> <docletArtifact> 
 						<groupId>org.umlgraph</groupId> <artifactId>doclet</artifactId> <version>5.1</version> 
 						</docletArtifact> -->
-                                        <additionalparam>-Xdoclint:none</additionalparam>
+					<additionalparam>-Xdoclint:none</additionalparam>
 					<useStandardDocletOptions>true</useStandardDocletOptions>
-                                        
+
 				</configuration>
 				<executions>
 					<execution>
@@ -275,7 +275,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 							<tasks>
 								<echo>Changing ${bundle-manifest}</echo>
 								<copy file="META-INF/MANIFEST.MF" tofile="${bundle-manifest}"
-									overwrite="true" failonerror="false"/>
+									overwrite="true" failonerror="false" />
 								<replace file="${bundle-manifest}" token="9.9.9.token"
 									value="${sat4j.custom.version}">
 								</replace>
@@ -292,94 +292,6 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.0</version>
 				<configuration>
-					<reportPlugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
-							<reportSets>
-								<reportSet>
-									<reports>
-										<report>index</report>
-										<report>scm</report>
-										<report>license</report>
-										<report>issue-tracking</report>
-										<report>mailing-list</report>
-										<report>project-team</report>
-										<report>dependencies</report>
-									</reports>
-								</reportSet>
-							</reportSets>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-surefire-report-plugin</artifactId>
-							<version>2.7</version>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jxr-plugin</artifactId>
-							<version>2.2</version>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-pmd-plugin</artifactId>
-							<version>2.5</version>
-							<configuration>
-								<targetJdk>1.5</targetJdk>
-							</configuration>
-						</plugin>
-
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-checkstyle-plugin</artifactId>
-							<version>2.6</version>
-						</plugin>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>findbugs-maven-plugin</artifactId>
-							<version>2.3.1</version>
-							<configuration>
-								<threshold>Low</threshold>
-								<onlyAnalyze>org.sat4j.-</onlyAnalyze>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<version>2.8</version>
-							<configuration>
-								<groups>
-									<group>
-										<title>User level: stable public API</title>
-										<packages>org.sat4j:org.sat4j.*</packages>
-									</group>
-									<group>
-										<title>Developer level: internal API, subject to change</title>
-										<packages>org.sat4j.minisat.*:org.sat4j.reader.csp:org.sat4j.pb.*</packages>
-									</group>
-								</groups>
-
-							</configuration>
-						</plugin>
-
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>taglist-maven-plugin</artifactId>
-							<version>2.4</version>
-							<configuration>
-								<tags>
-									<tag>TODO</tag>
-									<tag>@todo</tag>
-									<tag>FIXME</tag>
-									<tag>DLB</tag>
-								</tags>
-							</configuration>
-						</plugin>
-					</reportPlugins>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -458,6 +370,92 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 						</reports>
 					</reportSet>
 				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>scm</report>
+							<report>license</report>
+							<report>issue-tracking</report>
+							<report>mailing-list</report>
+							<report>project-team</report>
+							<report>dependencies</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<threshold>Low</threshold>
+					<onlyAnalyze>org.sat4j.-</onlyAnalyze>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<groups>
+						<group>
+							<title>User level: stable public API</title>
+							<packages>org.sat4j:org.sat4j.*</packages>
+						</group>
+						<group>
+							<title>Developer level: internal API, subject to change</title>
+							<packages>org.sat4j.minisat.*:org.sat4j.reader.csp:org.sat4j.pb.*</packages>
+						</group>
+					</groups>
+
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<tags>
+						<tag>TODO</tag>
+						<tag>@todo</tag>
+						<tag>FIXME</tag>
+						<tag>DLB</tag>
+					</tags>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>
