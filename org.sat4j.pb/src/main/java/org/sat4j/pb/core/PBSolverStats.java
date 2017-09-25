@@ -58,6 +58,10 @@ public class PBSolverStats extends SolverStats {
 
     public long numberOfEasyRoundingOperations;
 
+    public long numberOfEndingSkipping;
+
+    public long numberOfInternalSkipping;
+
     @Override
     public void reset() {
         super.reset();
@@ -69,6 +73,8 @@ public class PBSolverStats extends SolverStats {
         this.numberOfReductionsByPower2 = 0;
         this.numberOfRightShiftsForCoeffs = 0;
         this.numberOfReductionsByGCD = 0;
+        this.numberOfEndingSkipping = 0;
+        this.numberOfInternalSkipping = 0;
     }
 
     @Override
@@ -77,27 +83,31 @@ public class PBSolverStats extends SolverStats {
         out.println(
                 prefix + "number of reductions to clauses (during analyze)\t: "
                         + this.numberOfReductions);
-        out.println(
-                prefix + "number of learned constraints concerned by reduction\t: "
-                        + this.numberOfLearnedConstraintsReduced);
+        out.println(prefix
+                + "number of learned constraints concerned by reduction\t: "
+                + this.numberOfLearnedConstraintsReduced);
         out.println(prefix + "number of learning phase by resolution\t: "
                 + this.numberOfResolution);
         out.println(prefix + "number of learning phase by cutting planes\t: "
                 + this.numberOfCP);
         out.println(prefix + "number of rounding to 1 operations\t: "
                 + this.numberOfRoundingOperations);
-        out.println(
-                prefix + "number of easy rounding to 1 operations (no literal elimination needed)\t: "
-                        + this.numberOfEasyRoundingOperations);
-        out.println(
-                prefix + "number of reductions of the coefficients by power 2 \t: "
-                        + this.numberOfReductionsByPower2);
+        out.println(prefix
+                + "number of easy rounding to 1 operations (no literal elimination needed)\t: "
+                + this.numberOfEasyRoundingOperations);
+        out.println(prefix
+                + "number of reductions of the coefficients by power 2 \t: "
+                + this.numberOfReductionsByPower2);
         out.println(
                 prefix + "number of right shift for reduction by power 2 \t: "
                         + this.numberOfRightShiftsForCoeffs);
-        out.println(
-                prefix + "number of reductions of the coefficients by GCD over coefficients \t: "
-                        + this.numberOfReductionsByGCD);
+        out.println(prefix
+                + "number of reductions of the coefficients by GCD over coefficients \t: "
+                + this.numberOfReductionsByGCD);
+        out.println(prefix + "number of ending skipping \t: "
+                + this.numberOfEndingSkipping);
+        out.println(prefix + "number of internal skipping \t: "
+                + this.numberOfInternalSkipping);
     }
 
 }

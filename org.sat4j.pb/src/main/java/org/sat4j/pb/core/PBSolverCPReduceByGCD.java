@@ -10,6 +10,11 @@ import org.sat4j.pb.constraints.pb.PBConstr;
 
 public class PBSolverCPReduceByGCD extends PBSolverCP {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public PBSolverCPReduceByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, IOrder order) {
@@ -34,37 +39,38 @@ public class PBSolverCPReduceByGCD extends PBSolverCP {
 
     public PBSolverCPReduceByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
-        super(learner, dsf, order, noRemove);
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
+        super(learner, dsf, order, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     public PBSolverCPReduceByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
-        super(learner, dsf, params, order, restarter, noRemove);
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, restarter, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     public PBSolverCPReduceByGCD(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
-        super(learner, dsf, params, order, noRemove);
+            boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapReduceByGCD.createConflict(myconfl, level, noRemove,
-                stats);
+                skipAllow, stats);
     }
 
     @Override
     public String toString(String prefix) {
         return super.toString(prefix) + "\n" + prefix
-                + "Reduce coefs as much as possible by GCD over coefficients at each step during conflict analysis";
+                + "Reduce coefs as much as possible by GCD over coefficients at each step during conflict analysis (ConflictMapReduceByGCD)";
     }
 
 }

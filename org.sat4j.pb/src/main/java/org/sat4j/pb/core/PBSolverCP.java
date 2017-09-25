@@ -59,6 +59,12 @@ public class PBSolverCP extends PBSolver {
     protected boolean noRemove = true;
 
     /**
+     * skipping as much as possible avoidable cutting planes during analysis
+     * conflict
+     */
+    protected boolean skipAllow = true;
+
+    /**
      * @param acg
      * @param learner
      * @param dsf
@@ -81,23 +87,27 @@ public class PBSolverCP extends PBSolver {
     }
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
         this(learner, dsf, order);
         this.noRemove = noRemove;
+        this.skipAllow = skipAllow;
     }
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
         this(learner, dsf, params, order, restarter);
         this.noRemove = noRemove;
+        this.skipAllow = skipAllow;
     }
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
+            boolean noRemove, boolean skipAllow) {
         this(learner, dsf, params, order);
         this.noRemove = noRemove;
+        this.skipAllow = skipAllow;
     }
 
     @Override
@@ -182,7 +192,8 @@ public class PBSolverCP extends PBSolver {
     }
 
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMap.createConflict(myconfl, level, noRemove);
+        return ConflictMap.createConflict(myconfl, level, noRemove, skipAllow,
+                stats);
     }
 
     @Override
@@ -191,6 +202,9 @@ public class PBSolverCP extends PBSolver {
                 + this.getClass().getName() + ")"
                 + (this.noRemove ? ""
                         : " - removing satisfied literals at a higher level before CP -")
+                + (this.skipAllow
+                        ? " - skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm -"
+                        : "")
                 + "\n" + super.toString(prefix);
     }
 

@@ -37,8 +37,9 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
 
     public InprocCardConstrLearningSolver(
             LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
-        super(learner, dsf, order, noRemove);
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
+        super(learner, dsf, order, noRemove, skipAllow);
         this.coSolver = SolverFactory.newResolution();
         this.cardFinder = new CardConstrFinder(this.coSolver);
         configureSolver();
@@ -56,8 +57,8 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
     public InprocCardConstrLearningSolver(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
-        super(learner, dsf, params, order, noRemove);
+            boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, noRemove, skipAllow);
         this.coSolver = SolverFactory.newResolution();
         this.cardFinder = new CardConstrFinder(this.coSolver);
         configureSolver();
@@ -66,8 +67,8 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
     public InprocCardConstrLearningSolver(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
-        super(learner, dsf, params, order, restarter, noRemove);
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, restarter, noRemove, skipAllow);
         this.coSolver = SolverFactory.newResolution();
         this.cardFinder = new CardConstrFinder(this.coSolver);
         configureSolver();
@@ -101,7 +102,8 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public void conflictFound(IConstr confl, int dlevel, int trailLevel) {
+            public void conflictFound(IConstr confl, int dlevel,
+                    int trailLevel) {
                 handleConflict(confl);
             }
         });
@@ -120,11 +122,11 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
         for (int lit : confl.getLits()) {
             atMostLits.push((lit >> 1) * ((lit & 1) == 1 ? -1 : 1));
         }
-        IVecInt discovered = this.cardFinder.searchCardFromAtMostCard(
-                atMostLits, atMostLits.size() - 1);
+        IVecInt discovered = this.cardFinder
+                .searchCardFromAtMostCard(atMostLits, atMostLits.size() - 1);
         if (discovered != null) {
-            IConstr constr = this.addAtMostOnTheFly(discovered, new VecInt(
-                    discovered.size(), 1), atMostLits.size() - 1);
+            IConstr constr = this.addAtMostOnTheFly(discovered,
+                    new VecInt(discovered.size(), 1), atMostLits.size() - 1);
             // if (this.isVerbose())
             // this.out.log(getLogPrefix() + "newCard " + constr
             // + " discovered from " + confl);
@@ -144,7 +146,8 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
     }
 
     @Override
-    public void analyzeCP(Constr myconfl, Pair results) throws TimeoutException {
+    public void analyzeCP(Constr myconfl, Pair results)
+            throws TimeoutException {
         if (this.detectCardFromAllConstraintsInCflAnalysis) {
             if (extendedConstr == null) {
                 cardDetectionAnalyzeCP(myconfl, results);
@@ -214,7 +217,7 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
         // are kept from the conflict
         if (confl.size() == 0
                 || (decisionLevel() == 0 || this.trail.size() == 0)
-                && confl.slackConflict().signum() < 0) {
+                        && confl.slackConflict().signum() < 0) {
             results.setReason(null);
             results.setBacktrackLevel(-1);
             return;

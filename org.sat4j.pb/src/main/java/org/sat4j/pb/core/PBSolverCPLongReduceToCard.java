@@ -38,7 +38,7 @@ import org.sat4j.pb.constraints.pb.IConflict;
 import org.sat4j.pb.constraints.pb.PBConstr;
 
 @SuppressWarnings("serial")
-public class PBSolverCPLongReduceToCard extends PBSolverCP {
+public class PBSolverCPLongReduceToCard extends PBSolverCPLong {
 
     public PBSolverCPLongReduceToCard(
             LearningStrategy<PBDataStructureFactory> learner,
@@ -64,36 +64,38 @@ public class PBSolverCPLongReduceToCard extends PBSolverCP {
 
     public PBSolverCPLongReduceToCard(
             LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, boolean noRemove) {
-        super(learner, dsf, order, noRemove);
+            PBDataStructureFactory dsf, IOrder order, boolean noRemove,
+            boolean skipAllow) {
+        super(learner, dsf, order, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     public PBSolverCPLongReduceToCard(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove) {
-        super(learner, dsf, params, order, restarter, noRemove);
+            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, restarter, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     public PBSolverCPLongReduceToCard(
             LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove) {
-        super(learner, dsf, params, order, noRemove);
+            boolean noRemove, boolean skipAllow) {
+        super(learner, dsf, params, order, noRemove, skipAllow);
         // TODO Auto-generated constructor stub
     }
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMapReduceToCard.createConflict(myconfl, level, noRemove);
+        return ConflictMapReduceToCard.createConflict(myconfl, level, noRemove,
+                skipAllow, stats);
     }
 
     @Override
     public String toString(String prefix) {
         return super.toString(prefix) + "\n" + prefix
-                + "Reduce to cardinality constraint during conflict analysis if necessary";
+                + "Reduce to cardinality constraint during conflict analysis if necessary (ConflictMapReduceToCard)";
     }
 
 }

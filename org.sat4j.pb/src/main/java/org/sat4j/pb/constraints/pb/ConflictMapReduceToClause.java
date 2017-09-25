@@ -31,6 +31,8 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.pb.core.PBSolverStats;
+
 public final class ConflictMapReduceToClause extends ConflictMap {
 
     public ConflictMapReduceToClause(PBConstr cpb, int level) {
@@ -38,14 +40,26 @@ public final class ConflictMapReduceToClause extends ConflictMap {
         // TODO Auto-generated constructor stub
     }
 
-    public ConflictMapReduceToClause(PBConstr cpb, int level, boolean noRemove) {
+    public ConflictMapReduceToClause(PBConstr cpb, int level,
+            boolean noRemove) {
         super(cpb, level, noRemove);
+        // TODO Auto-generated constructor stub
+    }
+
+    public ConflictMapReduceToClause(PBConstr cpb, int level, boolean noRemove,
+            boolean skip, PBSolverStats stats) {
+        super(cpb, level, noRemove, skip, stats);
         // TODO Auto-generated constructor stub
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove) {
         return new ConflictMapReduceToClause(cpb, level, noRemove);
+    }
+
+    public static IConflict createConflict(PBConstr cpb, int level,
+            boolean noRemove, boolean skip, PBSolverStats stats) {
+        return new ConflictMapReduceToClause(cpb, level, noRemove, skip, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level) {

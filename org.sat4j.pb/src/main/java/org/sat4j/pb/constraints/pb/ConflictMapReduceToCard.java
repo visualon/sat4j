@@ -2,6 +2,8 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.pb.core.PBSolverStats;
+
 /**
  * This class implements the reduction to cardinality algorithm proposed by
  * Heidi Dixon in her dissertation. Procedure 4.3.9 page 67, in Automating
@@ -22,6 +24,17 @@ public class ConflictMapReduceToCard extends ConflictMap {
 
     public ConflictMapReduceToCard(PBConstr cpb, int level, boolean noRemove) {
         super(cpb, level, noRemove);
+    }
+
+    public ConflictMapReduceToCard(PBConstr cpb, int level, boolean noRemove,
+            boolean skip, PBSolverStats stats) {
+        super(cpb, level, noRemove, skip, stats);
+        // TODO Auto-generated constructor stub
+    }
+
+    public static IConflict createConflict(PBConstr cpb, int level,
+            boolean noRemove, boolean skip, PBSolverStats stats) {
+        return new ConflictMapReduceToCard(cpb, level, noRemove, skip, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level) {
