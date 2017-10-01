@@ -63,8 +63,8 @@ public class PBSolverCPReduceByGCD extends PBSolverCP {
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMapReduceByGCD.createConflict(myconfl, level, noRemove,
-                skipAllow, stats);
+        return ConflictMapReduceByGCD.createConflict(myconfl, level,
+                isNoRemove(), isSkipAllow(), stats);
     }
 
     @Override

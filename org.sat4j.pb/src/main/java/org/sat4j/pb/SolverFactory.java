@@ -728,7 +728,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      * 
      * @return the best available cutting planes based solver of the library.
      */
-    public static IPBSolver newCuttingPlanes() {
+    public static PBSolverCP newCuttingPlanes() {
         return newCompetPBCPMixedConstraintsObjective();
     }
 
@@ -762,13 +762,13 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStarClauseLearning() {
+    public static PBSolverCP newCuttingPlanesStarClauseLearning() {
         return newPBCPStarClauseLearning(
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStarCardLearning() {
+    public static PBSolverCP newCuttingPlanesStarCardLearning() {
         return newPBCPStarCardLearning(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }

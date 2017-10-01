@@ -86,8 +86,8 @@ public class PBSolverCPLongRounding extends PBSolverCPLong {
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMapRounding.createConflict(myconfl, level, noRemove,
-                skipAllow, stats);
+        return ConflictMapRounding.createConflict(myconfl, level, isNoRemove(),
+                isSkipAllow(), stats);
     }
 
     @Override

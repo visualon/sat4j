@@ -49,7 +49,7 @@ public class PBSolverClause extends PBSolverCP {
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMapClause.createConflict(myconfl, level, noRemove);
+        return ConflictMapClause.createConflict(myconfl, level, isNoRemove());
     }
 
     @Override

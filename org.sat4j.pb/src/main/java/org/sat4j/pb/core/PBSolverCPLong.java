@@ -81,7 +81,7 @@ public class PBSolverCPLong extends PBSolverCP {
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapReduceToClause.createConflict(myconfl, level,
-                noRemove, skipAllow, stats);
+                isNoRemove(), isSkipAllow(), stats);
     }
 
     @Override

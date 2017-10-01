@@ -64,7 +64,7 @@ public class PBSolverCPReduceByPowersOf2 extends PBSolverCP {
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapReduceByPowersOf2.createConflict(myconfl, level,
-                noRemove, skipAllow, stats);
+                isNoRemove(), isSkipAllow(), stats);
     }
 
     @Override

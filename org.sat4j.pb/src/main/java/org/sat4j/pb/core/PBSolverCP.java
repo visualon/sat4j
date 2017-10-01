@@ -56,13 +56,13 @@ public class PBSolverCP extends PBSolver {
      * removing or not satisfied literals at a higher level before cutting
      * planes.
      */
-    protected boolean noRemove = true;
+    private boolean noRemove = true;
 
     /**
      * skipping as much as possible avoidable cutting planes during analysis
      * conflict
      */
-    protected boolean skipAllow = true;
+    private boolean skipAllow = true;
 
     /**
      * @param acg
@@ -224,6 +224,22 @@ public class PBSolverCP extends PBSolver {
     }
 
     protected void updateNumberOfReducedLearnedConstraints(IConflict confl) {
+    }
+
+    public boolean isSkipAllow() {
+        return skipAllow;
+    }
+
+    public void setSkipAllow(boolean skipAllow) {
+        this.skipAllow = skipAllow;
+    }
+
+    public boolean isNoRemove() {
+        return noRemove;
+    }
+
+    public void setNoRemove(boolean noRemove) {
+        this.noRemove = noRemove;
     }
 
 }
