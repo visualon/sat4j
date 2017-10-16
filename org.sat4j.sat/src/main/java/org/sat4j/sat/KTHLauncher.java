@@ -185,7 +185,6 @@ public class KTHLauncher {
                             + " is not a supported value for option round-reason");
                     return;
                 }
-                return;
             }
             // validate that block-size has been set
             if (line.hasOption("coeflim")) {
