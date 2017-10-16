@@ -225,7 +225,8 @@ public class VarOrderHeap implements IOrder, Serializable {
 
     @Override
     public String toString() {
-        return "VSIDS like heuristics from MiniSAT using a heap " + this.phaseStrategy; //$NON-NLS-1$
+        return "VSIDS like heuristics from MiniSAT using a heap " //$NON-NLS-1$
+                + this.phaseStrategy;
     }
 
     public ILits getVocabulary() {
@@ -233,7 +234,7 @@ public class VarOrderHeap implements IOrder, Serializable {
     }
 
     public void printStat(PrintWriter out, String prefix) {
-        out.println(prefix + "non guided choices\t" + this.nullchoice); //$NON-NLS-1$
+        out.println(prefix + "non guided choices\t: " + this.nullchoice); //$NON-NLS-1$
     }
 
     public void assignLiteral(int p) {

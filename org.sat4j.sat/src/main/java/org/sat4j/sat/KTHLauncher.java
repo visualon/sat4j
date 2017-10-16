@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -12,7 +13,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.OptToPBSATAdapter;
 import org.sat4j.pb.PBSolverHandle;
 import org.sat4j.pb.PseudoOptDecorator;
@@ -96,9 +96,9 @@ public class KTHLauncher {
         }
         CommandLineParser parser = new PosixParser();
         Options options = createCLIOptions();
-        if (args.length==0) {
+        if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( "KTHLauncher", options );
+            formatter.printHelp("KTHLauncher", options);
             return;
         }
         try {
@@ -127,7 +127,7 @@ public class KTHLauncher {
             if (line.hasOption("when-resolve")) {
                 String value = line.getOptionValue("when-resolve");
                 switch (value) {
-                case "always": 
+                case "always":
                     solver.setSkipAllow(false);
                     break;
                 case "skip":
@@ -168,20 +168,26 @@ public class KTHLauncher {
                 return;
             }
             System.out.println(solver.toString("c "));
-            String [] leftArgs = line.getArgs();
-            if (leftArgs.length==0) {
+            String[] leftArgs = line.getArgs();
+            if (leftArgs.length == 0) {
                 System.err.println("Missing filename");
                 return;
             }
-            String filename = leftArgs[leftArgs.length-1];
-            PBSolverHandle handle = new PBSolverHandle(new PseudoOptDecorator(solver));
+            String filename = leftArgs[leftArgs.length - 1];
+            PBSolverHandle handle = new PBSolverHandle(
+                    new PseudoOptDecorator(solver));
             OPBReader2012 reader = new OPBReader2012(handle);
-            IPBSolver optimizer = new OptToPBSATAdapter(handle);
+            OptToPBSATAdapter optimizer = new OptToPBSATAdapter(handle);
             try {
                 reader.parseInstance(filename);
                 if (optimizer.isSatisfiable()) {
-                    System.out.println("s OPTIMUM FOUND");
-                    System.out.println("v "+reader.decode(optimizer.model())+" 0");
+                    if (optimizer.isOptimal()) {
+                        System.out.println("s OPTIMUM FOUND");
+                    } else {
+                        System.out.println("s SATISFIABLE");
+                    }
+                    System.out.println(
+                            "v " + reader.decode(optimizer.model()) + " 0");
                 } else {
                     System.out.println("s UNSATISFIABLE");
                 }

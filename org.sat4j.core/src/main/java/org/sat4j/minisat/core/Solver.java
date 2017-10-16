@@ -1230,8 +1230,10 @@ public class Solver<D extends DataStructureFactory>
                 assert nAssigns() <= this.voc.realnVars();
                 if (nAssigns() == this.voc.realnVars()) {
                     modelFound();
-                    this.slistener.solutionFound((this.fullmodel != null)
-                            ? this.fullmodel : this.model, this);
+                    this.slistener.solutionFound(
+                            (this.fullmodel != null) ? this.fullmodel
+                                    : this.model,
+                            this);
                     if (this.sharedConflict == null) {
                         cancelUntil(this.rootLevel);
                         return Lbool.TRUE;
@@ -1276,10 +1278,10 @@ public class Solver<D extends DataStructureFactory>
                             }
                             if (allsat) {
                                 modelFound();
-                                this.slistener.solutionFound(
-                                        (this.fullmodel != null)
-                                                ? this.fullmodel : this.model,
-                                        this);
+                                this.slistener
+                                        .solutionFound((this.fullmodel != null)
+                                                ? this.fullmodel
+                                                : this.model, this);
                                 return Lbool.TRUE;
                             } else {
                                 confl = preventTheSameDecisionsToBeMade();
@@ -1866,6 +1868,9 @@ public class Solver<D extends DataStructureFactory>
      * @since 2.1
      */
     public void printLearntClausesInfos(PrintWriter out, String prefix) {
+        if (this.learnts.isEmpty()) {
+            return;
+        }
         Map<String, Counter> learntTypes = new HashMap<String, Counter>();
         for (Iterator<Constr> it = this.learnts.iterator(); it.hasNext();) {
             String type = it.next().getClass().getName();
