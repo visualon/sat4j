@@ -216,7 +216,7 @@ public class KTHLauncher {
                 }
             }
             if (line.hasOption("weaken-nonimplied")) {
-                String value = line.getOptionValue("rounding-weaken-priority");
+                String value = line.getOptionValue("weaken-nonimplied");
                 switch (value) {
                 case "false": 
                     // by default
