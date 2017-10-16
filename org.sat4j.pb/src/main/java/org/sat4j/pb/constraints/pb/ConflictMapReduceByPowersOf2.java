@@ -4,34 +4,29 @@ import org.sat4j.pb.core.PBSolverStats;
 
 public class ConflictMapReduceByPowersOf2 extends ConflictMap {
 
-    // public ConflictMapReduceByPowersOf2(PBConstr cpb, int level) {
-    // super(cpb, level);
-    // // TODO Auto-generated constructor stub
-    // }
-    //
-    // public ConflictMapReduceByPowersOf2(PBConstr cpb, int level,
-    // boolean noRemove) {
-    // super(cpb, level, noRemove);
-    // // TODO Auto-generated constructor stub
-    // }
-
     public ConflictMapReduceByPowersOf2(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
             PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing, stats);
-        // TODO Auto-generated constructor stub
     }
 
-    // public static IConflict createConflict(PBConstr cpb, int level,
-    // PBSolverStats stats) {
-    // return new ConflictMapReduceByPowersOf2(cpb, level, true,
-    // NoPostProcess.instance(), stats);
-    // }
-
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, PBSolverStats stats) {
+            boolean noRemove, boolean skip, IPostProcess postprocess,
+            PBSolverStats stats) {
         return new ConflictMapReduceByPowersOf2(cpb, level, noRemove, skip,
-                NoPostProcess.instance(), stats);
+                postprocess, stats);
+    }
+
+    public static IConflictFactory factory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    PBSolverStats stats) {
+                return ConflictMapReduceByPowersOf2.createConflict(cpb, level,
+                        noRemove, skip, postprocess, stats);
+            }
+        };
     }
 
     @Override

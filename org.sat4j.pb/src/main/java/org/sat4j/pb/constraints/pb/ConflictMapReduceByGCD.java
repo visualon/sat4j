@@ -6,18 +6,15 @@ public class ConflictMapReduceByGCD extends ConflictMap {
 
     public ConflictMapReduceByGCD(PBConstr cpb, int level) {
         super(cpb, level);
-        // TODO Auto-generated constructor stub
     }
 
     public ConflictMapReduceByGCD(PBConstr cpb, int level, boolean noRemove) {
         super(cpb, level, noRemove);
-        // TODO Auto-generated constructor stub
     }
 
     public ConflictMapReduceByGCD(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postProcessing, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing, stats);
-        // TODO Auto-generated constructor stub
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
@@ -27,9 +24,22 @@ public class ConflictMapReduceByGCD extends ConflictMap {
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, PBSolverStats stats) {
+            boolean noRemove, boolean skip, IPostProcess postprocess,
+            PBSolverStats stats) {
         return new ConflictMapReduceByGCD(cpb, level, noRemove, skip,
-                NoPostProcess.instance(), stats);
+                postprocess, stats);
+    }
+
+    public static IConflictFactory factory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    PBSolverStats stats) {
+                return ConflictMapReduceByGCD.createConflict(cpb, level,
+                        noRemove, skip, postprocess, stats);
+            }
+        };
     }
 
     @Override

@@ -31,8 +31,6 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
-import java.util.*;
-
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.constraints.cnf.Lits;
 import org.sat4j.minisat.core.ILits;
@@ -109,6 +107,18 @@ public class ConflictMap extends MapPb implements IConflict {
             PBSolverStats stats) {
         return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
                 stats);
+    }
+
+    public static IConflictFactory factory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    PBSolverStats stats) {
+                return ConflictMap.createConflict(cpb, level, noRemove, skip,
+                        postprocess, stats);
+            }
+        };
     }
 
     ConflictMap(PBConstr cpb, int level) {

@@ -39,6 +39,9 @@ import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.restarts.MiniSATRestarts;
 import org.sat4j.pb.constraints.pb.ConflictMap;
 import org.sat4j.pb.constraints.pb.IConflict;
+import org.sat4j.pb.constraints.pb.IConflictFactory;
+import org.sat4j.pb.constraints.pb.IPostProcess;
+import org.sat4j.pb.constraints.pb.NoPostProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
@@ -63,6 +66,10 @@ public class PBSolverCP extends PBSolver {
      * conflict
      */
     private boolean skipAllow = true;
+
+    private IConflictFactory conflictFactory = ConflictMap.factory();
+
+    private IPostProcess postprocess = NoPostProcess.instance();
 
     /**
      * @param acg
@@ -192,8 +199,8 @@ public class PBSolverCP extends PBSolver {
     }
 
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMap.createConflict(myconfl, level, noRemove, skipAllow,
-                stats);
+        return conflictFactory.createConflict(myconfl, level, noRemove,
+                skipAllow, postprocess, stats);
     }
 
     @Override
@@ -240,6 +247,22 @@ public class PBSolverCP extends PBSolver {
 
     public void setNoRemove(boolean noRemove) {
         this.noRemove = noRemove;
+    }
+
+    public IConflictFactory getConflictFactory() {
+        return conflictFactory;
+    }
+
+    public void setConflictFactory(IConflictFactory conflictFactory) {
+        this.conflictFactory = conflictFactory;
+    }
+
+    public IPostProcess getPostprocess() {
+        return postprocess;
+    }
+
+    public void setPostprocess(IPostProcess postprocess) {
+        this.postprocess = postprocess;
     }
 
 }

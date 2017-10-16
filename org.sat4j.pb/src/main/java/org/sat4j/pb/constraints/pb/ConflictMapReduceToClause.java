@@ -37,19 +37,16 @@ public final class ConflictMapReduceToClause extends ConflictMap {
 
     public ConflictMapReduceToClause(PBConstr cpb, int level) {
         super(cpb, level);
-        // TODO Auto-generated constructor stub
     }
 
     public ConflictMapReduceToClause(PBConstr cpb, int level,
             boolean noRemove) {
         super(cpb, level, noRemove);
-        // TODO Auto-generated constructor stub
     }
 
     public ConflictMapReduceToClause(PBConstr cpb, int level, boolean noRemove,
-            boolean skip, PBSolverStats stats) {
-        super(cpb, level, noRemove, skip, stats);
-        // TODO Auto-generated constructor stub
+            boolean skip, IPostProcess postprocess, PBSolverStats stats) {
+        super(cpb, level, noRemove, skip, postprocess, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
@@ -58,12 +55,26 @@ public final class ConflictMapReduceToClause extends ConflictMap {
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, PBSolverStats stats) {
-        return new ConflictMapReduceToClause(cpb, level, noRemove, skip, stats);
+            boolean noRemove, boolean skip, IPostProcess postprocess,
+            PBSolverStats stats) {
+        return new ConflictMapReduceToClause(cpb, level, noRemove, skip,
+                postprocess, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level) {
         return new ConflictMapReduceToClause(cpb, level);
+    }
+
+    public static IConflictFactory factory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    PBSolverStats stats) {
+                return ConflictMapReduceToClause.createConflict(cpb, level,
+                        noRemove, skip, postprocess, stats);
+            }
+        };
     }
 
     public static final BigInteger MAXVALUE = BigInteger

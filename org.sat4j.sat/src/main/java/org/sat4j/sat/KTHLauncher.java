@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -17,6 +16,12 @@ import org.sat4j.pb.OptToPBSATAdapter;
 import org.sat4j.pb.PBSolverHandle;
 import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.pb.SolverFactory;
+import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
+import org.sat4j.pb.constraints.pb.ConflictMapReduceByPowersOf2;
+import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
+import org.sat4j.pb.constraints.pb.ConflictMapReduceToClause;
+import org.sat4j.pb.constraints.pb.PostProcessToCard;
+import org.sat4j.pb.constraints.pb.PostProcessToClause;
 import org.sat4j.pb.core.PBSolverCP;
 import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.reader.ParseFormatException;
@@ -50,6 +55,8 @@ public class KTHLauncher {
                 "Type of constraints learned. Legal values are general-linear, cardinality, clause");
         options.addOption("wni", "weaken-nonimplied", true,
                 "Remove literals that are not implied/propagated by the assignment at the backjump level. Legal values are true or false.");
+        options.addOption("division", "division-strategy", true,
+                "Detect if all the coefficients can be divided by a common number. Legal values are two, gcd or none.");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -106,6 +113,24 @@ public class KTHLauncher {
             PBSolverCP solver = SolverFactory.newCuttingPlanes();
             solver.setNoRemove(true);
             solver.setSkipAllow(false);
+            if (line.hasOption("division-strategy")) {
+                String value = line.getOptionValue("division-strategy");
+                switch (value.toLowerCase()) {
+                case "two":
+                    solver.setConflictFactory(ConflictMapReduceByPowersOf2.factory());
+                    break;
+                case "gcd":
+                    solver.setConflictFactory(ConflictMapReduceByGCD.factory());
+                    break; 
+                case "none":
+                    break;
+                default:
+                    log(value
+                            + " is not a supported value for option division");
+                    return;
+                }
+            }
+
             if (line.hasOption("type-of-learned-constraint")) {
                 String value = line
                         .getOptionValue("type-of-learned-constraint");
@@ -113,10 +138,10 @@ public class KTHLauncher {
                 case "general-linear": // default case, do nothing
                     break;
                 case "cardinality":
-                    solver = SolverFactory.newCuttingPlanesStarCardLearning();
+                    solver.setPostprocess(PostProcessToCard.instance());
                     break;
                 case "clause":
-                    solver = SolverFactory.newCuttingPlanesStarClauseLearning();
+                    solver.setPostprocess(PostProcessToClause.instance());
                     break;
                 default:
                     log(value
@@ -139,7 +164,29 @@ public class KTHLauncher {
                     return;
                 }
             }
-
+            if (line.hasOption("round-reason")) {
+                String value = line.getOptionValue("round-reason");
+                switch (value) {
+                case "never": 
+                    // by default
+                    break;
+                case "clausal":
+                    solver.setConflictFactory(ConflictMapReduceToClause.factory());
+                    break;
+                case "cardinality":
+                    solver.setConflictFactory(ConflictMapReduceToCard.factory());
+                    break;
+                case "divide-v1":
+                case "divide-unless-equal":
+                case "divide-unless-divisor":
+                case "round-to-gcd":
+                default:
+                    log(value
+                            + " is not a supported value for option round-reason");
+                    return;
+                }
+                return;
+            }
             // validate that block-size has been set
             if (line.hasOption("coeflim")) {
                 log("coeflim option is unsupported at the moment");
@@ -155,17 +202,33 @@ public class KTHLauncher {
                 log("find-best-divisor-when-dividing-for-overflow option is unsupported at the moment");
                 return;
             }
-            if (line.hasOption("round-reason")) {
-                log("round-reason option is unsupported at the moment");
-                return;
-            }
             if (line.hasOption("rounding-weaken-priority")) {
-                log("rounding-weaken-priority option is unsupported at the moment");
-                return;
+                String value = line.getOptionValue("rounding-weaken-priority");
+                switch (value) {
+                case "unassigned": 
+                    // by default
+                    break;
+                case "satisfied":
+                case "any":
+                default:
+                    log(value
+                            + " is not a supported value for option rounding-weaken-priority");
+                    return;
+                }
             }
             if (line.hasOption("weaken-nonimplied")) {
-                log("weaken-nonimplied option is unsupported at the moment");
-                return;
+                String value = line.getOptionValue("rounding-weaken-priority");
+                switch (value) {
+                case "false": 
+                    // by default
+                    break;
+                case "true":
+                case "round":
+                default:
+                    log(value
+                            + " is not a supported value for option weaken-nonimplied");
+                    return;
+                }
             }
             System.out.println(solver.toString("c "));
             String[] leftArgs = line.getArgs();

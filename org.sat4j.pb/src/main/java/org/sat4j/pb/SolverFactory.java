@@ -736,28 +736,28 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         return newCompetPBCPMixedConstraintsMinObjective();
     }
 
-    public static IPBSolver newCuttingPlanesReduceByPowersOf2() {
+    public static PBSolverCP newCuttingPlanesReduceByPowersOf2() {
         return newPBCPReduceByPowersOf2(
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesReduceByGCD() {
+    public static PBSolverCP newCuttingPlanesReduceByGCD() {
         return newPBCPReduceByGCD(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStar() {
+    public static PBSolverCP newCuttingPlanesStar() {
         return newPBCPStar(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStarRounding() {
+    public static PBSolverCP newCuttingPlanesStarRounding() {
         return newPBCPStarRounding(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStarReduceToCard() {
+    public static PBSolverCP newCuttingPlanesStarReduceToCard() {
         return newPBCPStarReduceToCard(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
@@ -773,12 +773,12 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStarDivideBy2() {
+    public static PBSolverCP newCuttingPlanesStarDivideBy2() {
         return newPBCPStarDivideBy2(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
 
-    public static IPBSolver newCuttingPlanesStarDivideByGCD() {
+    public static PBSolverCP newCuttingPlanesStarDivideByGCD() {
         return newPBCPStarDivideByGCD(new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), true, false);
     }
