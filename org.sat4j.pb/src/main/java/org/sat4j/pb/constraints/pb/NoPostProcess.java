@@ -45,4 +45,9 @@ public class NoPostProcess implements IPostProcess {
     public void postProcess(int dl, ConflictMap conflictMap) {
         // nothing to do
     }
+
+    @Override
+    public String toString() {
+        return "No postprocessing";
+    }
 }

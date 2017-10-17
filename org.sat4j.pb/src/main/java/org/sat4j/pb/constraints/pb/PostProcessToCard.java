@@ -191,4 +191,8 @@ public class PostProcessToCard implements IPostProcess {
         return maxLit;
     }
 
+    @Override
+    public String toString() {
+        return "Performs a post-processing after conflict analysis in order to learn only cardinality constraints (Dixon's procedure)";
+    }
 }

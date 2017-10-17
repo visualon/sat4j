@@ -51,4 +51,9 @@ public class PostProcessDivideBy2 implements IPostProcess {
 
     }
 
+    @Override
+    public String toString() {
+        return "Performs a post-processing after conflict analysis in order to divide by 2 as much as possible coefficients of learned constraints";
+    }
+
 }

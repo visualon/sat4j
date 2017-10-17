@@ -39,6 +39,11 @@ public class ConflictMapReduceByGCD extends ConflictMap {
                 return ConflictMapReduceByGCD.createConflict(cpb, level,
                         noRemove, skip, postprocess, stats);
             }
+
+            @Override
+            public String toString() {
+                return "Divide by gcd the constraint during conflict analysis if gcd>1";
+            }
         };
     }
 

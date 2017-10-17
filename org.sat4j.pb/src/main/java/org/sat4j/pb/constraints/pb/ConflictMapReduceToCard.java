@@ -56,6 +56,11 @@ public class ConflictMapReduceToCard extends ConflictMap {
                 return ConflictMapReduceToCard.createConflict(cpb, level,
                         noRemove, skip, postprocess, stats);
             }
+
+            @Override
+            public String toString() {
+                return "Reduce to cardinality constraint during conflict analysis if necessary";
+            }
         };
     }
 

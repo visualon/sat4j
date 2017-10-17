@@ -74,6 +74,11 @@ public final class ConflictMapReduceToClause extends ConflictMap {
                 return ConflictMapReduceToClause.createConflict(cpb, level,
                         noRemove, skip, postprocess, stats);
             }
+
+            @Override
+            public String toString() {
+                return "Reduce to clause during conflict analysis if necessary";
+            }
         };
     }
 

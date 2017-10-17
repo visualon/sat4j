@@ -118,6 +118,11 @@ public class ConflictMap extends MapPb implements IConflict {
                 return ConflictMap.createConflict(cpb, level, noRemove, skip,
                         postprocess, stats);
             }
+
+            @Override
+            public String toString() {
+                return "Default Sat4j cutting planes";
+            }
         };
     }
 

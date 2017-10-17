@@ -206,13 +206,14 @@ public class PBSolverCP extends PBSolver {
     @Override
     public String toString(String prefix) {
         return prefix + "Cutting planes based inference ("
-                + this.getClass().getName() + ")"
+                + this.getClass().getName() + ")\n"
                 + (this.noRemove ? ""
-                        : " - removing satisfied literals at a higher level before CP -")
-                + (this.skipAllow
-                        ? " - skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm -"
+                        : prefix + " - removing satisfied literals at a higher level before CP \n")
+                + (this.skipAllow ? prefix
+                        + " - skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm \n"
                         : "")
-                + "\n" + super.toString(prefix);
+                + prefix + postprocess + "\n" + prefix + conflictFactory + "\n"
+                + super.toString(prefix);
     }
 
     private final IVec<String> conflictVariables = new Vec<String>();

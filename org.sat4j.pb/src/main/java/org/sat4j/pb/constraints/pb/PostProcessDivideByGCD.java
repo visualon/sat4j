@@ -20,4 +20,8 @@ public class PostProcessDivideByGCD implements IPostProcess {
 
     }
 
+    @Override
+    public String toString() {
+        return "Performs a post-processing after conflict analysis in order to divide by gcd over coefficients of learned constraints";
+    }
 }

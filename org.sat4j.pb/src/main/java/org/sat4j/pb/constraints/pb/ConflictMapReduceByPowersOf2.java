@@ -26,6 +26,11 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
                 return ConflictMapReduceByPowersOf2.createConflict(cpb, level,
                         noRemove, skip, postprocess, stats);
             }
+
+            @Override
+            public String toString() {
+                return "Divide by two the constraint during conflict analysis if all coefficients are even";
+            }
         };
     }
 

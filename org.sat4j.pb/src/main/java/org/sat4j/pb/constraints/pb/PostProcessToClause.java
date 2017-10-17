@@ -133,4 +133,8 @@ public class PostProcessToClause implements IPostProcess {
         return conflictMap.assertiveLiteral;
     }
 
+    @Override
+    public String toString() {
+        return "Performs a post-processing after conflict analysis in order to learn clauses";
+    }
 }
