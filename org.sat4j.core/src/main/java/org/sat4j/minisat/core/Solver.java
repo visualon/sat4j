@@ -1881,10 +1881,9 @@ public class Solver<D extends DataStructureFactory>
                 count.inc();
             }
         }
-        out.print(prefix);
-        out.println("learnt constraints type ");
         for (Map.Entry<String, Counter> entry : learntTypes.entrySet()) {
-            out.println(prefix + entry.getKey() + " => " + entry.getValue());
+            out.println(prefix + "learnt constraints type " + entry.getKey()
+                    + "\t: " + entry.getValue());
         }
     }
 

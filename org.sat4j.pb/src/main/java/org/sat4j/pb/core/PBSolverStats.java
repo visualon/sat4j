@@ -62,6 +62,8 @@ public class PBSolverStats extends SolverStats {
 
     public long numberOfInternalSkipping;
 
+    public long numberOfDerivationSteps;
+
     @Override
     public void reset() {
         super.reset();
@@ -75,6 +77,7 @@ public class PBSolverStats extends SolverStats {
         this.numberOfReductionsByGCD = 0;
         this.numberOfEndingSkipping = 0;
         this.numberOfInternalSkipping = 0;
+        this.numberOfDerivationSteps = 0;
     }
 
     @Override
@@ -108,6 +111,11 @@ public class PBSolverStats extends SolverStats {
                 + this.numberOfEndingSkipping);
         out.println(prefix + "number of internal skipping \t: "
                 + this.numberOfInternalSkipping);
+        out.println(prefix + "number of derivation steps \t: "
+                + this.numberOfDerivationSteps);
+        out.println(prefix + "number of skipped derivation steps \t: "
+                + (this.numberOfInternalSkipping
+                        + this.numberOfEndingSkipping));
     }
 
 }
