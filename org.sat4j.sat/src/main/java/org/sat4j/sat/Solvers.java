@@ -392,8 +392,7 @@ public final class Solvers {
                 if (dotfilename == null) {
                     dotfilename = "sat4j.dot";
                 }
-                asolver.setSearchListener(new DotSearchTracing(dotfilename,
-                        null));
+                asolver.setSearchListener(new DotSearchTracing(dotfilename));
             }
 
             return asolver;
