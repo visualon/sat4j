@@ -35,6 +35,7 @@ import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToClause;
 import org.sat4j.pb.constraints.pb.IConflict;
+import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.pb.constraints.pb.PostProcessToCard;
 
@@ -89,7 +90,7 @@ public class PBSolverCPCardLearning extends PBSolverCPLong {
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapReduceToClause.createConflict(myconfl, level,
                 isNoRemove(), isSkipAllow(), PostProcessToCard.instance(),
-                stats);
+                IWeakeningStrategy.UNASSIGNED_FIRST, stats);
     }
 
     @Override

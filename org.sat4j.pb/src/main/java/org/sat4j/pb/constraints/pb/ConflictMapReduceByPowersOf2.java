@@ -7,7 +7,8 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
     public ConflictMapReduceByPowersOf2(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
             PBSolverStats stats) {
-        super(cpb, level, noRemove, skip, postProcessing, stats);
+        super(cpb, level, noRemove, skip, postProcessing,
+                IWeakeningStrategy.UNASSIGNED_FIRST, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
@@ -22,9 +23,9 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
                 return ConflictMapReduceByPowersOf2.createConflict(cpb, level,
-                        noRemove, skip, postprocess, stats);
+                        noRemove, skip, postprocess, weakeningStrategy, stats);
             }
 
             @Override

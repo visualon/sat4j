@@ -13,21 +13,24 @@ public class ConflictMapReduceByGCD extends ConflictMap {
     }
 
     public ConflictMapReduceByGCD(PBConstr cpb, int level, boolean noRemove,
-            boolean skip, IPostProcess postProcessing, PBSolverStats stats) {
-        super(cpb, level, noRemove, skip, postProcessing, stats);
+            boolean skip, IPostProcess postProcessing,
+            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+        super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
+                stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             PBSolverStats stats) {
         return new ConflictMapReduceByGCD(cpb, level, true, false,
-                NoPostProcess.instance(), stats);
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
+                stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postprocess,
             PBSolverStats stats) {
         return new ConflictMapReduceByGCD(cpb, level, noRemove, skip,
-                postprocess, stats);
+                postprocess, IWeakeningStrategy.UNASSIGNED_FIRST, stats);
     }
 
     public static IConflictFactory factory() {
@@ -35,9 +38,9 @@ public class ConflictMapReduceByGCD extends ConflictMap {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
                 return ConflictMapReduceByGCD.createConflict(cpb, level,
-                        noRemove, skip, postprocess, stats);
+                        noRemove, skip, postprocess, weakeningStrategy, stats);
             }
 
             @Override

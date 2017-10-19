@@ -20,6 +20,7 @@ import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByPowersOf2;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToClause;
+import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.PostProcessToCard;
 import org.sat4j.pb.constraints.pb.PostProcessToClause;
 import org.sat4j.pb.core.PBSolverCP;
@@ -205,10 +206,14 @@ public class KTHLauncher {
                 String value = line.getOptionValue("rounding-weaken-priority");
                 switch (value) {
                 case "unassigned": 
-                    // by default
+                    solver.setWeakeningStrategy(IWeakeningStrategy.UNASSIGNED_FIRST);
                     break;
                 case "satisfied":
+                    solver.setWeakeningStrategy(IWeakeningStrategy.SATISFIED_FIRST);
+                    break;
                 case "any":
+                    solver.setWeakeningStrategy(IWeakeningStrategy.ANY);
+                    break;
                 default:
                     log(value
                             + " is not a supported value for option rounding-weaken-priority");

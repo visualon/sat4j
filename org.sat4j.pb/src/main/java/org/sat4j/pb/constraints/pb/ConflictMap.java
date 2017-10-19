@@ -87,26 +87,28 @@ public class ConflictMap extends MapPb implements IConflict {
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove) {
         return new ConflictMap(cpb, level, noRemove, false,
-                NoPostProcess.instance(), null);
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
+                null);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, PBSolverStats stats) {
         return new ConflictMap(cpb, level, noRemove, skip,
-                NoPostProcess.instance(), stats);
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
+                stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, IPostProcess postProcessing) {
         return new ConflictMap(cpb, level, noRemove, false, postProcessing,
-                null);
+                IWeakeningStrategy.UNASSIGNED_FIRST, null);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
-            PBSolverStats stats) {
+            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
         return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
-                stats);
+                weakeningStrategy, stats);
     }
 
     public static IConflictFactory factory() {
@@ -114,33 +116,37 @@ public class ConflictMap extends MapPb implements IConflict {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
                 return ConflictMap.createConflict(cpb, level, noRemove, skip,
-                        postprocess, stats);
+                        postprocess, weakeningStrategy, stats);
             }
 
             @Override
             public String toString() {
-                return "Default Sat4j cutting planes";
+                return "Use constraints as they come during conflict analysis";
             }
         };
     }
 
     ConflictMap(PBConstr cpb, int level) {
-        this(cpb, level, false, false, NoPostProcess.instance(), null);
+        this(cpb, level, false, false, NoPostProcess.instance(),
+                IWeakeningStrategy.UNASSIGNED_FIRST, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove) {
-        this(cpb, level, noRemove, false, NoPostProcess.instance(), null);
+        this(cpb, level, noRemove, false, NoPostProcess.instance(),
+                IWeakeningStrategy.UNASSIGNED_FIRST, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
             PBSolverStats stats) {
-        this(cpb, level, noRemove, skip, NoPostProcess.instance(), stats);
+        this(cpb, level, noRemove, skip, NoPostProcess.instance(),
+                IWeakeningStrategy.UNASSIGNED_FIRST, stats);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
-            IPostProcess postProcessing, PBSolverStats stats) {
+            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
+            PBSolverStats stats) {
         super(cpb, level, noRemove);
         this.stats = stats;
         this.allowSkipping = skip;
@@ -149,7 +155,7 @@ public class ConflictMap extends MapPb implements IConflict {
         initStructures();
 
         this.postProcess = postProcessing;
-
+        this.weakeningStrategy = weakeningStrategy;
         if (noRemove)
             this.rmSatLit = new NoRemoveSatisfied();
         else
@@ -254,6 +260,8 @@ public class ConflictMap extends MapPb implements IConflict {
     };
 
     private final IPostProcess postProcess;
+
+    private final IWeakeningStrategy weakeningStrategy;
 
     public void postProcess(int dl) {
         this.postProcess.postProcess(dl, this);
@@ -681,27 +689,9 @@ public class ConflictMap extends MapPb implements IConflict {
             final BigInteger[] coefsBis, final int indLitImplied,
             final BigInteger degreeBis) {
         assert degreeBis.compareTo(BigInteger.ONE) > 0;
-        // search of an unassigned literal
-        int lit = -1;
-        int size = wpb.size();
-        for (int ind = 0; ind < size && lit == -1; ind++) {
-            if (coefsBis[ind].signum() != 0
-                    && this.voc.isUnassigned(wpb.get(ind))) {
-                assert coefsBis[ind].compareTo(degreeBis) < 0;
-                lit = ind;
-            }
-        }
-
-        // else, search of a satisfied literal
-        if (lit == -1) {
-            for (int ind = 0; ind < size && lit == -1; ind++) {
-                if (coefsBis[ind].signum() != 0
-                        && this.voc.isSatisfied(wpb.get(ind))
-                        && ind != indLitImplied) {
-                    lit = ind;
-                }
-            }
-        }
+        // search of a literal to remove
+        int lit = weakeningStrategy.findLiteralToRemove(this.voc, wpb, coefsBis,
+                indLitImplied, degreeBis);
 
         // a literal has been found
         assert lit != -1;
