@@ -28,6 +28,7 @@ import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.reader.ParseFormatException;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.tools.DotSearchTracing;
 
 /**
  * A specific launcher for experimenting various settings in the PB solvers with
@@ -58,6 +59,8 @@ public class KTHLauncher {
                 "Remove literals that are not implied/propagated by the assignment at the backjump level. Legal values are true or false.");
         options.addOption("division", "division-strategy", true,
                 "Detect if all the coefficients can be divided by a common number. Legal values are two, gcd or none.");
+        options.addOption("dot", "dot-output", true,
+                "Output the search as a dot file");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -74,6 +77,8 @@ public class KTHLauncher {
         op.setArgName("type");
         op = options.getOption("weaken-nonimplied");
         op.setArgName("boolean");
+        op = options.getOption("dot-output");
+        op.setArgName("filename");
         return options;
     }
 
@@ -247,6 +252,14 @@ public class KTHLauncher {
             OptToPBSATAdapter optimizer = new OptToPBSATAdapter(handle);
             try {
                 reader.parseInstance(filename);
+                if (reader.hasAMapping()&&line.hasOption("dot-output")) {
+                        String dotfilename = line.getOptionValue("dot-output");
+                        if (dotfilename != null) {
+                            DotSearchTracing<String> dotTracing = new DotSearchTracing<>(dotfilename);
+                            solver.setSearchListener(dotTracing);
+                            dotTracing.setMapping(reader.getMapping());
+                        }
+                 }
                 if (optimizer.isSatisfiable()) {
                     if (optimizer.isOptimal()) {
                         System.out.println("s OPTIMUM FOUND");
