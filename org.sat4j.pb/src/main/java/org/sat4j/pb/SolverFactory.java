@@ -715,7 +715,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static PBSolverCP newPBCP(PBDataStructureFactory dsf, IOrder order) {
-        return newPBCP(dsf, order, true, true);
+        return newPBCP(dsf, order, true, false);
     }
 
     private static PBSolverCP newPBCP(PBDataStructureFactory dsf) {
