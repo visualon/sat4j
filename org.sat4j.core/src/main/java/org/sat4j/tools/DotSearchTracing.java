@@ -67,23 +67,21 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
      */
     private static final long serialVersionUID = 1L;
 
-    private final Vec<String> pile;
+    private final Vec<String> stack;
 
     private String currentNodeName = null;
 
     private transient Writer out;
 
-    private boolean estOrange = false;
+    private boolean assertive = false;
 
     private Map<Integer, T> mapping;
 
     /**
      * @since 2.1
      */
-    public DotSearchTracing(final String fileNameToSave,
-            Map<Integer, T> mapping) {
-        this.pile = new Vec<String>();
-        this.mapping = mapping;
+    public DotSearchTracing(final String fileNameToSave) {
+        this.stack = new Vec<String>();
         try {
             this.out = new FileWriter(fileNameToSave);
         } catch (IOException e) {
@@ -115,13 +113,13 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
         String newName;
 
         if (this.currentNodeName == null) {
-            newName = "" + absP;
-            this.pile.push(newName);
+            newName = Integer.toString(absP);
+            this.stack.push(newName);
             saveLine(lineTab("\"" + newName + "\"" + "[label=\"" + map(p)
                     + "\", shape=circle, color=blue, style=filled]"));
         } else {
             newName = this.currentNodeName;
-            this.pile.push(newName);
+            this.stack.push(newName);
             saveLine(lineTab("\"" + newName + "\"" + "[label=\"" + map(p)
                     + "\", shape=circle, color=blue, style=filled]"));
         }
@@ -133,12 +131,12 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
      */
     @Override
     public final void propagating(final int p) {
-        String newName = this.currentNodeName + "." + p + "." + this.estOrange;
+        String newName = this.currentNodeName + "." + p + "." + this.assertive;
 
         if (this.currentNodeName == null) {
             saveLine(lineTab("\"null\" [label=\"\", shape=point]"));
         }
-        final String couleur = this.estOrange ? "orange" : "green";
+        final String couleur = this.assertive ? "orange" : "green";
 
         saveLine(lineTab("\"" + newName + "\"" + "[label=\"" + map(p)
                 + "\",shape=point, color=black]"));
@@ -147,14 +145,14 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
                 + "\", fontcolor =" + couleur + ", color = " + couleur
                 + ", style = bold]"));
         this.currentNodeName = newName;
-        this.estOrange = false;
+        this.assertive = false;
     }
 
     @Override
     public final void enqueueing(final int p, IConstr reason) {
         if (reason != null) {
-            String newName = this.currentNodeName + "." + p + "."
-                    + this.estOrange;
+            String newName = this.currentNodeName + "." + p + ".propagated."
+                    + this.assertive;
             saveLine(lineTab("\"" + newName + "\"" + "[label=\"" + map(p)
                     + "\",shape=point, color=black]"));
             saveLine(lineTab("\"" + this.currentNodeName + "\"" + " -- " + "\""
@@ -173,8 +171,8 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
 
     @Override
     public final void backtracking(final int p) {
-        final String temp = this.pile.last();
-        this.pile.pop();
+        final String temp = this.stack.last();
+        this.stack.pop();
         saveLine("\"" + temp + "\"" + "--" + "\"" + this.currentNodeName + "\""
                 + "[label=\"\", color=red, style=dotted]");
         this.currentNodeName = temp;
@@ -182,7 +180,7 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
 
     @Override
     public final void adding(final int p) {
-        this.estOrange = true;
+        this.assertive = true;
     }
 
     /**

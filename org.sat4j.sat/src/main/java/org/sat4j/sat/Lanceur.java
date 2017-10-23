@@ -172,8 +172,7 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 if (dotfilename == null) {
                     dotfilename = "sat4j.dot";
                 }
-                asolver.setSearchListener(new DotSearchTracing(dotfilename,
-                        null));
+                asolver.setSearchListener(new DotSearchTracing(dotfilename));
             }
 
             if (cmd.hasOption("m")) {
