@@ -252,7 +252,7 @@ public class KTHLauncher {
             OptToPBSATAdapter optimizer = new OptToPBSATAdapter(handle);
             try {
                 reader.parseInstance(filename);
-                if (reader.hasAMapping()&&line.hasOption("dot-output")) {
+                if (line.hasOption("dot-output")) {
                         String dotfilename = line.getOptionValue("dot-output");
                         if (dotfilename != null) {
                             DotSearchTracing<String> dotTracing = new DotSearchTracing<>(dotfilename);
