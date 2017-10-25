@@ -12,10 +12,14 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.sat4j.minisat.learning.MiniSATLearning;
+import org.sat4j.minisat.orders.VarOrderHeap;
+import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.OptToPBSATAdapter;
 import org.sat4j.pb.PBSolverHandle;
 import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.pb.SolverFactory;
+import org.sat4j.pb.constraints.PBMaxClauseCardConstrDataStructure;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByPowersOf2;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
@@ -23,8 +27,11 @@ import org.sat4j.pb.constraints.pb.ConflictMapReduceToClause;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.PostProcessToCard;
 import org.sat4j.pb.constraints.pb.PostProcessToClause;
+import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
 import org.sat4j.pb.reader.OPBReader2012;
+import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
+import org.sat4j.pb.tools.PreprocCardConstrLearningSolver;
 import org.sat4j.reader.ParseFormatException;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.TimeoutException;
@@ -61,6 +68,8 @@ public class KTHLauncher {
                 "Detect if all the coefficients can be divided by a common number. Legal values are two, gcd or none.");
         options.addOption("dot", "dot-output", true,
                 "Output the search as a dot file");
+        options.addOption("detect", "detect-cards", true,
+                "Detect cardinality constraints from original constraints. Legal value are never, preproc, inproc, lazy.");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -79,6 +88,8 @@ public class KTHLauncher {
         op.setArgName("boolean");
         op = options.getOption("dot-output");
         op.setArgName("filename");
+        op = options.getOption("detect-cards");
+        op.setArgName("strategy");
         return options;
     }
 
@@ -116,18 +127,53 @@ public class KTHLauncher {
         }
         try {
             CommandLine line = parser.parse(options, args);
-            PBSolverCP solver = SolverFactory.newCuttingPlanes();
-            solver.setNoRemove(true);
-            solver.setSkipAllow(false);
+
+            PBSolverCP cpsolver = SolverFactory.newCuttingPlanes();
+            cpsolver.setNoRemove(true);
+            cpsolver.setSkipAllow(false);
+            IPBSolver pbsolver = cpsolver;
+            if (line.hasOption("detect-cards")) {
+                String value = line.getOptionValue("detect-cards");
+                switch (value) {
+                case "never":
+                    // by default
+                    break;
+                case "preproc":
+                    pbsolver = new PreprocCardConstrLearningSolver<IPBSolver>(
+                            cpsolver);
+                    break;
+                case "inproc":
+                    InprocCardConstrLearningSolver solver = new InprocCardConstrLearningSolver(
+                            new MiniSATLearning<PBDataStructureFactory>(),
+                            new PBMaxClauseCardConstrDataStructure(),
+                            new VarOrderHeap(), true, false);
+                    solver.setDetectCardFromAllConstraintsInCflAnalysis(true);
+                    cpsolver = solver;
+                    break;
+                case "lazy":
+                    cpsolver = new InprocCardConstrLearningSolver(
+                            new MiniSATLearning<PBDataStructureFactory>(),
+                            new PBMaxClauseCardConstrDataStructure(),
+                            new VarOrderHeap(), true, false);
+                    break;
+                default:
+                    log(value
+                            + " is not a supported value for option detect-cards");
+                    return;
+                }
+
+            }
             if (line.hasOption("division-strategy")) {
                 String value = line.getOptionValue("division-strategy");
                 switch (value.toLowerCase()) {
                 case "two":
-                    solver.setConflictFactory(ConflictMapReduceByPowersOf2.factory());
+                    cpsolver.setConflictFactory(
+                            ConflictMapReduceByPowersOf2.factory());
                     break;
                 case "gcd":
-                    solver.setConflictFactory(ConflictMapReduceByGCD.factory());
-                    break; 
+                    cpsolver.setConflictFactory(
+                            ConflictMapReduceByGCD.factory());
+                    break;
                 case "none":
                     break;
                 default:
@@ -144,10 +190,10 @@ public class KTHLauncher {
                 case "general-linear": // default case, do nothing
                     break;
                 case "cardinality":
-                    solver.setPostprocess(PostProcessToCard.instance());
+                    cpsolver.setPostprocess(PostProcessToCard.instance());
                     break;
                 case "clause":
-                    solver.setPostprocess(PostProcessToClause.instance());
+                    cpsolver.setPostprocess(PostProcessToClause.instance());
                     break;
                 default:
                     log(value
@@ -159,10 +205,10 @@ public class KTHLauncher {
                 String value = line.getOptionValue("when-resolve");
                 switch (value) {
                 case "always":
-                    solver.setSkipAllow(false);
+                    cpsolver.setSkipAllow(false);
                     break;
                 case "skip":
-                    solver.setSkipAllow(true);
+                    cpsolver.setSkipAllow(true);
                     break;
                 default:
                     log(value
@@ -173,14 +219,16 @@ public class KTHLauncher {
             if (line.hasOption("round-reason")) {
                 String value = line.getOptionValue("round-reason");
                 switch (value) {
-                case "never": 
+                case "never":
                     // by default
                     break;
                 case "clausal":
-                    solver.setConflictFactory(ConflictMapReduceToClause.factory());
+                    cpsolver.setConflictFactory(
+                            ConflictMapReduceToClause.factory());
                     break;
                 case "cardinality":
-                    solver.setConflictFactory(ConflictMapReduceToCard.factory());
+                    cpsolver.setConflictFactory(
+                            ConflictMapReduceToCard.factory());
                     break;
                 case "divide-v1":
                 case "divide-unless-equal":
@@ -210,14 +258,16 @@ public class KTHLauncher {
             if (line.hasOption("rounding-weaken-priority")) {
                 String value = line.getOptionValue("rounding-weaken-priority");
                 switch (value) {
-                case "unassigned": 
-                    solver.setWeakeningStrategy(IWeakeningStrategy.UNASSIGNED_FIRST);
+                case "unassigned":
+                    cpsolver.setWeakeningStrategy(
+                            IWeakeningStrategy.UNASSIGNED_FIRST);
                     break;
                 case "satisfied":
-                    solver.setWeakeningStrategy(IWeakeningStrategy.SATISFIED_FIRST);
+                    cpsolver.setWeakeningStrategy(
+                            IWeakeningStrategy.SATISFIED_FIRST);
                     break;
                 case "any":
-                    solver.setWeakeningStrategy(IWeakeningStrategy.ANY);
+                    cpsolver.setWeakeningStrategy(IWeakeningStrategy.ANY);
                     break;
                 default:
                     log(value
@@ -228,7 +278,7 @@ public class KTHLauncher {
             if (line.hasOption("weaken-nonimplied")) {
                 String value = line.getOptionValue("weaken-nonimplied");
                 switch (value) {
-                case "false": 
+                case "false":
                     // by default
                     break;
                 case "true":
@@ -239,7 +289,7 @@ public class KTHLauncher {
                     return;
                 }
             }
-            System.out.println(solver.toString("c "));
+            System.out.println(pbsolver.toString("c "));
             String[] leftArgs = line.getArgs();
             if (leftArgs.length == 0) {
                 System.err.println("Missing filename");
@@ -247,19 +297,20 @@ public class KTHLauncher {
             }
             String filename = leftArgs[leftArgs.length - 1];
             PBSolverHandle handle = new PBSolverHandle(
-                    new PseudoOptDecorator(solver));
+                    new PseudoOptDecorator(pbsolver));
             OPBReader2012 reader = new OPBReader2012(handle);
             OptToPBSATAdapter optimizer = new OptToPBSATAdapter(handle);
             try {
                 reader.parseInstance(filename);
                 if (line.hasOption("dot-output")) {
-                        String dotfilename = line.getOptionValue("dot-output");
-                        if (dotfilename != null) {
-                            DotSearchTracing<String> dotTracing = new DotSearchTracing<>(dotfilename);
-                            solver.setSearchListener(dotTracing);
-                            dotTracing.setMapping(reader.getMapping());
-                        }
-                 }
+                    String dotfilename = line.getOptionValue("dot-output");
+                    if (dotfilename != null) {
+                        DotSearchTracing<String> dotTracing = new DotSearchTracing<>(
+                                dotfilename);
+                        cpsolver.setSearchListener(dotTracing);
+                        dotTracing.setMapping(reader.getMapping());
+                    }
+                }
                 if (optimizer.isSatisfiable()) {
                     if (optimizer.isOptimal()) {
                         System.out.println("s OPTIMUM FOUND");
