@@ -315,7 +315,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
         if (this.allowSkipping) {
             if (this.weightedLits.get(nLitImplied).negate()
-                    .compareTo(slackConflict() /*currentSlack.subtract(degree) */) > 0) {
+                    .compareTo(slackConflict()) > 0) {
                 if (this.endingSkipping)
                     stats.numberOfEndingSkipping++;
                 else
