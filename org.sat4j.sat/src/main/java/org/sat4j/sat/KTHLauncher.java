@@ -13,6 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.sat4j.minisat.learning.MiniSATLearning;
+import org.sat4j.minisat.orders.NaturalStaticOrder;
 import org.sat4j.minisat.orders.VarOrderHeap;
 import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.OptToPBSATAdapter;
@@ -47,6 +48,7 @@ import org.sat4j.tools.DotSearchTracing;
  */
 public class KTHLauncher {
 
+    
     public static Options createCLIOptions() {
         Options options = new Options();
         options.addOption("cl", "coeflim", true,
@@ -71,6 +73,8 @@ public class KTHLauncher {
                 "Output the search as a dot file");
         options.addOption("detect", "detect-cards", true,
                 "Detect cardinality constraints from original constraints. Legal value are never, preproc, inproc, lazy.");
+        options.addOption("natural", "natural-static-order", false,
+                "Use a static order for decisions, using the natural order of the variables, from 1 to n.");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -293,6 +297,9 @@ public class KTHLauncher {
                     return;
                 }
             }
+            if (line.hasOption("natural")) {
+                cpsolver.setOrder(new NaturalStaticOrder());
+            }
             System.out.println(pbsolver.toString("c "));
             String[] leftArgs = line.getArgs();
             if (leftArgs.length == 0) {
@@ -303,7 +310,17 @@ public class KTHLauncher {
             PBSolverHandle handle = new PBSolverHandle(
                     new PseudoOptDecorator(pbsolver));
             OPBReader2012 reader = new OPBReader2012(handle);
-            OptToPBSATAdapter optimizer = new OptToPBSATAdapter(handle);
+            final OptToPBSATAdapter optimizer = new OptToPBSATAdapter(handle);
+            final Thread shutdownHook = new Thread() {
+                @Override
+                public void run() {
+                    // stop the solver before displaying solutions
+                    
+                    optimizer.expireTimeout();      
+                    optimizer.printStat(System.out, "c ");
+                }
+            };
+            Runtime.getRuntime().addShutdownHook(shutdownHook);
             try {
                 reader.parseInstance(filename);
                 if (line.hasOption("dot-output")) {
@@ -326,7 +343,6 @@ public class KTHLauncher {
                 } else {
                     System.out.println("s UNSATISFIABLE");
                 }
-                optimizer.printStat(System.out, "c ");
             } catch (TimeoutException e) {
                 System.out.println("s UNKNOWN");
             } catch (ParseFormatException e) {
