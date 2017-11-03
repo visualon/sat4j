@@ -24,6 +24,7 @@ import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByPowersOf2;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToClause;
+import org.sat4j.pb.constraints.pb.ConflictMapRounding;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.PostProcessToCard;
 import org.sat4j.pb.constraints.pb.PostProcessToClause;
@@ -231,6 +232,9 @@ public class KTHLauncher {
                             ConflictMapReduceToCard.factory());
                     break;
                 case "divide-v1":
+                    cpsolver.setConflictFactory(
+                            ConflictMapRounding.factory());  
+                    break;
                 case "divide-unless-equal":
                 case "divide-unless-divisor":
                 case "round-to-gcd":
