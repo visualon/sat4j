@@ -58,6 +58,7 @@ public class ConflictMap extends MapPb implements IConflict {
      * to store the slack of the current resolvant
      */
     protected BigInteger currentSlack;
+    protected BigInteger sumAllCoefs;
 
     protected int currentLevel;
     int backtrackLevel = NOTCOMPUTED;
@@ -164,6 +165,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     private void initStructures() {
         this.currentSlack = BigInteger.ZERO;
+        this.sumAllCoefs = BigInteger.ZERO;
         this.byLevel = new VecInt[levelToIndex(this.currentLevel) + 1];
         int ilit, litLevel, index;
         BigInteger tmp;
@@ -172,6 +174,7 @@ public class ConflictMap extends MapPb implements IConflict {
             litLevel = this.voc.getLevel(ilit);
             // eventually add to slack
             tmp = this.weightedLits.getCoef(i);
+            this.sumAllCoefs = this.sumAllCoefs.add(tmp);
             if (tmp.signum() > 0 && (!this.voc.isFalsified(ilit)
                     || litLevel == this.currentLevel)) {
                 this.currentSlack = this.currentSlack.add(tmp);
@@ -315,7 +318,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
         if (this.allowSkipping) {
             if (this.weightedLits.get(nLitImplied).negate()
-                    .compareTo(currentSlack.subtract(degree)) > 0) {
+                    .compareTo(slackConflict()) > 0) {
                 if (this.endingSkipping)
                     stats.numberOfEndingSkipping++;
                 else
@@ -336,7 +339,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
         }
 
-        stats.numberOfDerivationSteps++;
+        // stats.numberOfDerivationSteps++;
         assert slackConflict().signum() < 0;
         assert this.degree.signum() >= 0;
 
@@ -487,7 +490,7 @@ public class ConflictMap extends MapPb implements IConflict {
             assert slackIndex.signum() <= 0;
             // estimate of the slack after the cutting plane
             slackResolve = slackThis.add(slackIndex);
-        } while (slackResolve.signum() >= 0);
+        } while ((slackResolve.signum() >= 0) || this.isUnsat());
         assert this.coefMult.multiply(this.weightedLits.get(litImplied ^ 1))
                 .equals(this.coefMultCons.multiply(reducedCoefs[ind]));
         return reducedDegree;
@@ -561,8 +564,9 @@ public class ConflictMap extends MapPb implements IConflict {
     }
 
     /**
-     * tests if the conflict is assertive (allows to imply a literal) at a
-     * particular decision level
+     * change the currentLevel of the conflict to a new decision level and tests
+     * if the conflict is assertive (allows to imply a literal) at this new
+     * decision level
      * 
      * @param dl
      *            the decision level
@@ -577,6 +581,15 @@ public class ConflictMap extends MapPb implements IConflict {
             return false;
         }
         return isImplyingLiteral(slack);
+    }
+
+    /**
+     * tests if the conflict is unsatisfiable
+     * 
+     * @return true if the conflict is unsatisfiable
+     */
+    public boolean isUnsat() {
+        return this.sumAllCoefs.subtract(this.degree).signum() < 0;
     }
 
     // given the slack already computed, tests if a literal could be implied at
@@ -859,6 +872,7 @@ public class ConflictMap extends MapPb implements IConflict {
                 || this.voc.getLevel(lit) == this.currentLevel) {
             this.currentSlack = this.currentSlack.add(incCoef);
         }
+        this.sumAllCoefs = this.sumAllCoefs.add(incCoef);
         assert this.byLevel[levelToIndex(this.voc.getLevel(lit))].contains(lit);
         super.increaseCoef(lit, incCoef);
     }
@@ -869,6 +883,7 @@ public class ConflictMap extends MapPb implements IConflict {
                 || this.voc.getLevel(lit) == this.currentLevel) {
             this.currentSlack = this.currentSlack.subtract(decCoef);
         }
+        this.sumAllCoefs = this.sumAllCoefs.subtract(decCoef);
         assert this.byLevel[levelToIndex(this.voc.getLevel(lit))].contains(lit);
         super.decreaseCoef(lit, decCoef);
     }
@@ -883,6 +898,11 @@ public class ConflictMap extends MapPb implements IConflict {
             }
             this.currentSlack = this.currentSlack.add(newValue);
         }
+        if (this.weightedLits.containsKey(lit)) {
+            this.sumAllCoefs = this.sumAllCoefs
+                    .subtract(this.weightedLits.get(lit));
+        }
+        this.sumAllCoefs = this.sumAllCoefs.add(newValue);
         int indLitLevel = levelToIndex(litLevel);
         if (!this.weightedLits.containsKey(lit)) {
             if (this.byLevel[indLitLevel] == null) {
@@ -907,6 +927,12 @@ public class ConflictMap extends MapPb implements IConflict {
             }
             this.currentSlack = this.currentSlack.add(newValue);
         }
+        if (this.weightedLits.containsKey(lit)) {
+            this.sumAllCoefs = this.sumAllCoefs
+                    .subtract(this.weightedLits.get(lit));
+        }
+        this.sumAllCoefs = this.sumAllCoefs.add(newValue);
+
         int indLitLevel = levelToIndex(litLevel);
         assert this.weightedLits.containsKey(lit);
         assert this.byLevel[indLitLevel] != null;
@@ -921,6 +947,8 @@ public class ConflictMap extends MapPb implements IConflict {
             this.currentSlack = this.currentSlack
                     .subtract(this.weightedLits.get(lit));
         }
+        this.sumAllCoefs = this.sumAllCoefs
+                .subtract(this.weightedLits.get(lit));
         int indLitLevel = levelToIndex(litLevel);
         assert indLitLevel < this.byLevel.length;
         assert this.byLevel[indLitLevel] != null;
