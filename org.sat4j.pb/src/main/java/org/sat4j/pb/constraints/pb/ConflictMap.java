@@ -339,7 +339,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
         }
 
-        // stats.numberOfDerivationSteps++;
+        stats.numberOfDerivationSteps++;
         assert slackConflict().signum() < 0;
         assert this.degree.signum() >= 0;
 
