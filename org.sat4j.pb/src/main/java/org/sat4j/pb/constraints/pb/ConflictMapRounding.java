@@ -106,7 +106,7 @@ public class ConflictMapRounding extends ConflictMap {
         boolean easyRounding = true;
         for (int k = 0; k < n; k++) {
             if (!sprime.equals(BigInteger.ZERO) && !voc.isFalsified(xyz.get(k))
-                    && xyz.get(k) != x && !abc[k].equals(BigInteger.ZERO)) {
+                    && !abc[k].mod(a).equals(BigInteger.ZERO)) {
                 // incremental computation of the slack proposed by Jakob
                 bigt = bigt.subtract(abc[k]);
                 tnewprime = ceildiv(bigt, a);
