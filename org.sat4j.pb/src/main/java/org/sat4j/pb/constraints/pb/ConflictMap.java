@@ -395,6 +395,17 @@ public class ConflictMap extends MapPb implements IConflict {
                 // updating of the degree of the conflict
                 degreeCons = degreeCons.multiply(this.coefMultCons);
                 this.degree = this.degree.multiply(this.coefMult);
+
+                // Updating the stats about the reduction.
+                for (int i = 0; i < cpb.size(); i++) {
+                    if (coefsCons[i].signum() != 0) {
+                        if (this.voc.isUnassigned(cpb.get(i))) {
+                            this.stats.numberOfRemainingUnassigned++;
+                        } else {
+                            this.stats.numberOfRemainingAssigned++;
+                        }
+                    }
+                }
             }
 
             // coefficients of the conflict must be multiplied by coefMult
@@ -404,9 +415,7 @@ public class ConflictMap extends MapPb implements IConflict {
                             .multiply(this.coefMult));
                 }
             }
-
         }
-
         assert slackConflict().signum() < 0;
 
         // cutting plane
