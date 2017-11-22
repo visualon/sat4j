@@ -35,15 +35,6 @@ import org.sat4j.pb.core.PBSolverStats;
 
 public final class ConflictMapReduceToClause extends ConflictMap {
 
-    public ConflictMapReduceToClause(PBConstr cpb, int level) {
-        super(cpb, level);
-    }
-
-    public ConflictMapReduceToClause(PBConstr cpb, int level,
-            boolean noRemove) {
-        super(cpb, level, noRemove);
-    }
-
     public ConflictMapReduceToClause(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postprocess,
             IWeakeningStrategy weakeningStrategy,
@@ -53,20 +44,11 @@ public final class ConflictMapReduceToClause extends ConflictMap {
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove) {
-        return new ConflictMapReduceToClause(cpb, level, noRemove);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postprocess,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceToClause(cpb, level, noRemove, skip,
                 postprocess, weakeningStrategy, autoDivisionStrategy, stats);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level) {
-        return new ConflictMapReduceToClause(cpb, level);
     }
 
     public static IConflictFactory factory() {

@@ -39,10 +39,6 @@ public final class ConflictMapSwitchToClause extends ConflictMap {
         super(cpb, level);
     }
 
-    public static IConflict createConflict(PBConstr cpb, int level) {
-        return new ConflictMapSwitchToClause(cpb, level);
-    }
-
     /**
      * reduces the constraint defined by wpb until the result of the cutting
      * plane is a conflict. this reduction returns either a clause if .

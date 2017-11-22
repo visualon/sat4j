@@ -35,24 +35,6 @@ import org.sat4j.pb.core.PBSolverStats;
 
 public class ConflictMapRounding extends ConflictMap {
 
-    /**
-     * @param cpb
-     * @param level
-     */
-    public ConflictMapRounding(PBConstr cpb, int level, PBSolverStats stats) {
-        super(cpb, level);
-    }
-
-    /**
-     * @param cpb
-     * @param level
-     * @param noRemove
-     */
-    public ConflictMapRounding(PBConstr cpb, int level, boolean noRemove,
-            PBSolverStats stats) {
-        super(cpb, level, noRemove);
-    }
-
     public ConflictMapRounding(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postProcessing,
             IWeakeningStrategy weakeningStrategy,

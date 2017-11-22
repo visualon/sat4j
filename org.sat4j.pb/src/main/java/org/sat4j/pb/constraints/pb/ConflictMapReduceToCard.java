@@ -18,14 +18,6 @@ public class ConflictMapReduceToCard extends ConflictMap {
     public static final BigInteger MAXVALUE = BigInteger
             .valueOf(Long.MAX_VALUE);
 
-    public ConflictMapReduceToCard(PBConstr cpb, int level) {
-        super(cpb, level);
-    }
-
-    public ConflictMapReduceToCard(PBConstr cpb, int level, boolean noRemove) {
-        super(cpb, level, noRemove);
-    }
-
     public ConflictMapReduceToCard(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postprocess,
             IWeakeningStrategy weakeningStrategy,
@@ -40,15 +32,6 @@ public class ConflictMapReduceToCard extends ConflictMap {
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceToCard(cpb, level, noRemove, skip,
                 postprocess, weakeningStrategy, autoDivisionStrategy, stats);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level) {
-        return new ConflictMapReduceToCard(cpb, level);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove) {
-        return new ConflictMapReduceToCard(cpb, level, noRemove);
     }
 
     public static IConflictFactory factory() {

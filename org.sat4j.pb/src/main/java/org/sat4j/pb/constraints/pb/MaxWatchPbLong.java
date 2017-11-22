@@ -396,10 +396,6 @@ public final class MaxWatchPbLong extends WatchPbLong {
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        WatchPbLongPbConstrDecorator decorator = new WatchPbLongPbConstrDecorator(
-                this);
-        IConflict cm = ConflictMap.createConflict(decorator, decisionLevel,
-                false);
         Set<Integer> litsSet = new HashSet<Integer>();
         for (Integer i : this.lits)
             litsSet.add(i);

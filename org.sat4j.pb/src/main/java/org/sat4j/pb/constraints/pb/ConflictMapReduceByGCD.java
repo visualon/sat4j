@@ -4,27 +4,12 @@ import org.sat4j.pb.core.PBSolverStats;
 
 public class ConflictMapReduceByGCD extends ConflictMap {
 
-    public ConflictMapReduceByGCD(PBConstr cpb, int level) {
-        super(cpb, level);
-    }
-
-    public ConflictMapReduceByGCD(PBConstr cpb, int level, boolean noRemove) {
-        super(cpb, level, noRemove);
-    }
-
     public ConflictMapReduceByGCD(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postProcessing,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
                 autoDivisionStrategy, stats);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level,
-            PBSolverStats stats) {
-        return new ConflictMapReduceByGCD(cpb, level, true, false,
-                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
