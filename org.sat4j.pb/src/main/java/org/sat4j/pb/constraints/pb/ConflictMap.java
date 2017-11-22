@@ -53,7 +53,6 @@ public class ConflictMap extends MapPb implements IConflict {
     protected long numberOfReductions = 0;
     private boolean allowSkipping = false;
     private boolean endingSkipping = true;
-
     /**
      * to store the slack of the current resolvant
      */
@@ -89,27 +88,29 @@ public class ConflictMap extends MapPb implements IConflict {
             boolean noRemove) {
         return new ConflictMap(cpb, level, noRemove, false,
                 NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
-                null);
+                AutoDivisionStrategy.ENABLED, null);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, PBSolverStats stats) {
         return new ConflictMap(cpb, level, noRemove, skip,
                 NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
-                stats);
+                AutoDivisionStrategy.ENABLED, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, IPostProcess postProcessing) {
         return new ConflictMap(cpb, level, noRemove, false, postProcessing,
-                IWeakeningStrategy.UNASSIGNED_FIRST, null);
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, null);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+            IWeakeningStrategy weakeningStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
-                weakeningStrategy, stats);
+                weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
@@ -117,9 +118,12 @@ public class ConflictMap extends MapPb implements IConflict {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
                 return ConflictMap.createConflict(cpb, level, noRemove, skip,
-                        postprocess, weakeningStrategy, stats);
+                        postprocess, weakeningStrategy, autoDivisionStrategy,
+                        stats);
             }
 
             @Override
@@ -131,24 +135,27 @@ public class ConflictMap extends MapPb implements IConflict {
 
     ConflictMap(PBConstr cpb, int level) {
         this(cpb, level, false, false, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST, null);
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove) {
         this(cpb, level, noRemove, false, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST, null);
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
             PBSolverStats stats) {
         this(cpb, level, noRemove, skip, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST, stats);
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, stats);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
-            PBSolverStats stats) {
-        super(cpb, level, noRemove);
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
+        super(cpb, level, noRemove, autoDivisionStrategy);
         this.stats = stats;
         this.allowSkipping = skip;
         this.voc = cpb.getVocabulary();

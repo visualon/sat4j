@@ -4,6 +4,7 @@ import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.LearningStrategy;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
+import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
 import org.sat4j.pb.constraints.pb.ConflictMap;
 import org.sat4j.pb.constraints.pb.IConflict;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
@@ -67,7 +68,8 @@ public class PBSolverCPLongDivideByGCD extends PBSolverCPLong {
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMap.createConflict(myconfl, level, isNoRemove(),
                 isSkipAllow(), PostProcessDivideBy2.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST, stats);
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, stats);
     }
 
     @Override

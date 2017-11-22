@@ -6,16 +6,18 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
 
     public ConflictMapReduceByPowersOf2(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
-            PBSolverStats stats) {
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing,
-                IWeakeningStrategy.UNASSIGNED_FIRST, stats);
+                IWeakeningStrategy.UNASSIGNED_FIRST, autoDivisionStrategy,
+                stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postprocess,
-            PBSolverStats stats) {
+            IWeakeningStrategy weakeningStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceByPowersOf2(cpb, level, noRemove, skip,
-                postprocess, stats);
+                postprocess, autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
@@ -23,9 +25,12 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
                 return ConflictMapReduceByPowersOf2.createConflict(cpb, level,
-                        noRemove, skip, postprocess, weakeningStrategy, stats);
+                        noRemove, skip, postprocess, weakeningStrategy,
+                        autoDivisionStrategy, stats);
             }
 
             @Override

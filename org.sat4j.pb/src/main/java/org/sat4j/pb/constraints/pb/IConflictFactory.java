@@ -6,5 +6,6 @@ public interface IConflictFactory {
 
     IConflict createConflict(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postprocess,
-            IWeakeningStrategy removeStrategy, PBSolverStats stats);
+            IWeakeningStrategy removeStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats);
 }

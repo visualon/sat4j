@@ -21,6 +21,7 @@ import org.sat4j.pb.PBSolverHandle;
 import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.pb.SolverFactory;
 import org.sat4j.pb.constraints.PBMaxClauseCardConstrDataStructure;
+import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByPowersOf2;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
@@ -75,6 +76,7 @@ public class KTHLauncher {
                 "Detect cardinality constraints from original constraints. Legal value are never, preproc, inproc, lazy.");
         options.addOption("natural", "natural-static-order", false,
                 "Use a static order for decisions, using the natural order of the variables, from 1 to n.");
+        options.addOption("autodiv", "auto-division", false, "Apply division automatically when a common factor is identified.");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -144,7 +146,7 @@ public class KTHLauncher {
                     // by default
                     break;
                 case "preproc":
-                    pbsolver = new PreprocCardConstrLearningSolver<IPBSolver>(
+                    pbsolver = new PreprocCardConstrLearningSolver<>(
                             cpsolver);
                     break;
                 case "inproc":
@@ -299,6 +301,9 @@ public class KTHLauncher {
             }
             if (line.hasOption("natural")) {
                 cpsolver.setOrder(new NaturalStaticOrder());
+            }
+            if (line.hasOption("autodiv") ) {
+                cpsolver.setAutoDivisionStrategy(AutoDivisionStrategy.ENABLED);
             }
             System.out.println(pbsolver.toString("c "));
             String[] leftArgs = line.getArgs();

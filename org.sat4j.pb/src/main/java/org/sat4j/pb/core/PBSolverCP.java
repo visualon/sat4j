@@ -37,6 +37,7 @@ import org.sat4j.minisat.core.Pair;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.restarts.MiniSATRestarts;
+import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
 import org.sat4j.pb.constraints.pb.ConflictMap;
 import org.sat4j.pb.constraints.pb.IConflict;
 import org.sat4j.pb.constraints.pb.IConflictFactory;
@@ -73,6 +74,8 @@ public class PBSolverCP extends PBSolver {
     private IPostProcess postprocess = NoPostProcess.instance();
 
     private IWeakeningStrategy weakeningStrategy = IWeakeningStrategy.UNASSIGNED_FIRST;
+
+    private AutoDivisionStrategy autoDivisionStrategy = AutoDivisionStrategy.DISABLED;
 
     /**
      * @param acg
@@ -197,7 +200,8 @@ public class PBSolverCP extends PBSolver {
 
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return conflictFactory.createConflict(myconfl, level, noRemove,
-                skipAllow, postprocess, weakeningStrategy, stats);
+                skipAllow, postprocess, weakeningStrategy, autoDivisionStrategy,
+                stats);
     }
 
     @Override
@@ -206,12 +210,13 @@ public class PBSolverCP extends PBSolver {
                 + this.getClass().getName() + ")\n"
                 + (this.noRemove ? ""
                         : prefix + " - Removing satisfied literals at a higher level before CP \n")
-                + (this.skipAllow
-                        ? prefix + " - Skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm \n"
+                + (this.skipAllow ? prefix
+                        + " - Skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm \n"
                         : "")
-                + prefix + " - " + postprocess + "\n" + prefix + " - "
-                + conflictFactory + "\n" + prefix + " - " + weakeningStrategy
-                + "\n" + super.toString(prefix);
+                + prefix + " - " + autoDivisionStrategy + "\n" + prefix + " - "
+                + postprocess + "\n" + prefix + " - " + conflictFactory + "\n"
+                + prefix + " - " + weakeningStrategy + "\n"
+                + super.toString(prefix);
     }
 
     private final IVec<String> conflictVariables = new Vec<String>();
@@ -270,6 +275,11 @@ public class PBSolverCP extends PBSolver {
 
     public void setWeakeningStrategy(IWeakeningStrategy weakeningStrategy) {
         this.weakeningStrategy = weakeningStrategy;
+    }
+
+    public void setAutoDivisionStrategy(
+            AutoDivisionStrategy autoDivisionStrategy) {
+        this.autoDivisionStrategy = autoDivisionStrategy;
     }
 
 }

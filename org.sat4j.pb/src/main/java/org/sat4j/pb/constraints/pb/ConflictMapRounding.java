@@ -55,16 +55,18 @@ public class ConflictMapRounding extends ConflictMap {
 
     public ConflictMapRounding(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+            IWeakeningStrategy weakeningStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
-                stats);
+                autoDivisionStrategy, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+            IWeakeningStrategy weakeningStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapRounding(cpb, level, noRemove, skip,
-                postProcessing, weakeningStrategy, stats);
+                postProcessing, weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
@@ -72,9 +74,12 @@ public class ConflictMapRounding extends ConflictMap {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
                 return ConflictMapRounding.createConflict(cpb, level, noRemove,
-                        skip, postprocess, weakeningStrategy, stats);
+                        skip, postprocess, weakeningStrategy,
+                        autoDivisionStrategy, stats);
             }
 
             @Override

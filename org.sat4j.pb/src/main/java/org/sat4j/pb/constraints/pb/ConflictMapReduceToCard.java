@@ -28,15 +28,18 @@ public class ConflictMapReduceToCard extends ConflictMap {
 
     public ConflictMapReduceToCard(PBConstr cpb, int level, boolean noRemove,
             boolean skip, IPostProcess postprocess,
-            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
-        super(cpb, level, noRemove, skip, postprocess, weakeningStrategy, stats);
+            IWeakeningStrategy weakeningStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
+        super(cpb, level, noRemove, skip, postprocess, weakeningStrategy,
+                autoDivisionStrategy, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postprocess,
-            IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+            IWeakeningStrategy weakeningStrategy,
+            AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceToCard(cpb, level, noRemove, skip,
-                postprocess, weakeningStrategy, stats);
+                postprocess, weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level) {
@@ -53,9 +56,12 @@ public class ConflictMapReduceToCard extends ConflictMap {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
                     boolean noRemove, boolean skip, IPostProcess postprocess,
-                    IWeakeningStrategy weakeningStrategy, PBSolverStats stats) {
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
                 return ConflictMapReduceToCard.createConflict(cpb, level,
-                        noRemove, skip, postprocess, weakeningStrategy, stats);
+                        noRemove, skip, postprocess, weakeningStrategy,
+                        autoDivisionStrategy, stats);
             }
 
             @Override

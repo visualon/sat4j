@@ -57,14 +57,19 @@ public class MapPb implements IDataStructurePB {
 
     private BigInteger cardDegree;
 
-    MapPb(PBConstr cpb, int level, boolean noRemove) {
+    protected final AutoDivisionStrategy autoDivisionStrategy;
+
+    MapPb(PBConstr cpb, int level, boolean noRemove,
+            AutoDivisionStrategy autoDivisionStrategy) {
         this.weightedLits = new InternalMapPBStructure(cpb, level, noRemove);
         this.degree = this.weightedLits.getComputedDegree();
+        this.autoDivisionStrategy = autoDivisionStrategy;
     }
 
     MapPb(int size) {
         this.weightedLits = new InternalMapPBStructure(size);
         this.degree = BigInteger.ZERO;
+        this.autoDivisionStrategy = AutoDivisionStrategy.ENABLED;
     }
 
     // temporarily : just for the case where an InternalMapPBStructure
@@ -72,6 +77,7 @@ public class MapPb implements IDataStructurePB {
     public MapPb(IVecInt literals, IVec<BigInteger> coefs, BigInteger degree) {
         this.weightedLits = new InternalMapPBStructure(literals, coefs);
         this.degree = degree;
+        this.autoDivisionStrategy = AutoDivisionStrategy.ENABLED;
     }
 
     public int reduceCoeffsByPower2() {
@@ -130,19 +136,20 @@ public class MapPb implements IDataStructurePB {
                 break;
             }
         }
+
         if (newcase) {
-            return false;
-            /*BigInteger value = this.weightedLits.getCoef(0);
-            for (int i = 1; i < size(); i++) {
-                if (!this.weightedLits.getCoef(i).equals(value)) {
-                    return false;
+            if (autoDivisionStrategy.isCardinality(this.weightedLits)) {
+                this.cpCardsReduction++;
+                BigInteger[] division = degree
+                        .divideAndRemainder(this.weightedLits.getCoef(0));
+                if (!division[1].equals(BigInteger.ZERO)) {
+                    division[0] = division[0].add(BigInteger.ONE);
                 }
+                this.cardDegree = division[0];
+
+            } else {
+                return false;
             }
-            this.cpCardsReduction++;
-            BigInteger[] division = degree.divideAndRemainder(value);
-            if (!division[1].equals(BigInteger.ZERO))
-                division[0] = division[0].add(BigInteger.ONE);
-            this.cardDegree = division[0];*/
         } else
             this.cardDegree = degree;
         return true;
