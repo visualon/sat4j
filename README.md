@@ -1,5 +1,6 @@
 # HOW TO BUILD SAT4J FROM SOURCE
 
+> Nighlty builds are available [here](https://gitlab.ow2.org/sat4j/sat4j/pipelines)
 
 ## Using Maven (library users)
 
@@ -15,11 +16,6 @@ All the dependencies will be gathered by Maven.
 
 
 ## Using ant (solvers users)
-
-Download the missing libraries and put them in the lib directory:
-+ Apache commons CLI
-+ Apache commons UseBean
-+ Mozilla Rhino
 
 Just type:
 
