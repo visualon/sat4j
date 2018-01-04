@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
@@ -61,15 +62,17 @@ public class BugSAT26 {
     }
 
     @Test
-    public void testConsecutiveCallToSolver() throws ContradictionException,
-            TimeoutException {
+    public void testConsecutiveCallToSolver()
+            throws ContradictionException, TimeoutException {
         assertTrue(this.xplain.isSatisfiable());
         int i = 0;
         while (i < 5) {
             VecInt assumption = new VecInt();
             assumption.push(1187);
             IConstr constr = this.xplain.addClause(assumption);
+            assertFalse(this.xplain.isSatisfiable());
             this.xplain.removeConstr(constr);
+            assertTrue(this.xplain.isSatisfiable());
             i++;
         }
     }
