@@ -166,9 +166,16 @@ public abstract class Reader {
     /**
      * Produce a model using the reader format.
      * 
+     * Note that the approach of building a string representation of the model
+     * may be quite inefficient when the model is rather large. For that reason,
+     * the preferred way to proceed is to directly output the textual
+     * representation in a specific PrintWriter using
+     * {@link #decode(int[], PrintWriter)}
+     * 
      * @param model
      *            a model using the Dimacs format.
      * @return a human readable view of the model.
+     * @see #decode(int[], PrintWriter)
      */
     @Deprecated
     public abstract String decode(int[] model);
