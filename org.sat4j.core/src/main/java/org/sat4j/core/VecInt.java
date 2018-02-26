@@ -289,7 +289,7 @@ public final class VecInt implements IVecInt {
     }
 
     /**
-     * Insert an element at the very begining of the vector. The former first
+     * Insert an element at the very beginning of the vector. The former first
      * element is appended to the end of the vector in order to have a constant
      * time operation.
      * 
@@ -306,16 +306,18 @@ public final class VecInt implements IVecInt {
     }
 
     /**
-     * Enleve un element qui se trouve dans le vecteur!!!
+     * Remove an element that belongs to the Vector. The method will break if
+     * the element does not belong to the vector.
      * 
      * @param elem
-     *            un element du vecteur
+     *            an element from that VecInt
      */
     public void remove(int elem) {
         // assert size() > 0;
         int j = 0;
         for (; this.myarray[j] != elem; j++) {
-            assert j < size();
+            if (j == size())
+                throw new NoSuchElementException();
         }
         System.arraycopy(this.myarray, j + 1, this.myarray, j, size() - j - 1);
         pop();

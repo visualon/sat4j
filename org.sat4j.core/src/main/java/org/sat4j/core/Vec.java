@@ -244,8 +244,7 @@ public final class Vec<T> implements IVec<T> {
     }
 
     /**
-     * Remove an element that belongs to the Vector. The method will break if
-     * the element does not belong to the vector.
+     * Remove an element that belongs to the Vector.
      * 
      * @param elem
      *            an element from the vector.

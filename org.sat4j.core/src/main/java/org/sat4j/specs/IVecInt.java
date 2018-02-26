@@ -31,6 +31,7 @@ package org.sat4j.specs;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 /**
  * An abstraction for the vector of int used on the library.
@@ -186,10 +187,12 @@ public interface IVecInt extends Serializable, Cloneable {
     void insertFirst(final int elem);
 
     /**
-     * Enleve un element qui se trouve dans le vecteur!!!
+     * Remove an element from the vector.
      * 
      * @param elem
-     *            un element du vecteur
+     *            an element of the vector
+     * @throws NoSuchElementException
+     *             if elem is not found in the vector.
      */
     void remove(int elem);
 
