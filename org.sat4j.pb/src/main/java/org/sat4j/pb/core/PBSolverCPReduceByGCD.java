@@ -4,8 +4,11 @@ import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.LearningStrategy;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
+import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
 import org.sat4j.pb.constraints.pb.IConflict;
+import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
+import org.sat4j.pb.constraints.pb.NoPostProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
 
 public class PBSolverCPReduceByGCD extends PBSolverCP {
@@ -64,7 +67,9 @@ public class PBSolverCPReduceByGCD extends PBSolverCP {
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return ConflictMapReduceByGCD.createConflict(myconfl, level,
-                isNoRemove(), isSkipAllow(), stats);
+                isNoRemove(), isSkipAllow(), NoPostProcess.instance(),
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, stats);
     }
 
     @Override

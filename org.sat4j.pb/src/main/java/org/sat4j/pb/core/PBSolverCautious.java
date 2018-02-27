@@ -31,8 +31,11 @@ package org.sat4j.pb.core;
 
 import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.LearningStrategy;
+import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
 import org.sat4j.pb.constraints.pb.ConflictMapSwitchToClause;
 import org.sat4j.pb.constraints.pb.IConflict;
+import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
+import org.sat4j.pb.constraints.pb.NoPostProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
 
 public class PBSolverCautious extends PBSolverCP {
@@ -54,14 +57,15 @@ public class PBSolverCautious extends PBSolverCP {
 
     @Override
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return ConflictMapSwitchToClause.createConflict(myconfl, level);
+        return ConflictMapSwitchToClause.createConflict(myconfl, level,
+                isNoRemove(), isSkipAllow(), NoPostProcess.instance(),
+                IWeakeningStrategy.UNASSIGNED_FIRST,
+                AutoDivisionStrategy.ENABLED, null);
     }
 
     @Override
     public String toString(String prefix) {
-        return super.toString(prefix)
-                + "\n"
-                + prefix
+        return super.toString(prefix) + "\n" + prefix
                 + "When dealing with too large coefficients, simplify asserted PB constraints to clauses";
     }
 
