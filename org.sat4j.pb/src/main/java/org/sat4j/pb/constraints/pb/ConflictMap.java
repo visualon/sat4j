@@ -80,30 +80,6 @@ public class ConflictMap extends MapPb implements IConflict {
      *            current decision level
      * @return a conflict on which cutting plane can be performed.
      */
-    public static IConflict createConflict(PBConstr cpb, int level) {
-        return new ConflictMap(cpb, level);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove) {
-        return new ConflictMap(cpb, level, noRemove, false,
-                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, null);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, PBSolverStats stats) {
-        return new ConflictMap(cpb, level, noRemove, skip,
-                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
-    }
-
-    public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, IPostProcess postProcessing) {
-        return new ConflictMap(cpb, level, noRemove, false, postProcessing,
-                IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, null);
-    }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, boolean skip, IPostProcess postProcessing,
