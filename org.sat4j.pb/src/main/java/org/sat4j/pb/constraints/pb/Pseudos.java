@@ -62,7 +62,7 @@ public abstract class Pseudos {
             bigDegree = mpb.saturation();
         }
         if (bigDegree.signum() <= 0) {
-            return null;
+            return IDataStructurePB.TAUTOLOGY;
         }
         return mpb;
     }
