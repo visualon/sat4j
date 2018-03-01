@@ -51,8 +51,8 @@ public abstract class Pseudos {
         ps.copyTo(lits);
         BigInteger[] bc = new BigInteger[bigCoefs.size()];
         bigCoefs.copyTo(bc);
-        BigInteger bigDegree = Pseudos.niceCheckedParametersForCompetition(
-                lits, bc, moreThan, bigDeg);
+        BigInteger bigDegree = Pseudos.niceCheckedParametersForCompetition(lits,
+                bc, moreThan, bigDeg);
 
         IDataStructurePB mpb = new MapPb(voc.nVars() * 2 + 2);
         if (bigDegree.signum() > 0) {
@@ -100,12 +100,12 @@ public abstract class Pseudos {
             ILits voc) throws ContradictionException {
         // Ajouter les simplifications quand la structure sera d?finitive
         if (ps.size() == 0) {
-            if (moreThan && bigDeg.signum() > 0 || !moreThan
-                    && bigDeg.signum() < 0) {
+            if (moreThan && bigDeg.signum() > 0
+                    || !moreThan && bigDeg.signum() < 0) {
                 throw new ContradictionException("Creating Empty clause ?");
             }
             // ignoring tautological constraint
-            return null;
+            return IDataStructurePB.TAUTOLOGY;
         }
         if (ps.size() != bigCoefs.size()) {
             throw new IllegalArgumentException(
@@ -121,8 +121,8 @@ public abstract class Pseudos {
             throws ContradictionException {
         // Ajouter les simplifications quand la structure sera d?finitive
         if (ps.length == 0) {
-            if (moreThan && bigDeg.signum() > 0 || !moreThan
-                    && bigDeg.signum() < 0) {
+            if (moreThan && bigDeg.signum() > 0
+                    || !moreThan && bigDeg.signum() < 0) {
                 throw new ContradictionException("Creating Empty clause ?");
             }
             // ignoring tautological constraint
@@ -149,7 +149,8 @@ public abstract class Pseudos {
         return BigInteger.valueOf(i);
     }
 
-    public static ObjectiveFunction normalizeObjective(ObjectiveFunction initial) {
+    public static ObjectiveFunction normalizeObjective(
+            ObjectiveFunction initial) {
         IVec<BigInteger> initCoeffs = initial.getCoeffs();
         IVecInt initLits = initial.getVars();
         assert initCoeffs.size() == initLits.size();

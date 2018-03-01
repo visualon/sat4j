@@ -31,11 +31,91 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.minisat.core.ILits;
 import org.sat4j.minisat.core.VarActivityListener;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 
 public interface IDataStructurePB {
+
+    IDataStructurePB TAUTOLOGY = new IDataStructurePB() {
+
+        @Override
+        public int size() {
+            return 0;
+        }
+
+        @Override
+        public BigInteger saturation() {
+            return BigInteger.ZERO;
+        }
+
+        @Override
+        public int reduceCoeffsByPower2() {
+            return 0;
+        }
+
+        @Override
+        public boolean isLongSufficient() {
+            return true;
+        }
+
+        @Override
+        public boolean isCardinality() {
+            return true;
+        }
+
+        @Override
+        public BigInteger getDegree() {
+            return BigInteger.ZERO;
+        }
+
+        @Override
+        public BigInteger getCardDegree() {
+            return BigInteger.ZERO;
+        }
+
+        @Override
+        public int getAssertiveLiteral() {
+            return ILits.UNDEFINED;
+        }
+
+        @Override
+        public BigInteger cuttingPlane(int[] lits, BigInteger[] reducedCoefs,
+                BigInteger degreeCons, BigInteger coefMult) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public BigInteger cuttingPlane(int[] lits, BigInteger[] reducedCoefs,
+                BigInteger deg) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public BigInteger cuttingPlane(PBConstr cpb, BigInteger degreeCons,
+                BigInteger[] reducedCoefs, BigInteger coefMult,
+                VarActivityListener val) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public BigInteger cuttingPlane(PBConstr cpb, BigInteger deg,
+                BigInteger[] reducedCoefs, VarActivityListener val) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void buildConstraintFromMapPb(int[] resLits,
+                BigInteger[] resCoefs) {
+        }
+
+        @Override
+        public void buildConstraintFromConflict(IVecInt resLits,
+                IVec<BigInteger> resCoefs) {
+        }
+    };
+
     BigInteger saturation();
 
     BigInteger cuttingPlane(PBConstr cpb, BigInteger deg,
