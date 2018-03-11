@@ -35,8 +35,8 @@ java7:
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
 
-java9:
-    image: maven:3.5.3-jdk-9
+java10:
+    image: maven:3.5.3-jdk-10
     stage: test
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
