@@ -116,7 +116,7 @@ public class WatcherBasedPrimeImplicantStrategy implements
             }
         }
         solver.cancelUntil(0);
-        int[] implicant = new int[this.prime.length - removed - 1];
+        int[] implicant = new int[propagated];
         int index = 0;
         for (int i : this.prime) {
             if (i != 0) {
