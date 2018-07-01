@@ -14,7 +14,7 @@ import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
 
-public class BugSAT143 {
+public class BugSAT144 {
 
     @Test
     public void testWithCard() throws ContradictionException, TimeoutException {
