@@ -595,9 +595,8 @@ public class Solver<D extends DataStructureFactory>
 
         int counter = 0;
         int p = ILits.UNDEFINED;
-
+        // placeholder for the asserting literal
         outLearnt.push(ILits.UNDEFINED);
-        // reserve de la place pour le litteral falsifie
         int outBtlevel = 0;
         IConstr prevConfl = null;
 
