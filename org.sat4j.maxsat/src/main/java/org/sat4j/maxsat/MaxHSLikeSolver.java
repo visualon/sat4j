@@ -220,6 +220,9 @@ public class MaxHSLikeSolver extends SolverDecorator<ISolver>
     public boolean isSatisfiable() throws TimeoutException {
         IVecInt hs = new VecInt(hsfinder.findModel());
         while (!decorated().isSatisfiable(hs)) {
+            if (isVerbose()) {
+                System.out.print(".");
+            }
             IVecInt core = decorated().unsatExplanation();
             IVecInt clause = new VecInt(core.size());
             for (IteratorInt it = core.iterator(); it.hasNext();) {
@@ -243,6 +246,16 @@ public class MaxHSLikeSolver extends SolverDecorator<ISolver>
     @Override
     public BigInteger violatedWeight() {
         return hsfinder.getObjectiveFunction().calculateDegree(hsfinder);
+    }
+
+    @Override
+    public String toString(String prefix) {        
+        return prefix+"MaxHS like optimization"+System.lineSeparator()+super.toString(prefix);
+    }
+
+    @Override
+    public String toString() {
+        return "MaxHS like optimization "+super.toString();
     }
 
 }

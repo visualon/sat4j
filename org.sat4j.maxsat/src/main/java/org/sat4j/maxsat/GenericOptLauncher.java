@@ -86,7 +86,8 @@ public class GenericOptLauncher extends AbstractLauncher {
                 "kind of problem: minone, maxsat, etc.");
         options.addOption("i", "incomplete", false,
                 "incomplete mode for maxsat");
-        options.addOption("I", "inner mode", false, "optimize using inner mode");
+        options.addOption("I", "inner mode", false,
+                "optimize using inner mode");
         options.addOption("c", "clean databases", false,
                 "clean up the database at root level");
         options.addOption("k", "keep Hot", false,
@@ -99,8 +100,11 @@ public class GenericOptLauncher extends AbstractLauncher {
                 "Do not display a solution line (useful if the solution is large)");
         options.addOption("l", "lower bounding", false,
                 "search solution by lower bounding instead of by upper bounding");
+        options.addOption("hs", "MaxHS Like", false,
+                "search solution using a MaxHS like approach");
         options.addOption("m", "mystery", false, "mystery option");
-        options.addOption("B", "External&Internal", false, "External&Internal optimization");
+        options.addOption("B", "External&Internal", false,
+                "External&Internal optimization");
         return options;
     }
 
@@ -127,7 +131,6 @@ public class GenericOptLauncher extends AbstractLauncher {
         return reader;
     }
 
-    
     @Override
     protected String getInstanceName(String[] args) {
         return args[args.length - 1];
@@ -179,6 +182,9 @@ public class GenericOptLauncher extends AbstractLauncher {
                     if (cmd.hasOption("l")) {
                         asolver = new ConstraintRelaxingPseudoOptDecorator(
                                 this.wmsd);
+                    } else if (cmd.hasOption("hs"))  {
+                        asolver = org.sat4j.maxsat.SolverFactory.newMaxHSLike();
+                        setLauncherMode(ILauncherMode.DECISION);
                     } else if (cmd.hasOption("I")){
                         this.wmsd.setSearchListener(new SearchOptimizerListener(ILauncherMode.DECISION));
                         setLauncherMode(ILauncherMode.DECISION);
@@ -231,8 +237,7 @@ public class GenericOptLauncher extends AbstractLauncher {
 
     @Override
     protected IProblem readProblem(String problemname)
-            throws ParseFormatException, IOException,
-            ContradictionException {
+            throws ParseFormatException, IOException, ContradictionException {
         super.readProblem(problemname);
         return solver;
     }
