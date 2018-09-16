@@ -21,7 +21,7 @@ public class BugSAT145 {
         instanceReader
                 .parseInstance("EZCNF:C:\\projects\\bla\\testcomments.cnf");
         Mockito.verify(mockReader)
-                .parseInstance("C:\\\\projects\\\\bla\\\\testcomments.cnf");
+                .parseInstance("C:\\projects\\bla\\testcomments.cnf");
 
     }
 
