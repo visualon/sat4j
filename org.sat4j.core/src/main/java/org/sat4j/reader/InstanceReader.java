@@ -110,7 +110,7 @@ public class InstanceReader extends Reader {
         }
 
         if (filename.indexOf(':') != -1) {
-            String[] parts = filename.split(":");
+            String[] parts = filename.split(":", 2);
             filename = parts[1];
             prefix = parts[0].toUpperCase(Locale.getDefault());
 
