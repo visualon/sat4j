@@ -289,7 +289,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.9</version>
+				<version>0.8.2</version>
 				<executions>
 					<execution>
 						<phase>process-test-classes</phase>
