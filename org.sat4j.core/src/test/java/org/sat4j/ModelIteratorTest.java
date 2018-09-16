@@ -383,7 +383,7 @@ public class ModelIteratorTest {
         }
     }
 
-    @Test(timeout = 6000)
+    @Test(timeout = 12000)
     public void testGlobalTimeoutCounter() {
         SolutionCounter counter = new SolutionCounter(
                 SolverFactory.newDefault());
