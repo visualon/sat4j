@@ -39,7 +39,7 @@ import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 
 /**
- * An reader having the responsability to choose the right reader according to
+ * An reader having the responsibility to choose the right reader according to
  * the input.
  * 
  * @author leberre
