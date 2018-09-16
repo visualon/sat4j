@@ -58,6 +58,11 @@ public class InstanceReader extends Reader {
 
     private final ISolver solver;
 
+    public InstanceReader(ISolver solver, Reader reader) {
+        this.solver = solver;
+        this.reader = reader;
+    }
+
     public InstanceReader(ISolver solver) {
         // dimacs = new DimacsReader(solver);
         this.solver = solver;
@@ -94,8 +99,8 @@ public class InstanceReader extends Reader {
     }
 
     @Override
-    public IProblem parseInstance(String filename) throws ParseFormatException,
-            IOException, ContradictionException {
+    public IProblem parseInstance(String filename)
+            throws ParseFormatException, IOException, ContradictionException {
         String fname;
         String prefix = "";
 
@@ -116,7 +121,9 @@ public class InstanceReader extends Reader {
         } else {
             fname = filename;
         }
-        this.reader = handleFileName(fname, prefix);
+        if (this.reader == null) {
+            this.reader = handleFileName(fname, prefix);
+        }
         return this.reader.parseInstance(filename);
     }
 
