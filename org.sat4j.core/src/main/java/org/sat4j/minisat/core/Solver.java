@@ -595,9 +595,8 @@ public class Solver<D extends DataStructureFactory>
 
         int counter = 0;
         int p = ILits.UNDEFINED;
-
+        // placeholder for the asserting literal
         outLearnt.push(ILits.UNDEFINED);
-        // reserve de la place pour le litteral falsifie
         int outBtlevel = 0;
         IConstr prevConfl = null;
 
@@ -611,9 +610,9 @@ public class Solver<D extends DataStructureFactory>
                 // Trace reason for p
                 for (int j = 0; j < preason.size(); j++) {
                     int q = preason.get(j);
-                    this.order.updateVar(q);
                     if (!seen[q >> 1]) {
                         seen[q >> 1] = true;
+                        this.order.updateVar(q);
                         if (this.voc.getLevel(q) == decisionLevel()) {
                             counter++;
                             this.order.updateVarAtDecisionLevel(q);

@@ -383,7 +383,7 @@ public class ModelIteratorTest {
         }
     }
 
-    @Test(timeout = 6000)
+    @Test(timeout = 12000)
     public void testGlobalTimeoutCounter() {
         SolutionCounter counter = new SolutionCounter(
                 SolverFactory.newDefault());
@@ -402,7 +402,8 @@ public class ModelIteratorTest {
         }
     }
 
-    @Test(timeout = 6000)
+    // This timed test tend to fail when the test server is loaded ...
+    @Test(timeout = 12000)
     public void testGlobalTimeoutIterator() {
         ModelIterator iterator = new ModelIterator(SolverFactory.newDefault());
         IVecInt clause = new VecInt();

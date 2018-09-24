@@ -38,6 +38,7 @@ import org.sat4j.minisat.learning.MiniSATLearning;
 import org.sat4j.minisat.orders.VarOrderHeap;
 import org.sat4j.minisat.restarts.MiniSATRestarts;
 import org.sat4j.pb.IPBSolver;
+import org.sat4j.specs.ISolver;
 
 public class SolverFactory extends ASolverFactory<IPBSolver> {
 
@@ -104,5 +105,9 @@ public class SolverFactory extends ASolverFactory<IPBSolver> {
 
     public static IPBSolver newLight() {
         return org.sat4j.pb.SolverFactory.newLight();
+    }
+    
+    public static ISolver newMaxHSLike() {
+        return new MaxHSLikeSolver(newDefault(), newDefault());
     }
 }

@@ -39,7 +39,7 @@ import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 
 /**
- * An reader having the responsability to choose the right reader according to
+ * An reader having the responsibility to choose the right reader according to
  * the input.
  * 
  * @author leberre
@@ -57,6 +57,11 @@ public class InstanceReader extends Reader {
     private Reader reader = null;
 
     private final ISolver solver;
+
+    public InstanceReader(ISolver solver, Reader reader) {
+        this.solver = solver;
+        this.reader = reader;
+    }
 
     public InstanceReader(ISolver solver) {
         // dimacs = new DimacsReader(solver);
@@ -94,8 +99,8 @@ public class InstanceReader extends Reader {
     }
 
     @Override
-    public IProblem parseInstance(String filename) throws ParseFormatException,
-            IOException, ContradictionException {
+    public IProblem parseInstance(String filename)
+            throws ParseFormatException, IOException, ContradictionException {
         String fname;
         String prefix = "";
 
@@ -105,7 +110,7 @@ public class InstanceReader extends Reader {
         }
 
         if (filename.indexOf(':') != -1) {
-            String[] parts = filename.split(":");
+            String[] parts = filename.split(":", 2);
             filename = parts[1];
             prefix = parts[0].toUpperCase(Locale.getDefault());
 
@@ -116,7 +121,9 @@ public class InstanceReader extends Reader {
         } else {
             fname = filename;
         }
-        this.reader = handleFileName(fname, prefix);
+        if (this.reader == null) {
+            this.reader = handleFileName(fname, prefix);
+        }
         return this.reader.parseInstance(filename);
     }
 
