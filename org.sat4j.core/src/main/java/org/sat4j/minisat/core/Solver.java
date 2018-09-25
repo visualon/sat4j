@@ -1204,7 +1204,7 @@ public class Solver<D extends DataStructureFactory>
 
     private IVecInt unsatExplanationInTermsOfAssumptions;
 
-    Lbool search(IVecInt assumps) {
+    private Lbool search(IVecInt assumps) {
         assert this.rootLevel == decisionLevel();
         this.stats.starts++;
         int backjumpLevel;
