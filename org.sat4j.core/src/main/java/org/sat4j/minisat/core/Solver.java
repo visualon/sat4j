@@ -1830,9 +1830,13 @@ public class Solver<D extends DataStructureFactory>
 
         cancelUntil(0);
         cancelLearntLiterals(learnedLiteralsLimit);
-        if (!global && this.timeBasedTimeout && this.timer != null) {
-            this.timer.cancel();
-            this.timer = null;
+        if (!global && this.timeBasedTimeout) {
+            synchronized (this) {
+                if (this.timer != null) {
+                    this.timer.cancel();
+                    this.timer = null;
+                }
+            }
         }
         this.slistener.end(status);
         if (!this.undertimeout) {
