@@ -1779,7 +1779,7 @@ public class Solver<D extends DataStructureFactory>
                     @Override
                     public void run() {
                         Solver.this.undertimeout = false;
-                        synchronized (Solver.this.timer) {
+                        synchronized (Solver.this) {
                             if (Solver.this.timer != null) {
                                 Solver.this.timer.cancel();
                                 Solver.this.timer = null;
