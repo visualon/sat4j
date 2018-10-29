@@ -567,12 +567,11 @@ public class ConflictMap extends MapPb implements IConflict {
     public boolean isAssertive(int dl) {
         assert dl <= this.currentLevel;
 
-        this.currentLevel = dl;
         BigInteger slack = this.currentSlack.subtract(this.degree);
         if (slack.signum() < 0) {
             return false;
         }
-        return isImplyingLiteral(slack);
+        return isImplyingLiteral(slack, dl);
     }
 
     /**
@@ -587,7 +586,7 @@ public class ConflictMap extends MapPb implements IConflict {
     // given the slack already computed, tests if a literal could be implied at
     // a particular level
     // uses the byLevel data structure to parse each literal by decision level
-    private boolean isImplyingLiteral(BigInteger slack) {
+    private boolean isImplyingLiteral(BigInteger slack, int currentDecisionLevel) {
         // unassigned literals are tried first
         int unassigned = levelToIndex(-1);
         int lit;
@@ -605,7 +604,7 @@ public class ConflictMap extends MapPb implements IConflict {
         // then we have to look at every literal
         // at a decision level >= currentLevel
         BigInteger tmp;
-        int level = levelToIndex(this.currentLevel);
+        int level = levelToIndex(currentDecisionLevel);
         if (this.byLevel[level] != null) {
             for (IteratorInt iterator = this.byLevel[level].iterator(); iterator
                     .hasNext();) {
