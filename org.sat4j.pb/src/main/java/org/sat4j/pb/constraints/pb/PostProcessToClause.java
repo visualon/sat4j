@@ -51,6 +51,7 @@ public class PostProcessToClause implements IPostProcess {
         if (conflictMap.isAssertive(dl)
                 && (!conflictMap.degree.equals(BigInteger.ONE))) {
             int litLevel, ilit;
+            conflictMap.setDecisionLevel(dl);
             if (conflictMap.assertiveLiteral != -1) {
                 conflictMap.assertiveLiteral = this.chooseAssertiveLiteral(dl,
                         conflictMap);

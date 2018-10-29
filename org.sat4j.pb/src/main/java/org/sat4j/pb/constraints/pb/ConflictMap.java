@@ -574,6 +574,11 @@ public class ConflictMap extends MapPb implements IConflict {
         return isImplyingLiteral(slack, dl);
     }
 
+    public void setDecisionLevel(int dl) {
+        assert dl <= this.currentLevel;
+        this.currentLevel = dl;
+    }
+
     /**
      * tests if the conflict is unsatisfiable
      * 
@@ -586,7 +591,8 @@ public class ConflictMap extends MapPb implements IConflict {
     // given the slack already computed, tests if a literal could be implied at
     // a particular level
     // uses the byLevel data structure to parse each literal by decision level
-    private boolean isImplyingLiteral(BigInteger slack, int currentDecisionLevel) {
+    private boolean isImplyingLiteral(BigInteger slack,
+            int currentDecisionLevel) {
         // unassigned literals are tried first
         int unassigned = levelToIndex(-1);
         int lit;

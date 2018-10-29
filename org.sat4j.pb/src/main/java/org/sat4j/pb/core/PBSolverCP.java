@@ -144,6 +144,7 @@ public class PBSolverCP extends PBSolver {
             }
             PBConstr constraint = (PBConstr) this.voc.getReason(litImplied);
             // result of the resolution is in the conflict (confl)
+            confl.setDecisionLevel(currentLevel);
             confl.resolve(constraint, litImplied, this);
             updateNumberOfReductions(confl);
             assert confl.slackConflict().signum() < 0;
@@ -171,6 +172,7 @@ public class PBSolverCP extends PBSolver {
                 || decisionLevel() == 0 || confl.isUnsat();
 
         assert currentLevel == decisionLevel();
+        confl.setDecisionLevel(currentLevel);
         confl.undoOne(this.trail.last());
         undoOne();
         this.qhead = this.trail.size();

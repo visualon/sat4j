@@ -182,6 +182,7 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
                 constraint = (PBConstr) extendedConstr;
             }
             // result of the resolution is in the conflict (confl)
+            confl.setDecisionLevel(currentLevel);
             confl.resolve(constraint, litImplied, this);
             updateNumberOfReductions(confl);
             assert confl.slackConflict().signum() < 0;
@@ -210,6 +211,7 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
                 || decisionLevel() == 0;
 
         assert currentLevel == decisionLevel();
+        confl.setDecisionLevel(currentLevel);
         undoOne();
         this.qhead = this.trail.size();
         updateNumberOfReducedLearnedConstraints(confl);

@@ -54,6 +54,8 @@ public interface IConflict extends IDataStructurePB {
 
     boolean isAssertive(int dl);
 
+    void setDecisionLevel(int dl);
+
     boolean isUnsat();
 
     /**

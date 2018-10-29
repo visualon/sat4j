@@ -54,6 +54,7 @@ public class PostProcessToCard implements IPostProcess {
                 && (!conflictMap.degree.equals(BigInteger.ONE))) {
             int lit, litLevel, ilit;
             BigInteger coefLit;
+            conflictMap.setDecisionLevel(dl);
             if (conflictMap.assertiveLiteral != -1) {
                 conflictMap.assertiveLiteral = this.chooseAssertiveLiteral(dl,
                         conflictMap);
