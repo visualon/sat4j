@@ -168,6 +168,7 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
         int litImplied = this.trail.last();
         int currentLevel = this.voc.getLevel(litImplied);
         IConflict confl = chooseConflict((PBConstr) myconfl, currentLevel);
+        confl.setDecisionLevel(currentLevel);
         assert confl.slackConflict().signum() < 0;
         while (!confl.isAssertive(currentLevel)) {
             if (!this.undertimeout) {
@@ -182,7 +183,6 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
                 constraint = (PBConstr) extendedConstr;
             }
             // result of the resolution is in the conflict (confl)
-            confl.setDecisionLevel(currentLevel);
             confl.resolve(constraint, litImplied, this);
             updateNumberOfReductions(confl);
             assert confl.slackConflict().signum() < 0;
@@ -199,10 +199,10 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
             if (this.voc.getLevel(litImplied) != currentLevel) {
                 this.trailLim.pop();
                 slistener.backtracking(LiteralsUtils.toDimacs(litImplied));
-                confl.updateSlack(this.voc.getLevel(litImplied));
             }
             assert this.voc.getLevel(litImplied) <= currentLevel;
             currentLevel = this.voc.getLevel(litImplied);
+            confl.setDecisionLevel(currentLevel);
             assert confl.slackIsCorrect(currentLevel);
             assert currentLevel == decisionLevel();
             assert litImplied > 1;
