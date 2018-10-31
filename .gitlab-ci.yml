@@ -36,15 +36,15 @@ java7:
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
 
 java10:
-    image: maven:3.5.4-jdk-10-alpine
+    image: maven:3.5.4-jdk-10
     stage: test
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
-    allow_failure: false
+    allow_failure: true
     
 java11:
-    image: maven:3.5.4-jdk-11-alpine
+    image: maven:3.5.4-jdk-11
     stage: test
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
-    allow_failure: false
+    allow_failure: true
