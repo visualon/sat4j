@@ -576,6 +576,8 @@ public class ConflictMap extends MapPb implements IConflict {
 
     public void setDecisionLevel(int dl) {
         assert dl <= this.currentLevel;
+        if (dl < this.currentLevel)
+            this.updateSlack(dl);
         this.currentLevel = dl;
     }
 
