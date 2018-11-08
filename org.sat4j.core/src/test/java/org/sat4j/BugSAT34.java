@@ -63,7 +63,8 @@ public class BugSAT34 {
         for (String name : SolverFactory.instance().solverNames()) {
             if (!"DimacsOutput".equals(name) && !"Statistics".equals(name)) {
                 solvers.add(new Object[] {
-                        SolverFactory.instance().createSolverByName(name), name });
+                        SolverFactory.instance().createSolverByName(name),
+                        name });
             }
         }
         return solvers;
@@ -74,9 +75,13 @@ public class BugSAT34 {
         this.system.newVar(3);
         try {
             // x_1 v x_2 <=> x_3
-            this.system.addClause(new VecInt(new int[] { 1, 2, -3 }));
-            this.system.addClause(new VecInt(new int[] { -1, 3 }));
-            this.system.addClause(new VecInt(new int[] { -2, 3 }));
+            IConstr nonunit;
+            nonunit = this.system.addClause(new VecInt(new int[] { 1, 2, -3 }));
+            assertNotNull(nonunit);
+            nonunit = this.system.addClause(new VecInt(new int[] { -1, 3 }));
+            assertNotNull(nonunit);
+            nonunit = this.system.addClause(new VecInt(new int[] { -2, 3 }));
+            assertNotNull(nonunit);
             // not both true
             this.system.addClause(new VecInt(new int[] { -1, -2 }));
             // x2 is true
