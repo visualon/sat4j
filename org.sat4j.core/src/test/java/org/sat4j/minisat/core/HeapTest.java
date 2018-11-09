@@ -29,9 +29,9 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
-import junit.framework.TestCase;
-
 import org.sat4j.minisat.orders.ActivityBasedVariableComparator;
+
+import junit.framework.TestCase;
 
 public class HeapTest extends TestCase {
 
@@ -46,8 +46,8 @@ public class HeapTest extends TestCase {
      * Test method for 'org.sat4j.minisat.core.Heap.inHeap(int)'
      */
     public void testInHeap() {
-        Heap heap = new Heap(new ActivityBasedVariableComparator(new double[] {
-                0.0, 3.0, 9.0, 2.0 }));
+        Heap heap = new Heap(new ActivityBasedVariableComparator(
+                new double[] { 0.0, 3.0, 9.0, 2.0 }));
         heap.setBounds(5);
         assertFalse(heap.inHeap(1));
         assertFalse(heap.inHeap(2));
@@ -83,15 +83,26 @@ public class HeapTest extends TestCase {
      * Test method for 'org.sat4j.minisat.core.Heap.increase(int)'
      */
     public void testIncrease() {
-
+        double[] activity = new double[] { 0.0, 3.0, 6.0, 9.0 };
+        Heap heap = new Heap(new ActivityBasedVariableComparator(activity));
+        heap.setBounds(5);
+        heap.insert(1);
+        heap.insert(2);
+        heap.insert(3);
+        assertEquals(3, heap.getmin());
+        assertFalse(heap.inHeap(3));
+        heap.insert(3);
+        activity[2] = 12.0;
+        heap.increase(2);
+        assertEquals(2, heap.getmin());
     }
 
     /*
      * Test method for 'org.sat4j.minisat.core.Heap.empty()'
      */
     public void testEmpty() {
-        Heap heap = new Heap(new ActivityBasedVariableComparator(
-                new double[] {}));
+        Heap heap = new Heap(
+                new ActivityBasedVariableComparator(new double[] {}));
         assertTrue(heap.empty());
     }
 
@@ -99,8 +110,8 @@ public class HeapTest extends TestCase {
      * Test method for 'org.sat4j.minisat.core.Heap.insert(int)'
      */
     public void testInsert() {
-        Heap heap = new Heap(new ActivityBasedVariableComparator(new double[] {
-                0.0, 1.0, 1.0, 2.0 }));
+        Heap heap = new Heap(new ActivityBasedVariableComparator(
+                new double[] { 0.0, 1.0, 1.0, 2.0 }));
         heap.setBounds(5);
         heap.insert(1);
         heap.insert(2);
@@ -114,8 +125,8 @@ public class HeapTest extends TestCase {
      * Test method for 'org.sat4j.minisat.core.Heap.getmin()'
      */
     public void testGetmin() {
-        Heap heap = new Heap(new ActivityBasedVariableComparator(new double[] {
-                0.0, 3.0, 9.0, 2.0 }));
+        Heap heap = new Heap(new ActivityBasedVariableComparator(
+                new double[] { 0.0, 3.0, 9.0, 2.0 }));
         heap.setBounds(5);
         heap.insert(1);
         heap.insert(2);
