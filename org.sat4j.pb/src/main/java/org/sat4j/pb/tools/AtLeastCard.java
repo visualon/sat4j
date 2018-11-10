@@ -83,8 +83,7 @@ public class AtLeastCard {
         if (degree != other.degree)
             return false;
         if (lits == null) {
-            if (other.lits != null)
-                return false;
+            return other.lits == null;
         }
         Set<Integer> litsSet1 = new HashSet<Integer>();
         for (IteratorInt it = lits.iterator(); it.hasNext();)

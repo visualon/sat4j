@@ -45,12 +45,12 @@ import org.sat4j.specs.Propagatable;
 import org.sat4j.specs.UnitPropagationListener;
 import org.sat4j.specs.VarMapper;
 
-public abstract class WatchPbLongCP implements IWatchPb, Propagatable,
-        Undoable, Serializable {
+public abstract class WatchPbLongCP
+        implements IWatchPb, Propagatable, Undoable, Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private static final int LIMIT_SELECTION_SORT = 15;
@@ -156,9 +156,8 @@ public abstract class WatchPbLongCP implements IWatchPb, Propagatable,
     public boolean isAssertive(int dl) {
         long slack = 0;
         for (int i = 0; i < this.lits.length; i++) {
-            if (this.coefs[i] > 0
-                    && (!this.voc.isFalsified(this.lits[i]) || this.voc
-                            .getLevel(this.lits[i]) >= dl)) {
+            if (this.coefs[i] > 0 && (!this.voc.isFalsified(this.lits[i])
+                    || this.voc.getLevel(this.lits[i]) >= dl)) {
                 slack = slack + this.coefs[i];
             }
         }
@@ -168,8 +167,8 @@ public abstract class WatchPbLongCP implements IWatchPb, Propagatable,
         }
         for (int i = 0; i < this.lits.length; i++) {
             if (this.coefs[i] > 0
-                    && (this.voc.isUnassigned(this.lits[i]) || this.voc
-                            .getLevel(this.lits[i]) >= dl)
+                    && (this.voc.isUnassigned(this.lits[i])
+                            || this.voc.getLevel(this.lits[i]) >= dl)
                     && slack < this.coefs[i]) {
                 return true;
             }
@@ -389,7 +388,7 @@ public abstract class WatchPbLongCP implements IWatchPb, Propagatable,
             for (j = i + 1; j < to; j++) {
                 if (this.coefs[j] > this.coefs[bestIndex]
                         || this.coefs[j] == this.coefs[bestIndex]
-                        && this.lits[j] > this.lits[bestIndex]) {
+                                && this.lits[j] > this.lits[bestIndex]) {
                     bestIndex = j;
                 }
             }
@@ -474,12 +473,12 @@ public abstract class WatchPbLongCP implements IWatchPb, Propagatable,
             for (;;) {
                 do {
                     i++;
-                } while (this.coefs[i] > pivot || this.coefs[i] == pivot
-                        && this.lits[i] > litPivot);
+                } while (this.coefs[i] > pivot
+                        || this.coefs[i] == pivot && this.lits[i] > litPivot);
                 do {
                     j--;
-                } while (pivot > this.coefs[j] || this.coefs[j] == pivot
-                        && this.lits[j] < litPivot);
+                } while (pivot > this.coefs[j]
+                        || this.coefs[j] == pivot && this.lits[j] < litPivot);
 
                 if (i >= j) {
                     break;
@@ -594,6 +593,9 @@ public abstract class WatchPbLongCP implements IWatchPb, Propagatable,
     @Override
     public boolean equals(Object pb) {
         if (pb == null) {
+            return false;
+        }
+        if (this.getClass() != pb.getClass()) {
             return false;
         }
         // this method should be simplified since now two constraints should

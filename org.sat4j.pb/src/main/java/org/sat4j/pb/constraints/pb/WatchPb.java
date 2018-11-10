@@ -51,12 +51,12 @@ import org.sat4j.specs.VarMapper;
  * @author anne
  * 
  */
-public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
-        Serializable {
+public abstract class WatchPb
+        implements IWatchPb, Propagatable, Undoable, Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private static final int LIMIT_SELECTION_SORT = 15;
@@ -137,8 +137,8 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
         BigInteger slack = BigInteger.ZERO;
         for (int i = 0; i < this.lits.length; i++) {
             if (this.coefs[i].signum() > 0
-                    && (!this.voc.isFalsified(this.lits[i]) || this.voc
-                            .getLevel(this.lits[i]) >= dl)) {
+                    && (!this.voc.isFalsified(this.lits[i])
+                            || this.voc.getLevel(this.lits[i]) >= dl)) {
                 slack = slack.add(this.coefs[i]);
             }
         }
@@ -148,8 +148,8 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
         }
         for (int i = 0; i < this.lits.length; i++) {
             if (this.coefs[i].signum() > 0
-                    && (this.voc.isUnassigned(this.lits[i]) || this.voc
-                            .getLevel(this.lits[i]) >= dl)
+                    && (this.voc.isUnassigned(this.lits[i])
+                            || this.voc.getLevel(this.lits[i]) >= dl)
                     && slack.compareTo(this.coefs[i]) < 0) {
                 return true;
             }
@@ -175,7 +175,8 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
             if (this.voc.isFalsified(q)) {
                 outReason.push(q ^ 1);
                 sumfalsified = sumfalsified.add(this.coefs[i]);
-                if (this.sumcoefs.subtract(sumfalsified).compareTo(this.degree) < 0) {
+                if (this.sumcoefs.subtract(sumfalsified)
+                        .compareTo(this.degree) < 0) {
                     return;
                 }
             }
@@ -360,7 +361,7 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
             for (j = i + 1; j < to; j++) {
                 if (this.coefs[j].compareTo(this.coefs[bestIndex]) > 0
                         || this.coefs[j].equals(this.coefs[bestIndex])
-                        && this.lits[j] > this.lits[bestIndex]) {
+                                && this.lits[j] > this.lits[bestIndex]) {
                     bestIndex = j;
                 }
             }
@@ -446,12 +447,12 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
                     i++;
                 } while (this.coefs[i].compareTo(pivot) > 0
                         || this.coefs[i].equals(pivot)
-                        && this.lits[i] > litPivot);
+                                && this.lits[i] > litPivot);
                 do {
                     j--;
                 } while (pivot.compareTo(this.coefs[j]) > 0
                         || this.coefs[j].equals(pivot)
-                        && this.lits[j] < litPivot);
+                                && this.lits[j] < litPivot);
 
                 if (i >= j) {
                     break;
@@ -582,6 +583,9 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
         if (pb == null) {
             return false;
         }
+        if (this.getClass() != pb.getClass()) {
+            return false;
+        }
         // this method should be simplified since now two constraints should
         // have
         // always
@@ -654,7 +658,8 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
                 outReason.push(q);
                 index = vlits.indexOf(q ^ 1);
                 sumfalsified = sumfalsified.add(this.coefs[index]);
-                if (this.sumcoefs.subtract(sumfalsified).compareTo(this.degree) < 0) {
+                if (this.sumcoefs.subtract(sumfalsified)
+                        .compareTo(this.degree) < 0) {
                     return;
                 }
             }
@@ -673,6 +678,7 @@ public abstract class WatchPb implements IWatchPb, Propagatable, Undoable,
     public boolean isSatisfied() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
+
     public String toString(VarMapper mapper) {
         StringBuilder stb = new StringBuilder();
 

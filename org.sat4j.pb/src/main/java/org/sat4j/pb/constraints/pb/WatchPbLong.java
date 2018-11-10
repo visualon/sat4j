@@ -561,6 +561,9 @@ public abstract class WatchPbLong
         if (pb == null) {
             return false;
         }
+        if (this.getClass() != pb.getClass()) {
+            return false;
+        }
         // this method should be simplified since now two constraints should
         // have
         // always

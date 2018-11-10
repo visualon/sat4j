@@ -90,11 +90,10 @@ public class ObjectiveFunction implements Serializable {
         BigInteger tempDegree = BigInteger.ZERO;
         for (int i = 0; i < this.vars.size(); i++) {
             BigInteger coeff = this.coeffs.get(i);
-            if (varInModel(this.vars.get(i), lazyModel)) {
-                tempDegree = tempDegree.add(coeff);
-            } else if (coeff.signum() < 0
+            if (varInModel(this.vars.get(i), lazyModel) || coeff.signum() < 0
                     && !varInModel(-this.vars.get(i), lazyModel)) {
-                // the variable does not appear in the model: it can be assigned
+                // if the variable does not appear in the model, it can be
+                // assigned
                 // either way
                 tempDegree = tempDegree.add(coeff);
             }
@@ -117,12 +116,10 @@ public class ObjectiveFunction implements Serializable {
         BigInteger tempDegree = BigInteger.ZERO;
         for (int i = 0; i < this.vars.size(); i++) {
             BigInteger coeff = this.coeffs.get(i);
-            if (solver.primeImplicant(this.vars.get(i))) {
-                tempDegree = tempDegree.add(coeff);
-            } else if (coeff.signum() < 0
+            if (solver.primeImplicant(this.vars.get(i)) || coeff.signum() < 0
                     && !solver.primeImplicant(-this.vars.get(i))) {
-                // the variable does not appear in the model: it can be assigned
-                // either way
+                // if the variable does not appear in the model, it can be
+                // assigned either way
                 tempDegree = tempDegree.add(coeff);
             }
         }
