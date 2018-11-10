@@ -49,8 +49,8 @@ import org.sat4j.specs.VarMapper;
  * @author leberre
  * @since 2.1
  */
-public abstract class BinaryClause implements Propagatable, Constr,
-        Serializable {
+public abstract class BinaryClause
+        implements Propagatable, Constr, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -108,7 +108,8 @@ public abstract class BinaryClause implements Propagatable, Constr,
      * @see Constr#simplify(Solver)
      */
     public boolean simplify() {
-        if (this.voc.isSatisfied(this.head) || this.voc.isSatisfied(this.tail)) {
+        if (this.voc.isSatisfied(this.head)
+                || this.voc.isSatisfied(this.tail)) {
             return true;
         }
         return false;
@@ -220,6 +221,9 @@ public abstract class BinaryClause implements Propagatable, Constr,
         if (obj == null) {
             return false;
         }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
         try {
             BinaryClause wcl = (BinaryClause) obj;
             if (wcl.head != this.head || wcl.tail != this.tail) {
@@ -233,7 +237,7 @@ public abstract class BinaryClause implements Propagatable, Constr,
 
     @Override
     public int hashCode() {
-        long sum = this.head + this.tail;
+        long sum = (long) this.head + this.tail;
         return (int) sum / 2;
     }
 

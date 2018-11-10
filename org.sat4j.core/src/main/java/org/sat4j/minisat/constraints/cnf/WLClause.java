@@ -245,6 +245,9 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
         if (obj == null) {
             return false;
         }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
         try {
             WLClause wcl = (WLClause) obj;
             if (this.lits.length != wcl.lits.length) {

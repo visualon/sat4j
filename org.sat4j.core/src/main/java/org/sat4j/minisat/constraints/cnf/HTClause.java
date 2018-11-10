@@ -128,7 +128,8 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
      * @see Constr#simplify(Solver)
      */
     public boolean simplify() {
-        if (this.voc.isSatisfied(this.head) || this.voc.isSatisfied(this.tail)) {
+        if (this.voc.isSatisfied(this.head)
+                || this.voc.isSatisfied(this.tail)) {
             return true;
         }
         for (int middleLit : this.middleLits) {
@@ -273,6 +274,8 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
         if (obj == null) {
             return false;
         }
+        if (this.getClass() != obj.getClass())
+            return false;
         try {
             HTClause wcl = (HTClause) obj;
             if (wcl.head != this.head || wcl.tail != this.tail) {
@@ -302,7 +305,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
 
     @Override
     public int hashCode() {
-        long sum = this.head + this.tail;
+        long sum = (long) this.head + this.tail;
         for (int p : this.middleLits) {
             sum += p;
         }
