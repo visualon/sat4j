@@ -90,10 +90,9 @@ public class CardConstrFinder
         if (verbose)
             System.out.println("c executing riss subprocess");
         try {
-            Process p = Runtime.getRuntime()
-                    .exec(rissLocation
-                            + " -findCard -card_print -no-card_amt -no-card_amo -no-card_sub -no-card_twoProd -no-card_merge -card_noLim "
-                            + instance);
+            Process p = Runtime.getRuntime().exec(rissLocation
+                    + " -findCard -card_print -no-card_amt -no-card_amo -no-card_sub -no-card_twoProd -no-card_merge -card_noLim "
+                    + instance);
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(p.getErrorStream()));
             String line;
@@ -148,7 +147,7 @@ public class CardConstrFinder
             public void run() {
                 shouldDisplayStatus = true;
             }
-        }, 30 * 1000, 30 * 1000);
+        }, 30L * 1000, 30L * 1000);
         for (Iterator<AtLeastCard> itCard = this.atLeastCards.iterator(); itCard
                 .hasNext();) {
             AtLeastCard atLeastCard = itCard.next();
