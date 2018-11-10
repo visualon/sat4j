@@ -598,6 +598,9 @@ public class MinWatchCard
         if (card == null) {
             return false;
         }
+        if (this.getClass() != card.getClass()) {
+            return false;
+        }
         try {
             MinWatchCard mcard = (MinWatchCard) card;
             if (mcard.degree != this.degree) {
