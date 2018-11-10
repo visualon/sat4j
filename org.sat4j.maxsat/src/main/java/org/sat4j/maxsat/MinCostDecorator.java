@@ -67,7 +67,7 @@ public class MinCostDecorator extends PBSolverDecorator implements
 
     private final IVec<BigInteger> coeffs = new Vec<BigInteger>();
 
-    private int objectivevalue;
+    private long objectivevalue;
 
     private IConstr prevConstr;
 
