@@ -69,6 +69,7 @@ public class BasicLauncher<T extends ISolver> extends AbstractLauncher {
             lanceur.usage();
             return;
         }
+        lanceur.addHook();
         lanceur.run(args);
         System.exit(lanceur.getExitCode().value());
     }

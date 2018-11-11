@@ -239,6 +239,7 @@ public class MUSLauncher extends AbstractLauncher {
             lanceur.usage();
             return;
         }
+        lanceur.addHook();
         lanceur.run(args);
         System.exit(lanceur.getExitCode().value());
     }

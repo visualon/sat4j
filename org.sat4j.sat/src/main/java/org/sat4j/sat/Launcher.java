@@ -97,6 +97,7 @@ public class Launcher extends AbstractLauncher implements ILogAble {
 
     public static void main(final String[] args) {
         launcher = new Launcher();
+        launcher.addHook();
         launcher.run(args);
 
     }
