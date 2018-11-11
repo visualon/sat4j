@@ -49,7 +49,6 @@ import org.sat4j.tools.DotSearchTracing;
  */
 public class KTHLauncher {
 
-    
     public static Options createCLIOptions() {
         Options options = new Options();
         options.addOption("cl", "coeflim", true,
@@ -76,7 +75,8 @@ public class KTHLauncher {
                 "Detect cardinality constraints from original constraints. Legal value are never, preproc, inproc, lazy.");
         options.addOption("natural", "natural-static-order", false,
                 "Use a static order for decisions, using the natural order of the variables, from 1 to n.");
-        options.addOption("autodiv", "auto-division", false, "Apply division automatically when a common factor is identified.");
+        options.addOption("autodiv", "auto-division", false,
+                "Apply division automatically when a common factor is identified.");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -101,7 +101,11 @@ public class KTHLauncher {
     }
 
     public static void log(String str) {
-        System.out.println("c " + str);
+        log(str, "c ");
+    }
+
+    public static void log(String str, String prefix) {
+        System.out.println(prefix + str);
     }
 
     public static void main(String[] args) {
@@ -146,8 +150,7 @@ public class KTHLauncher {
                     // by default
                     break;
                 case "preproc":
-                    pbsolver = new PreprocCardConstrLearningSolver<>(
-                            cpsolver);
+                    pbsolver = new PreprocCardConstrLearningSolver<>(cpsolver);
                     break;
                 case "inproc":
                     InprocCardConstrLearningSolver solver = new InprocCardConstrLearningSolver(
@@ -238,8 +241,7 @@ public class KTHLauncher {
                             ConflictMapReduceToCard.factory());
                     break;
                 case "divide-v1":
-                    cpsolver.setConflictFactory(
-                            ConflictMapRounding.factory());  
+                    cpsolver.setConflictFactory(ConflictMapRounding.factory());
                     break;
                 case "divide-unless-equal":
                 case "divide-unless-divisor":
@@ -302,13 +304,13 @@ public class KTHLauncher {
             if (line.hasOption("natural")) {
                 cpsolver.setOrder(new NaturalStaticOrder());
             }
-            if (line.hasOption("autodiv") ) {
+            if (line.hasOption("autodiv")) {
                 cpsolver.setAutoDivisionStrategy(AutoDivisionStrategy.ENABLED);
             }
             System.out.println(pbsolver.toString("c "));
             String[] leftArgs = line.getArgs();
             if (leftArgs.length == 0) {
-                System.err.println("Missing filename");
+                log("Missing filename");
                 return;
             }
             String filename = leftArgs[leftArgs.length - 1];
@@ -320,8 +322,8 @@ public class KTHLauncher {
                 @Override
                 public void run() {
                     // stop the solver before displaying solutions
-                    
-                    optimizer.expireTimeout();      
+
+                    optimizer.expireTimeout();
                     optimizer.printStat(System.out, "c ");
                 }
             };
@@ -339,14 +341,13 @@ public class KTHLauncher {
                 }
                 if (optimizer.isSatisfiable()) {
                     if (optimizer.isOptimal()) {
-                        System.out.println("s OPTIMUM FOUND");
+                        log("OPTIMUM FOUND", "s ");
                     } else {
-                        System.out.println("s SATISFIABLE");
+                        log("SATISFIABLE", "s ");
                     }
-                    System.out.println(
-                            "v " + reader.decode(optimizer.model()) + " 0");
+                    log(reader.decode(optimizer.model()) + " 0", "v ");
                 } else {
-                    System.out.println("s UNSATISFIABLE");
+                    log("UNSATISFIABLE","s ");
                 }
             } catch (TimeoutException e) {
                 log("UNKNOWN","s ");
@@ -356,7 +357,7 @@ public class KTHLauncher {
                 log(e.getMessage());
             }
         } catch (ParseException exp) {
-            System.out.println("Unexpected exception:" + exp.getMessage());
+            log("Unexpected exception:" + exp.getMessage());
         }
     }
 }
