@@ -22,28 +22,33 @@ import org.sat4j.tools.encoding.Policy;
  */
 public class OpbToDimacsWriter {
 
-    public static void main(String args[]) throws ParseFormatException,
-            IOException, ContradictionException {
+    public static void main(String args[])
+            throws ParseFormatException, IOException, ContradictionException {
         new OpbToDimacsWriter(args);
     }
 
-    public OpbToDimacsWriter(String[] args) throws ParseFormatException,
-            IOException, ContradictionException {
-        Set<EncodingStrategy> tabooEncodings = new HashSet<EncodingStrategy>();
+    public OpbToDimacsWriter(String[] args)
+            throws ParseFormatException, IOException, ContradictionException {
+        Set<EncodingStrategy> tabooEncodings = new HashSet<>();
         tabooEncodings.add(EncodingStrategy.NATIVE);
         for (EncodingStrategy strategy : EncodingStrategy.values()) {
             if (tabooEncodings.contains(strategy))
                 continue;
             DimacsStringSolver dss = new DimacsStringSolver();
-            IPBSolver solver = new ClausalConstraintsDecorator(new PBAdapter(
-                    dss), Policy.getAdapterFromEncodingName(strategy));
-            OPBReader2012 reader = new OPBReader2012(new PBSolverHandle(solver));
+            IPBSolver solver = new ClausalConstraintsDecorator(
+                    new PBAdapter(dss),
+                    Policy.getAdapterFromEncodingName(strategy));
+            OPBReader2012 reader = new OPBReader2012(
+                    new PBSolverHandle(solver));
             solver.setVerbose(false);
             reader.parseInstance(args[0]);
-            FileWriter fwriter = new FileWriter(args[0] + ".cardEncoding."
-                    + strategy.name() + ".cnf");
-            fwriter.write(dss.toString());
-            fwriter.close();
+            FileWriter fwriter = new FileWriter(
+                    args[0] + ".cardEncoding." + strategy.name() + ".cnf");
+            try {
+                fwriter.write(dss.toString());
+            } finally {
+                fwriter.close();
+            }
         }
     }
 }
