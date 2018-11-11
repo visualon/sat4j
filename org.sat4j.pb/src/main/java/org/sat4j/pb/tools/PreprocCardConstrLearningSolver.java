@@ -132,8 +132,9 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
             newMinBound = newMinBound.add(weights.get(i));
         }
         if (this.objMinBound == null
-                || this.objMinBound.compareTo(newMinBound) == -1)
+                || this.objMinBound.compareTo(newMinBound) < 0) {
             this.objMinBound = newMinBound;
+        }
     }
 
     private void rissPreprocessing() {
