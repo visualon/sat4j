@@ -232,6 +232,7 @@ public class GenericOptLauncher extends AbstractLauncher {
 
     public static void main(String[] args) {
         AbstractLauncher lanceur = new GenericOptLauncher();
+        lanceur.addHook();
         lanceur.run(args);
     }
 

@@ -65,8 +65,8 @@ public class LanceurPseudo2005 extends AbstractLauncher implements ILogAble {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -78,6 +78,7 @@ public class LanceurPseudo2005 extends AbstractLauncher implements ILogAble {
      */
     public static void main(final String[] args) {
         final AbstractLauncher lanceur = new LanceurPseudo2005();
+        lanceur.addHook();
         lanceur.run(args);
         System.exit(lanceur.getExitCode().value());
     }
@@ -122,8 +123,8 @@ public class LanceurPseudo2005 extends AbstractLauncher implements ILogAble {
                         new ObjectiveReducerPBSolverDecorator(theSolver));
             }
         } else if (System.getProperty("INTERNAL") != null) {
-            theSolver.setSearchListener(new SearchOptimizerListener(
-                    ILauncherMode.DECISION));
+            theSolver.setSearchListener(
+                    new SearchOptimizerListener(ILauncherMode.DECISION));
             setLauncherMode(ILauncherMode.DECISION);
         } else {
             if (lower) {
@@ -141,7 +142,8 @@ public class LanceurPseudo2005 extends AbstractLauncher implements ILogAble {
 
     @Override
     public void usage() {
-        this.out.println("java -jar sat4j-pb.jar [solvername [timeout]] instancename.opb"); //$NON-NLS-1$
+        this.out.println(
+                "java -jar sat4j-pb.jar [solvername [timeout]] instancename.opb"); //$NON-NLS-1$
         showAvailableSolvers(SolverFactory.instance());
     }
 

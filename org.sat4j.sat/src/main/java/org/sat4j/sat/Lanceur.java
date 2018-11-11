@@ -114,6 +114,7 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
 
     public static void main(final String[] args) {
         lanceur = new Lanceur();
+        lanceur.addHook();
         lanceur.run(args);
 
     }
