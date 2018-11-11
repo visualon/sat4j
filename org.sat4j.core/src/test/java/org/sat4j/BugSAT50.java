@@ -31,6 +31,8 @@ package org.sat4j;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
+
 import org.junit.Test;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
@@ -84,7 +86,7 @@ public class BugSAT50 {
     @Test(expected = TimeoutException.class)
     public void test3() throws ContradictionException, TimeoutException {
         Solver<DataStructureFactory> solver = SolverFactory.newGlucose();
-        solver.setSearchListener(new TextOutputTracing<Object>(null));
+        solver.setSearchListener(new TextOutputTracing<Serializable>(null));
         int[] backdoor = { 1, 2, 3 };
         IOrder order = new SubsetVarOrder(backdoor);
         solver.setOrder(order);
