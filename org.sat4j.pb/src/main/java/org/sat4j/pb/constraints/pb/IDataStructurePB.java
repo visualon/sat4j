@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints.pb;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import org.sat4j.minisat.core.ILits;
@@ -36,9 +37,14 @@ import org.sat4j.minisat.core.VarActivityListener;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 
-public interface IDataStructurePB {
+public interface IDataStructurePB extends Serializable {
 
     IDataStructurePB TAUTOLOGY = new IDataStructurePB() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         @Override
         public int size() {
