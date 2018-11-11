@@ -35,8 +35,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.net.URL;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.sat4j.maxsat.reader.WDimacsReader;

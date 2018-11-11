@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.pb;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Map;
 
@@ -46,8 +47,8 @@ import org.sat4j.tools.DimacsStringSolver;
  * 
  * @author leberre
  */
-public class UserFriendlyPBStringSolver<T> extends DimacsStringSolver
-        implements IPBSolver {
+public class UserFriendlyPBStringSolver<T extends Serializable>
+        extends DimacsStringSolver implements IPBSolver {
 
     /**
      * 

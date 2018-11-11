@@ -656,7 +656,7 @@ public abstract class WatchPbLong
         }
     }
 
-    private final Comparator<Integer> levelBased = new Comparator<Integer>() {
+    private final transient Comparator<Integer> levelBased = new Comparator<Integer>() {
 
         public int compare(Integer o1, Integer o2) {
             return voc.getLevel(o1) - voc.getLevel(o2);

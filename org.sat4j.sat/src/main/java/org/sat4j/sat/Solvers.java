@@ -82,8 +82,8 @@ public final class Solvers {
     private Solvers() {
     }
 
-    protected static ICDCL configureFromString(String solverconfig,
-            ICDCL theSolver, ILogAble logger) {
+    protected static ICDCL<DataStructureFactory> configureFromString(String solverconfig,
+            ICDCL<DataStructureFactory> theSolver, ILogAble logger) {
         assert theSolver != null;
         // AFAIK, there is no easy way to solve parameterized problems
         // when building the solver at runtime.
@@ -97,12 +97,12 @@ public final class Solvers {
             pf.setProperty(couple[0], couple[1]);
         }
 
-        Solver aSolver = (Solver) theSolver;
+        Solver<DataStructureFactory> aSolver = (Solver<DataStructureFactory>) theSolver;
         DataStructureFactory dsf = setupObject("DSF", pf, logger);
         if (dsf != null) {
             theSolver.setDataStructureFactory(dsf);
         }
-        LearningStrategy learning = setupObject(LEARNING, pf, logger);
+        LearningStrategy<DataStructureFactory> learning = setupObject(LEARNING, pf, logger);
         if (learning != null) {
             theSolver.setLearningStrategy(learning);
             learning.setSolver(aSolver);
@@ -271,7 +271,7 @@ public final class Solvers {
         }
     }
 
-    public static ICDCL configureSolver(String[] args, ILogAble logger) {
+    public static ICDCL<DataStructureFactory> configureSolver(String[] args, ILogAble logger) {
         Options options = createCLIOptions();
         if (args.length == 0) {
             HelpFormatter helpf = new HelpFormatter();
@@ -324,19 +324,19 @@ public final class Solvers {
                 factory = org.sat4j.minisat.SolverFactory.instance();
             }
 
-            ICDCL<?> asolver;
+            ICDCL<DataStructureFactory> asolver;
             if (cmd.hasOption("s")) {
                 String solvername = cmd.getOptionValue("s");
                 if (solvername == null) {
                     logger.log("No solver for option s. Launching default solver.");
                     logger.log("Available solvers: "
                             + Arrays.asList(factory.solverNames()));
-                    asolver = (Solver<?>) factory.defaultSolver();
+                    asolver = (Solver<DataStructureFactory>) factory.defaultSolver();
                 } else {
-                    asolver = (Solver<?>) factory.createSolverByName(solvername);
+                    asolver = (Solver<DataStructureFactory>) factory.createSolverByName(solvername);
                 }
             } else {
-                asolver = (Solver<?>) factory.defaultSolver();
+                asolver = (Solver<DataStructureFactory>) factory.defaultSolver();
             }
 
             if (cmd.hasOption("S")) {
@@ -392,7 +392,7 @@ public final class Solvers {
                 if (dotfilename == null) {
                     dotfilename = "sat4j.dot";
                 }
-                asolver.setSearchListener(new DotSearchTracing(dotfilename));
+                asolver.setSearchListener(new DotSearchTracing<DataStructureFactory>(dotfilename));
             }
 
             return asolver;
@@ -611,14 +611,14 @@ public final class Solvers {
     }
 
     public static void usage(ILogAble logger) {
-        ASolverFactory<ISolver> factory;
+        ASolverFactory<? extends ISolver> factory;
         factory = org.sat4j.minisat.SolverFactory.instance();
         showAvailableSolvers(factory, "sat", logger);
         logger.log(SEPARATOR);
-        factory = (ASolverFactory) org.sat4j.pb.SolverFactory.instance();
+        factory = org.sat4j.pb.SolverFactory.instance();
         showAvailableSolvers(factory, PB, logger);
         logger.log(SEPARATOR);
-        factory = (ASolverFactory) org.sat4j.maxsat.SolverFactory.instance();
+        factory = org.sat4j.maxsat.SolverFactory.instance();
         showAvailableSolvers(factory, MAXSAT, logger);
         logger.log(SEPARATOR);
         showAvailableRestarts(logger);

@@ -30,7 +30,12 @@ import org.sat4j.specs.SearchListenerAdapter;
 import org.sat4j.specs.TimeoutException;
 
 public class CardConstrFinder
-        implements Iterator<AtLeastCard>, Iterable<AtLeastCard> {
+        implements Iterator<AtLeastCard>, Iterable<AtLeastCard>, Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     private final IPBSolver coSolver;
 

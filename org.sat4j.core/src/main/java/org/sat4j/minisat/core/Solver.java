@@ -2397,7 +2397,7 @@ public class Solver<D extends DataStructureFactory>
         this.keepHot = keepHot;
     }
 
-    private final Comparator<Integer> dimacsLevel = new Comparator<Integer>() {
+    private final transient Comparator<Integer> dimacsLevel = new Comparator<Integer>() {
         public int compare(Integer i1, Integer i2) {
             return voc.getLevel(Math.abs(i2)) - voc.getLevel(Math.abs(i1));
         }

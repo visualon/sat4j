@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.sat4j.core.VecInt;
@@ -37,14 +38,14 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.TimeoutException;
 
-public abstract class AbstractClauseSelectorSolver<T extends ISolver> extends
-        SolverDecorator<T> {
+public abstract class AbstractClauseSelectorSolver<T extends ISolver>
+        extends SolverDecorator<T> {
 
     private static final long serialVersionUID = 1L;
     private int lastCreatedVar;
     private boolean pooledVarId = false;
 
-    private interface SelectorState {
+    private interface SelectorState extends Serializable {
 
         boolean isSatisfiable(boolean global) throws TimeoutException;
 
@@ -58,6 +59,11 @@ public abstract class AbstractClauseSelectorSolver<T extends ISolver> extends
     }
 
     private final SelectorState external = new SelectorState() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         private IVecInt getNegatedSelectors() {
             IVecInt assumps = new VecInt();
@@ -91,6 +97,11 @@ public abstract class AbstractClauseSelectorSolver<T extends ISolver> extends
     };
 
     private final SelectorState internal = new SelectorState() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         public boolean isSatisfiable(boolean global) throws TimeoutException {
             return decorated().isSatisfiable(global);

@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.logging.Level;
@@ -62,13 +63,18 @@ import org.sat4j.specs.IVecInt;
 public abstract class AbstractPBDataStructureFactory
         extends AbstractDataStructureFactory implements PBDataStructureFactory {
 
-    interface INormalizer {
+    interface INormalizer extends Serializable {
         PBContainer nice(IVecInt ps, IVec<BigInteger> bigCoefs,
                 boolean moreThan, BigInteger bigDeg, ILits voc)
                 throws ContradictionException;
     }
 
     public static final INormalizer FOR_COMPETITION = new INormalizer() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         public PBContainer nice(IVecInt literals, IVec<BigInteger> coefs,
                 boolean moreThan, BigInteger degree, ILits voc)
@@ -112,6 +118,11 @@ public abstract class AbstractPBDataStructureFactory
     };
 
     public static final INormalizer NO_COMPETITION = new INormalizer() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         public PBContainer nice(IVecInt literals, IVec<BigInteger> coefs,
                 boolean moreThan, BigInteger degree, ILits voc)

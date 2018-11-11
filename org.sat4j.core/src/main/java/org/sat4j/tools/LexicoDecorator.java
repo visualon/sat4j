@@ -44,7 +44,7 @@ import org.sat4j.specs.TimeoutException;
 public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
         implements IOptimizationProblem {
 
-    protected final List<IVecInt> criteria = new ArrayList<IVecInt>();
+    protected final transient List<IVecInt> criteria = new ArrayList<IVecInt>();
 
     protected int currentCriterion = 0;
 

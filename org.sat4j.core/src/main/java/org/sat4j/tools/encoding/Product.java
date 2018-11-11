@@ -43,13 +43,13 @@ import org.sat4j.specs.IVecInt;
 /**
  * Implementation of product encoding for at most one and at most k constraints.
  * 
- * The encoding for "at most one" constraints was introduced by J. Chen in
- * "A New SAT Encoding for the At-Most-One Constraint" in Proceedings of the
- * Tenth International Workshop of Constraint Modeling and Reformulation, 2010
- * For the generalization to "at most k" constraint, we use the encoding
- * introduced in A. M. Frisch and P . A. Giannaros,
- * "SAT Encodings of the At-Most-k Constraint", in International Workshop on
- * Modelling and Reformulating Constraint Satisfaction Problems, 2010
+ * The encoding for "at most one" constraints was introduced by J. Chen in "A
+ * New SAT Encoding for the At-Most-One Constraint" in Proceedings of the Tenth
+ * International Workshop of Constraint Modeling and Reformulation, 2010 For the
+ * generalization to "at most k" constraint, we use the encoding introduced in
+ * A. M. Frisch and P . A. Giannaros, "SAT Encodings of the At-Most-k
+ * Constraint", in International Workshop on Modelling and Reformulating
+ * Constraint Satisfaction Problems, 2010
  * 
  * @author sroussel
  * @since 2.3.1
@@ -146,8 +146,8 @@ public class Product extends EncodingStrategyAdapter {
         for (int d = 0; d < k + 1; d++) {
             for (int i = 0; i < n; i++) {
                 clause.push(-literals.get(i));
-                clause.push(ady[d].get(recompositionBase10DepuisBaseP(
-                        aWithoutD[i][d], p)));
+                clause.push(ady[d].get(
+                        recompositionBase10DepuisBaseP(aWithoutD[i][d], p)));
                 group.add(solver.addClause(clause));
                 clause.clear();
             }

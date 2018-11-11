@@ -67,7 +67,7 @@ public class LaunchRemoteControl {
             break;
         }
 
-        RemoteControlFrame frame = new RemoteControlFrame(filename, ramdisk);
+        new RemoteControlFrame(filename, ramdisk);
 
     }
 

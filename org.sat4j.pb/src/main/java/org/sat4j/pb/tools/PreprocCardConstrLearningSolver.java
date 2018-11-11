@@ -45,7 +45,7 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
 
     private boolean verbose = true;
 
-    private Map<Integer, BigInteger> objWeightsMap = null;
+    private final Map<Integer, BigInteger> objWeightsMap = new HashMap<Integer, BigInteger>();
 
     private BigInteger objMinBound = null;
 
@@ -77,7 +77,7 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
 
     public void init() {
         if (getObjectiveFunction() != null) {
-            this.objWeightsMap = new HashMap<Integer, BigInteger>();
+            this.objWeightsMap.clear();
             IteratorInt litsIt = getObjectiveFunction().getVars().iterator();
             Iterator<BigInteger> weightsIt = getObjectiveFunction().getCoeffs()
                     .iterator();

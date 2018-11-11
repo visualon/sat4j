@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.sat;
 
+import java.io.Serializable;
+
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
 import org.sat4j.minisat.core.LearnedConstraintsEvaluationType;
 import org.sat4j.minisat.core.RestartStrategy;
@@ -36,7 +38,7 @@ import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SimplificationType;
 import org.sat4j.minisat.core.SolverStats;
 
-public interface SolverController {
+public interface SolverController extends Serializable {
 
     int getNVar();
 

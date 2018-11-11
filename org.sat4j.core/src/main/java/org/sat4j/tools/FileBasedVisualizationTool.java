@@ -6,8 +6,13 @@ import java.io.PrintStream;
 
 public class FileBasedVisualizationTool implements IVisualizationTool {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private String filename;
-    private PrintStream out;
+    private transient PrintStream out;
 
     public FileBasedVisualizationTool(String filename) {
         this.filename = filename;
@@ -16,8 +21,8 @@ public class FileBasedVisualizationTool implements IVisualizationTool {
 
     public void updateWriter() {
         try {
-            this.out = new PrintStream(new FileOutputStream(this.filename
-                    + ".dat"));
+            this.out = new PrintStream(
+                    new FileOutputStream(this.filename + ".dat"));
         } catch (FileNotFoundException e) {
             this.out = System.out;
         }

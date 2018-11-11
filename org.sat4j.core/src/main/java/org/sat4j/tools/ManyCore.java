@@ -82,7 +82,7 @@ public class ManyCore<S extends ISolver>
 
     private final String[] availableSolvers; // = { };
 
-    protected final List<S> solvers;
+    protected transient final List<S> solvers;
     protected final int numberOfSolvers;
     protected int winnerId;
     private boolean resultFound;

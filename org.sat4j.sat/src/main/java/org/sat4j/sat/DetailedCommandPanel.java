@@ -159,7 +159,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
     private StartSolverEnum startConfig;
 
-    private StringWriter stringWriter;
+    private transient StringWriter stringWriter;
 
     private JPanel aboutSolverPanel;
     private JTextArea textArea;
@@ -1647,7 +1647,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
     private int conflictCounter;
 
-    private PrintStream outSolutionFound;
+    private transient PrintStream outSolutionFound;
 
     private void updateWriter() {
         try {

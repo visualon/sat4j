@@ -58,7 +58,7 @@ public class RupSearchListener<S extends ISolverService>
      */
     private static final long serialVersionUID = 1L;
 
-    private PrintStream out;
+    private transient PrintStream out;
     private final File file;
 
     public RupSearchListener(String filename) {

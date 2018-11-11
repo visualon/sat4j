@@ -35,7 +35,6 @@ import org.sat4j.pb.core.PBSolverCP;
 import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
 import org.sat4j.pb.tools.PreprocCardConstrLearningSolver;
-import org.sat4j.reader.ParseFormatException;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.DotSearchTracing;

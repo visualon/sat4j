@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 /**
  * Utility interface to catch objects with logging capability (able to log).
  * 
@@ -38,8 +40,13 @@ package org.sat4j.specs;
  * @author sroussel
  * @since 2.3.3
  */
-public interface ILogAble {
+public interface ILogAble extends Serializable {
     ILogAble CONSOLE = new ILogAble() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         public void log(String message) {
             System.out.println(message);

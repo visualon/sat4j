@@ -33,6 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.Writer;
 import java.util.Map;
 import java.util.logging.Level;
@@ -59,8 +60,8 @@ import org.sat4j.specs.VarMapper;
  * @author daniel
  * @since 2.2
  */
-public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
-        implements VarMapper {
+public class DotSearchTracing<T extends Serializable>
+        extends SearchListenerAdapter<ISolverService> implements VarMapper {
 
     /**
      * 

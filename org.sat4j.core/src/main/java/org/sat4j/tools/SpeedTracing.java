@@ -48,7 +48,8 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
     private double maxY;
 
     public SpeedTracing(IVisualizationTool visuTool,
-            IVisualizationTool cleanVisuTool, IVisualizationTool restartVisuTool) {
+            IVisualizationTool cleanVisuTool,
+            IVisualizationTool restartVisuTool) {
         this.visuTool = visuTool;
         this.cleanVisuTool = cleanVisuTool;
         this.restartVisuTool = restartVisuTool;
@@ -70,7 +71,7 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
         if (this.end - this.begin >= 2000) {
             long tmp = this.end - this.begin;
             this.index += tmp;
-            y = this.counter / tmp * 1000;
+            y = this.counter / tmp * 1000.0;
             if (y > this.maxY) {
                 this.maxY = y;
             }
@@ -94,8 +95,8 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
     public void cleaning() {
         this.end = System.currentTimeMillis();
         long indexClean = this.index + this.end - this.begin;
-        this.visuTool.addPoint(indexClean / 1000.0, this.counter
-                / (this.end - this.begin) * 1000);
+        this.visuTool.addPoint(indexClean / 1000.0,
+                this.counter / (this.end - this.begin) * 1000.0);
         this.cleanVisuTool.addPoint(indexClean / 1000.0, this.maxY);
         this.restartVisuTool.addInvisiblePoint(indexClean, 0);
     }
@@ -104,7 +105,7 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
     public void restarting() {
         this.end = System.currentTimeMillis();
         long indexRestart = this.index + this.end - this.begin;
-        double y = this.counter / (this.end - this.begin) * 1000;
+        double y = this.counter / (this.end - this.begin) * 1000.0;
         this.visuTool.addPoint(indexRestart / 1000.0, y);
         if (y > this.maxY) {
             this.maxY = y;

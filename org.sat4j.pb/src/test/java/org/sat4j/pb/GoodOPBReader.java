@@ -197,6 +197,7 @@ public class GoodOPBReader extends Reader implements Serializable {
                 assert coeffs.size() == lits.size();
             }
         }
+        stk.close();
     }
 
     @Override

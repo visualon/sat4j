@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.sat4j.specs.IConstr;
@@ -43,7 +44,8 @@ import org.sat4j.specs.SearchListener;
  * @author daniel
  * @since 2.2
  */
-public class TextOutputTracing<T> implements SearchListener<ISolverService> {
+public class TextOutputTracing<T extends Serializable>
+        implements SearchListener<ISolverService> {
 
     private static final long serialVersionUID = 1L;
 

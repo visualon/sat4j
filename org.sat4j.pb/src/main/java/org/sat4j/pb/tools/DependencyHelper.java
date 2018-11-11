@@ -30,6 +30,7 @@
 
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +64,7 @@ import org.sat4j.tools.GateTranslator;
  * @param <C>
  *            The class of the object to map to each constraint.
  */
-public class DependencyHelper<T, C> {
+public class DependencyHelper<T, C> implements Serializable {
 
     public static final INegator NO_NEGATION = new INegator() {
 
@@ -105,8 +106,8 @@ public class DependencyHelper<T, C> {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private final Map<T, Integer> mapToDimacs = new HashMap<T, Integer>();
@@ -219,8 +220,8 @@ public class DependencyHelper<T, C> {
                 this.mapToDomain.put(intValue, myThing);
                 this.mapToDimacs.put(myThing, intValue);
             } else {
-                throw new IllegalArgumentException("" + myThing
-                        + " is unknown in the solver!");
+                throw new IllegalArgumentException(
+                        "" + myThing + " is unknown in the solver!");
             }
         }
         if (negated) {

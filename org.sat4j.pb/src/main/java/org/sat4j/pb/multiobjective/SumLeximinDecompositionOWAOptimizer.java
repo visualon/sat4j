@@ -30,6 +30,11 @@ import org.sat4j.specs.UnitClauseProvider;
 public class SumLeximinDecompositionOWAOptimizer
         implements IMultiObjOptimizationProblem, IIntegerPBSolver {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private final List<ObjectiveFunction> objs = new ArrayList<ObjectiveFunction>();
     private final BigInteger[] weights;
 

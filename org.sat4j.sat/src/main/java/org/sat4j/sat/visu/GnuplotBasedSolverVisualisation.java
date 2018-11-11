@@ -76,7 +76,7 @@ public class GnuplotBasedSolverVisualisation implements SolverVisualisation {
 
     private VisuPreferences visuPreferences;
     private int nVar;
-    private Process gnuplotProcess;
+    private transient Process gnuplotProcess;
     private String dataPath;
     private ILogAble logger;
 

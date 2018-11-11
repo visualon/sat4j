@@ -206,9 +206,8 @@ public class RestartCommandComponent extends CommandComponent {
         String choix = (String) this.listeRestarts.getSelectedItem();
 
         boolean isNotSameRestart = !choix.equals(this.currentRestart);
-        boolean shouldInit = isNotSameRestart;
-
-        RestartStrategy restart = new NoRestarts();
+ 
+        RestartStrategy restart;
         SearchParams params = this.controller.getSearchParams();
         SolverStats stats = this.controller.getSolverStats();
         if (choix.equals("LubyRestarts")) {
@@ -230,7 +229,7 @@ public class RestartCommandComponent extends CommandComponent {
                 restart = this.controller.getRestartStrategy();
                 ((LubyRestarts) restart).setFactor(factor);
             }
-            shouldInit = isNotSameRestart || factorChanged;
+            boolean shouldInit = isNotSameRestart || factorChanged;
 
             if (shouldInit) {
                 this.controller.init(params, stats);

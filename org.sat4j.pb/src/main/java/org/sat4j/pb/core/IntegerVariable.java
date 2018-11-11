@@ -1,5 +1,7 @@
 package org.sat4j.pb.core;
 
+import java.io.Serializable;
+
 import org.sat4j.core.ReadOnlyVecInt;
 import org.sat4j.specs.IVecInt;
 
@@ -9,7 +11,12 @@ import org.sat4j.specs.IVecInt;
  * @author lonca
  * 
  */
-public class IntegerVariable {
+public class IntegerVariable implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     private final IVecInt vars;
 

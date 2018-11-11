@@ -1,9 +1,15 @@
 package org.sat4j.sat.visu;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class VisuPreferences {
+public class VisuPreferences implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private static final int DEFAULT_TIME_BEFORE_LAUNCHING = 8000;
     private static final int DEFAULT_REFRESH_TIME = 500;
     private static final int DEFAULT_LINES_READ = 11000;

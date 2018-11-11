@@ -152,7 +152,7 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 Class<?> clazz = Class
                         .forName("org.sat4j." + framework + ".SolverFactory"); //$NON-NLS-1$ //$NON-NLS-2$
                 Class<?>[] params = {};
-                Method m = clazz.getMethod("instance", params); //$NON-NLS-1$
+                clazz.getMethod("instance", params); //$NON-NLS-1$
             } catch (Exception e) { // DLB Findbugs warning ok
                 log("Wrong framework: " + framework
                         + ". Using minisat instead.");

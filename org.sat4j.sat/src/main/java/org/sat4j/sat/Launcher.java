@@ -191,10 +191,6 @@ public class Launcher extends AbstractLauncher implements ILogAble {
                 setSilent(true);
             }
 
-            if (cmd.hasOption("k")) {
-                Integer myk = Integer.valueOf(cmd.getOptionValue("k"));
-            }
-
             if (cmd.hasOption("r")) {
                 this.modeTracing = true;
                 if (!cmd.hasOption("remote")) {

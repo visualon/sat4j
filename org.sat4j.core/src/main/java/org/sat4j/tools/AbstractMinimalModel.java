@@ -14,7 +14,7 @@ public class AbstractMinimalModel extends SolverDecorator<ISolver> {
      * 
      */
     private static final long serialVersionUID = 1L;
-    protected final SortedSet<Integer> pLiterals;
+    protected final transient SortedSet<Integer> pLiterals;
     protected final SolutionFoundListener modelListener;
 
     public static IVecInt positiveLiterals(ISolver solver) {
