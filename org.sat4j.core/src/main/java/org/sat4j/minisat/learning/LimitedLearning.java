@@ -75,7 +75,7 @@ public abstract class LimitedLearning<D extends DataStructureFactory>
             this.all.learns(constr);
         } else {
             this.none.learns(constr);
-            this.stats.ignoredclauses++;
+            this.stats.incIgnoredclauses();
         }
     }
 

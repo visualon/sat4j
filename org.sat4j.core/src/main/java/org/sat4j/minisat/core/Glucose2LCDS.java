@@ -58,7 +58,7 @@ class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
         if (from.getActivity() > 2.0) {
             int nblevel = computeLBD(from);
             if (nblevel < from.getActivity()) {
-                solver.stats.updateLBD++;
+                solver.stats.incUpdateLBD();
                 from.setActivity(nblevel);
             }
         }

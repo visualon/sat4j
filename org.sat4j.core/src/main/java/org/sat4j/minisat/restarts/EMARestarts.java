@@ -76,11 +76,11 @@ public class EMARestarts implements RestartStrategy {
     }
 
     public boolean shouldRestart() {
-        return this.stats.conflicts > limit && fast / 125 > slow / 100;
+        return this.stats.getConflicts() > limit && fast / 125 > slow / 100;
     }
 
     public void onRestart() {
-        limit = this.stats.conflicts + 50;
+        limit = this.stats.getConflicts() + 50;
     }
 
     public void onBackjumpToRootLevel() {

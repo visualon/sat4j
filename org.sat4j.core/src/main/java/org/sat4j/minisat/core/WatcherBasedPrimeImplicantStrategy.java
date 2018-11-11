@@ -53,8 +53,8 @@ import org.sat4j.specs.Propagatable;
  * @author leberre
  * 
  */
-public class WatcherBasedPrimeImplicantStrategy implements
-        PrimeImplicantStrategy, MandatoryLiteralListener {
+public class WatcherBasedPrimeImplicantStrategy
+        implements PrimeImplicantStrategy, MandatoryLiteralListener {
 
     private int[] prime;
 
@@ -125,14 +125,14 @@ public class WatcherBasedPrimeImplicantStrategy implements
         }
         long end = System.currentTimeMillis();
         if (solver.isVerbose()) {
-            System.out
-                    .printf("%s prime implicant computation statistics BRESIL (reverse = %b)%n",
-                            solver.getLogPrefix(), this.comparator != null);
-            System.out
-                    .printf("%s implied: %d, decision: %d, removed %d (+%d), propagated %d, time(ms):%d %n",
-                            solver.getLogPrefix(), solver.implied.size(),
-                            solver.decisions.size(), removed, posremoved,
-                            propagated, end - begin);
+            System.out.printf(
+                    "%s prime implicant computation statistics BRESIL (reverse = %b)%n",
+                    solver.getLogPrefix(), this.comparator != null);
+            System.out.printf(
+                    "%s implied: %d, decision: %d, removed %d (+%d), propagated %d, time(ms):%d %n",
+                    solver.getLogPrefix(), solver.implied.size(),
+                    solver.decisions.size(), removed, posremoved, propagated,
+                    end - begin);
         }
         return implicant;
     }
@@ -145,7 +145,7 @@ public class WatcherBasedPrimeImplicantStrategy implements
         solver.voc.watches(p).moveTo(lwatched);
         final int size = lwatched.size();
         for (int i = 0; i < size; i++) {
-            solver.stats.inspects++;
+            solver.stats.incInspects();
             lwatched.get(i).propagatePI(this, p);
         }
         return null;
