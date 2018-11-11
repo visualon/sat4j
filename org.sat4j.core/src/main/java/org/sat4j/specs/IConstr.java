@@ -29,13 +29,15 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 /**
  * The most general abstraction for handling a constraint.
  * 
  * @author leberre
  * 
  */
-public interface IConstr {
+public interface IConstr extends Serializable {
 
     /**
      * @return true iff the clause was learnt during the search
