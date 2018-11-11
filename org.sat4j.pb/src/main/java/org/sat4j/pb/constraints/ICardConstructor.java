@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints;
 
+import java.io.Serializable;
+
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.pb.constraints.pb.IDataStructurePB;
 import org.sat4j.specs.Constr;
@@ -36,7 +38,7 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.UnitPropagationListener;
 
-public interface ICardConstructor {
+public interface ICardConstructor extends Serializable {
 
     Constr constructCard(UnitPropagationListener solver, ILits voc,
             IVecInt theLits, int degree) throws ContradictionException;

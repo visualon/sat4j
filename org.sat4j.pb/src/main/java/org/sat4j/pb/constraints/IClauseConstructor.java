@@ -29,14 +29,17 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints;
 
+import java.io.Serializable;
+
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.UnitPropagationListener;
 
-public interface IClauseConstructor {
+public interface IClauseConstructor extends Serializable {
 
-    Constr constructClause(UnitPropagationListener solver, ILits voc, IVecInt v);
+    Constr constructClause(UnitPropagationListener solver, ILits voc,
+            IVecInt v);
 
     Constr constructLearntClause(ILits voc, IVecInt literals);
 

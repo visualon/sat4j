@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 /**
  * The aim on that interface is to allow power users to communicate with the SAT
  * solver using Dimacs format. That way, there is no need to know the internals
@@ -37,7 +39,7 @@ package org.sat4j.specs;
  * @author leberre
  * @since 2.3.2
  */
-public interface ISolverService {
+public interface ISolverService extends Serializable {
 
     /**
      * Ask the SAT solver to stop the search.

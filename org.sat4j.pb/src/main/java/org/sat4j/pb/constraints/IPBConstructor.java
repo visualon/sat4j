@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import org.sat4j.minisat.core.ILits;
@@ -37,12 +38,12 @@ import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.UnitPropagationListener;
 
-public interface IPBConstructor {
+public interface IPBConstructor extends Serializable {
 
     Constr constructLearntPB(ILits voc, IDataStructurePB dspb);
 
-    Constr constructPB(UnitPropagationListener solver, ILits voc,
-            int[] theLits, BigInteger[] coefs, BigInteger degree,
-            BigInteger sumCoefs) throws ContradictionException;
+    Constr constructPB(UnitPropagationListener solver, ILits voc, int[] theLits,
+            BigInteger[] coefs, BigInteger degree, BigInteger sumCoefs)
+            throws ContradictionException;
 
 }
