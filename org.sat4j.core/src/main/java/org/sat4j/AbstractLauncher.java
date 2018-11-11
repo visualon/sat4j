@@ -117,7 +117,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
         this.launcherMode.setIncomplete(isIncomplete);
     }
 
-    protected void addHook() {
+    public final void addHook() {
         Runtime.getRuntime().addShutdownHook(this.shutdownHook);
     }
 
