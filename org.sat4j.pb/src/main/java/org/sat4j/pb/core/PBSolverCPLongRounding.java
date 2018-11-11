@@ -92,7 +92,7 @@ public class PBSolverCPLongRounding extends PBSolverCPLong {
         return ConflictMapRounding.createConflict(myconfl, level, isNoRemove(),
                 isSkipAllow(), NoPostProcess.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
+                AutoDivisionStrategy.ENABLED, pbStats);
     }
 
     @Override

@@ -65,21 +65,21 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
      */
     private static final long serialVersionUID = 1L;
 
-    protected PBSolverStats stats;
+    protected PBSolverStats pbStats;
 
     public PBSolver(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, IOrder order, RestartStrategy restarter) {
         super(learner, dsf, order, restarter);
-        this.stats = new PBSolverStats();
-        initStats(this.stats);
+        this.pbStats = new PBSolverStats();
+        initStats(this.pbStats);
     }
 
     public PBSolver(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
             RestartStrategy restarter) {
         super(learner, dsf, params, order, restarter);
-        this.stats = new PBSolverStats();
-        initStats(this.stats);
+        this.pbStats = new PBSolverStats();
+        initStats(this.pbStats);
     }
 
     public IConstr addPseudoBoolean(IVecInt literals, IVec<BigInteger> coeffs,
@@ -270,7 +270,7 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
                 System.out
                         .println(getLogPrefix()
                                 + "cleaning " + (learnedConstrs.size() - j) //$NON-NLS-1$
-                                + " clauses out of " + learnedConstrs.size() + "/" + PBSolver.this.stats.getConflicts()); //$NON-NLS-1$ //$NON-NLS-2$
+                                + " clauses out of " + learnedConstrs.size() + "/" + PBSolver.this.pbStats.getConflicts()); //$NON-NLS-1$ //$NON-NLS-2$
                 System.out.flush();
             }
             PBSolver.this.learnts.shrinkTo(j);

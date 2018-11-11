@@ -97,7 +97,7 @@ public class PBSolverCPClauseLearning extends PBSolverCPLong {
         return ConflictMapReduceToClause.createConflict(myconfl, level,
                 isNoRemove(), isSkipAllow(), PostProcessToClause.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
+                AutoDivisionStrategy.ENABLED, pbStats);
     }
 
     @Override
