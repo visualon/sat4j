@@ -40,33 +40,33 @@ public class PBSolverStats extends SolverStats {
      */
     private static final long serialVersionUID = 1L;
 
-    public long numberOfReductions;
+    private long numberOfReductions;
 
-    public long numberOfReductionsByPower2;
+    private long numberOfReductionsByPower2;
 
-    public long numberOfRightShiftsForCoeffs;
+    private long numberOfRightShiftsForCoeffs;
 
-    public long numberOfReductionsByGCD;
+    private long numberOfReductionsByGCD;
 
-    public long numberOfLearnedConstraintsReduced;
+    private long numberOfLearnedConstraintsReduced;
 
-    public long numberOfResolution;
+    private long numberOfResolution;
 
-    public long numberOfCP;
+    private long numberOfCP;
 
-    public long numberOfRoundingOperations;
+    private long numberOfRoundingOperations;
 
-    public long numberOfEasyRoundingOperations;
+    private long numberOfEasyRoundingOperations;
 
-    public long numberOfEndingSkipping;
+    private long numberOfEndingSkipping;
 
-    public long numberOfInternalSkipping;
+    private long numberOfInternalSkipping;
 
-    public long numberOfDerivationSteps;
+    private long numberOfDerivationSteps;
 
-    public long numberOfRemainingUnassigned;
+    private long numberOfRemainingUnassigned;
 
-    public long numberOfRemainingAssigned;
+    private long numberOfRemainingAssigned;
 
     @Override
     public void reset() {
@@ -91,7 +91,7 @@ public class PBSolverStats extends SolverStats {
         super.printStat(out, prefix);
         out.println(
                 prefix + "number of reductions to clauses (during analyze)\t: "
-                        + this.numberOfReductions);
+                        + this.getNumberOfReductions());
         out.println(prefix
                 + "number of learned constraints concerned by reduction\t: "
                 + this.numberOfLearnedConstraintsReduced);
@@ -106,7 +106,7 @@ public class PBSolverStats extends SolverStats {
                 + this.numberOfEasyRoundingOperations);
         out.println(prefix
                 + "number of reductions of the coefficients by power 2 \t: "
-                + this.numberOfReductionsByPower2);
+                + this.getNumberOfReductionsByPower2());
         out.println(
                 prefix + "number of right shift for reduction by power 2 \t: "
                         + this.numberOfRightShiftsForCoeffs);
@@ -118,7 +118,7 @@ public class PBSolverStats extends SolverStats {
         out.println(prefix + "number of internal skipping \t: "
                 + this.numberOfInternalSkipping);
         out.println(prefix + "number of derivation steps \t: "
-                + this.numberOfDerivationSteps);
+                + this.getNumberOfDerivationSteps());
         out.println(prefix + "number of skipped derivation steps \t: "
                 + (this.numberOfInternalSkipping
                         + this.numberOfEndingSkipping));
@@ -126,6 +126,118 @@ public class PBSolverStats extends SolverStats {
                 + this.numberOfRemainingUnassigned);
         out.println(prefix + "number of remaining assigned \t: "
                 + this.numberOfRemainingAssigned);
+    }
+
+    public long getNumberOfReductions() {
+        return numberOfReductions;
+    }
+
+    public void incNumberOfReductions(long increment) {
+        this.numberOfReductions += increment;
+    }
+
+    public long getNumberOfReductionsByPower2() {
+        return numberOfReductionsByPower2;
+    }
+
+    public void incNumberOfReductionsByPower2() {
+        this.numberOfReductionsByPower2++;
+    }
+
+    public long getNumberOfRightShiftsForCoeffs() {
+        return numberOfRightShiftsForCoeffs;
+    }
+
+    public void incNumberOfRightShiftsForCoeffs(int increment) {
+        this.numberOfRightShiftsForCoeffs += increment;
+    }
+
+    public long getNumberOfReductionsByGCD() {
+        return numberOfReductionsByGCD;
+    }
+
+    public void incNumberOfReductionsByGCD() {
+        this.numberOfReductionsByGCD++;
+    }
+
+    public long getNumberOfLearnedConstraintsReduced() {
+        return numberOfLearnedConstraintsReduced;
+    }
+
+    public void incNumberOfLearnedConstraintsReduced() {
+        this.numberOfLearnedConstraintsReduced++;
+    }
+
+    public long getNumberOfResolution() {
+        return numberOfResolution;
+    }
+
+    public void incNumberOfResolution() {
+        this.numberOfResolution++;
+    }
+
+    public long getNumberOfCP() {
+        return numberOfCP;
+    }
+
+    public void incNumberOfCP() {
+        this.numberOfCP++;
+    }
+
+    public long getNumberOfRoundingOperations() {
+        return numberOfRoundingOperations;
+    }
+
+    public void incNumberOfRoundingOperations() {
+        this.numberOfRoundingOperations++;
+    }
+
+    public long getNumberOfEasyRoundingOperations() {
+        return numberOfEasyRoundingOperations;
+    }
+
+    public void incNumberOfEasyRoundingOperations() {
+        this.numberOfEasyRoundingOperations++;
+    }
+
+    public long getNumberOfEndingSkipping() {
+        return numberOfEndingSkipping;
+    }
+
+    public void incNumberOfEndingSkipping() {
+        this.numberOfEndingSkipping++;
+    }
+
+    public long getNumberOfInternalSkipping() {
+        return numberOfInternalSkipping;
+    }
+
+    public void incNumberOfInternalSkipping() {
+        this.numberOfInternalSkipping++;
+    }
+
+    public long getNumberOfDerivationSteps() {
+        return numberOfDerivationSteps;
+    }
+
+    public void incNumberOfDerivationSteps() {
+        this.numberOfDerivationSteps++;
+    }
+
+    public long getNumberOfRemainingUnassigned() {
+        return numberOfRemainingUnassigned;
+    }
+
+    public void incNumberOfRemainingUnassigned() {
+        this.numberOfRemainingUnassigned++;
+    }
+
+    public long getNumberOfRemainingAssigned() {
+        return numberOfRemainingAssigned;
+    }
+
+    public void incNumberOfRemainingAssigned() {
+        this.numberOfRemainingAssigned++;
     }
 
 }

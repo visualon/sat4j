@@ -44,9 +44,8 @@ public class PostProcessDivideBy2 implements IPostProcess {
     public void postProcess(int dl, ConflictMap conflictMap) {
         int nbBits = conflictMap.reduceCoeffsByPower2();
         if (nbBits > 0) {
-            conflictMap.stats.numberOfReductionsByPower2++;
-            conflictMap.stats.numberOfRightShiftsForCoeffs = conflictMap.stats.numberOfRightShiftsForCoeffs
-                    + nbBits;
+            conflictMap.stats.incNumberOfReductionsByPower2();
+            conflictMap.stats.incNumberOfRightShiftsForCoeffs(nbBits);
         }
 
     }

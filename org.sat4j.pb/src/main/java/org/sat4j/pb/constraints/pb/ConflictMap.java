@@ -303,9 +303,9 @@ public class ConflictMap extends MapPb implements IConflict {
             if (this.weightedLits.get(nLitImplied).negate()
                     .compareTo(slackConflict()) > 0) {
                 if (this.endingSkipping)
-                    stats.numberOfEndingSkipping++;
+                    stats.incNumberOfEndingSkipping();
                 else
-                    stats.numberOfInternalSkipping++;
+                    stats.incNumberOfInternalSkipping();
 
                 // no resolution
                 // undo operation should be anticipated
@@ -322,7 +322,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
         }
 
-        stats.numberOfDerivationSteps++;
+        stats.incNumberOfDerivationSteps();
         assert slackConflict().signum() < 0;
         assert this.degree.signum() >= 0;
 
@@ -383,9 +383,9 @@ public class ConflictMap extends MapPb implements IConflict {
                 for (int i = 0; i < cpb.size(); i++) {
                     if (coefsCons[i].signum() != 0) {
                         if (this.voc.isUnassigned(cpb.get(i))) {
-                            this.stats.numberOfRemainingUnassigned++;
+                            this.stats.incNumberOfRemainingUnassigned();
                         } else {
-                            this.stats.numberOfRemainingAssigned++;
+                            this.stats.incNumberOfRemainingAssigned();
                         }
                     }
                 }

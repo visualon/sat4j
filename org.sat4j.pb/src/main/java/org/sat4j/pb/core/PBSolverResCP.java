@@ -37,8 +37,8 @@ import org.sat4j.minisat.core.SearchParams;
 public class PBSolverResCP extends PBSolverCP {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public static final long MAXCONFLICTS = 100000L;
@@ -70,16 +70,16 @@ public class PBSolverResCP extends PBSolverCP {
 
     @Override
     boolean someCriteria() {
-        if (this.stats.conflicts == this.bound) {
+        if (this.stats.getConflicts() == this.bound) {
             this.setSimplifier(NO_SIMPLIFICATION);
             this.reduceDB();
-            this.stats.numberOfCP++;
+            this.stats.incNumberOfCP();
             return true;
-        } else if (this.stats.conflicts > this.bound) {
-            this.stats.numberOfCP++;
+        } else if (this.stats.getConflicts() > this.bound) {
+            this.stats.incNumberOfCP();
             return true;
         } else {
-            this.stats.numberOfResolution++;
+            this.stats.incNumberOfResolution();
             return false;
         }
     }

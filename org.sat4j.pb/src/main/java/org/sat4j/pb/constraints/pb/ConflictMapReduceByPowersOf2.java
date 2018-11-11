@@ -44,9 +44,8 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
     void divideCoefs() {
         int nbBits = reduceCoeffsByPower2();
         if (nbBits > 0) {
-            stats.numberOfReductionsByPower2++;
-            stats.numberOfRightShiftsForCoeffs = stats.numberOfRightShiftsForCoeffs
-                    + nbBits;
+            stats.incNumberOfReductionsByPower2();
+            stats.incNumberOfRightShiftsForCoeffs(nbBits);
         }
     }
 
