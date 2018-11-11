@@ -58,7 +58,7 @@ public abstract class AbstractLinMultiObjOptimizer extends PseudoOptDecorator
 
     private static final long serialVersionUID = 1L;
 
-    protected final List<ObjectiveFunction> objs = new ArrayList<ObjectiveFunction>();
+    protected final transient List<ObjectiveFunction> objs = new ArrayList<ObjectiveFunction>();
 
     protected boolean initConstraintsSet = false;
 
@@ -106,9 +106,9 @@ public abstract class AbstractLinMultiObjOptimizer extends PseudoOptDecorator
         }
         boolean res = super.admitABetterSolution(assumps);
         if (res && isVerbose()) {
-            System.out.println(getLogPrefix()
-                    + "Current objective functions values: "
-                    + Arrays.toString(getObjectiveValues()));
+            System.out.println(
+                    getLogPrefix() + "Current objective functions values: "
+                            + Arrays.toString(getObjectiveValues()));
         }
         return res;
     }

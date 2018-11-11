@@ -225,6 +225,7 @@ public class RemoteControlStrategy implements RestartStrategy,
                 Thread.sleep(SLEEP_TIME);
             } catch (InterruptedException e) {
                 logger.log(e.getMessage());
+                Thread.currentThread().interrupt();
             }
         }
         this.phaseSelectionStrategy.assignLiteral(p);

@@ -96,7 +96,7 @@ public class CriterionOptimumComputer<S extends IPBSolver> {
             try {
                 this.lock.acquire();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -127,11 +127,16 @@ public class CriterionOptimumComputer<S extends IPBSolver> {
         try {
             this.lock.acquire(this.objs.size());
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 
     class OptimumValueWriter implements SolutionFoundListener {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         private final CriterionOptimumComputer<S> coc;
         private final int solverIndex;

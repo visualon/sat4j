@@ -360,6 +360,7 @@ public class ManyCore<S extends ISolver>
             } while (this.remainingSolvers.get() > 0);
         } catch (InterruptedException e) {
             // will happen when one solver found a solution
+            Thread.currentThread().interrupt();
         }
         if (!this.solved) {
             assert this.remainingSolvers.get() == 0;

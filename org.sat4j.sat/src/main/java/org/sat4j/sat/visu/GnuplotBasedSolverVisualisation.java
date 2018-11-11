@@ -335,6 +335,7 @@ public class GnuplotBasedSolverVisualisation implements SolverVisualisation {
                             } catch (InterruptedException e) {
                                 GnuplotBasedSolverVisualisation.this.logger
                                         .log(e.getMessage());
+                                Thread.currentThread().interrupt();
                             }
 
                             GnuplotBasedSolverVisualisation.this.logger
