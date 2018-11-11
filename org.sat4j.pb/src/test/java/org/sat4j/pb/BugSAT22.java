@@ -32,6 +32,7 @@ package org.sat4j.pb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,9 +43,10 @@ import org.sat4j.specs.IVec;
 import org.sat4j.specs.TimeoutException;
 
 public class BugSAT22 {
+
     @Test
-    public void testSimpleResolverUnitFirst() throws ContradictionException,
-            TimeoutException {
+    public void testSimpleResolverUnitFirst()
+            throws ContradictionException, TimeoutException {
         IPBSolver solver = SolverFactory.newEclipseP2();
         DependencyHelper<Named, String> helper = new DependencyHelper<Named, String>(
                 solver, false);
@@ -75,8 +77,8 @@ public class BugSAT22 {
     }
 
     @Test
-    public void testSimpleResolverUnitLast() throws ContradictionException,
-            TimeoutException {
+    public void testSimpleResolverUnitLast()
+            throws ContradictionException, TimeoutException {
         IPBSolver solver = SolverFactory.newEclipseP2();
         DependencyHelper<Named, String> helper = new DependencyHelper<Named, String>(
                 solver, false);
@@ -106,7 +108,12 @@ public class BugSAT22 {
         assertTrue(solution.contains(A2));
     }
 
-    public class Named {
+    public class Named implements Serializable {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         public String name;
 
         public Named(String name) {
