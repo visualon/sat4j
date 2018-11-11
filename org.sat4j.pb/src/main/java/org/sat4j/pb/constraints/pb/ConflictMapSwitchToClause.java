@@ -33,7 +33,7 @@ import java.math.BigInteger;
 
 public final class ConflictMapSwitchToClause extends ConflictMap {
 
-    public static int UpperBound;
+    private static int upperBound;
 
     public ConflictMapSwitchToClause(PBConstr cpb, int level) {
         super(cpb, level);
@@ -65,7 +65,7 @@ public final class ConflictMapSwitchToClause extends ConflictMap {
                 bigCoef = bigCoef.add(this.weightedLits.get(wpb.get(i))
                         .multiply(this.coefMult));
             }
-            if (bigCoef.toString().length() > UpperBound) {
+            if (bigCoef.toString().length() > upperBound) {
                 // if we deal with really big integers
                 // reducing the constraint to a clause
                 this.numberOfReductions++;
@@ -88,6 +88,14 @@ public final class ConflictMapSwitchToClause extends ConflictMap {
             }
         }
         return BigInteger.ONE;
+    }
+
+    public static int getUpperBound() {
+        return upperBound;
+    }
+
+    public static void setUpperBound(int upperBound) {
+        ConflictMapSwitchToClause.upperBound = upperBound;
     }
 
 }
