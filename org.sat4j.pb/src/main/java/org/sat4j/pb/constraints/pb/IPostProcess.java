@@ -29,11 +29,13 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints.pb;
 
+import java.io.Serializable;
+
 /**
  * Interface to post-process the assertive conflict, e.g. to convert it to a
  * clause, to a cardinality.
  * 
  */
-public interface IPostProcess {
+public interface IPostProcess extends Serializable {
     void postProcess(int dl, ConflictMap conflictMap);
 }

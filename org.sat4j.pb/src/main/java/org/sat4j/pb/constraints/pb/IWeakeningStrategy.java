@@ -1,5 +1,6 @@
 package org.sat4j.pb.constraints.pb;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import org.sat4j.minisat.core.ILits;
@@ -12,8 +13,13 @@ import org.sat4j.minisat.core.ILits;
  * @since 2.3.6
  *
  */
-public interface IWeakeningStrategy {
+public interface IWeakeningStrategy extends Serializable {
     IWeakeningStrategy UNASSIGNED_FIRST = new IWeakeningStrategy() {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public int findLiteralToRemove(ILits voc, IWatchPb wpb,
                 final BigInteger[] coefsBis, final int indLitImplied,
@@ -47,6 +53,11 @@ public interface IWeakeningStrategy {
     };
 
     IWeakeningStrategy SATISFIED_FIRST = new IWeakeningStrategy() {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public int findLiteralToRemove(ILits voc, IWatchPb wpb,
                 final BigInteger[] coefsBis, final int indLitImplied,
@@ -80,6 +91,11 @@ public interface IWeakeningStrategy {
     };
 
     IWeakeningStrategy ANY = new IWeakeningStrategy() {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public int findLiteralToRemove(ILits voc, IWatchPb wpb,
                 final BigInteger[] coefsBis, final int indLitImplied,

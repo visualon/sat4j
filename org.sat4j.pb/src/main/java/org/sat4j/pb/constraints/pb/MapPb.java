@@ -42,6 +42,11 @@ import org.sat4j.specs.IVecInt;
  */
 public class MapPb implements IDataStructurePB {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     /*
      * During the process of cutting planes, pseudo-boolean constraints are
      * coded with a HashMap <literal, coefficient> and a BigInteger for the
