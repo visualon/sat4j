@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import java.io.Serializable;
+
 import org.sat4j.specs.IVecInt;
 
 /**
@@ -40,9 +42,14 @@ import org.sat4j.specs.IVecInt;
  * @since 2.3.3
  * 
  */
-public interface SolutionFoundListener {
+public interface SolutionFoundListener extends Serializable {
 
     SolutionFoundListener VOID = new SolutionFoundListener() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         public void onSolutionFound(int[] model) {
             // do nothing

@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import java.io.Serializable;
+
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IVec;
@@ -42,7 +44,7 @@ import org.sat4j.specs.UnitPropagationListener;
  * 
  * @author leberre
  */
-public interface DataStructureFactory {
+public interface DataStructureFactory extends Serializable {
 
     /**
      * @param literals
