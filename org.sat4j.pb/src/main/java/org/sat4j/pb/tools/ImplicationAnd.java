@@ -30,6 +30,7 @@
 
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import org.sat4j.core.Vec;
@@ -48,7 +49,7 @@ import org.sat4j.specs.IVecInt;
  * @param <T>
  * @param <C>
  */
-public class ImplicationAnd<T, C> {
+public class ImplicationAnd<T extends Serializable, C> {
     private final DependencyHelper<T, C> helper;
     private final IVecInt clause;
     private final IVec<IConstr> toName = new Vec<IConstr>();

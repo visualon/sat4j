@@ -40,7 +40,7 @@ public class SumLeximinDecompositionOWAOptimizer
 
     private final IIntegerPBSolver solver;
 
-    protected final List<IntegerVariable> objBoundVariables = new ArrayList<IntegerVariable>();
+    protected final transient List<IntegerVariable> objBoundVariables = new ArrayList<IntegerVariable>();
 
     private final List<IVecInt> atLeastFlags = new ArrayList<IVecInt>();
 

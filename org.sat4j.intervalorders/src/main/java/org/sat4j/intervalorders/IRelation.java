@@ -1,6 +1,13 @@
 package org.sat4j.intervalorders;
 
-public abstract class IRelation {
+import java.io.Serializable;
+
+public abstract class IRelation implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int numberOfVotes;
 	private int penalty;
 

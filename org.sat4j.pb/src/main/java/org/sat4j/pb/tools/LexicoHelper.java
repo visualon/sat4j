@@ -29,9 +29,17 @@
  *******************************************************************************/
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
+
 import org.sat4j.pb.IPBSolver;
 
-public class LexicoHelper<T, C> extends AbstractLexicoHelper<T, C> {
+public class LexicoHelper<T extends Serializable, C>
+        extends AbstractLexicoHelper<T, C> {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     public LexicoHelper(IPBSolver solver) {
         super(new LexicoDecoratorPB(solver));

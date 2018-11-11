@@ -30,6 +30,8 @@
 
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
+
 import org.sat4j.core.Vec;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -44,7 +46,7 @@ import org.sat4j.specs.IVecInt;
  * @param <T>
  * @param <C>
  */
-public class ImplicationRHS<T, C> {
+public class ImplicationRHS<T extends Serializable, C> {
 
     private final IVecInt clause;
     private final DependencyHelper<T, C> helper;

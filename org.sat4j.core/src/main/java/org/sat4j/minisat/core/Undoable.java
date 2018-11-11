@@ -29,12 +29,14 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import java.io.Serializable;
+
 /**
  * Interface providing the undoable service.
  * 
  * @author leberre
  */
-public interface Undoable {
+public interface Undoable extends Serializable {
 
     /**
      * Method called when backtracking

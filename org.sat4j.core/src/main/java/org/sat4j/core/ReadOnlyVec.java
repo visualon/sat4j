@@ -1,5 +1,6 @@
 package org.sat4j.core;
 
+import java.io.Serializable;
 /*******************************************************************************
  * SAT4J: a SATisfiability library for Java Copyright (C) 2004, 2012 Artois University and CNRS
  *
@@ -42,7 +43,7 @@ import org.sat4j.specs.IVec;
  * @param <T>
  *            the type of the container.
  */
-public final class ReadOnlyVec<T> implements IVec<T> {
+public final class ReadOnlyVec<T extends Serializable> implements IVec<T> {
 
     /**
      * 

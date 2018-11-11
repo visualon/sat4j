@@ -30,6 +30,7 @@
 
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import org.sat4j.core.Vec;
@@ -45,12 +46,13 @@ import org.sat4j.specs.IVec;
  * @param <T>
  * @param <C>
  */
-public class ImplicationNamer<T, C> {
+public class ImplicationNamer<T extends Serializable, C> {
 
     private final DependencyHelper<T, C> helper;
     private IVec<IConstr> toName = new Vec<IConstr>();
 
-    public ImplicationNamer(DependencyHelper<T, C> helper, IVec<IConstr> toName) {
+    public ImplicationNamer(DependencyHelper<T, C> helper,
+            IVec<IConstr> toName) {
         this.toName = toName;
         this.helper = helper;
     }

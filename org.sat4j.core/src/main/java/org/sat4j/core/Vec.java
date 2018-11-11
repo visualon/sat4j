@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.core;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -43,7 +44,7 @@ import org.sat4j.specs.IVec;
  * 
  * @author leberre
  */
-public final class Vec<T> implements IVec<T> {
+public final class Vec<T extends Serializable> implements IVec<T> {
     // MiniSat -- Copyright (c) 2003-2005, Niklas Een, Niklas Sorensson
     //
     // Permission is hereby granted, free of charge, to any person obtaining a

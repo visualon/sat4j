@@ -60,7 +60,7 @@ public class CardConstrFinder
 
     private boolean shouldDisplayStatus = false;
 
-    private Set<Integer> authorizedExtLits = null;
+    private final Set<Integer> authorizedExtLits = new HashSet<Integer>();;
 
     private boolean verbose = false;
 
@@ -377,7 +377,7 @@ public class CardConstrFinder
     }
 
     public void setAuthorizedExtLits(IVecInt lits) {
-        this.authorizedExtLits = new HashSet<Integer>();
+        this.authorizedExtLits.clear();
         for (IteratorInt it = lits.iterator(); it.hasNext();)
             this.authorizedExtLits.add(it.next());
     }

@@ -58,7 +58,7 @@ public class OrderedObjsOWAOptimizer extends AbstractLinMultiObjOptimizer {
 
     private static final long serialVersionUID = 1L;
 
-    protected final List<IntegerVariable> objBoundVariables = new ArrayList<IntegerVariable>();
+    protected final transient List<IntegerVariable> objBoundVariables = new ArrayList<IntegerVariable>();
 
     private final List<IVecInt> atLeastFlags = new ArrayList<IVecInt>();
 

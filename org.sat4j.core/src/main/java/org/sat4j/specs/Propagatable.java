@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 /**
  * This interface is to be implemented by the classes wanted to be notified of
  * the falsification of a literal.
@@ -38,7 +40,7 @@ package org.sat4j.specs;
  * 
  * @author leberre
  */
-public interface Propagatable {
+public interface Propagatable extends Serializable {
 
     /**
      * Propagate the truth value of a literal in constraints in which that

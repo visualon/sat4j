@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 
@@ -40,8 +41,13 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.SolutionFoundListener;
 
-public abstract class AbstractLexicoHelper<T, C> extends DependencyHelper<T, C>
-        implements SolutionFoundListener {
+public abstract class AbstractLexicoHelper<T extends Serializable, C>
+        extends DependencyHelper<T, C> implements SolutionFoundListener {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     private final LexicoDecoratorPB lexico;
 

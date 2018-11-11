@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.pb.tools;
 
+import java.io.Serializable;
+
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
@@ -37,7 +39,7 @@ import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 
-public class DisjunctionRHS<T, C> {
+public class DisjunctionRHS<T extends Serializable, C> {
     private final IVecInt literals;
     private final DependencyHelper<T, C> helper;
 
