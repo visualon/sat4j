@@ -94,7 +94,7 @@ public class PBSolverCPLongReduceToCard extends PBSolverCPLong {
         return ConflictMapReduceToCard.createConflict(myconfl, level,
                 isNoRemove(), isSkipAllow(), NoPostProcess.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
+                AutoDivisionStrategy.ENABLED, pbStats);
     }
 
     @Override

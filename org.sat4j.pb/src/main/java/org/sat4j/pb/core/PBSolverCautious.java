@@ -71,14 +71,14 @@ public class PBSolverCautious extends PBSolverCP {
 
     @Override
     protected void updateNumberOfReductions(IConflict confl) {
-        this.stats.incNumberOfReductions(
+        this.pbStats.incNumberOfReductions(
                 ((ConflictMapSwitchToClause) confl).getNumberOfReductions());
     }
 
     @Override
     protected void updateNumberOfReducedLearnedConstraints(IConflict confl) {
         if (((ConflictMapSwitchToClause) confl).hasBeenReduced()) {
-            this.stats.incNumberOfLearnedConstraintsReduced();
+            this.pbStats.incNumberOfLearnedConstraintsReduced();
         }
     }
 

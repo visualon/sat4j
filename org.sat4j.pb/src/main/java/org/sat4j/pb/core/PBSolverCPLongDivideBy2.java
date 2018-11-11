@@ -92,7 +92,7 @@ public class PBSolverCPLongDivideBy2 extends PBSolverCPLong {
         return ConflictMap.createConflict(myconfl, level, isNoRemove(),
                 isSkipAllow(), PostProcessDivideBy2.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
+                AutoDivisionStrategy.ENABLED, pbStats);
     }
 
     @Override

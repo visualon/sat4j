@@ -86,7 +86,7 @@ public class PBSolverCPLong extends PBSolverCP {
         return ConflictMapReduceToClause.createConflict(myconfl, level,
                 isNoRemove(), isSkipAllow(), NoPostProcess.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
-                AutoDivisionStrategy.ENABLED, stats);
+                AutoDivisionStrategy.ENABLED, pbStats);
     }
 
     @Override

@@ -70,16 +70,16 @@ public class PBSolverResCP extends PBSolverCP {
 
     @Override
     boolean someCriteria() {
-        if (this.stats.getConflicts() == this.bound) {
+        if (this.pbStats.getConflicts() == this.bound) {
             this.setSimplifier(NO_SIMPLIFICATION);
             this.reduceDB();
-            this.stats.incNumberOfCP();
+            this.pbStats.incNumberOfCP();
             return true;
-        } else if (this.stats.getConflicts() > this.bound) {
-            this.stats.incNumberOfCP();
+        } else if (this.pbStats.getConflicts() > this.bound) {
+            this.pbStats.incNumberOfCP();
             return true;
         } else {
-            this.stats.incNumberOfResolution();
+            this.pbStats.incNumberOfResolution();
             return false;
         }
     }

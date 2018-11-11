@@ -203,7 +203,7 @@ public class PBSolverCP extends PBSolver {
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return conflictFactory.createConflict(myconfl, level, noRemove,
                 skipAllow, postprocess, weakeningStrategy, autoDivisionStrategy,
-                stats);
+                pbStats);
     }
 
     @Override
