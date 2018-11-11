@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import java.io.Serializable;
+
 import org.sat4j.specs.Constr;
 
 /**
@@ -36,7 +38,7 @@ import org.sat4j.specs.Constr;
  * 
  * @author leberre
  */
-public interface Learner {
+public interface Learner extends Serializable {
 
     void learn(Constr c);
 }

@@ -43,6 +43,11 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
  */
 public class TabuListDecorator implements IOrder {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private final VarOrderHeap decorated;
 
     private final int tabuSize;

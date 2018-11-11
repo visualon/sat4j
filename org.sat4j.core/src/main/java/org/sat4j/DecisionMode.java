@@ -47,6 +47,11 @@ import org.sat4j.tools.Backbone;
  * 
  */
 final class DecisionMode implements ILauncherMode {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private volatile ExitCode exitCode = ExitCode.UNKNOWN;
     private int nbSolutionFound;
     private PrintWriter out;

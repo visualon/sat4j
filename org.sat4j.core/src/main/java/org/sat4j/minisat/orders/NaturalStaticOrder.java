@@ -47,6 +47,11 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
  */
 public class NaturalStaticOrder implements IOrder {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private ILits voc;
 
     private IPhaseSelectionStrategy phaseSelectionStrategy = new NegativeLiteralSelectionStrategy();

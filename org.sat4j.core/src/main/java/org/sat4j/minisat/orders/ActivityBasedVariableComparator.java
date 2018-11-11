@@ -31,6 +31,11 @@ package org.sat4j.minisat.orders;
 
 public class ActivityBasedVariableComparator implements VariableComparator {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private final double[] activity;
 
     public ActivityBasedVariableComparator(double[] activity) {

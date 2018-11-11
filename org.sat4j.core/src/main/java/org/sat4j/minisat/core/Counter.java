@@ -29,10 +29,17 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import java.io.Serializable;
+
 /**
  * @since 2.1
  */
-public class Counter {
+public class Counter implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private int value;
 
     public Counter() {

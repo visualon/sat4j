@@ -44,6 +44,11 @@ import org.sat4j.specs.VarMapper;
  */
 public class ConstrGroup implements IConstr {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private final IVec<IConstr> constrs = new Vec<IConstr>();
     private final boolean disallowNullConstraints;
 

@@ -158,6 +158,11 @@ public class MUSLauncher extends AbstractLauncher {
                 double beginmus = System.currentTimeMillis();
                 if (allMuses != null) {
                     SolutionFoundListener mssListener = new SolutionFoundListener() {
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = 1L;
+
                         private int msscount = 0;
 
                         public void onUnsatTermination() {
@@ -176,6 +181,11 @@ public class MUSLauncher extends AbstractLauncher {
                         }
                     };
                     SolutionFoundListener musListener = new SolutionFoundListener() {
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = 1L;
+
                         public void onSolutionFound(int[] solution) {
                         }
 

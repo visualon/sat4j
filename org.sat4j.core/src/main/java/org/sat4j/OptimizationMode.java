@@ -51,6 +51,11 @@ import org.sat4j.tools.LexicoDecorator;
  * 
  */
 final class OptimizationMode implements ILauncherMode {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private int nbSolutions;
     private volatile ExitCode exitCode = ExitCode.UNKNOWN;
     private boolean isIncomplete = false;

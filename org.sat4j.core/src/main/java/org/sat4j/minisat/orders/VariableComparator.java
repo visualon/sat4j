@@ -29,7 +29,9 @@
  *******************************************************************************/
 package org.sat4j.minisat.orders;
 
-public interface VariableComparator {
+import java.io.Serializable;
+
+public interface VariableComparator extends Serializable {
 
     /**
      * Compare two variables according to a heuristic.

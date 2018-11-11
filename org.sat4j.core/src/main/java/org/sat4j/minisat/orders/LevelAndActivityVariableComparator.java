@@ -31,6 +31,11 @@ package org.sat4j.minisat.orders;
 
 public class LevelAndActivityVariableComparator implements VariableComparator {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private final double[] activity;
     private final int[] level;
 
@@ -40,8 +45,8 @@ public class LevelAndActivityVariableComparator implements VariableComparator {
     }
 
     public boolean preferredTo(int a, int b) {
-        return level[a] < level[b]
-                || (level[a] == level[b] && this.activity[a] > this.activity[b]);
+        return level[a] < level[b] || (level[a] == level[b]
+                && this.activity[a] > this.activity[b]);
     }
 
     @Override

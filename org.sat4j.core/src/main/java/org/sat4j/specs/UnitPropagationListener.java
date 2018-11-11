@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
 
 /**
  * Interface providing the unit propagation capability.
@@ -39,7 +40,7 @@ package org.sat4j.specs;
  * 
  * @author leberre
  */
-public interface UnitPropagationListener {
+public interface UnitPropagationListener extends Serializable {
 
     /**
      * satisfies a literal

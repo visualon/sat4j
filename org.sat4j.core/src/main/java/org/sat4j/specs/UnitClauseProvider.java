@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 /**
  * Interface for engines able to derive unit clauses for the current problem.
  * 
@@ -36,9 +38,14 @@ package org.sat4j.specs;
  * @since 2.3.4
  * 
  */
-public interface UnitClauseProvider {
+public interface UnitClauseProvider extends Serializable {
 
     UnitClauseProvider VOID = new UnitClauseProvider() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
         public void provideUnitClauses(UnitPropagationListener upl) {
             // do nothing
