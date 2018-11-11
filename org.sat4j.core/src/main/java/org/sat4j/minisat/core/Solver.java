@@ -386,13 +386,13 @@ public class Solver<D extends DataStructureFactory>
         this.learnts.push(c);
         c.setLearnt();
         c.register();
-        this.stats.learnedclauses++;
+        this.stats.incLearnedclauses();
         switch (c.size()) {
         case 2:
-            this.stats.learnedbinaryclauses++;
+            this.stats.incLearnedbinaryclauses();
             break;
         case 3:
-            this.stats.learnedternaryclauses++;
+            this.stats.incLearnedternaryclauses();
             break;
         default:
             // do nothing
@@ -886,7 +886,7 @@ public class Solver<D extends DataStructureFactory>
             }
         }
         conflictToReduce.shrink(i - j);
-        this.stats.reducedliterals += i - j;
+        this.stats.incReducedliterals(i - j);
     }
 
     private final IVecInt analyzetoclear = new VecInt();
@@ -908,7 +908,7 @@ public class Solver<D extends DataStructureFactory>
             }
         }
         conflictToReduce.shrink(i - j);
-        this.stats.reducedliterals += i - j;
+        this.stats.incReducedliterals(i - j);
     }
 
     // Check if 'p' can be removed.' min_level' is used to abort early if
@@ -972,7 +972,7 @@ public class Solver<D extends DataStructureFactory>
             }
         }
         conflictToReduce.shrink(i - j);
-        this.stats.reducedliterals += i - j;
+        this.stats.incReducedliterals(i - j);
     }
 
     // Check if 'p' can be removed.' min_level' is used to abort early if
@@ -1079,7 +1079,7 @@ public class Solver<D extends DataStructureFactory>
         // ltrail.size() changes due to propagation
         // cannot cache that value.
         while (this.qhead < ltrail.size()) {
-            lstats.propagations++;
+            lstats.incPropagations();
             int p = ltrail.get(this.qhead++);
             lslistener.propagating(toDimacs(p));
             lorder.assignLiteral(p);
@@ -1101,7 +1101,7 @@ public class Solver<D extends DataStructureFactory>
         this.voc.watches(p).moveTo(lwatched);
         final int size = lwatched.size();
         for (int i = 0; i < size; i++) {
-            this.stats.inspects++;
+            this.stats.incInspects();
             // try shortcut
             // shortcut = shortcuts.get(i);
             // if (shortcut != ILits.UNDEFINED && voc.isSatisfied(shortcut))
@@ -1130,7 +1130,7 @@ public class Solver<D extends DataStructureFactory>
         int p = toDimacs(constr.get(0));
         this.slistener.adding(p);
         if (constr.size() == 1) {
-            this.stats.learnedliterals++;
+            this.stats.incLearnedliterals();
             this.slistener.learnUnit(p);
         } else {
             this.learner.learns(constr);
@@ -1206,7 +1206,7 @@ public class Solver<D extends DataStructureFactory>
 
     private Lbool search(IVecInt assumps) {
         assert this.rootLevel == decisionLevel();
-        this.stats.starts++;
+        this.stats.incStarts();
         int backjumpLevel;
 
         // varDecay = 1 / params.varDecay;
@@ -1222,7 +1222,7 @@ public class Solver<D extends DataStructureFactory>
             if (confl == null) {
                 // No conflict found
                 if (decisionLevel() == 0 && this.isDBSimplificationAllowed) {
-                    this.stats.rootSimplifications++;
+                    this.stats.incRootSimplifications();
                     boolean ret = simplifyDB();
                     assert ret;
                 }
@@ -1263,7 +1263,7 @@ public class Solver<D extends DataStructureFactory>
                     }
                     if (this.sharedConflict == null) {
                         // New variable decision
-                        this.stats.decisions++;
+                        this.stats.incDecisions();
                         int p = this.order.select();
                         if (p == ILits.UNDEFINED) {
                             // check (expensive) if all the constraints are not
@@ -1300,7 +1300,7 @@ public class Solver<D extends DataStructureFactory>
             }
             if (confl != null) {
                 // conflict found
-                this.stats.conflicts++;
+                this.stats.incConflicts();
                 this.slistener.conflictFound(confl, decisionLevel(),
                         this.trail.size());
                 this.conflictCount.newConflict();
@@ -1494,7 +1494,7 @@ public class Solver<D extends DataStructureFactory>
     }
 
     protected final void reduceDB() {
-        this.stats.reduceddb++;
+        this.stats.incReduceddb();
         this.slistener.cleaning();
         this.learnedConstraintsDeletionStrategy.reduce(this.learnts);
     }
@@ -1820,7 +1820,7 @@ public class Solver<D extends DataStructureFactory>
                 && this.lastConflictMeansUnsat) {
             int before = this.trail.size();
             unitClauseProvider.provideUnitClauses(this);
-            this.stats.importedUnits += this.trail.size() - before;
+            this.stats.incImportedUnits(this.trail.size() - before);
             status = search(assumps);
             if (status == Lbool.UNDEFINED) {
                 this.restarter.onRestart();
@@ -2024,7 +2024,7 @@ public class Solver<D extends DataStructureFactory>
         this.stats.printStat(out, prefix);
         double cputime = (System.currentTimeMillis() - this.timebegin) / 1000;
         out.println(prefix + "speed (assignments/second)\t: " //$NON-NLS-1$
-                + this.stats.propagations / cputime);
+                + this.stats.getPropagations() / cputime);
         this.order.printStat(out, prefix);
         printLearntClausesInfos(out, prefix);
     }

@@ -44,39 +44,39 @@ import java.util.Map;
 public class SolverStats implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public int starts;
+    private int starts;
 
-    public long decisions;
+    private long decisions;
 
-    public long propagations;
+    private long propagations;
 
-    public long inspects;
+    private long inspects;
 
-    public long conflicts;
+    private long conflicts;
 
-    public long learnedliterals;
+    private long learnedliterals;
 
-    public long learnedbinaryclauses;
+    private long learnedbinaryclauses;
 
-    public long learnedternaryclauses;
+    private long learnedternaryclauses;
 
-    public long learnedclauses;
+    private long learnedclauses;
 
-    public long ignoredclauses;
+    private long ignoredclauses;
 
-    public long rootSimplifications;
+    private long rootSimplifications;
 
-    public long reducedliterals;
+    private long reducedliterals;
 
-    public long changedreason;
+    private long changedreason;
 
-    public int reduceddb;
+    private int reduceddb;
 
-    public int shortcuts;
+    private int shortcuts;
 
-    public long updateLBD;
+    private long updateLBD;
 
-    public int importedUnits;
+    private int importedUnits;
 
     public void reset() {
         this.starts = 0;
@@ -99,7 +99,7 @@ public class SolverStats implements Serializable {
     }
 
     public void printStat(PrintWriter out, String prefix) {
-        out.println(prefix + "starts\t\t: " + this.starts);
+        out.println(prefix + "starts\t\t: " + this.getStarts());
         out.println(prefix + "conflicts\t\t: " + this.conflicts);
         out.println(prefix + "decisions\t\t: " + this.decisions);
         out.println(prefix + "propagations\t\t: " + this.propagations);
@@ -112,8 +112,8 @@ public class SolverStats implements Serializable {
                 + this.learnedternaryclauses);
         out.println(prefix + "learnt constraints\t: " + this.learnedclauses);
         out.println(prefix + "ignored constraints\t: " + this.ignoredclauses);
-        out.println(prefix + "root simplifications\t: "
-                + this.rootSimplifications);
+        out.println(
+                prefix + "root simplifications\t: " + this.rootSimplifications);
         out.println(prefix + "removed literals (reason simplification)\t: "
                 + this.reducedliterals);
         out.println(prefix + "reason swapping (by a shorter reason)\t: "
@@ -121,8 +121,7 @@ public class SolverStats implements Serializable {
         out.println(prefix + "Calls to reduceDB\t: " + this.reduceddb);
         out.println(prefix + "Number of update (reduction) of LBD\t: "
                 + this.updateLBD);
-        out.println(prefix + "Imported unit clauses\t: "
-                + this.importedUnits);
+        out.println(prefix + "Imported unit clauses\t: " + this.importedUnits);
     }
 
     public Map<String, Number> toMap() {
@@ -137,5 +136,141 @@ public class SolverStats implements Serializable {
             }
         }
         return map;
+    }
+
+    public int getStarts() {
+        return starts;
+    }
+
+    public void incStarts() {
+        this.starts++;
+    }
+
+    public long getDecisions() {
+        return decisions;
+    }
+
+    public void incDecisions() {
+        this.decisions++;
+    }
+
+    public long getPropagations() {
+        return propagations;
+    }
+
+    public void incPropagations() {
+        this.propagations++;
+    }
+
+    public long getInspects() {
+        return inspects;
+    }
+
+    public void incInspects() {
+        this.inspects++;
+    }
+
+    public long getConflicts() {
+        return conflicts;
+    }
+
+    public void incConflicts() {
+        this.conflicts++;
+    }
+
+    public long getLearnedliterals() {
+        return learnedliterals;
+    }
+
+    public void incLearnedliterals() {
+        this.learnedliterals++;
+    }
+
+    public long getLearnedbinaryclauses() {
+        return learnedbinaryclauses;
+    }
+
+    public void incLearnedbinaryclauses() {
+        this.learnedbinaryclauses++;
+    }
+
+    public long getLearnedternaryclauses() {
+        return learnedternaryclauses;
+    }
+
+    public void incLearnedternaryclauses() {
+        this.learnedternaryclauses++;
+    }
+
+    public long getLearnedclauses() {
+        return learnedclauses;
+    }
+
+    public void incLearnedclauses() {
+        this.learnedclauses++;
+    }
+
+    public long getIgnoredclauses() {
+        return ignoredclauses;
+    }
+
+    public void incIgnoredclauses() {
+        this.ignoredclauses++;
+    }
+
+    public long getRootSimplifications() {
+        return rootSimplifications;
+    }
+
+    public void incRootSimplifications() {
+        this.rootSimplifications++;
+    }
+
+    public long getReducedliterals() {
+        return reducedliterals;
+    }
+
+    public void incReducedliterals(int increment) {
+        this.reducedliterals += increment;
+    }
+
+    public long getChangedreason() {
+        return changedreason;
+    }
+
+    public void incChangedreason() {
+        this.changedreason++;
+    }
+
+    public int getReduceddb() {
+        return reduceddb;
+    }
+
+    public void incReduceddb() {
+        this.reduceddb++;
+    }
+
+    public int getShortcuts() {
+        return shortcuts;
+    }
+
+    public void incShortcuts() {
+        this.shortcuts++;
+    }
+
+    public long getUpdateLBD() {
+        return updateLBD;
+    }
+
+    public void incUpdateLBD() {
+        this.updateLBD++;
+    }
+
+    public int getImportedUnits() {
+        return importedUnits;
+    }
+
+    public void incImportedUnits(int increment) {
+        this.importedUnits += increment;
     }
 }

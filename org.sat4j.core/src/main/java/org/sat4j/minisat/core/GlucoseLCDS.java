@@ -67,7 +67,7 @@ class GlucoseLCDS<D extends DataStructureFactory> implements
             solver.out
                     .log(this.solver.getLogPrefix()
                             + "cleaning " + (learnedConstrs.size() - j) //$NON-NLS-1$
-                            + " clauses out of " + learnedConstrs.size() + " with flag " + this.flag + "/" + solver.stats.conflicts); //$NON-NLS-1$ //$NON-NLS-2$
+                            + " clauses out of " + learnedConstrs.size() + " with flag " + this.flag + "/" + solver.stats.getConflicts()); //$NON-NLS-1$ //$NON-NLS-2$
             // out.flush();
         }
         solver.learnts.shrinkTo(j);
