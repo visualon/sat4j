@@ -352,31 +352,35 @@ public class StatisticsSolver implements ISolver {
             }
 
         }
-        System.out.println("c Distribution of constraints size:");
-        int nbclauses = 0;
-        for (Map.Entry<Integer, Counter> entry : sizes.entrySet()) {
-            System.out.printf("c %d => %d%n", entry.getKey(),
-                    entry.getValue().getValue());
-            nbclauses += entry.getValue().getValue();
-        }
+        if (realNumberOfVariables > 0 && realNumberOfLiterals > 0) {
+            System.out.println("c Distribution of constraints size:");
+            int nbclauses = 0;
+            for (Map.Entry<Integer, Counter> entry : sizes.entrySet()) {
+                System.out.printf("c %d => %d%n", entry.getKey(),
+                        entry.getValue().getValue());
+                nbclauses += entry.getValue().getValue();
+            }
 
-        System.out.printf(
-                "c Real number of variables, literals, number of clauses, size (#literals), #pureliterals, ");
-        System.out.printf("variable occurrences (min/max/avg) ");
-        System.out.printf("literals occurrences (min/max/avg) ");
-        System.out.println(
-                "Specific clauses: #positive  #negative #horn  #dualhorn #binary #binarynegative #binarypositive #binaryhorn #remaining");
-        Counter binaryCounter = sizes.get(2);
-        int nbBinary = binaryCounter == null ? 0 : binaryCounter.getValue();
-        System.out.printf(Locale.US, "%d %d %d %d %d %d %d %.2f %d %d %.2f ",
-                realNumberOfVariables, realNumberOfLiterals, nbclauses, sumL,
-                pureLiterals, minOccV, maxOccV,
-                sumV / (realNumberOfVariables * 1.0), minOccL, maxOccL,
-                sumL / (realNumberOfLiterals * 1.0));
-        System.out.printf("%d %d %d %d %d %d %d %d %d%n", allpositive,
-                allnegative, horn, dualhorn, nbBinary, binarynegative,
-                binarypositive, (nbBinary - binarynegative - binarypositive),
-                nbclauses - allpositive - allnegative - horn - dualhorn);
+            System.out.printf(
+                    "c Real number of variables, literals, number of clauses, size (#literals), #pureliterals, ");
+            System.out.printf("variable occurrences (min/max/avg) ");
+            System.out.printf("literals occurrences (min/max/avg) ");
+            System.out.println(
+                    "Specific clauses: #positive  #negative #horn  #dualhorn #binary #binarynegative #binarypositive #binaryhorn #remaining");
+            Counter binaryCounter = sizes.get(2);
+            int nbBinary = binaryCounter == null ? 0 : binaryCounter.getValue();
+            System.out.printf(Locale.US,
+                    "%d %d %d %d %d %d %d %.2f %d %d %.2f ",
+                    realNumberOfVariables, realNumberOfLiterals, nbclauses,
+                    sumL, pureLiterals, minOccV, maxOccV,
+                    sumV / (realNumberOfVariables * 1.0), minOccL, maxOccL,
+                    sumL / (realNumberOfLiterals * 1.0));
+            System.out.printf("%d %d %d %d %d %d %d %d %d%n", allpositive,
+                    allnegative, horn, dualhorn, nbBinary, binarynegative,
+                    binarypositive,
+                    (nbBinary - binarynegative - binarypositive),
+                    nbclauses - allpositive - allnegative - horn - dualhorn);
+        }
     }
 
     public Map<String, Number> getStat() {
