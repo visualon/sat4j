@@ -155,7 +155,7 @@ public final class ReadOnlyVec<T extends Serializable> implements IVec<T> {
 
     @SuppressWarnings("unchecked")
     public T[] toArray() {
-        T[] array = (T[]) new Object[this.vec.size()];
+        T[] array = (T[]) new Serializable[this.vec.size()];
         this.vec.copyTo(array);
         return array;
     }
