@@ -15,7 +15,7 @@ public class PostProcessDivideByGCD implements IPostProcess {
     public void postProcess(int dl, ConflictMap conflictMap) {
         int gcd = conflictMap.reduceCoeffsByGCD();
         if (gcd > 1) {
-            conflictMap.stats.numberOfReductionsByGCD++;
+            conflictMap.stats.incNumberOfReductionsByGCD();
         }
 
     }

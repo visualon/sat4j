@@ -108,9 +108,9 @@ public class ConflictMapRounding extends ConflictMap {
         tprime = saturation(abc, tprime, xyz);
         this.coefMultCons = this.weightedLits.get(x ^ 1);
         this.coefMult = BigInteger.ONE;
-        this.stats.numberOfRoundingOperations++;
+        this.stats.incNumberOfRoundingOperations();
         if (easyRounding) {
-            this.stats.numberOfEasyRoundingOperations++;
+            this.stats.incNumberOfEasyRoundingOperations();
         }
         return tprime;
     }

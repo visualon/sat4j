@@ -270,7 +270,7 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
                 System.out
                         .println(getLogPrefix()
                                 + "cleaning " + (learnedConstrs.size() - j) //$NON-NLS-1$
-                                + " clauses out of " + learnedConstrs.size() + "/" + PBSolver.this.stats.conflicts); //$NON-NLS-1$ //$NON-NLS-2$
+                                + " clauses out of " + learnedConstrs.size() + "/" + PBSolver.this.stats.getConflicts()); //$NON-NLS-1$ //$NON-NLS-2$
                 System.out.flush();
             }
             PBSolver.this.learnts.shrinkTo(j);

@@ -44,7 +44,7 @@ public class ConflictMapReduceByGCD extends ConflictMap {
     void divideCoefs() {
         int gcd = reduceCoeffsByGCD();
         if (gcd > 1) {
-            stats.numberOfReductionsByGCD++;
+            stats.incNumberOfReductionsByGCD();
         }
     }
 
