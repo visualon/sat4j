@@ -349,16 +349,11 @@ public class KTHLauncher {
                     System.out.println("s UNSATISFIABLE");
                 }
             } catch (TimeoutException e) {
-                System.out.println("s UNKNOWN");
-            } catch (ParseFormatException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                log("UNKNOWN","s ");
             } catch (ContradictionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                log("UNSATISFIABLE","s ");
+            } catch (Exception e) {
+                log(e.getMessage());
             }
         } catch (ParseException exp) {
             System.out.println("Unexpected exception:" + exp.getMessage());
