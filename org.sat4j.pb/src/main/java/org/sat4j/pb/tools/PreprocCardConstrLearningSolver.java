@@ -118,7 +118,7 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
 
     private void updateObjMinBound(AtLeastCard card) {
         AtMostCard atMost = card.toAtMost();
-        if (this.objWeightsMap == null)
+        if (this.objWeightsMap.isEmpty())
             return;
         List<BigInteger> weights = new ArrayList<BigInteger>();
         for (IteratorInt it = atMost.getLits().iterator(); it.hasNext();) {
