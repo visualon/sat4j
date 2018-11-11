@@ -351,15 +351,10 @@ public class KTHLauncher {
                 }
             } catch (TimeoutException e) {
                 log("UNKNOWN","s ");
-            } catch (ParseFormatException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (ContradictionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                log("UNSATISFIABLE","s ");
+            } catch (Exception e) {
+                log(e.getMessage());
             }
         } catch (ParseException exp) {
             log("Unexpected exception:" + exp.getMessage());
