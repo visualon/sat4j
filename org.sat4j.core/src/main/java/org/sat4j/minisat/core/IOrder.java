@@ -30,6 +30,7 @@
 package org.sat4j.minisat.core;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 
 /**
  * Interface for the variable ordering heuristics. It has both the
@@ -39,7 +40,7 @@ import java.io.PrintWriter;
  * @author daniel
  * 
  */
-public interface IOrder {
+public interface IOrder extends Serializable {
 
     /**
      * Method used to provide an easy access the the solver vocabulary.
