@@ -153,8 +153,9 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
             DataStructureFactory dsf) {
         MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<DataStructureFactory>();
         Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
-                learning, dsf, new VarOrderHeap(
-                        new RSATPhaseSelectionStrategy()), new ArminRestarts());
+                learning, dsf,
+                new VarOrderHeap(new RSATPhaseSelectionStrategy()),
+                new ArminRestarts());
         solver.setSearchParams(new SearchParams(1.1, 100));
         solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
         return solver;
@@ -168,8 +169,9 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
         MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<DataStructureFactory>();
         Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
                 learning, new MixedDataStructureDanielWL(),
-                new RandomWalkDecorator(new VarOrderHeap(
-                        new RSATPhaseSelectionStrategy())), new NoRestarts());
+                new RandomWalkDecorator(
+                        new VarOrderHeap(new RSATPhaseSelectionStrategy())),
+                new NoRestarts());
         // solver.setSearchParams(new SearchParams(1.1, 100));
         solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
         return solver;
@@ -198,7 +200,8 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      * @since 2.1
      */
     public static Solver<DataStructureFactory> newBestWL() {
-        return newBestCurrentSolverConfiguration(new MixedDataStructureDanielWL());
+        return newBestCurrentSolverConfiguration(
+                new MixedDataStructureDanielWL());
     }
 
     /**
@@ -206,7 +209,8 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      * @since 2.1
      */
     public static ICDCL<DataStructureFactory> newBestHT() {
-        return newBestCurrentSolverConfiguration(new MixedDataStructureDanielHT());
+        return newBestCurrentSolverConfiguration(
+                new MixedDataStructureDanielHT());
     }
 
     /**
@@ -214,9 +218,11 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      * @since 2.2
      */
     public static ICDCL<DataStructureFactory> newBest17() {
-        Solver<DataStructureFactory> solver = newBestCurrentSolverConfiguration(new MixedDataStructureSingleWL());
+        Solver<DataStructureFactory> solver = newBestCurrentSolverConfiguration(
+                new MixedDataStructureSingleWL());
         solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION_WLONLY);
-        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based_low_memory);
+        solver.setLearnedConstraintsDeletionStrategy(
+                solver.activity_based_low_memory);
         LimitedLearning<DataStructureFactory> learning = new PercentLengthLearning<DataStructureFactory>(
                 10);
         solver.setLearningStrategy(learning);
@@ -273,8 +279,8 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
         LimitedLearning<DataStructureFactory> learning = new PercentLengthLearning<DataStructureFactory>(
                 10);
         Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
-                learning, new MixedDataStructureDanielWL(), new SearchParams(
-                        Integer.MAX_VALUE), new VarOrderHeap(),
+                learning, new MixedDataStructureDanielWL(),
+                new SearchParams(Integer.MAX_VALUE), new VarOrderHeap(),
                 new MiniSATRestarts());
         learning.setSolver(solver);
         solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
@@ -288,8 +294,9 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
         LimitedLearning<DataStructureFactory> learning = new PercentLengthLearning<DataStructureFactory>(
                 10);
         Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
-                learning, new MixedDataStructureDanielWL(), new SearchParams(
-                        1000), new VarOrderHeap(), new MiniSATRestarts());
+                learning, new MixedDataStructureDanielWL(),
+                new SearchParams(1000), new VarOrderHeap(),
+                new MiniSATRestarts());
         learning.setSolver(solver);
         solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
         return solver;
@@ -421,7 +428,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
     }
 
     public static ISolver newParallel() {
-        return new ManyCore(newSAT(), newUNSAT(),
+        return new ManyCore<ISolver>(newSAT(), newUNSAT(),
                 newMiniLearningHeapRsatExpSimpLuby(),
                 newMiniLearningHeapRsatExpSimp(),
                 newDefaultAutoErasePhaseSaving(), newMiniLearningHeap(),
@@ -435,7 +442,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      * @return a parallel solver for both SAT and UNSAT problems.
      */
     public static ISolver newSATUNSAT() {
-        return new ManyCore(newSAT(), newUNSAT());
+        return new ManyCore<ISolver>(newSAT(), newUNSAT());
     }
 
     /**
@@ -443,10 +450,11 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      * 
      * @return a solver for satisfiable benchmarks.
      */
-    public static Solver newSAT() {
-        Solver solver = (Solver) newGlucose21();
+    public static Solver<DataStructureFactory> newSAT() {
+        Solver<DataStructureFactory> solver = (Solver<DataStructureFactory>) newGlucose21();
         solver.setRestartStrategy(new LubyRestarts(100));
-        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based_low_memory);
+        solver.setLearnedConstraintsDeletionStrategy(
+                solver.activity_based_low_memory);
         return solver;
     }
 
@@ -455,23 +463,24 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      * 
      * @return a solver for unsatisfiable benchmarks.
      */
-    public static Solver newUNSAT() {
-        Solver solver = (Solver) newGlucose21();
+    public static Solver<DataStructureFactory> newUNSAT() {
+        Solver<DataStructureFactory> solver = (Solver<DataStructureFactory>) newGlucose21();
         solver.setRestartStrategy(new NoRestarts());
         solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
         return solver;
     }
 
-    public static Solver newConcise() {
-        Solver solver = (Solver) newGlucose21();
-        solver.setDataStructureFactory(new MixedDataStructureDanielWLConciseBinary());
-        solver.setSimplifier(solver.NO_SIMPLIFICATION);
+    public static Solver<DataStructureFactory> newConcise() {
+        Solver<DataStructureFactory> solver = (Solver<DataStructureFactory>) newGlucose21();
+        solver.setDataStructureFactory(
+                new MixedDataStructureDanielWLConciseBinary());
+        solver.setSimplifier(Solver.NO_SIMPLIFICATION);
         return solver;
     }
 
-    public static Solver newNoSimplification() {
-        Solver solver = (Solver) newGlucose21();
-        solver.setSimplifier(solver.NO_SIMPLIFICATION);
+    public static Solver<DataStructureFactory> newNoSimplification() {
+        Solver<DataStructureFactory> solver = (Solver<DataStructureFactory>) newGlucose21();
+        solver.setSimplifier(Solver.NO_SIMPLIFICATION);
         return solver;
     }
 }
