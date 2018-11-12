@@ -1841,7 +1841,7 @@ public class Solver<D extends DataStructureFactory>
         this.slistener.end(status);
         if (!this.undertimeout) {
             String message = " Timeout (" + this.timeout
-                    + (this.timeBasedTimeout ? "s" : " conflicts")
+                    + (this.timeBasedTimeout ? "ms" : " conflicts")
                     + ") exceeded";
             throw new TimeoutException(message);
         }
