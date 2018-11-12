@@ -194,7 +194,7 @@ public class OPBStringSolver extends DimacsStringSolver implements IPBSolver {
             tmp.append(nVars());
             tmp.append(" #constraint= ");
             tmp.append(this.nbOfConstraints);
-            if (this.obj != null) {
+            if (this.obj != null && !this.obj.getCoeffs().isEmpty()) {
                 tmp.append("\n");
                 tmp.append("min: ");
                 tmp.append(this.obj);
