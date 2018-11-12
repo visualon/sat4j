@@ -13,7 +13,7 @@ public class CLITest {
 
     @Test
     public void testDecisionModeSAT() {
-        BasicLauncher<ISolver> launcher = new BasicLauncher<>(
+        BasicLauncher<ISolver> launcher = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
         String[] args = { "src/test/testfiles/aim-50-yes-ok.cnf" };
         launcher.run(args);
@@ -22,7 +22,7 @@ public class CLITest {
 
     @Test
     public void testDecisionModeUNSAT() {
-        BasicLauncher<ISolver> launcher = new BasicLauncher<>(
+        BasicLauncher<ISolver> launcher = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
         String[] args = { "src/test/testfiles/aim-50-no-ok.cnf" };
         launcher.run(args);
@@ -31,7 +31,7 @@ public class CLITest {
 
     @Test
     public void testDecisionModeUNSATPROOF() {
-        BasicLauncher<ISolver> launcher = new BasicLauncher<>(
+        BasicLauncher<ISolver> launcher = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
         String[] args = { "src/test/testfiles/aim-50-no-ok.cnf" };
         System.setProperty("UNSATPROOF", "true");
@@ -42,7 +42,7 @@ public class CLITest {
 
     @Test
     public void testDecisionModeMinOne() {
-        BasicLauncher<ISolver> launcher = new BasicLauncher<>(
+        BasicLauncher<ISolver> launcher = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
         String[] args = { "src/test/testfiles/aim-50-yes-ok.cnf" };
         System.setProperty("minone", "true");
@@ -52,7 +52,7 @@ public class CLITest {
 
     @Test
     public void testDecisionModeAllExternal() {
-        BasicLauncher<ISolver> launcher = new BasicLauncher<>(
+        BasicLauncher<ISolver> launcher = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
         String[] args = { "src/test/testfiles/aim-50-yes-ok.cnf" };
         System.setProperty("all", "external");
@@ -62,7 +62,7 @@ public class CLITest {
 
     @Test
     public void testDecisionModeAllInternal() {
-        BasicLauncher<ISolver> launcher = new BasicLauncher<>(
+        BasicLauncher<ISolver> launcher = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
         String[] args = { "src/test/testfiles/aim-50-yes-ok.cnf" };
         System.setProperty("all", "internal");
