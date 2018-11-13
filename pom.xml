@@ -74,10 +74,10 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 	</developers>
 	<properties>
 		<!-- compiler params -->
-		<javaSource>1.7</javaSource>
-		<javaTarget>1.7</javaTarget>
-		<testSource>1.7</testSource>
-		<testTarget>1.7</testTarget>
+		<javaSource>1.6</javaSource>
+		<javaTarget>1.6</javaTarget>
+		<testSource>1.6</testSource>
+		<testTarget>1.6</testTarget>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- common distribution locations -->
 		<siteRepositoryId />

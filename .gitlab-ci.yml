@@ -29,6 +29,12 @@ jars-j8:
         - dist/NIGHTLY/*.jar
        expire_in: 4 weeks
 
+java6:
+    image: maven:3.5.4-jdk-6-alpine
+    stage: test
+    script: 
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
+
 java7:
     image: maven:3.5.4-jdk-7-alpine
     stage: test
