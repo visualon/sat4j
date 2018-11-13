@@ -30,7 +30,7 @@ jars-j8:
        expire_in: 4 weeks
 
 java6:
-    image: maven:3.5.4-jdk-6-alpine
+    image: maven:3.2.5-jdk-6
     stage: test
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
