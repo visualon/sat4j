@@ -48,7 +48,8 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
     private double maxY;
 
     public SpeedTracing(IVisualizationTool visuTool,
-            IVisualizationTool cleanVisuTool, IVisualizationTool restartVisuTool) {
+            IVisualizationTool cleanVisuTool,
+            IVisualizationTool restartVisuTool) {
         this.visuTool = visuTool;
         this.cleanVisuTool = cleanVisuTool;
         this.restartVisuTool = restartVisuTool;
@@ -70,7 +71,7 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
         if (this.end - this.begin >= 2000) {
             long tmp = this.end - this.begin;
             this.index += tmp;
-            y = this.counter / tmp * 1000;
+            y = (this.counter * 1000.0) / tmp;
             if (y > this.maxY) {
                 this.maxY = y;
             }
