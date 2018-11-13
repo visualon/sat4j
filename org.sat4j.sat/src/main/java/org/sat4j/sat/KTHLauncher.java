@@ -145,28 +145,24 @@ public class KTHLauncher {
             IPBSolver pbsolver = cpsolver;
             if (line.hasOption("detect-cards")) {
                 String value = line.getOptionValue("detect-cards");
-                switch (value) {
-                case "never":
+                if ("never".equals(value)) {
                     // by default
-                    break;
-                case "preproc":
-                    pbsolver = new PreprocCardConstrLearningSolver<>(cpsolver);
-                    break;
-                case "inproc":
+                } else if ("preproc".equals(value)) {
+                    pbsolver = new PreprocCardConstrLearningSolver<IPBSolver>(
+                            cpsolver);
+                } else if ("inproc".equals(value)) {
                     InprocCardConstrLearningSolver solver = new InprocCardConstrLearningSolver(
                             new MiniSATLearning<PBDataStructureFactory>(),
                             new PBMaxClauseCardConstrDataStructure(),
                             new VarOrderHeap(), true, false);
                     solver.setDetectCardFromAllConstraintsInCflAnalysis(true);
                     cpsolver = solver;
-                    break;
-                case "lazy":
+                } else if ("lazy".equals(value)) {
                     cpsolver = new InprocCardConstrLearningSolver(
                             new MiniSATLearning<PBDataStructureFactory>(),
                             new PBMaxClauseCardConstrDataStructure(),
                             new VarOrderHeap(), true, false);
-                    break;
-                default:
+                } else {
                     log(value
                             + " is not a supported value for option detect-cards");
                     return;
@@ -174,19 +170,17 @@ public class KTHLauncher {
 
             }
             if (line.hasOption("division-strategy")) {
-                String value = line.getOptionValue("division-strategy");
-                switch (value.toLowerCase()) {
-                case "two":
+                String value = line.getOptionValue("division-strategy")
+                        .toLowerCase();
+                if ("two".equals(value)) {
                     cpsolver.setConflictFactory(
                             ConflictMapReduceByPowersOf2.factory());
-                    break;
-                case "gcd":
+                } else if ("gcd".equals(value)) {
                     cpsolver.setConflictFactory(
                             ConflictMapReduceByGCD.factory());
-                    break;
-                case "none":
-                    break;
-                default:
+                } else if ("none".equals(value)) {
+                    // do nothing
+                } else {
                     log(value
                             + " is not a supported value for option division");
                     return;
@@ -196,16 +190,13 @@ public class KTHLauncher {
             if (line.hasOption("type-of-learned-constraint")) {
                 String value = line
                         .getOptionValue("type-of-learned-constraint");
-                switch (value) {
-                case "general-linear": // default case, do nothing
-                    break;
-                case "cardinality":
+                if ("general-linear".equals(value)) {
+                    // default case, do nothing
+                } else if ("cardinality".equals(value)) {
                     cpsolver.setPostprocess(PostProcessToCard.instance());
-                    break;
-                case "clause":
+                } else if ("clause".equals(value)) {
                     cpsolver.setPostprocess(PostProcessToClause.instance());
-                    break;
-                default:
+                } else {
                     log(value
                             + " is not a supported value for option type-of-learned-constraint");
                     return;
@@ -213,14 +204,11 @@ public class KTHLauncher {
             }
             if (line.hasOption("when-resolve")) {
                 String value = line.getOptionValue("when-resolve");
-                switch (value) {
-                case "always":
+                if ("always".equals(value)) {
                     cpsolver.setSkipAllow(false);
-                    break;
-                case "skip":
+                } else if ("skip".equals(value)) {
                     cpsolver.setSkipAllow(true);
-                    break;
-                default:
+                } else {
                     log(value
                             + " is not a supported value for option when-resolve");
                     return;
@@ -228,25 +216,20 @@ public class KTHLauncher {
             }
             if (line.hasOption("round-reason")) {
                 String value = line.getOptionValue("round-reason");
-                switch (value) {
-                case "never":
+                if ("never".equals(value)) {
                     // by default
-                    break;
-                case "clausal":
+                } else if ("clausal".equals(value)) {
                     cpsolver.setConflictFactory(
                             ConflictMapReduceToClause.factory());
-                    break;
-                case "cardinality":
+                } else if ("cardinality".equals(value)) {
                     cpsolver.setConflictFactory(
                             ConflictMapReduceToCard.factory());
-                    break;
-                case "divide-v1":
+                } else if ("divide-v1".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapRounding.factory());
-                    break;
-                case "divide-unless-equal":
-                case "divide-unless-divisor":
-                case "round-to-gcd":
-                default:
+                } else {
+                    // "divide-unless-equal":
+                    // "divide-unless-divisor":
+                    // "round-to-gcd":
                     log(value
                             + " is not a supported value for option round-reason");
                     return;
@@ -269,33 +252,27 @@ public class KTHLauncher {
             }
             if (line.hasOption("rounding-weaken-priority")) {
                 String value = line.getOptionValue("rounding-weaken-priority");
-                switch (value) {
-                case "unassigned":
+
+                if ("unassigned".equals(value)) {
                     cpsolver.setWeakeningStrategy(
                             IWeakeningStrategy.UNASSIGNED_FIRST);
-                    break;
-                case "satisfied":
+                } else if ("satisfied".equals(value)) {
                     cpsolver.setWeakeningStrategy(
                             IWeakeningStrategy.SATISFIED_FIRST);
-                    break;
-                case "any":
+                } else if ("any".equals(value)) {
                     cpsolver.setWeakeningStrategy(IWeakeningStrategy.ANY);
-                    break;
-                default:
+                } else {
                     log(value
                             + " is not a supported value for option rounding-weaken-priority");
                     return;
                 }
+
             }
             if (line.hasOption("weaken-nonimplied")) {
                 String value = line.getOptionValue("weaken-nonimplied");
-                switch (value) {
-                case "false":
-                    // by default
-                    break;
-                case "true":
-                case "round":
-                default:
+
+                if (!"false".equals(value)) {
+                    // "true" or "round":
                     log(value
                             + " is not a supported value for option weaken-nonimplied");
                     return;
@@ -333,7 +310,7 @@ public class KTHLauncher {
                 if (line.hasOption("dot-output")) {
                     String dotfilename = line.getOptionValue("dot-output");
                     if (dotfilename != null) {
-                        DotSearchTracing<String> dotTracing = new DotSearchTracing<>(
+                        DotSearchTracing<String> dotTracing = new DotSearchTracing<String>(
                                 dotfilename);
                         cpsolver.setSearchListener(dotTracing);
                         dotTracing.setMapping(reader.getMapping());
@@ -347,12 +324,12 @@ public class KTHLauncher {
                     }
                     log(reader.decode(optimizer.model()) + " 0", "v ");
                 } else {
-                    log("UNSATISFIABLE","s ");
+                    log("UNSATISFIABLE", "s ");
                 }
             } catch (TimeoutException e) {
-                log("UNKNOWN","s ");
+                log("UNKNOWN", "s ");
             } catch (ContradictionException e) {
-                log("UNSATISFIABLE","s ");
+                log("UNSATISFIABLE", "s ");
             } catch (Exception e) {
                 log(e.getMessage());
             }
