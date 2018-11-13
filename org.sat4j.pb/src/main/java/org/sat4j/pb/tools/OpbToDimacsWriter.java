@@ -29,7 +29,7 @@ public class OpbToDimacsWriter {
 
     public OpbToDimacsWriter(String[] args)
             throws ParseFormatException, IOException, ContradictionException {
-        Set<EncodingStrategy> tabooEncodings = new HashSet<>();
+        Set<EncodingStrategy> tabooEncodings = new HashSet<EncodingStrategy>();
         tabooEncodings.add(EncodingStrategy.NATIVE);
         for (EncodingStrategy strategy : EncodingStrategy.values()) {
             if (tabooEncodings.contains(strategy))
