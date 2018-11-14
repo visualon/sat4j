@@ -5,13 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CLITest {
 
     @Test
@@ -49,6 +46,7 @@ public class CLITest {
         launcher.run(args);
         assertEquals(ExitCode.UNSATISFIABLE, launcher.getExitCode());
         assertTrue(new File(args[0] + ".rupproof").exists());
+        System.clearProperty("UNSATPROOF");
     }
 
     @Test
@@ -59,6 +57,7 @@ public class CLITest {
         System.setProperty("minone", "true");
         launcher.run(args);
         assertEquals(ExitCode.SATISFIABLE, launcher.getExitCode());
+        System.clearProperty("minone");
     }
 
     @Test
@@ -69,6 +68,7 @@ public class CLITest {
         System.setProperty("all", "external");
         launcher.run(args);
         assertEquals(ExitCode.SATISFIABLE, launcher.getExitCode());
+        System.clearProperty("all");
     }
 
     @Test
@@ -78,6 +78,7 @@ public class CLITest {
         String[] args = { "src/test/testfiles/aim-50-yes-ok.cnf" };
         System.setProperty("all", "internal");
         launcher.run(args);
-        assertEquals(ExitCode.SATISFIABLE, launcher.getExitCode());
+        assertEquals(ExitCode.OPTIMUM_FOUND, launcher.getExitCode());
+        System.clearProperty("all");
     }
 }
