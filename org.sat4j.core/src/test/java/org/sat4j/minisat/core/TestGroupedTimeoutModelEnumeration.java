@@ -54,7 +54,7 @@ public class TestGroupedTimeoutModelEnumeration {
         this.solver.addClause(clause);
     }
 
-    @Test(expected = TimeoutException.class, timeout = 3000)
+    @Test(expected = TimeoutException.class, timeout = 6000)
     public void testTimeoutOnSeconds() throws TimeoutException {
         this.solver.setTimeout(2);
         while (this.solver.isSatisfiable()) {
@@ -62,7 +62,7 @@ public class TestGroupedTimeoutModelEnumeration {
         }
     }
 
-    @Test(expected = TimeoutException.class, timeout = 3000)
+    @Test(expected = TimeoutException.class, timeout = 6000)
     public void testTimeoutOnMilliSeconds() throws TimeoutException {
         this.solver.setTimeoutMs(2000);
         while (this.solver.isSatisfiable()) {
@@ -77,8 +77,8 @@ public class TestGroupedTimeoutModelEnumeration {
         this.solver.setTimeoutOnConflicts(100);
         int i = 1;
         while (this.solver.isSatisfiable()) {
-            System.out.println(this.solver
-                    .createBlockingClauseForCurrentModel());
+            System.out
+                    .println(this.solver.createBlockingClauseForCurrentModel());
             this.solver.model(); // needed to discard that solution
 
         }
