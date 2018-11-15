@@ -67,7 +67,7 @@ public class ConflictMapReduceToCard extends ConflictMap {
     @Override
     protected BigInteger reduceUntilConflict(int litImplied, int ind,
             BigInteger[] reducedCoefs, BigInteger degreeReduced, IWatchPb wpb) {
-        degreeReduced = reduceToCard(ind, wpb, reducedCoefs, degreeReduced);
+        degreeReduced = reduceToCard(ind, wpb, reducedCoefs);
         this.coefMultCons = this.weightedLits.get(litImplied ^ 1);
         this.coefMult = BigInteger.ONE;
         this.numberOfReductions++;
@@ -75,7 +75,7 @@ public class ConflictMapReduceToCard extends ConflictMap {
     }
 
     private BigInteger reduceToCard(int ind, IWatchPb wpb,
-            BigInteger[] reducedCoefs, BigInteger degreeReduced) {
+            BigInteger[] reducedCoefs) {
         BigInteger[] tmpCoefs = new BigInteger[reducedCoefs.length];
         BigInteger maxCoef = BigInteger.ZERO;
         for (int i = 0; i < reducedCoefs.length; i++) {
