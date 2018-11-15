@@ -228,7 +228,7 @@ public class OrderedObjsOWAOptimizer extends AbstractLinMultiObjOptimizer {
                 .add(BigInteger.ONE);
         return maxObjValue.multiply(BigInteger
                 .valueOf(1 << objBoundVariables.get(0).getVars().size())
-                .multiply(BigInteger.valueOf(super.objs.size() - 1)));
+                .multiply(BigInteger.valueOf(super.objs.size() - 1L)));
     }
 
     @Override

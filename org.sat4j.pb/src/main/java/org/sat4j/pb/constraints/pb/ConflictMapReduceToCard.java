@@ -98,7 +98,7 @@ public class ConflictMapReduceToCard extends ConflictMap {
                 reducedCoefs[i] = tmpCoefs[i];
             }
         }
-        return BigInteger.valueOf(cpt + 1);
+        return BigInteger.valueOf(cpt + 1L);
     }
 
 }
