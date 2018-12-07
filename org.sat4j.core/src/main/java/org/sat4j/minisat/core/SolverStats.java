@@ -126,18 +126,24 @@ public class SolverStats implements Serializable {
 
     public Map<String, Number> toMap() {
         Map<String, Number> map = new HashMap<String, Number>();
-        for (Field f : this.getClass().getDeclaredFields()) {
-            try {
-                Object value = f.get(this);
-                if (value instanceof Number) {
-                    map.put(f.getName(), (Number) value);
+        Class<?> clazz = this.getClass();
+        do {
+            for (Field f : clazz.getDeclaredFields()) {
+                try {
+                    f.setAccessible(true);
+                    Object value = f.get(this);
+                    if (!"serialVersionUID".equals(f.getName())
+                            && value instanceof Number) {
+                        map.put(f.getName(), (Number) value);
+                    }
+                } catch (IllegalArgumentException e) {
+                    // ignores silently
+                } catch (IllegalAccessException e) {
+                    // ignores silently
                 }
-            } catch (IllegalArgumentException e) {
-                // ignores silently
-            } catch (IllegalAccessException e) {
-                // ignores silently
             }
-        }
+            clazz = clazz.getSuperclass();
+        } while (clazz != null);
         return map;
     }
 
