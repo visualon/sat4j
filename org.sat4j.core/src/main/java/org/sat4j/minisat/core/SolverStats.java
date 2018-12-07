@@ -128,7 +128,10 @@ public class SolverStats implements Serializable {
         Map<String, Number> map = new HashMap<String, Number>();
         for (Field f : this.getClass().getDeclaredFields()) {
             try {
-                map.put(f.getName(), (Number) f.get(this));
+                Object value = f.get(this);
+                if (value instanceof Number) {
+                    map.put(f.getName(), (Number) value);
+                }
             } catch (IllegalArgumentException e) {
                 // ignores silently
             } catch (IllegalAccessException e) {
