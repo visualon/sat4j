@@ -41,3 +41,11 @@ java11:
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
     allow_failure: true
+
+maven36:
+    image: maven:3.6-jdk-11
+    stage: test
+    script:
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
+    allow_failure: true
+
