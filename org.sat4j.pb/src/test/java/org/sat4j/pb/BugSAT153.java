@@ -69,6 +69,7 @@ public class BugSAT153 {
         IVecInt lits2 = new VecInt(new int[] { 1, 2 });
         IVecInt lits3 = new VecInt(new int[] { -2, -3 });
         IVecInt lits4 = new VecInt(new int[] { 3 });
+        IVecInt lits5 = new VecInt(new int[] { 2 });
         // Working call
         IPBSolver solver = SolverFactory.newDefault();
         solver.addAtMost(lits1, 2); // add x1 + x2 + x3 <= 2
@@ -86,5 +87,12 @@ public class BugSAT153 {
         }
         assertFalse(contradict);
         assertTrue(solver.isSatisfiable());
+        try {
+            solver.addClause(lits5); // add unit clause x2 : should because
+                                     // UNSAT
+        } catch (ContradictionException ce) {
+            contradict = true;
+        }
+        assertTrue(contradict || !solver.isSatisfiable());
     }
 }
