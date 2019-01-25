@@ -1,6 +1,9 @@
-# HOW TO BUILD SAT4J FROM SOURCE
+# HOW TO DOWNLOAD SAT4J JAR FILES
 
-> Nighlty builds are available [here](https://gitlab.ow2.org/sat4j/sat4j/pipelines)
+- Releases are available from [OW2 download repository](http://download.forge.ow2.org/sat4j/) 
+- Nighlty builds are available [from gitlab continuous integration](https://gitlab.ow2.org/sat4j/sat4j/pipelines)
+
+# HOW TO BUILD SAT4J FROM SOURCE
 
 ## Using Maven (library users)
 
