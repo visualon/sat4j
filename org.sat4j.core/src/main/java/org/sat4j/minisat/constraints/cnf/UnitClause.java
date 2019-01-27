@@ -85,7 +85,12 @@ public class UnitClause implements Constr {
     }
 
     public void remove(UnitPropagationListener upl) {
+        int oldLevel = upl.getPropagationLevel();
         upl.unset(this.literal);
+        if (upl.getPropagationLevel() < oldLevel - 1) {
+            throw new IllegalStateException(
+                    "removed unit clause which caused propagations");
+        }
     }
 
     public void rescaleBy(double d) {

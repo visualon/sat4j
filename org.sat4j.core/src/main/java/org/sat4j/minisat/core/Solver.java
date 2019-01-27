@@ -2201,6 +2201,13 @@ public class Solver<D extends DataStructureFactory>
     }
 
     /**
+     * @since 2.3.6
+     */
+    public int getPropagationLevel() {
+        return trail.size();
+    }
+
+    /**
      * @since 2.2
      */
     public void setLogPrefix(String prefix) {

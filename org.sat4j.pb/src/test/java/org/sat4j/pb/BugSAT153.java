@@ -12,7 +12,7 @@ import org.sat4j.specs.TimeoutException;
 
 public class BugSAT153 {
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testMixingConstraints()
             throws ContradictionException, TimeoutException {
         IVecInt lits1 = new VecInt(new int[] { 1, 2, 3 });
@@ -50,7 +50,6 @@ public class BugSAT153 {
         solver.addClause(lits3); // add not(x2) v not(x3)
         IConstr constr = solver.addAtLeast(lits2, 2); // add x1 + x2 >= 2
         assertTrue(solver.isSatisfiable());
-        // Buggy call
         solver.removeConstr(constr); // remove x1 + x2 >= 2
         boolean contradict = false;
         try {
@@ -62,7 +61,7 @@ public class BugSAT153 {
         assertTrue(contradict || !solver.isSatisfiable());
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void testIssueWithUnitPropagation()
             throws ContradictionException, TimeoutException {
         IVecInt lits1 = new VecInt(new int[] { 1, 2, 3 });

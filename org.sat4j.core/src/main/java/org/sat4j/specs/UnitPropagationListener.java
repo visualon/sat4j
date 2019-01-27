@@ -29,7 +29,6 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
-
 /**
  * Interface providing the unit propagation capability.
  * 
@@ -72,4 +71,14 @@ public interface UnitPropagationListener {
      * @since 2.1
      */
     void unset(int p);
+
+    /**
+     * Retrieve the number of literals found in the trail.
+     * 
+     * Those literals can either be propagated or decided by the heuristics.
+     * 
+     * @return the current propagation level
+     * @since 2.3.6
+     */
+    int getPropagationLevel();
 }
