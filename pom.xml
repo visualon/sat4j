@@ -213,7 +213,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>3.0.1</version>
 				<configuration>
 					<source>${javaSource}</source>
 					<!-- <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet> <docletArtifact> 
