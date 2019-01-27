@@ -83,8 +83,13 @@ public class UnitClauses implements Constr {
     }
 
     public void remove(UnitPropagationListener upl) {
+        int oldLevel = upl.getPropagationLevel();
         for (int i = this.literals.length - 1; i >= 0; i--) {
             upl.unset(this.literals[i]);
+        }
+        if (upl.getPropagationLevel() < oldLevel - literals.length) {
+            throw new IllegalStateException(
+                    "removed unit clause which caused propagations");
         }
     }
 
