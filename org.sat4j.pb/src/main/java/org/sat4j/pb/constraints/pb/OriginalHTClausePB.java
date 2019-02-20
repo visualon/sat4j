@@ -31,13 +31,14 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.OriginalHTClause;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.UnitPropagationListener;
 
-public final class OriginalHTClausePB extends OriginalHTClause implements
-        PBConstr {
+public final class OriginalHTClausePB extends OriginalHTClause
+        implements PBConstr {
 
     public OriginalHTClausePB(IVecInt ps, ILits voc) {
         super(ps, voc);
@@ -88,4 +89,18 @@ public final class OriginalHTClausePB extends OriginalHTClause implements
         return c;
     }
 
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append("+1 x");
+        stb.append(LiteralsUtils.toDimacs(this.head));
+        for (int p : middleLits) {
+            stb.append(" +1 x");
+            stb.append(LiteralsUtils.toDimacs(p));
+        }
+        stb.append(" +1 x");
+        stb.append(LiteralsUtils.toDimacs(this.tail));
+        stb.append(" >= 1");
+        return stb.toString();
+    }
 }

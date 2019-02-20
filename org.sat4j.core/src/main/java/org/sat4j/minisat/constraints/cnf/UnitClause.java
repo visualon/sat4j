@@ -168,4 +168,12 @@ public class UnitClause implements Constr {
         }
         return mapper.map(LiteralsUtils.toDimacs(this.literal));
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append(literal);
+        stb.append(" 0");
+        return stb.toString();
+    }
 }

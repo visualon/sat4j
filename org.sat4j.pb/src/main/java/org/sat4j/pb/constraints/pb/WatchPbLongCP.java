@@ -742,4 +742,21 @@ public abstract class WatchPbLongCP
         }
         return stb.toString();
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        if (this.lits.length > 0) {
+            for (int i = 0; i < this.lits.length; i++) {
+                stb.append("+");
+                stb.append(this.coefs[i]);
+                stb.append(" x");
+                stb.append(LiteralsUtils.toDimacs(this.lits[i]));
+                stb.append(' ');
+            }
+            stb.append(">= ");
+            stb.append(this.degree);
+        }
+        return stb.toString();
+    }
 }

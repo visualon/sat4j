@@ -85,7 +85,8 @@ public interface Constr extends IConstr {
                     "A tautology cannot be a reason");
         }
 
-        public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
+        public void calcReasonOnTheFly(int p, IVecInt trail,
+                IVecInt outReason) {
             throw new UnsupportedOperationException(
                     "A tautology cannot be a reason");
         }
@@ -140,6 +141,11 @@ public interface Constr extends IConstr {
 
         public int getAssertionLevel(IVecInt trail, int decisionLevel) {
             return 0;
+        }
+
+        @Override
+        public String dump() {
+            return "";
         }
     };
 

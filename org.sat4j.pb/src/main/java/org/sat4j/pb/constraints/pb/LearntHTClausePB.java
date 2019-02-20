@@ -31,6 +31,7 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.LearntHTClause;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
@@ -81,6 +82,21 @@ public final class LearntHTClausePB extends LearntHTClause implements PBConstr {
 
     public BigInteger getDegree() {
         return BigInteger.ONE;
+    }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append("+1 x");
+        stb.append(LiteralsUtils.toDimacs(this.head));
+        for (int p : middleLits) {
+            stb.append(" +1 x");
+            stb.append(LiteralsUtils.toDimacs(p));
+        }
+        stb.append(" +1 x");
+        stb.append(LiteralsUtils.toDimacs(this.tail));
+        stb.append(" >= 1");
+        return stb.toString();
     }
 
 }

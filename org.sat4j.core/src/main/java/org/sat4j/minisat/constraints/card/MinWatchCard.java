@@ -63,7 +63,7 @@ public class MinWatchCard
     /**
      * literals involved in the constraint
      */
-    private final int[] lits;
+    protected final int[] lits;
 
     /**
      * contains the sign of the constraint : ATLEAT or ATMOST
@@ -84,7 +84,7 @@ public class MinWatchCard
      * Maximum number of falsified literal in the constraint.
      * 
      */
-    private final int maxUnsatisfied;
+    protected final int maxUnsatisfied;
 
     /**
      * Constructs and normalizes a cardinality constraint. used by
@@ -764,6 +764,22 @@ public class MinWatchCard
             stb.append(">= "); //$NON-NLS-1$
             stb.append(this.degree);
         }
+        return stb.toString();
+    }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append('x');
+        stb.append(LiteralsUtils.toDimacs(this.lits[0]));
+        int i = 1;
+        while (i < this.lits.length) {
+            stb.append(" + x"); //$NON-NLS-1$
+            stb.append(LiteralsUtils.toDimacs(lits[i++]));
+        }
+        stb.append(" >= "); //$NON-NLS-1$
+        stb.append(this.degree);
+
         return stb.toString();
     }
 }

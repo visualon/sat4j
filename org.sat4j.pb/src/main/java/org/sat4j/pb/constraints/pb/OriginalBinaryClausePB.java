@@ -31,6 +31,7 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.OriginalBinaryClause;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
@@ -86,6 +87,17 @@ public final class OriginalBinaryClausePB extends OriginalBinaryClause
         OriginalBinaryClausePB c = new OriginalBinaryClausePB(literals, voc);
         c.register();
         return c;
+    }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append("+1 x");
+        stb.append(LiteralsUtils.toDimacs(head));
+        stb.append(" +1 x");
+        stb.append(LiteralsUtils.toDimacs(tail));
+        stb.append(" >= 1");
+        return stb.toString();
     }
 
 }

@@ -317,4 +317,15 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
         }
         return -1;
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        for (int p : lits) {
+            stb.append(LiteralsUtils.toDimacs(p));
+            stb.append(' ');
+        }
+        stb.append('0');
+        return stb.toString();
+    }
 }

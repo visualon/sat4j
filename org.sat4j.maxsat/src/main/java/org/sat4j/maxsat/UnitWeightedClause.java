@@ -68,4 +68,9 @@ public class UnitWeightedClause implements IConstr {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public String dump() {
+        throw new UnsupportedOperationException();
+    }
+
 }

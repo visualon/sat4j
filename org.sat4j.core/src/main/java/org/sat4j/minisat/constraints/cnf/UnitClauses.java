@@ -156,4 +156,17 @@ public class UnitClauses implements Constr {
     public String toString(VarMapper mapper) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        for (int i = 0; i < literals.length; i++) {
+            stb.append(literals[i]);
+            stb.append(" 0");
+            if (i < literals.length - 1) {
+                stb.append(System.lineSeparator());
+            }
+        }
+        return stb.toString();
+    }
 }

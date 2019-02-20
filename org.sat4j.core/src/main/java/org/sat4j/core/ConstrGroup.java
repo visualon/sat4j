@@ -118,4 +118,16 @@ public class ConstrGroup implements IConstr {
     public String toString(VarMapper mapper) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        for (int i = 0; i < constrs.size(); i++) {
+            stb.append(constrs.get(i).dump());
+            if (i < constrs.size() - 1) {
+                stb.append(System.lineSeparator());
+            }
+        }
+        return stb.toString();
+    }
 }

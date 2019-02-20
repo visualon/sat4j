@@ -85,6 +85,11 @@ public abstract class EmptySolver implements ISolver {
         public boolean canBePropagatedMultipleTimes() {
             throw new UnsupportedOperationException("Not implemented yet!");
         }
+
+        @Override
+        public String dump() {
+            throw new UnsupportedOperationException("Not implemented yet!");
+        }
     };
 
     private int nbVars;
@@ -112,7 +117,8 @@ public abstract class EmptySolver implements ISolver {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    public boolean isSatisfiable(boolean globalTimeout) throws TimeoutException {
+    public boolean isSatisfiable(boolean globalTimeout)
+            throws TimeoutException {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 

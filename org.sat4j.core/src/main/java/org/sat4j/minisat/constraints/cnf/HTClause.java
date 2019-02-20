@@ -374,4 +374,18 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
         return stb.toString();
     }
 
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append(LiteralsUtils.toDimacs(this.head));
+        stb.append(' ');
+        for (int p : middleLits) {
+            stb.append(LiteralsUtils.toDimacs(p));
+            stb.append(' ');
+        }
+        stb.append(LiteralsUtils.toDimacs(this.tail));
+        stb.append(" 0");
+        return stb.toString();
+    }
+
 }

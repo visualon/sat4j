@@ -64,5 +64,4 @@ public class UnitClausesPB extends UnitClauses implements PBConstr {
     public IVecInt computeAnImpliedClause() {
         throw new UnsupportedOperationException();
     }
-
 }

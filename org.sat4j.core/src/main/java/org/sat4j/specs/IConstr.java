@@ -88,4 +88,19 @@ public interface IConstr {
      * @since 2.3.6
      */
     String toString(VarMapper mapper);
+
+    /**
+     * Produces a dump of the constraint using its expected textual
+     * representation (i.e. Dimacs or OPB format for instance).
+     * 
+     * {@link #toString()} is aimed at representing the constraint with some
+     * internal details for e.g. debugging purpose.
+     * 
+     * This method is supposed to be called to dump the constraint in a file for
+     * serialization purpose.
+     * 
+     * @return a textual representation of the constraint, suitable for
+     *         rebuilding it.
+     */
+    String dump();
 }

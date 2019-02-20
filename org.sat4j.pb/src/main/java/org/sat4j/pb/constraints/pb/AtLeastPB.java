@@ -31,6 +31,7 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.card.AtLeast;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.ContradictionException;
@@ -133,4 +134,19 @@ public final class AtLeastPB extends AtLeast implements PBConstr {
         return null;
     }
 
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append("+1 x");
+        stb.append(LiteralsUtils.toDimacs(this.lits[0]));
+        int i = 1;
+        while (i < this.lits.length) {
+            stb.append(" +1 x"); //$NON-NLS-1$
+            stb.append(LiteralsUtils.toDimacs(lits[i++]));
+        }
+        stb.append(" >= "); //$NON-NLS-1$
+        stb.append(size() - this.maxUnsatisfied);
+
+        return stb.toString();
+    }
 }

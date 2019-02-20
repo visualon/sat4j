@@ -73,4 +73,12 @@ public final class UnitClausePB extends UnitClause implements PBConstr {
         return this.voc;
     }
 
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append("+1 x");
+        stb.append(literal);
+        stb.append(" >= 1");
+        return stb.toString();
+    }
 }

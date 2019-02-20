@@ -31,12 +31,13 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.LearntBinaryClause;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
 
-public final class LearntBinaryClausePB extends LearntBinaryClause implements
-        PBConstr {
+public final class LearntBinaryClausePB extends LearntBinaryClause
+        implements PBConstr {
 
     public LearntBinaryClausePB(IVecInt ps, ILits voc) {
         super(ps, voc);
@@ -67,4 +68,14 @@ public final class LearntBinaryClausePB extends LearntBinaryClause implements
         return BigInteger.ONE;
     }
 
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append("+1 x");
+        stb.append(LiteralsUtils.toDimacs(head));
+        stb.append(" +1 x");
+        stb.append(LiteralsUtils.toDimacs(tail));
+        stb.append(" >= 1");
+        return stb.toString();
+    }
 }

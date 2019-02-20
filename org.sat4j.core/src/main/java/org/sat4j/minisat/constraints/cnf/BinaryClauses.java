@@ -83,9 +83,8 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.sat4j.minisat.Constr#propagate(org.sat4j.minisat.UnitPropagationListener
-     * , int)
+     * @see org.sat4j.minisat.Constr#propagate(org.sat4j.minisat.
+     * UnitPropagationListener , int)
      */
     public boolean propagate(UnitPropagationListener s, int p) {
         // assert voc.isFalsified(this.reason);
@@ -283,6 +282,11 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
         // TODO: implement this method !
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
+    @Override
+    public String dump() {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 }

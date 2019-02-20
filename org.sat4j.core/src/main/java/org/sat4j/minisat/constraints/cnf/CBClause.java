@@ -29,6 +29,7 @@ package org.sat4j.minisat.constraints.cnf;
 
 import java.io.Serializable;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.minisat.core.Undoable;
 import org.sat4j.specs.Constr;
@@ -332,5 +333,16 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
 
     public Constr toConstraint() {
         return this;
+    }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        for (int p : lits) {
+            stb.append(LiteralsUtils.toDimacs(p));
+            stb.append(' ');
+        }
+        stb.append('0');
+        return stb.toString();
     }
 }

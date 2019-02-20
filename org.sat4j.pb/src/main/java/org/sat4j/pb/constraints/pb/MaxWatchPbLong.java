@@ -587,5 +587,10 @@ public final class MaxWatchPbLong extends WatchPbLong {
             return cstr.getCoefs();
         }
 
+        @Override
+        public String dump() {
+            return cstr.dump();
+        }
+
     }
 }

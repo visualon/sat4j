@@ -529,4 +529,20 @@ public final class MaxWatchCard
         }
         return stb.toString();
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append('x');
+        stb.append(LiteralsUtils.toDimacs(this.lits[0]));
+        int i = 1;
+        while (i < this.lits.length) {
+            stb.append(" + x"); //$NON-NLS-1$
+            stb.append(LiteralsUtils.toDimacs(lits[i++]));
+        }
+        stb.append(" >= "); //$NON-NLS-1$
+        stb.append(this.degree);
+
+        return stb.toString();
+    }
 }

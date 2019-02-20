@@ -299,4 +299,14 @@ public abstract class BinaryClause
         stb.append("]"); //$NON-NLS-1$
         return stb.toString();
     }
+
+    @Override
+    public String dump() {
+        StringBuilder stb = new StringBuilder();
+        stb.append(LiteralsUtils.toDimacs(head));
+        stb.append(' ');
+        stb.append(LiteralsUtils.toDimacs(tail));
+        stb.append(" 0");
+        return stb.toString();
+    }
 }

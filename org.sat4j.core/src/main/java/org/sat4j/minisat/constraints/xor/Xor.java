@@ -230,4 +230,9 @@ public class Xor implements Constr, Propagatable {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
+    @Override
+    public String dump() {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
 }
