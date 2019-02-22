@@ -33,6 +33,15 @@ public class BugSAT155 {
     }
 
     @Test
+    public void testBasicDumpPBNegativeLiteral() throws ContradictionException {
+        IPBSolver solver = SolverFactory.newCuttingPlanes();
+        IVecInt literals = new VecInt(new int[] { 1, -2, 3 });
+        IConstr c1 = solver.addClause(literals);
+        assertEquals("+1 x1 +1 ~x2 +1 x3 >= 1", c1.dump());
+
+    }
+
+    @Test
     public void testBasicDump4Card() throws ContradictionException {
         IPBSolver solver = SolverFactory.newDefault();
         IVecInt literals = new VecInt(new int[] { 1, 2, 3 });
@@ -49,6 +58,14 @@ public class BugSAT155 {
     }
 
     @Test
+    public void testBasicDump4CardPBNegative() throws ContradictionException {
+        IPBSolver solver = SolverFactory.newCuttingPlanes();
+        IVecInt literals = new VecInt(new int[] { -1, 2, 3 });
+        IConstr c1 = solver.addAtLeast(literals, 2);
+        assertEquals("+1 ~x1 +1 x2 +1 x3 >= 2", c1.dump());
+    }
+
+    @Test
     public void testBasicDump4PB() throws ContradictionException {
         IPBSolver solver = SolverFactory.newDefault();
         IVecInt literals = new VecInt(new int[] { 1, 2, 3 });
@@ -59,4 +76,14 @@ public class BugSAT155 {
         assertEquals("+2 x1 +1 x2 +1 x3 >= 2", c1.dump());
     }
 
+    @Test
+    public void testBasicDump4PBNegativeLieral() throws ContradictionException {
+        IPBSolver solver = SolverFactory.newDefault();
+        IVecInt literals = new VecInt(new int[] { 1, 2, -3 });
+        IVec<BigInteger> coeffs = new Vec<>();
+        coeffs.push(BigInteger.valueOf(2)).push(BigInteger.ONE)
+                .push(BigInteger.ONE);
+        IConstr c1 = solver.addAtLeast(literals, coeffs, BigInteger.valueOf(2));
+        assertEquals("+2 x1 +1 x2 +1 ~x3 >= 2", c1.dump());
+    }
 }

@@ -31,6 +31,7 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 
+import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.UnitClause;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
@@ -76,8 +77,8 @@ public final class UnitClausePB extends UnitClause implements PBConstr {
     @Override
     public String dump() {
         StringBuilder stb = new StringBuilder();
-        stb.append("+1 x");
-        stb.append(literal);
+        stb.append("+1 ");
+        stb.append(LiteralsUtils.toOPB(literal));
         stb.append(" >= 1");
         return stb.toString();
     }

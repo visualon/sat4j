@@ -750,8 +750,8 @@ public abstract class WatchPbLongCP
             for (int i = 0; i < this.lits.length; i++) {
                 stb.append("+");
                 stb.append(this.coefs[i]);
-                stb.append(" x");
-                stb.append(LiteralsUtils.toDimacs(this.lits[i]));
+                stb.append(" ");
+                stb.append(LiteralsUtils.toOPB(this.lits[i]));
                 stb.append(' ');
             }
             stb.append(">= ");

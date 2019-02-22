@@ -92,14 +92,14 @@ public final class OriginalHTClausePB extends OriginalHTClause
     @Override
     public String dump() {
         StringBuilder stb = new StringBuilder();
-        stb.append("+1 x");
-        stb.append(LiteralsUtils.toDimacs(this.head));
+        stb.append("+1 ");
+        stb.append(LiteralsUtils.toOPB(this.head));
         for (int p : middleLits) {
-            stb.append(" +1 x");
-            stb.append(LiteralsUtils.toDimacs(p));
+            stb.append(" +1 ");
+            stb.append(LiteralsUtils.toOPB(p));
         }
-        stb.append(" +1 x");
-        stb.append(LiteralsUtils.toDimacs(this.tail));
+        stb.append(" +1 ");
+        stb.append(LiteralsUtils.toOPB(this.tail));
         stb.append(" >= 1");
         return stb.toString();
     }

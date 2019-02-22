@@ -92,10 +92,10 @@ public final class OriginalBinaryClausePB extends OriginalBinaryClause
     @Override
     public String dump() {
         StringBuilder stb = new StringBuilder();
-        stb.append("+1 x");
-        stb.append(LiteralsUtils.toDimacs(head));
-        stb.append(" +1 x");
-        stb.append(LiteralsUtils.toDimacs(tail));
+        stb.append("+1 ");
+        stb.append(LiteralsUtils.toOPB(head));
+        stb.append(" +1 ");
+        stb.append(LiteralsUtils.toOPB(tail));
         stb.append(" >= 1");
         return stb.toString();
     }

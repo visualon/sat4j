@@ -121,10 +121,24 @@ public final class LiteralsUtils {
      * 
      * @param x
      *            the literal in Dimacs format
-     * @return the literal in internal format.
+     * @return the literal in internal format
      * @since 2.2
      */
     public static int toInternal(int x) {
         return x < 0 ? -x << 1 ^ 1 : x << 1;
+    }
+
+    /**
+     * decode the internal representation in an OPB-like representation.
+     * 
+     * Note that we use the literal representation (~xi) which may not be
+     * supoorted by all OPB solvers.
+     * 
+     * @param p
+     *            a literal in internal format
+     * @return that literal using the OPB literal format.
+     */
+    public static String toOPB(int p) {
+        return ((p & 1) == 0 ? "" : "~") + "x" + (p >> 1);
     }
 }
