@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.sat4j.specs.ISolver;
@@ -43,11 +44,12 @@ import org.sat4j.specs.ISolver;
  * 
  * @author bourgeois
  */
-public abstract class ASolverFactory<T extends ISolver> implements Serializable {
+public abstract class ASolverFactory<T extends ISolver>
+        implements Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -67,6 +69,7 @@ public abstract class ASolverFactory<T extends ISolver> implements Serializable 
                 l.add(solver.getName().substring(3));
             }
         }
+        Collections.sort(l);
         String[] names = new String[l.size()];
         l.toArray(names);
         return names;
@@ -85,8 +88,8 @@ public abstract class ASolverFactory<T extends ISolver> implements Serializable 
     public T createSolverByName(String solvername) {
         try {
             Class<?>[] paramtypes = {};
-            Method m = this.getClass()
-                    .getMethod("new" + solvername, paramtypes); //$NON-NLS-1$
+            Method m = this.getClass().getMethod("new" + solvername, //$NON-NLS-1$
+                    paramtypes);
             return (T) m.invoke(null, (Object[]) null);
         } catch (SecurityException e) {
             System.err.println(e.getLocalizedMessage());
