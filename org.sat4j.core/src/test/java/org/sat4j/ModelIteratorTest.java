@@ -32,6 +32,7 @@ package org.sat4j;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -298,8 +299,11 @@ public class ModelIteratorTest {
             clause.push(-3);
             solver.addClause(clause);
             int counter = 0;
+            int[] model;
             while (solver.isSatisfiable() && counter < 10) {
-                solver.model();
+                model = solver.model();
+                assertNotNull(model);
+                assertEquals(3, model.length);
                 counter++;
             }
             assertEquals(10, counter);
@@ -327,8 +331,11 @@ public class ModelIteratorTest {
             clause.push(-3);
             solver.addClause(clause);
             int counter = 0;
+            int[] model;
             while (solver.isSatisfiable() && counter < 10) {
-                solver.model();
+                model = solver.model();
+                assertNotNull(model);
+                assertEquals(3, model.length);
                 counter++;
             }
             assertEquals(10, counter);
@@ -413,8 +420,11 @@ public class ModelIteratorTest {
         try {
             iterator.addClause(clause);
             iterator.setTimeout(3);
+            int[] model;
             while (iterator.isSatisfiable()) {
-                iterator.model();
+                model = iterator.model();
+                assertNotNull(model);
+                assertEquals(99, model.length);
             }
         } catch (TimeoutException e) {
 
