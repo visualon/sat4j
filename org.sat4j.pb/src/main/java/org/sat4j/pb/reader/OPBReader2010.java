@@ -51,8 +51,8 @@ public class OPBReader2010 extends OPBReader2007 {
     private BigInteger softLimit = SAT4J_MAX_BIG_INTEGER;
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public OPBReader2010(IPBSolver solver) {
@@ -104,12 +104,9 @@ public class OPBReader2010 extends OPBReader2007 {
             if (rest != null && rest.indexOf("#product=") != -1) {
                 String[] splitted = rest.trim().split(" ");
                 if (splitted[0].equals("#product=")) {
-                    Integer.parseInt(splitted[1]);
+                    int nbproduct = Integer.parseInt(splitted[1]);
+                    assert nbproduct >= 0;
                 }
-
-                // if (splitted[2].equals("sizeproduct="))
-                // readWord();
-
             }
         }
         // callback to transmit the data
@@ -159,8 +156,8 @@ public class OPBReader2010 extends OPBReader2007 {
                         throw new ParseFormatException(
                                 "Expecting end of weight ");
                     }
-                    BigInteger coeff = new BigInteger(s.substring(1,
-                            s.length() - 1));
+                    BigInteger coeff = new BigInteger(
+                            s.substring(1, s.length() - 1));
                     getCoeffs().push(coeff);
                     int varId = this.nbNewSymbols++;
                     getVars().push(varId);
@@ -177,7 +174,8 @@ public class OPBReader2010 extends OPBReader2007 {
         if (this.softConstraint) {
             int varId = getVars().last();
             BigInteger constrWeight = this.d;
-            for (Iterator<BigInteger> it = this.coeffs.iterator(); it.hasNext();) {
+            for (Iterator<BigInteger> it = this.coeffs.iterator(); it
+                    .hasNext();) {
                 constrWeight = constrWeight.add(it.next().abs());
             }
             if ("<=".equals(this.operator)) {

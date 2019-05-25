@@ -54,6 +54,7 @@ package org.sat4j.pb.reader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -230,12 +231,9 @@ public class OPBReader2007 extends OPBReader2006 {
             if (rest != null && rest.indexOf("#product=") != -1) {
                 String[] splitted = rest.trim().split(" ");
                 if (splitted[0].equals("#product=")) {
-                    Integer.parseInt(splitted[1]);
+                    int nbproduct = Integer.parseInt(splitted[1]);
+                    assert nbproduct >= 0;
                 }
-
-                // if (splitted[2].equals("sizeproduct="))
-                // readWord();
-
             }
         }
         // callback to transmit the data
@@ -264,8 +262,8 @@ public class OPBReader2007 extends OPBReader2006 {
             // product => newSymbol (this is a clause)
             // not x1 or not x2 ... or not xn or newSymbol
             if (tmpLit.size() == 2) {
-                Map<String, String> map1 = this.binaryProductToVar.get(tmpLit
-                        .get(0));
+                Map<String, String> map1 = this.binaryProductToVar
+                        .get(tmpLit.get(0));
                 if (map1 == null) {
                     map1 = new HashMap<String, String>();
                     this.binaryProductToVar.put(tmpLit.get(0), map1);
