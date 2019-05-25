@@ -153,7 +153,7 @@ public class MinSumOWAOptimizer extends AbstractLinMultiObjOptimizer {
         return getObjectiveValue();
     }
 
-    class PermutationComputer
+    static class PermutationComputer
             implements Iterator<List<Integer>>, Iterable<List<Integer>> {
 
         private int currentElement;
