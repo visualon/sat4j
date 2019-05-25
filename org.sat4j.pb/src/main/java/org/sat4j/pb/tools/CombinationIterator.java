@@ -3,10 +3,11 @@ package org.sat4j.pb.tools;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
-public class CombinationIterator implements Iterable<Set<Integer>>,
-        Iterator<Set<Integer>> {
+public class CombinationIterator
+        implements Iterable<Set<Integer>>, Iterator<Set<Integer>> {
 
     /* contains a combination of indexes ; ascending order */
     private int indexes[] = null;
@@ -90,6 +91,9 @@ public class CombinationIterator implements Iterable<Set<Integer>>,
     }
 
     public Set<Integer> next() {
+        if (!this.hasNext) {
+            throw new NoSuchElementException();
+        }
         Set<Integer> nextSet = new HashSet<Integer>();
         for (Integer i : this.indexes) {
             nextSet.add(this.items[i]);
