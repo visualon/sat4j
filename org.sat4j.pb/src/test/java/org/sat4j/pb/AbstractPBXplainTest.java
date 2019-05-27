@@ -35,8 +35,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.sat4j.AbstractXplainTest;
 import org.sat4j.core.VecInt;
 import org.sat4j.pb.tools.XplainPB;
 import org.sat4j.specs.ContradictionException;
@@ -44,8 +44,283 @@ import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
 
-public abstract class AbstractPBXplainTest
-        extends AbstractXplainTest<IPBSolver, XplainPB> {
+public abstract class AbstractPBXplainTest {
+
+    protected XplainPB solver;
+
+    protected abstract XplainPB getXplain();
+
+    @Before
+    public void startUp() {
+        this.solver = getXplain();
+    }
+
+    @Test
+    public void testGlobalInconsistency()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(2);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        Collection<IConstr> explanation = this.solver.explain();
+        assertEquals(4, explanation.size());
+    }
+
+    @Test
+    public void testGlobalInconsistencyIndex()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(2);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        int[] explanation = this.solver.minimalExplanation();
+        assertEquals(4, explanation.length);
+        assertEquals(1, explanation[0]);
+        assertEquals(2, explanation[1]);
+        assertEquals(3, explanation[2]);
+        assertEquals(4, explanation[3]);
+
+    }
+
+    @Test
+    public void testAlmostGlobalInconsistency()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(3);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        IConstr c1 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        IConstr c2 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        IConstr c3 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        IConstr c4 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        Collection<IConstr> explanation = this.solver.explain();
+        assertEquals(4, explanation.size());
+        assertTrue(explanation.contains(c1));
+        assertTrue(explanation.contains(c2));
+        assertTrue(explanation.contains(c3));
+        assertTrue(explanation.contains(c4));
+    }
+
+    @Test
+    public void testAlmostGlobalInconsistencyIndex()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(3);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        int[] explanation = this.solver.minimalExplanation();
+        assertEquals(4, explanation.length);
+        assertEquals(1, explanation[0]);
+        assertEquals(2, explanation[1]);
+        assertEquals(3, explanation[2]);
+        assertEquals(4, explanation[3]);
+    }
+
+    @Test
+    public void testAlmostGlobalInconsistencyII()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(3);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        IConstr c1 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        IConstr c2 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        IConstr c4 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        IConstr c5 = this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        Collection<IConstr> explanation = this.solver.explain();
+        assertEquals(4, explanation.size());
+        assertTrue(explanation.contains(c1));
+        assertTrue(explanation.contains(c2));
+        assertTrue(explanation.contains(c4));
+        assertTrue(explanation.contains(c5));
+    }
+
+    @Test
+    public void testAlmostGlobalInconsistencyIIIndex()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(3);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        int[] explanation = this.solver.minimalExplanation();
+        assertEquals(4, explanation.length);
+        assertEquals(1, explanation[0]);
+        assertEquals(2, explanation[1]);
+        assertEquals(4, explanation[2]);
+        assertEquals(5, explanation[3]);
+    }
+
+    @Test
+    public void testTheCaseOfTwoMUSes()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(4);
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2);
+        IConstr c1 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(-2);
+        IConstr c2 = this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(4);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-4);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        Collection<IConstr> explanation = this.solver.explain();
+        assertEquals(4, explanation.size());
+        assertTrue(explanation.contains(c1));
+        assertTrue(explanation.contains(c2));
+    }
+
+    @Test
+    public void testEclipseTestCase()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(3);
+        IVecInt clause = new VecInt();
+        clause.push(-1);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-2).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-2).push(1);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        Collection<IConstr> explanation = this.solver.explain();
+        assertEquals(3, explanation.size());
+    }
+
+    @Test
+    public void testEclipseTestCase2()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(4);
+        IVecInt clause = new VecInt();
+        clause.push(-1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-2).push(-3);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-4).push(1);
+        this.solver.addClause(clause);
+        clause.clear();
+        IVecInt assump = new VecInt();
+        assump.push(4);
+        assertFalse(this.solver.isSatisfiable(assump));
+        Collection<IConstr> explanation = this.solver.explain();
+        assertEquals(4, explanation.size());
+    }
+
+    @Test
+    public void testDavidTestCase()
+            throws ContradictionException, TimeoutException {
+        this.solver.newVar(2);
+        IVecInt clause = new VecInt();
+        clause.push(1);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(2);
+        this.solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        this.solver.addClause(clause);
+        clause.clear();
+        assertFalse(this.solver.isSatisfiable());
+        Collection<IConstr> explanation = this.solver.explain();
+        System.out.println(explanation);
+        assertTrue(explanation.size() == 2 || explanation.size() == 3);
+    }
 
     @Test
     public void testExactlyConstraint()
@@ -73,9 +348,8 @@ public abstract class AbstractPBXplainTest
         assertTrue(explanation.contains(c1));
     }
 
-    @Override
     @Test
-    public void testDavidTestCase()
+    public void testDavidTestCaseAtLeast()
             throws ContradictionException, TimeoutException {
         IVecInt coeffs = new VecInt();
         coeffs.push(1);
