@@ -270,6 +270,7 @@ public class Launcher extends AbstractLauncher implements ILogAble {
                 break;
             default:
                 setLauncherMode(ILauncherMode.DECISION);
+                this.problem = asolver;
                 break;
             }
 
