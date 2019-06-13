@@ -63,7 +63,7 @@ final class DecisionMode implements ILauncherMode {
             out.println(ANSWER_PREFIX + exitCode);
             if (exitCode != ExitCode.UNKNOWN
                     && exitCode != ExitCode.UNSATISFIABLE) {
-                int[] model = problem.model();
+                int[] model = solver.model();
                 if (System.getProperty("prime") != null) {
                     int initiallength = model.length;
                     logger.log("returning a prime implicant ...");
