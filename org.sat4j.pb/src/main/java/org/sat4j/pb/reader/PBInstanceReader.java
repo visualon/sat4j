@@ -54,8 +54,8 @@ public class PBInstanceReader extends InstanceReader {
 
     private Reader getDefaultOPBReader() {
         if (this.opb == null) {
-            this.opb = new OPBReader2012(new PBSolverHandle(
-                    new PseudoOptDecorator(solver)));
+            this.opb = new OPBReader2012(
+                    new PBSolverHandle(new PseudoOptDecorator(solver)));
         }
         return this.opb;
     }
@@ -70,5 +70,15 @@ public class PBInstanceReader extends InstanceReader {
             return getDefaultOPBReader();
         }
         return super.handleFileName(fname, prefix);
+    }
+
+    @Override
+    protected String[] getReservedPrefixes() {
+        String[] parent = super.getReservedPrefixes();
+        int n = parent.length;
+        String[] prefixes = new String[n + 1];
+        System.arraycopy(parent, 0, prefixes, 0, n);
+        prefixes[n] = "PB";
+        return prefixes;
     }
 }
