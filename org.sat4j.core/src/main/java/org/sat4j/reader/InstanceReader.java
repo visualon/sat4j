@@ -31,7 +31,6 @@ package org.sat4j.reader;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Locale;
 import java.util.Map;
 
 import org.sat4j.specs.ContradictionException;
@@ -98,6 +97,10 @@ public class InstanceReader extends Reader {
         return this.aag;
     }
 
+    protected String[] getReservedPrefixes() {
+        return new String[] { "EZCNF" };
+    }
+
     @Override
     public IProblem parseInstance(String filename)
             throws ParseFormatException, IOException, ContradictionException {
@@ -105,17 +108,15 @@ public class InstanceReader extends Reader {
         String prefix = "";
 
         if (filename.startsWith("http://")) {
-            filename = filename.substring(filename.lastIndexOf('/'),
-                    filename.length() - 1);
+            filename = filename.substring(filename.lastIndexOf('/') + 1);
         }
+        for (String reservedPrefix : getReservedPrefixes()) {
+            if (filename.startsWith(reservedPrefix + ":")) {
+                filename = filename.substring(reservedPrefix.length() + 1);
+                prefix = reservedPrefix;
 
-        if (filename.indexOf(':') != -1) {
-            String[] parts = filename.split(":", 2);
-            filename = parts[1];
-            prefix = parts[0].toUpperCase(Locale.getDefault());
-
+            }
         }
-
         if (filename.endsWith(".gz") || filename.endsWith(".bz2")) {
             fname = filename.substring(0, filename.lastIndexOf('.'));
         } else {
