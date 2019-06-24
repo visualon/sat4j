@@ -31,6 +31,8 @@ package org.sat4j.reader;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import org.sat4j.specs.ContradictionException;
@@ -97,8 +99,10 @@ public class InstanceReader extends Reader {
         return this.aag;
     }
 
-    protected String[] getReservedPrefixes() {
-        return new String[] { "EZCNF" };
+    protected Collection<String> getReservedPrefixes() {
+        Collection<String> prefixes = new ArrayList<>();
+        prefixes.add("EZCNF");
+        return prefixes;
     }
 
     @Override

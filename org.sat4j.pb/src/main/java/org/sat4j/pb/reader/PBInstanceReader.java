@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.pb.reader;
 
+import java.util.Collection;
+
 import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.PBSolverHandle;
 import org.sat4j.pb.PseudoOptDecorator;
@@ -73,12 +75,9 @@ public class PBInstanceReader extends InstanceReader {
     }
 
     @Override
-    protected String[] getReservedPrefixes() {
-        String[] parent = super.getReservedPrefixes();
-        int n = parent.length;
-        String[] prefixes = new String[n + 1];
-        System.arraycopy(parent, 0, prefixes, 0, n);
-        prefixes[n] = "PB";
+    protected Collection<String> getReservedPrefixes() {
+        Collection<String> prefixes = super.getReservedPrefixes();
+        prefixes.add("PB");
         return prefixes;
     }
 }
