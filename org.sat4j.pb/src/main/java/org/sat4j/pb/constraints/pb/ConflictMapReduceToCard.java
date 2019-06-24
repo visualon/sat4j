@@ -91,7 +91,7 @@ public class ConflictMapReduceToCard extends ConflictMap {
         int cpt = 0;
         for (int i = 0; i < reducedCoefs.length; i++) {
             if ((tmpCoefs[i].equals(BigInteger.ZERO))
-                    && (reducedCoefs[i].compareTo(maxCoef) > 1)) {
+                    && (reducedCoefs[i].compareTo(maxCoef) > 0)) {
                 reducedCoefs[i] = BigInteger.ONE;
                 cpt++;
             } else {
