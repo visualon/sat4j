@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.SchemaFactory;
@@ -45,6 +46,7 @@ public class CspXmlParser {
 
 		// obtenir un parser
 		SAXParserFactory saxpf = SAXParserFactory.newInstance();
+		saxpf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 		// associer un schema pour la validation
 		URL url = CspXmlParser.class.getResource("/instance_2_0.xsd");
 		// System.out.println(url);
