@@ -52,7 +52,7 @@ import org.sat4j.tools.LexicoDecorator;
  */
 final class OptimizationMode implements ILauncherMode {
     private int nbSolutions;
-    private volatile ExitCode exitCode = ExitCode.UNKNOWN;
+    private ExitCode exitCode = ExitCode.UNKNOWN;
     private boolean isIncomplete = false;
     private PrintWriter out;
     private long beginTime;
