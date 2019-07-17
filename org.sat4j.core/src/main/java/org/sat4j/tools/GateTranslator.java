@@ -319,6 +319,21 @@ public class GateTranslator extends SolverDecorator<ISolver> {
     }
 
     /**
+     * translate <code>y &lt;=&gt; x1 xor x2 xor ... xor xn</code> into a native
+     * xor constraint.
+     * 
+     * @param y
+     * @param literals
+     * @return a native xor constraint
+     * @since 2.3.6
+     * 
+     */
+    public IConstr nativeXor(int y, IVecInt literals) {
+        literals.push(-y);
+        return addParity(literals, false);
+    }
+
+    /**
      * translate
      * <code>y &lt;=&gt; (x1 &lt;=&gt; x2 &lt;=&gt; ... &lt;=&gt; xn)</code>
      * into clauses.
