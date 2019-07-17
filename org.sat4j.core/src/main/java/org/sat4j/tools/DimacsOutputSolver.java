@@ -206,16 +206,14 @@ public class DimacsOutputSolver extends AbstractOutputSolver
      * @since 2.3.3
      */
     public void printStat(PrintWriter out) {
-        throw new UnsupportedOperationException();
-
+        // do nothing
     }
 
     /**
      * @since 2.3.3
      */
     public void printInfos(PrintWriter out) {
-        throw new UnsupportedOperationException();
-
+        // do nothing
     }
 
     public IConstr addClause(IVecInt literals, int desc)
