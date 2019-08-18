@@ -92,7 +92,7 @@ public abstract class AbstractAcceptanceTestCase extends TestCase {
             throws FileNotFoundException, ParseFormatException, IOException {
         try {
             this.reader.parseInstance(filename);
-            this.solver.setTimeout(300); // set timeout to 5 minutes.
+            this.solver.setTimeout(600); // set timeout to 10 minutes.
             return this.solver.isSatisfiable();
         } catch (ContradictionException ce) {
             return false;
