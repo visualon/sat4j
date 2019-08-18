@@ -211,7 +211,7 @@ public final class Backbone {
                         }
                         litsToTest.clear();
                     }
-                    solver.removeConstr(constr);
+                    solver.removeSubsumedConstr(constr);
                 } catch (ContradictionException e) {
                     for (IteratorInt it = litsToTest.iterator(); it
                             .hasNext();) {
