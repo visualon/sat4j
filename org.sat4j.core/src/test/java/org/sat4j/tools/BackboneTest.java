@@ -45,8 +45,8 @@ import org.sat4j.specs.TimeoutException;
 public class BackboneTest {
 
     @Test
-    public void testEasyCaseWithOnlyOneModel() throws ContradictionException,
-            TimeoutException {
+    public void testEasyCaseWithOnlyOneModel()
+            throws ContradictionException, TimeoutException {
         ISolver solver = SolverFactory.newDefault();
         IVecInt clause = new VecInt();
         clause.push(1).push(2).push(3);
@@ -68,8 +68,8 @@ public class BackboneTest {
     }
 
     @Test
-    public void testEmptyBackbone() throws ContradictionException,
-            TimeoutException {
+    public void testEmptyBackbone()
+            throws ContradictionException, TimeoutException {
         ISolver solver = SolverFactory.newDefault();
         IVecInt clause = new VecInt();
         clause.push(1).push(2).push(3);
@@ -86,8 +86,8 @@ public class BackboneTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCaseWithUnsatProblem() throws ContradictionException,
-            TimeoutException {
+    public void testCaseWithUnsatProblem()
+            throws ContradictionException, TimeoutException {
         ISolver solver = SolverFactory.newDefault();
         IVecInt clause = new VecInt();
         clause.push(1).push(2);
@@ -114,8 +114,8 @@ public class BackboneTest {
      * 
      */
     @Test
-    public void testBugUnitClauses() throws ContradictionException,
-            TimeoutException {
+    public void testBugUnitClauses()
+            throws ContradictionException, TimeoutException {
         ISolver solver1 = SolverFactory.newDefault();
         ISolver solver2 = SolverFactory.newDefault();
         ISolver solver3 = SolverFactory.newDefault();
@@ -222,8 +222,8 @@ public class BackboneTest {
     }
 
     @Test
-    public void testBugBr4cpWithExplanation() throws ContradictionException,
-            TimeoutException {
+    public void testBugBr4cpWithExplanation()
+            throws ContradictionException, TimeoutException {
         AllMUSes muses = new AllMUSes(true, SolverFactory.instance());
         IGroupSolver solver = muses.getSolverInstance();
         IVecInt clause = new VecInt();
@@ -231,8 +231,8 @@ public class BackboneTest {
         clause.push(one = solver.nextFreeVarId(true));
         solver.addClause(clause, 1);
         clause.clear();
-        clause.push(two = solver.nextFreeVarId(true)).push(
-                three = solver.nextFreeVarId(true));
+        clause.push(two = solver.nextFreeVarId(true))
+                .push(three = solver.nextFreeVarId(true));
         solver.addClause(clause, 2);
         clause.clear();
         clause.push(-two).push(-three);
@@ -258,4 +258,34 @@ public class BackboneTest {
                 new VecInt(new int[] { -three }));
         assertEquals(3, backbone.size());
     }
+
+    @Test
+    public void testStateOfSolverAfterBackboneComputationWithIBB()
+            throws ContradictionException, TimeoutException {
+        ISolver solver = SolverFactory.newDefault();
+        IVecInt clause = new VecInt();
+        clause.push(1).push(2).push(3).push(4);
+        solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(-2);
+        solver.addClause(clause);
+        clause.clear();
+        clause.push(-1).push(2);
+        solver.addClause(clause);
+        clause.clear();
+        clause.push(1).push(2);
+        solver.addClause(clause);
+        clause.clear();
+        IVecInt backbone = Backbone.ibb().compute(solver);
+        assertEquals(2, backbone.size());
+        assertTrue(backbone.contains(-1));
+        assertTrue(backbone.contains(2));
+        ModelIterator iterator = new ModelIterator(solver);
+        while (iterator.isSatisfiable()) {
+            iterator.model();
+        }
+        assertEquals(4, iterator.realNumberOfVariables());
+        assertEquals(4, iterator.numberOfModelsFoundSoFar());
+    }
+
 }

@@ -222,6 +222,7 @@ public final class Backbone {
                 incSatTests();
             }
             listener.end(nbSatTests);
+            solver.clearLearntClauses();
             return candidates;
         }
     };
