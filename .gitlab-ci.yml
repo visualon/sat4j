@@ -34,6 +34,13 @@ java7:
     script: 
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
     allow_failure: true
+
+maven36-java8:
+    image: maven:3.6.1-jdk-8-slim
+    stage: test
+    script: 
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
+    allow_failure: true
     
 maven36-java11:
     image: maven:3.6.1-jdk-11-slim
