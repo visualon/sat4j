@@ -32,20 +32,20 @@ java7:
     image: maven:3.5.4-jdk-7-alpine
     stage: test
     script: 
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
     allow_failure: true
     
 maven36-java11:
     image: maven:3.6.1-jdk-11-slim
     stage: test
     script: 
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
     allow_failure: true
 
 maven36-java12:
     image: maven:3.6.1-jdk-12
     stage: test
     script:
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true
+      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
     allow_failure: true
 
