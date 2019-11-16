@@ -30,7 +30,6 @@
 package org.sat4j;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -243,19 +242,13 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
             }
             this.beginTime = System.currentTimeMillis();
             this.problem = readProblem(instanceName);
-            try {
-                solve(this.problem);
-            } catch (TimeoutException e) {
-                log("timeout"); //$NON-NLS-1$
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println("FATAL " + e.getLocalizedMessage());
-        } catch (IOException e) {
-            System.err.println("FATAL " + e.getLocalizedMessage());
+            solve(this.problem);
+        } catch (TimeoutException e) {
+            log("timeout"); //$NON-NLS-1$
         } catch (ContradictionException e) {
             this.launcherMode.setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
-        } catch (ParseFormatException e) {
+        } catch (IOException | ParseFormatException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());
         }
     }
