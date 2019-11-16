@@ -8,9 +8,10 @@ variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 
-java8:
+java8-sonar:
     image: maven:3.5.4-jdk-8-alpine
     stage: build
+    only: master
     script: 
       - mvn $MAVEN_CLI_OPTS clean org.jacoco:jacoco-maven-plugin:prepare-agent --settings settings.xml deploy 
       - mvn $MAVEN_CLI_OPTS sonar:sonar
@@ -18,6 +19,16 @@ java8:
        paths:
         - .m2/repository 
 
+java8:
+    image: maven:3.5.4-jdk-8-alpine
+    stage: build
+    except: master
+    script: 
+      - mvn $MAVEN_CLI_OPTS clean org.jacoco:jacoco-maven-plugin:prepare-agent --settings settings.xml deploy 
+    cache:
+       paths:
+        - .m2/repository 
+        
 jars-j8:
     image: frekele/ant:1.10.1-jdk8
     stage: build
