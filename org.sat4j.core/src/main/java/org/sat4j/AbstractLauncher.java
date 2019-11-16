@@ -74,7 +74,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
 
     protected long beginTime;
 
-    protected Reader reader;
+    protected transient Reader reader;
 
     protected boolean feedWithDecorated = false;
 
@@ -134,21 +134,11 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
         if (url == null) {
             log("no version file found!!!"); //$NON-NLS-1$
         } else {
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(
-                        new InputStreamReader(url.openStream()));
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(url.openStream()))) {
                 log("version " + in.readLine()); //$NON-NLS-1$
             } catch (IOException e) {
                 log("c ERROR: " + e.getMessage());
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        log("c ERROR: " + e.getMessage());
-                    }
-                }
             }
         }
         Properties prop = System.getProperties();
@@ -399,13 +389,6 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
 
     protected <T extends ISolver> void showAvailableSolvers(
             ASolverFactory<T> afactory) {
-        // if (afactory != null) {
-        // log("Available solvers: "); //$NON-NLS-1$
-        // String[] names = afactory.solverNames();
-        // for (int i = 0; i < names.length; i++) {
-        // log(names[i]);
-        // }
-        // }
         showAvailableSolvers(afactory, "");
     }
 

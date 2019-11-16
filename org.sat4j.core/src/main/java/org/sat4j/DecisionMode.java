@@ -141,8 +141,7 @@ final class DecisionMode implements ILauncherMode {
                 (System.currentTimeMillis() - beginTime) / 1000.0);
         if (System.getProperty("printallmodels") != null) {
             this.out.println(SOLUTION_PREFIX
-                    + new VecInt(solution).toString().replaceAll(",", " ")
-                    + " 0");
+                    + new VecInt(solution).toString().replace(",", " ") + " 0");
         }
     }
 
