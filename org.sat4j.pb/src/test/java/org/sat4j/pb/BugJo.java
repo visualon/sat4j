@@ -16,7 +16,6 @@ public class BugJo {
     @Test
     public void testJoUnit()
             throws ParseFormatException, ContradictionException, IOException {
-        String STRING2 = "* #variable= 2 #constraint= 1\n*\n+1 x1 +1 x2 >= 1 ;\n";
         IPBSolver solver = SolverFactory.newDefault();
         Reader reader = new OPBReader2012(
                 new PBSolverHandle(new PseudoOptDecorator(solver)));
