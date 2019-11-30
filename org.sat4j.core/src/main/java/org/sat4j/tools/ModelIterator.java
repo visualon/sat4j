@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
@@ -69,6 +70,8 @@ public class ModelIterator extends SolverDecorator<ISolver> {
     protected boolean trivialfalsity = false;
     private final long bound;
     protected long nbModelFound = 0;
+
+    private final ConstrGroup blockingClauses = new ConstrGroup();
 
     /**
      * Create an iterator over the solutions available in <code>solver</code>.
@@ -120,7 +123,7 @@ public class ModelIterator extends SolverDecorator<ISolver> {
         int[] last = super.model();
         this.nbModelFound++;
         try {
-            discardCurrentModel();
+            blockingClauses.add(discardCurrentModel());
         } catch (ContradictionException e) {
             this.trivialfalsity = true;
         }
@@ -182,7 +185,7 @@ public class ModelIterator extends SolverDecorator<ISolver> {
             clause.push(-q);
         }
         try {
-            addBlockingClause(clause);
+            blockingClauses.add(addBlockingClause(clause));
         } catch (ContradictionException e) {
             this.trivialfalsity = true;
         }
@@ -197,5 +200,15 @@ public class ModelIterator extends SolverDecorator<ISolver> {
      */
     public long numberOfModelsFoundSoFar() {
         return this.nbModelFound;
+    }
+
+    /**
+     * Clear blocking clauses
+     * 
+     * @since 2.3.6
+     */
+    public void clearBlockingClauses() {
+        blockingClauses.removeFrom(this);
+        blockingClauses.clear();
     }
 }
