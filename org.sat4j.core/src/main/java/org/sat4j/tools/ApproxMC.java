@@ -38,7 +38,6 @@ import java.util.Random;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
-import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVec;
@@ -91,7 +90,7 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * The initial count of models of the formula, with no additional
      * constraint.
      */
-    private int initialCount;
+    private long initialCount;
 
     /**
      * The group of constraints that are temporarily added to the solver when it
@@ -99,7 +98,9 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * not needed anymore. This also discards learned constraints, but there is
      * (for now) no efficient way to deactivates parity constraints.
      */
-    private final transient ConstrGroup temporaryConstraints;
+    private final transient ConstrGroup parityConstraints;
+
+    private final ModelIterator counter;
 
     /**
      * Creates a new approximate model counter. The tolerance and confidence are
@@ -128,10 +129,12 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      */
     public ApproxMC(ISolver solver, double epsilon, double delta) {
         super(solver);
+        this.counter = new ModelIteratorToSATAdapter(solver,
+                SolutionFoundListener.VOID);
         this.epsilon = epsilon;
         this.delta = delta;
         this.initialCount = -1;
-        this.temporaryConstraints = new ConstrGroup();
+        this.parityConstraints = new ConstrGroup();
 
     }
 
@@ -197,7 +200,7 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      */
     private BigInteger core(int pivot) {
         // Counting without parity constraints.
-        int count = computeInitialCount(pivot + 1);
+        long count = computeInitialCount(pivot + 1);
         if (count <= pivot) {
             // The exact value has been computed.
             return BigInteger.valueOf(count);
@@ -233,7 +236,7 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * 
      * @return The initial count of models of the formula.
      */
-    private int computeInitialCount(int pivot) {
+    private long computeInitialCount(int pivot) {
         if (initialCount < 0) {
             initialCount = boundedSAT(pivot);
         }
@@ -255,10 +258,9 @@ public class ApproxMC extends SolverDecorator<ISolver> {
                     lits.push(v);
                 }
             }
-
             // Adding the generated constraint as temporary.
             IConstr constr = addParity(lits, RANDOM.nextBoolean());
-            temporaryConstraints.add(constr);
+            parityConstraints.add(constr);
         }
     }
 
@@ -271,53 +273,30 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * 
      * @return The number of model that have been counted.
      */
-    private int boundedSAT(int bound) {
-        int foundModels = 0;
-
+    private long boundedSAT(int bound) {
+        counter.setBound(bound);
+        long foundModels = 0;
         try {
-            // Counting the models.
-            while (isSatisfiable()) {
-                foundModels++;
-                if ((foundModels == bound) || blockModel()) {
-                    break;
-                }
-            }
-
-            return foundModels;
-
+            counter.isSatisfiable();
+            foundModels = counter.numberOfModelsFoundSoFar();
         } catch (TimeoutException e) {
             // We consider only the models that have been found so far.
-            return foundModels;
-
+            foundModels = counter.numberOfModelsFoundSoFar();
         } finally {
             // All temporary constraints must be removed, to prevent erroneous
             // results for the next calls.
-            clearTemporaryConstraints();
+            counter.clearBlockingClauses();
+            clearParityConstraints();
         }
-    }
-
-    /**
-     * Blocks the last model found by the solver.
-     * 
-     * @return Whether blocking the model resulted in a trivial contradiction.
-     */
-    private boolean blockModel() {
-        try {
-            IConstr blocking = discardCurrentModel();
-            temporaryConstraints.add(blocking);
-            return false;
-
-        } catch (ContradictionException e) {
-            return true;
-        }
+        return foundModels;
     }
 
     /**
      * Deletes all the temporary constraints that have been added so far.
      */
-    private void clearTemporaryConstraints() {
-        temporaryConstraints.removeFrom(this);
-        temporaryConstraints.clear();
+    private void clearParityConstraints() {
+        parityConstraints.removeFrom(this);
+        parityConstraints.clear();
     }
 
     /**
