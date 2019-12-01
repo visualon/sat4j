@@ -68,7 +68,7 @@ public class ModelIterator extends SolverDecorator<ISolver> {
     private static final long serialVersionUID = 1L;
 
     protected boolean trivialfalsity = false;
-    private final long bound;
+    private long bound;
     protected long nbModelFound = 0;
 
     private final ConstrGroup blockingClauses = new ConstrGroup();
@@ -208,7 +208,30 @@ public class ModelIterator extends SolverDecorator<ISolver> {
      * @since 2.3.6
      */
     public void clearBlockingClauses() {
+        this.trivialfalsity = false;
+        this.nbModelFound = 0;
         blockingClauses.removeFrom(this);
         blockingClauses.clear();
+    }
+
+    /**
+     * Return the maximum number of models to enumerate.
+     * 
+     * @return the current bound
+     * @since 2.3.6
+     */
+    public long getBound() {
+        return bound;
+    }
+
+    /**
+     * Change the maximum number of models to enumerate.
+     * 
+     * @param bound
+     *            the new bound.
+     * @since 2.3.6
+     */
+    public void setBound(long bound) {
+        this.bound = bound;
     }
 }

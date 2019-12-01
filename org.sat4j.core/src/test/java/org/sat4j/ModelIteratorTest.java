@@ -513,6 +513,7 @@ public class ModelIteratorTest {
         assertEquals(15, iterator.numberOfModelsFoundSoFar());
         assertFalse(iterator.isSatisfiable());
         iterator.clearBlockingClauses();
+        assertEquals(0, iterator.numberOfModelsFoundSoFar());
         while (iterator.isSatisfiable()) {
             iterator.model();
         }
