@@ -41,10 +41,17 @@ import org.sat4j.specs.IteratorInt;
 public interface SamplingSet {
 
     /**
+     * Gives the number of variables in this sampling set.
+     * 
+     * @return The number of variables.
+     */
+    int nVars();
+
+    /**
      * Gives an iterator over the variables of this set. These variables may
      * appear in the parity constraints produced by ApproxMC.
      * 
-     * @return An iterator over the variables to consider
+     * @return An iterator over the variables to consider.
      */
     IteratorInt variables();
 

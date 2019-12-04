@@ -252,4 +252,19 @@ public class Xor implements Constr, Propagatable {
         return stb.toString();
     }
 
+    /**
+     * Activates this Xor constraint.
+     */
+    public void activate() {
+        this.register();
+    }
+
+    /**
+     * Deactivates (i.e., forgets) a constraint, as there is no easy way to use
+     * selectors with parity constraints.
+     */
+    public void deactivate() {
+        this.remove(null);
+    }
+
 }

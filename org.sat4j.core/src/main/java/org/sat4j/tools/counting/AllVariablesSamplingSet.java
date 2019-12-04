@@ -71,6 +71,16 @@ public final class AllVariablesSamplingSet implements SamplingSet {
     /*
      * (non-Javadoc)
      * 
+     * @see org.sat4j.tools.counting.SamplingSet#nVars()
+     */
+    @Override
+    public int nVars() {
+        return solver.nVars();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.sat4j.tools.counting.SamplingSet#variables()
      */
     @Override

@@ -46,7 +46,7 @@ import org.sat4j.specs.IteratorInt;
  * 
  * @author Romain Wallon
  */
-class ParityConstraintGenerator {
+public class ParityConstraintGenerator {
 
     /**
      * The pseudo-random number generator used to create random parity
@@ -76,23 +76,12 @@ class ParityConstraintGenerator {
     private boolean activated;
 
     /**
-     * Creates a new ParityConstraintGenerator. All the variables are considered
-     * while creating parity constraints.
-     * 
-     * @param solver
-     *            The solver in which parity constraints are added.
-     */
-    public ParityConstraintGenerator(ISolver solver) {
-        this(solver, AllVariablesSamplingSet.of(solver));
-    }
-
-    /**
      * Creates a new ParityConstraintGenerator.
      * 
      * @param solver
      *            The solver in which parity constraints are added.
      * @param samplingSet
-     *            The set of variables to consider for the parity constraints.
+     *            The set of variables to consider in the parity constraints.
      */
     public ParityConstraintGenerator(ISolver solver, SamplingSet samplingSet) {
         this.solver = solver;
@@ -110,8 +99,8 @@ class ParityConstraintGenerator {
     }
 
     /**
-     * Generates {@param nb} parity constraints, and adds them to the solver.
-     * The constraints are all activated.
+     * Generates {@code nb} parity constraints, and adds them to the solver. The
+     * constraints are all activated.
      * 
      * @param nb
      *            The number of constraints to generate.
@@ -201,6 +190,7 @@ class ParityConstraintGenerator {
      */
     public void clear() {
         // The constraints need to be activated before being removed.
+        // Otherwise, an exception will be thrown.
         if (!activated) {
             activate();
         }

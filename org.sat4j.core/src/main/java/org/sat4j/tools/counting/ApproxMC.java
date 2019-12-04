@@ -30,77 +30,20 @@
 
 package org.sat4j.tools.counting;
 
-import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Comparator;
 
-import org.sat4j.core.Vec;
 import org.sat4j.specs.ISolver;
-import org.sat4j.specs.IVec;
-import org.sat4j.tools.SolverDecorator;
 
 /**
- * ApproxMC implements the approximate model counter proposed by Chakraborty,
- * Meel and Vardi.
+ * ApproxMC implements the first version of the approximate model counter
+ * proposed by Chakraborty, Meel and Vardi.
  * 
  * @author Romain WALLON
  */
-public class ApproxMC extends SolverDecorator<ISolver> {
+public final class ApproxMC extends AbstractApproxMC {
 
     /**
-     * The {@code serialVersionUID} of this {@link Serializable} class.
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * The default EPSILON value (tolerance) to use as parameter for the
-     * algorithm.
-     */
-    public static final double DEFAULT_EPSILON = .1;
-
-    /**
-     * The default DELTA value (confidence) to use as parameter for the
-     * algorithm.
-     */
-    public static final double DEFAULT_DELTA = .1;
-
-    /**
-     * The EPSILON parameter for the algorithm, i.e. the tolerance of the count.
-     */
-    private final double epsilon;
-
-    /**
-     * The DELTA parameter for the algorithm, i.e. the confidence of the count.
-     */
-    private final double delta;
-
-    private final ParityConstraintGenerator generator;
-
-    /**
-     * The initial count of models of the formula, with no additional
-     * constraint.
-     */
-    private long initialCount;
-
-    private final IModelCounter counter;
-
-    /**
-     * Creates a new approximate model counter. The tolerance and confidence are
-     * the default ones.
-     * 
-     * @param solver
-     *            The solver to use as an oracle.
-     * 
-     * @see #DEFAULT_EPSILON
-     * @see #DEFAULT_DELTA
-     * @see #ApproxMC(ISolver, double, double)
-     */
-    public ApproxMC(ISolver solver) {
-        this(solver, DEFAULT_EPSILON, DEFAULT_DELTA);
-    }
-
-    /**
-     * Creates a new approximate model counter.
+     * Creates a new ApproxMC.
      * 
      * @param solver
      *            The solver to use as an oracle.
@@ -110,93 +53,84 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      *            the confidence of the count.
      */
     public ApproxMC(ISolver solver, double epsilon, double delta) {
+        super(solver, epsilon, delta);
+    }
+
+    /**
+     * Creates a new ApproxMC.
+     * 
+     * @param solver
+     *            The solver to use as an oracle.
+     * @param samplingSet
+     *            The set of variables to consider.
+     * @param epsilon
+     *            The tolerance of the count.
+     * @param delta
+     *            the confidence of the count.
+     */
+    public ApproxMC(ISolver solver, SamplingSet samplingSet, double epsilon,
+            double delta) {
+        super(solver, samplingSet, epsilon, delta);
+    }
+
+    /**
+     * Creates a new ApproxMC.
+     * 
+     * @param solver
+     *            The solver to use as an oracle.
+     * @param samplingSet
+     *            The set of variables to consider.
+     */
+    public ApproxMC(ISolver solver, SamplingSet samplingSet) {
+        super(solver, samplingSet);
+    }
+
+    /**
+     * Creates a new ApproxMC.
+     * 
+     * @param solver
+     *            The solver to use as an oracle.
+     */
+    public ApproxMC(ISolver solver) {
         super(solver);
-        this.counter = ModelCounterAdapter.newInstance(solver);
-        this.epsilon = epsilon;
-        this.delta = delta;
-        this.initialCount = -1;
-        this.generator = new ParityConstraintGenerator(solver);
-
     }
 
-    /**
-     * Counts an approximation {@code m} of the number of models of the
-     * underlying formula {@code F}. This number verifies
-     * {@code (#F / (1 + epsilon) <= m <= (1 + epsilon) #F)} with probability
-     * {@code (1 - delta)}.
+    /*
+     * (non-Javadoc)
      * 
-     * @return An approximate count of the number of solutions.
+     * @see org.sat4j.tools.counting.AbstractApproxMC#computeThreshold()
      */
-    public BigInteger countSolutions() {
-        int t = computeIterCount();
-        int pivot = computeThreshold() << 1;
-        IVec<BigInteger> counts = new Vec<BigInteger>(t);
-
-        // Computing he number of models for t random formulae.
-        for (int i = 0; i < t; i++) {
-            BigInteger count = core(pivot);
-            if (count != null) {
-                counts.push(count);
-            }
-        }
-
-        // The approximate count is the median of all counts.
-        return findMedian(counts);
-    }
-
-    /**
-     * Computes the threshold to apply w.r.t. the tolerance wanted for the
-     * algorithm.
-     * 
-     * @return The bound for the number of models to find when invoking the
-     *         (bounded) SAT oracle.
-     * 
-     * @see #boundedSAT(long)
-     */
+    @Override
     protected int computeThreshold() {
-        return (int) (3 * Math.exp(.5) * (1 + 1 / epsilon) * (1 + 1 / epsilon));
+        return (int) (3 * Math.exp(.5) * (1 + 1 / epsilon)
+                * (1 + 1 / epsilon)) << 1;
     }
 
-    /**
-     * Computes the number of iterations to perform w.r.t. the confidence wanted
-     * for the algorithm.
+    /*
+     * (non-Javadoc)
      * 
-     * @return The number of iterations to perform.
+     * @see org.sat4j.tools.counting.AbstractApproxMC#computeIterCount()
      */
+    @Override
     protected int computeIterCount() {
         return (int) (35 * Math.log(3 / delta) / Math.log(2));
     }
 
-    /**
-     * Counts an epsilon-approximate estimate of the model count of the
-     * underlying formula, by partitioning the space of all the models into
-     * "small" cells containing at most {@code pivot} models.
+    /*
+     * (non-Javadoc)
      * 
-     * @param pivot
-     *            The bound for the number of models in a cell.
-     * 
-     * @return The estimate of the model count, or {@code null} to report a
-     *         counting error, i.e;, when all generated cells were either empty
-     *         or too big.
+     * @see org.sat4j.tools.counting.AbstractApproxMC#internalCountModels(int)
      */
-    private BigInteger core(int pivot) {
-        // Counting without parity constraints.
-        long count = computeInitialCount(pivot + 1);
-        if (count <= pivot) {
-            // The exact value has been computed.
-            return BigInteger.valueOf(count);
-        }
-
+    @Override
+    protected BigInteger internalCountModels(int threshold) {
         // This is equivalent to l = log2(pivot) - 1
-        int l = Integer.SIZE - Integer.numberOfLeadingZeros(pivot) - 2;
+        int l = Integer.SIZE - Integer.numberOfLeadingZeros(threshold) - 2;
 
         // Partitioning the space of all the models using parity constraints.
-        for (int i = l; i <= nVars(); i++) {
-            // Considering a new set of (randomly generated) parity constraints.
-            generator.generate(i - l);
-            count = boundedSAT(pivot + 1);
+        for (int i = l; i <= samplingSet.nVars(); i++) {
+            long count = boundedSAT(i - l, threshold + 1);
 
-            if (1 <= count && count <= pivot) {
+            if (1 <= count && count <= threshold) {
                 // This cell is small enough and has to be scaled to the number
                 // of cells generated by the hashing function.
                 return BigInteger.valueOf(count).shiftLeft((i - l));
@@ -208,64 +142,21 @@ public class ApproxMC extends SolverDecorator<ISolver> {
     }
 
     /**
-     * Computes the initial count of models of the formula, with no additional
-     * constraint. This value is computed only once, and stored within
-     * {@link #initialCount}.
+     * Counts up to {@code bound} models of the formula, after having added
+     * {@code nbConstraints} parity constraints to the solver.
      * 
-     * @param pivot
-     *            The bound for the number of models in a cell.
-     * 
-     * @return The initial count of models of the formula.
-     */
-    private long computeInitialCount(int pivot) {
-        if (initialCount < 0) {
-            initialCount = boundedSAT(pivot);
-        }
-        return initialCount;
-    }
-
-    /**
-     * Counts up to {@code bound} model of the current formula, by enumerating
-     * these models.
-     * 
+     * @param nbConstraints
+     *            The number of constraints to add.
      * @param bound
      *            The maximum number of models to count.
      * 
-     * @return The number of model that have been counted.
+     * @return The number of models that have been counted.
      */
-    private long boundedSAT(int bound) {
-        counter.setBound(bound);
-        BigInteger foundModels = counter.countModels();
-        counter.reset();
+    private long boundedSAT(int nbConstraints, int bound) {
+        generator.generate(nbConstraints);
+        long count = boundedSAT(bound);
         generator.clear();
-        return foundModels.longValue();
-    }
-
-    /**
-     * Computes the median of a vector of values.
-     * 
-     * @param values
-     *            The values to compute the median of.
-     * 
-     * @return The median of the vector of values, or {@link BigInteger#ZERO} if
-     *         the vector is empty (which, in the case of model counting, means
-     *         that the formula is unsatisfiable).
-     */
-    protected static BigInteger findMedian(IVec<BigInteger> values) {
-        if (values.isEmpty()) {
-            return BigInteger.ZERO;
-        }
-
-        // The values need to be sorted to find the median...
-        values.sort(new Comparator<BigInteger>() {
-            @Override
-            public int compare(BigInteger o1, BigInteger o2) {
-                return o1.compareTo(o2);
-            }
-        });
-
-        // ... which is at the middle-th position of the vector.
-        return values.get(values.size() >> 1);
+        return count;
     }
 
 }

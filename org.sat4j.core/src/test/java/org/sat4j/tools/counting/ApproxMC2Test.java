@@ -33,22 +33,22 @@ package org.sat4j.tools.counting;
 import java.math.BigInteger;
 
 /**
- * Test that an instance of {@link ApproxMC} finds a number of models that is,
+ * Test that an instance of {@link ApproxMC2} finds a number of models that is,
  * with high probability, close to the real number of models of a formula.
  * 
  * @author Romain WALLON
  */
-public class ApproxMCTest extends AbstractApproxMCTest {
+public class ApproxMC2Test extends AbstractApproxMCTest {
 
     /**
-     * Creates a new test case for {@link ApproxMC}.
+     * Creates a new test case for {@link ApproxMC2}.
      * 
      * @param benchmark
      *            The name of the benchmark on which to test the counter.
      * @param realCount
      *            The real number of models of the input.
      */
-    public ApproxMCTest(String benchmark, BigInteger realCount) {
+    public ApproxMC2Test(String benchmark, BigInteger realCount) {
         super(benchmark, realCount);
     }
 
@@ -59,7 +59,7 @@ public class ApproxMCTest extends AbstractApproxMCTest {
      */
     @Override
     protected AbstractApproxMC createCounter() {
-        return new ApproxMC(solver, EPSILON_TEST, DELTA_TEST);
+        return new ApproxMC2(solver, EPSILON_TEST, DELTA_TEST);
     }
 
 }

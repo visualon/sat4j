@@ -41,8 +41,8 @@ import org.sat4j.tools.SolutionFoundListener;
  * This class is an object adapter allowing to count the models of a formula by
  * iterating over its models.
  * 
- * As such, this model counter is <b>really inefficient</b>, and should only be
- * used either on small formulas or with a low bound. Use it with caution!
+ * As such, this model counter is <b>really slow</b>, and should only be used
+ * either on small formulas or with a low bound. Use it with caution!
  * 
  * @author Romain Wallon
  */
@@ -73,7 +73,7 @@ public final class ModelCounterAdapter implements IModelCounter {
      * 
      * @return The created model counter.
      */
-    public static IModelCounter newInstance(ISolver solver) {
+    public static ModelCounterAdapter newInstance(ISolver solver) {
         return newInstance(solver, Long.MAX_VALUE);
     }
 
@@ -87,8 +87,8 @@ public final class ModelCounterAdapter implements IModelCounter {
      * 
      * @return The created model counter.
      */
-    public static IModelCounter newInstance(ISolver solver, long bound) {
-        IModelCounter counter = new ModelCounterAdapter(solver);
+    public static ModelCounterAdapter newInstance(ISolver solver, long bound) {
+        ModelCounterAdapter counter = new ModelCounterAdapter(solver);
         counter.setBound(bound);
         return counter;
     }
@@ -126,12 +126,14 @@ public final class ModelCounterAdapter implements IModelCounter {
         return nbModels;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Sets the bound for the number of models to count. A {@code long} will
+     * always be sufficient, since counting each model one by one will never
+     * allow to overflow a {@code long}.
      * 
-     * @see org.sat4j.tools.counting.IModelCounter#setBound(long)
+     * @param bound
+     *            The maximum number of models to count.
      */
-    @Override
     public void setBound(long bound) {
         adaptee.setBound(bound);
     }

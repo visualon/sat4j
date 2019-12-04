@@ -30,36 +30,74 @@
 
 package org.sat4j.tools.counting;
 
-import java.math.BigInteger;
+import org.sat4j.core.VecInt;
+import org.sat4j.specs.IVecInt;
+import org.sat4j.specs.IteratorInt;
 
 /**
- * Test that an instance of {@link ApproxMC} finds a number of models that is,
- * with high probability, close to the real number of models of a formula.
+ * The SamplingSetAdapter adapts an {@link IVecInt} to a {@link SamplingSet}.
  * 
- * @author Romain WALLON
+ * @author Romain Wallon
  */
-public class ApproxMCTest extends AbstractApproxMCTest {
+public final class SamplingSetAdapter implements SamplingSet {
 
     /**
-     * Creates a new test case for {@link ApproxMC}.
-     * 
-     * @param benchmark
-     *            The name of the benchmark on which to test the counter.
-     * @param realCount
-     *            The real number of models of the input.
+     * The adapted {@link IVecInt}.
      */
-    public ApproxMCTest(String benchmark, BigInteger realCount) {
-        super(benchmark, realCount);
+    private final IVecInt adaptee;
+
+    /**
+     * Creates a new SamplingSetAdapter.
+     * 
+     * @param adaptee
+     *            The {@link IVecInt} to adapt.
+     */
+    private SamplingSetAdapter(IVecInt adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    /**
+     * Creates a new SamplingSetAdapter.
+     * 
+     * @param adaptee
+     *            The {@link IVecInt} to adapt.
+     * 
+     * @return The created sampling set.
+     */
+    public static SamplingSet of(IVecInt vec) {
+        return new SamplingSetAdapter(vec);
+    }
+
+    /**
+     * Creates a new SamplingSetAdapter.
+     * 
+     * @param variables
+     *            The variables to consider.
+     * 
+     * @return The created sampling set.
+     */
+    public static SamplingSet of(int... variables) {
+        return new SamplingSetAdapter(VecInt.of(variables));
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see org.sat4j.tools.counting.AbstractApproxMCTest#createCounter()
+     * @see org.sat4j.tools.counting.SamplingSet#nVars()
      */
     @Override
-    protected AbstractApproxMC createCounter() {
-        return new ApproxMC(solver, EPSILON_TEST, DELTA_TEST);
+    public int nVars() {
+        return adaptee.size();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.sat4j.tools.counting.SamplingSet#variables()
+     */
+    @Override
+    public IteratorInt variables() {
+        return adaptee.iterator();
     }
 
 }

@@ -40,11 +40,6 @@ import java.math.BigInteger;
 public interface IModelCounter {
 
     /**
-     * Sets the bound for the number of models to count.
-     */
-    void setBound(long bound);
-
-    /**
      * Computes the number of models of the underlying formula.
      * 
      * @return The number of models of the formula.
