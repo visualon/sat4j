@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SAT4J: a SATisfiability library for Java Copyright (C) 2004, 2012 Artois University and CNRS
+ * SAT4J: a SATisfiability library for Java Copyright (C) 2004, 2019 Artois University and CNRS
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,21 +28,17 @@
  *   CRIL - initial API and implementation
  *******************************************************************************/
 
-package org.sat4j.tools;
+package org.sat4j.tools.counting;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Random;
 
-import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.Vec;
-import org.sat4j.core.VecInt;
-import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVec;
-import org.sat4j.specs.IVecInt;
-import org.sat4j.specs.TimeoutException;
+import org.sat4j.tools.SolverDecorator;
 
 /**
  * ApproxMC implements the approximate model counter proposed by Chakraborty,
@@ -50,7 +46,7 @@ import org.sat4j.specs.TimeoutException;
  * 
  * @author Romain WALLON
  */
-public class ApproxMC extends SolverDecorator<ISolver> {
+public class ApproxMC2 extends SolverDecorator<ISolver> {
 
     /**
      * The {@code serialVersionUID} of this {@link Serializable} class.
@@ -70,13 +66,6 @@ public class ApproxMC extends SolverDecorator<ISolver> {
     public static final double DEFAULT_DELTA = .1;
 
     /**
-     * The pseudo-random number generator used to create random parity
-     * constraints. This differs from the original paper, which uses numbers
-     * generated from <a href="http://fourmilab.ch/hotbits/">HotBits</a>.
-     */
-    protected static final Random RANDOM = new Random(1234567890);
-
-    /**
      * The EPSILON parameter for the algorithm, i.e. the tolerance of the count.
      */
     private final double epsilon;
@@ -86,21 +75,17 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      */
     private final double delta;
 
-    /**
-     * The initial count of models of the formula, with no additional
-     * constraint.
-     */
-    private long initialCount;
+    private final ParityConstraintGenerator generator;
 
     /**
-     * The group of constraints that are temporarily added to the solver when it
-     * is invoked by the algorithm. These constraints are removed when they are
-     * not needed anymore. This also discards learned constraints, but there is
-     * (for now) no efficient way to deactivates parity constraints.
+     * The model counter used to perform an exact count of models in the cells.
      */
-    private final transient ConstrGroup parityConstraints;
+    private final IModelCounter counter;
 
-    private final ModelIterator counter;
+    /**
+     * The number of cells that have been found.
+     */
+    private int nCells;
 
     /**
      * Creates a new approximate model counter. The tolerance and confidence are
@@ -113,7 +98,7 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * @see #DEFAULT_DELTA
      * @see #ApproxMC(ISolver, double, double)
      */
-    public ApproxMC(ISolver solver) {
+    public ApproxMC2(ISolver solver) {
         this(solver, DEFAULT_EPSILON, DEFAULT_DELTA);
     }
 
@@ -127,14 +112,12 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * @param delta
      *            the confidence of the count.
      */
-    public ApproxMC(ISolver solver, double epsilon, double delta) {
+    public ApproxMC2(ISolver solver, double epsilon, double delta) {
         super(solver);
-        this.counter = new ModelIteratorToSATAdapter(solver,
-                SolutionFoundListener.VOID);
+        this.counter = ModelCounterAdapter.newInstance(solver);
         this.epsilon = epsilon;
         this.delta = delta;
-        this.initialCount = -1;
-        this.parityConstraints = new ConstrGroup();
+        this.generator = new ParityConstraintGenerator(solver);
 
     }
 
@@ -147,13 +130,20 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * @return An approximate count of the number of solutions.
      */
     public BigInteger countSolutions() {
+        int threshold = computeThreshold();
+        long y = boundedSAT(threshold);
+        if (y < threshold) {
+            // The number of models is already exact.
+            return BigInteger.valueOf(y);
+        }
+
+        nCells = 2;
         int t = computeIterCount();
-        int pivot = computeThreshold() << 1;
         IVec<BigInteger> counts = new Vec<BigInteger>(t);
 
-        // Computing he number of models for t random formulae.
-        for (int counter = 0; counter < t; counter++) {
-            BigInteger count = core(pivot);
+        // Computing the number of models for t random formulae.
+        for (int i = 0; i < t; i++) {
+            BigInteger count = core(threshold);
             if (count != null) {
                 counts.push(count);
             }
@@ -173,7 +163,8 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * @see #boundedSAT(long)
      */
     protected int computeThreshold() {
-        return (int) (3 * Math.exp(.5) * (1 + 1 / epsilon) * (1 + 1 / epsilon));
+        return (int) (1 + 9.84 * (1 + (epsilon / (1 + epsilon)))
+                * (1 + 1 / epsilon) * (1 + 1 / epsilon));
     }
 
     /**
@@ -183,7 +174,7 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * @return The number of iterations to perform.
      */
     protected int computeIterCount() {
-        return (int) (35 * Math.log(3 / delta) / Math.log(2));
+        return (int) (17 * Math.log(3 / delta) / Math.log(2));
     }
 
     /**
@@ -191,76 +182,84 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      * underlying formula, by partitioning the space of all the models into
      * "small" cells containing at most {@code pivot} models.
      * 
-     * @param pivot
+     * @param thresh
      *            The bound for the number of models in a cell.
      * 
      * @return The estimate of the model count, or {@code null} to report a
      *         counting error, i.e;, when all generated cells were either empty
      *         or too big.
      */
-    private BigInteger core(int pivot) {
-        // Counting without parity constraints.
-        long count = computeInitialCount(pivot + 1);
-        if (count <= pivot) {
-            // The exact value has been computed.
-            return BigInteger.valueOf(count);
+    private BigInteger core(int thresh) {
+        generator.generate(nVars());
+
+        // Counting with all parity constraints.
+        long count = boundedSAT(thresh);
+        generator.deactivate();
+        if (count >= thresh) {
+            return null;
         }
 
-        // This is equivalent to l = log2(pivot) - 1
-        int l = Integer.SIZE - Integer.numberOfLeadingZeros(pivot) - 2;
+        // This is equivalent to mPrev = log2(nCells)
+        int mPrev = Integer.SIZE - Integer.numberOfLeadingZeros(nCells) - 1;
+        int m = logSatSearch(thresh, mPrev);
+        BigInteger nSols = BigInteger.valueOf(boundedSAT(m, thresh));
 
-        // Partitioning the space of all the models using parity constraints.
-        for (int i = l; i <= nVars(); i++) {
-            // Considering a new set of (randomly generated) parity constraints.
-            addParityConstraints(i - l);
-            count = boundedSAT(pivot + 1);
+        // Forgetting all parity constraints used in this run.
+        generator.clear();
 
-            if (1 <= count && count <= pivot) {
-                // This cell is small enough and has to be scaled to the number
-                // of cells generated by the hashing function.
-                return BigInteger.valueOf(count).shiftLeft((i - l));
-            }
-        }
-
-        // Reporting a counting error.
-        return null;
+        return nSols.shiftLeft(m);
     }
 
     /**
-     * Computes the initial count of models of the formula, with no additional
-     * constraint. This value is computed only once, and stored within
-     * {@link #initialCount}.
+     * Performs a logarithmic search for the number of parity constraints to
+     * consider.
      * 
-     * @param pivot
-     *            The bound for the number of models in a cell.
+     * @param thresh
+     *            The maximum number of models to consider.
+     * @param mPrev
+     *            The previous number of parity constraints that were added.
      * 
-     * @return The initial count of models of the formula.
+     * @return The best number of parity constraints to add.
      */
-    private long computeInitialCount(int pivot) {
-        if (initialCount < 0) {
-            initialCount = boundedSAT(pivot);
-        }
-        return initialCount;
-    }
+    private int logSatSearch(int thresh, int mPrev) {
+        int loIndex = 0;
+        int hiIndex = nVars() - 1;
+        int m = mPrev;
+        int[] bigCell = new int[nVars()];
+        Arrays.fill(bigCell, -1);
+        bigCell[0] = 1;
+        bigCell[nVars() - 1] = 0;
 
-    /**
-     * Adds a set of (randomly generated) parity constraints to the solver, so
-     * as to consider only some of its models.
-     * 
-     * @param numberOfConstraints
-     *            The number of parity constraints to add.
-     */
-    private void addParityConstraints(int numberOfConstraints) {
-        for (int i = 0; i < numberOfConstraints; i++) {
-            IVecInt lits = new VecInt();
-            for (int v = 1; v <= nVars(); v++) {
-                if (RANDOM.nextBoolean()) {
-                    lits.push(v);
+        for (;;) {
+            long y = boundedSAT(m, thresh);
+            if (y >= thresh) {
+                // There are too many constraints.
+                if (bigCell[m + 1] == 0) {
+                    return m + 1;
+                }
+                Arrays.fill(bigCell, 1, m + 1, 1);
+                loIndex = m;
+                if (Math.abs(m - mPrev) < 3) {
+                    m++;
+                } else if (m << 1 < nVars() - 1) {
+                    m <<= 1;
+                } else {
+                    m = (hiIndex + m) >> 1;
+                }
+
+            } else {
+                // There is enough constraints, but maybe too many.
+                if (bigCell[m - 1] == 1) {
+                    return m;
+                }
+                Arrays.fill(bigCell, m, nVars(), 0);
+                hiIndex = m;
+                if (Math.abs(m - mPrev) < 3) {
+                    m--;
+                } else {
+                    m = (m + loIndex) >> 1;
                 }
             }
-            // Adding the generated constraint as temporary.
-            IConstr constr = addParity(lits, RANDOM.nextBoolean());
-            parityConstraints.add(constr);
         }
     }
 
@@ -275,28 +274,27 @@ public class ApproxMC extends SolverDecorator<ISolver> {
      */
     private long boundedSAT(int bound) {
         counter.setBound(bound);
-        long foundModels = 0;
-        try {
-            counter.isSatisfiable();
-            foundModels = counter.numberOfModelsFoundSoFar();
-        } catch (TimeoutException e) {
-            // We consider only the models that have been found so far.
-            foundModels = counter.numberOfModelsFoundSoFar();
-        } finally {
-            // All temporary constraints must be removed, to prevent erroneous
-            // results for the next calls.
-            counter.clearBlockingClauses();
-            clearParityConstraints();
-        }
-        return foundModels;
+        BigInteger foundModels = counter.countModels();
+        counter.reset();
+        return foundModels.longValue();
     }
 
     /**
-     * Deletes all the temporary constraints that have been added so far.
+     * Counts up to {@code bound} model of the current formula, by enumerating
+     * these models.
+     * 
+     * @param m
+     *            The number of parity constraints to consider.
+     * @param bound
+     *            The maximum number of models to count.
+     * 
+     * @return The number of model that have been counted.
      */
-    private void clearParityConstraints() {
-        parityConstraints.removeFrom(this);
-        parityConstraints.clear();
+    private long boundedSAT(int m, int bound) {
+        generator.activate(m);
+        long count = boundedSAT(bound);
+        generator.deactivate(m);
+        return count;
     }
 
     /**
