@@ -121,7 +121,7 @@ public class ModelIterator extends SolverDecorator<ISolver> {
     @Override
     public int[] model() {
         int[] last = super.model();
-        this.nbModelFound++;
+        this.nbModelFound += 1 << (nVars() - last.length);
         try {
             blockingClauses.add(discardCurrentModel());
         } catch (ContradictionException e) {

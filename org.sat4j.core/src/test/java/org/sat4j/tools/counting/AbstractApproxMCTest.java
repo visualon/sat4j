@@ -118,12 +118,13 @@ public abstract class AbstractApproxMCTest {
      */
     @Parameters
     public static Collection<Object[]> benchmarks() {
-        return Arrays.asList(
-                new Object[][] { { "jnh/jnh12.cnf", BigInteger.valueOf(80) },
-                        { "jnh/jnh17.cnf", BigInteger.valueOf(513) },
-                        { "jnh/jnh213.cnf", BigInteger.valueOf(4264) },
-                        { "jnh/jnh1.cnf", BigInteger.valueOf(11711) },
-                        { "jnh/jnh218.cnf", BigInteger.valueOf(14082) } });
+        return Arrays.asList(new Object[][] {
+                { "blockmap_05_01.net.cnf", BigInteger.valueOf(640) },
+                { "jnh/jnh12.cnf", BigInteger.valueOf(80) },
+                { "jnh/jnh17.cnf", BigInteger.valueOf(513) },
+                { "jnh/jnh213.cnf", BigInteger.valueOf(4264) },
+                { "jnh/jnh1.cnf", BigInteger.valueOf(11711) },
+                { "jnh/jnh218.cnf", BigInteger.valueOf(14082) } });
     }
 
     /**
