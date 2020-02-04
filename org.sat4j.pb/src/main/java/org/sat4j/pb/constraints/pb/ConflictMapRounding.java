@@ -36,7 +36,7 @@ import org.sat4j.pb.core.PBSolverStats;
 public class ConflictMapRounding extends ConflictMap {
 
     public ConflictMapRounding(PBConstr cpb, int level, boolean noRemove,
-            boolean skip, IPostProcess postProcessing,
+            SkipStrategy skip, IPostProcess postProcessing,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
@@ -44,7 +44,7 @@ public class ConflictMapRounding extends ConflictMap {
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, IPostProcess postProcessing,
+            boolean noRemove, SkipStrategy skip, IPostProcess postProcessing,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapRounding(cpb, level, noRemove, skip,
@@ -55,7 +55,8 @@ public class ConflictMapRounding extends ConflictMap {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    boolean noRemove, SkipStrategy skip,
+                    IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {

@@ -45,6 +45,7 @@ import org.sat4j.pb.constraints.pb.IPostProcess;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.NoPostProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
+import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.TimeoutException;
@@ -67,7 +68,7 @@ public class PBSolverCP extends PBSolver {
      * skipping as much as possible avoidable cutting planes during analysis
      * conflict
      */
-    private boolean skipAllow = true;
+    private SkipStrategy skipAllow = SkipStrategy.SKIP;
 
     private IConflictFactory conflictFactory = ConflictMap.factory();
 
@@ -101,7 +102,7 @@ public class PBSolverCP extends PBSolver {
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, IOrder order, boolean noRemove,
-            boolean skipAllow) {
+            SkipStrategy skipAllow) {
         this(learner, dsf, order);
         this.noRemove = noRemove;
         this.skipAllow = skipAllow;
@@ -109,7 +110,8 @@ public class PBSolverCP extends PBSolver {
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            RestartStrategy restarter, boolean noRemove, boolean skipAllow) {
+            RestartStrategy restarter, boolean noRemove,
+            SkipStrategy skipAllow) {
         this(learner, dsf, params, order, restarter);
         this.noRemove = noRemove;
         this.skipAllow = skipAllow;
@@ -117,7 +119,7 @@ public class PBSolverCP extends PBSolver {
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
-            boolean noRemove, boolean skipAllow) {
+            boolean noRemove, SkipStrategy skipAllow) {
         this(learner, dsf, params, order);
         this.noRemove = noRemove;
         this.skipAllow = skipAllow;
@@ -212,10 +214,8 @@ public class PBSolverCP extends PBSolver {
                 + this.getClass().getName() + ")\n"
                 + (this.noRemove ? ""
                         : prefix + " - Removing satisfied literals at a higher level before CP \n")
-                + (this.skipAllow
-                        ? prefix + " - Skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm \n"
-                        : "")
-                + prefix + " - " + autoDivisionStrategy + "\n" + prefix + " - "
+                + prefix + " - " + skipAllow.getDescription() + "\n" + prefix
+                + " - " + autoDivisionStrategy + "\n" + prefix + " - "
                 + postprocess + "\n" + prefix + " - " + conflictFactory + "\n"
                 + prefix + " - " + weakeningStrategy + "\n"
                 + super.toString(prefix);
@@ -239,11 +239,11 @@ public class PBSolverCP extends PBSolver {
     protected void updateNumberOfReducedLearnedConstraints(IConflict confl) {
     }
 
-    public boolean isSkipAllow() {
+    public SkipStrategy isSkipAllow() {
         return skipAllow;
     }
 
-    public void setSkipAllow(boolean skipAllow) {
+    public void setSkipAllow(SkipStrategy skipAllow) {
         this.skipAllow = skipAllow;
     }
 

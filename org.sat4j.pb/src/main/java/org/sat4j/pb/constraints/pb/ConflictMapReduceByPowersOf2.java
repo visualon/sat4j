@@ -5,7 +5,7 @@ import org.sat4j.pb.core.PBSolverStats;
 public class ConflictMapReduceByPowersOf2 extends ConflictMap {
 
     public ConflictMapReduceByPowersOf2(PBConstr cpb, int level,
-            boolean noRemove, boolean skip,
+            boolean noRemove, SkipStrategy skip,
             IWeakeningStrategy weakeningStrategy, IPostProcess postProcessing,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
@@ -13,7 +13,7 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, IPostProcess postprocess,
+            boolean noRemove, SkipStrategy skip, IPostProcess postprocess,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceByPowersOf2(cpb, level, noRemove, skip,
@@ -24,7 +24,8 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    boolean noRemove, SkipStrategy skip,
+                    IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {

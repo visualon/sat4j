@@ -5,7 +5,7 @@ import org.sat4j.pb.core.PBSolverStats;
 public interface IConflictFactory {
 
     IConflict createConflict(PBConstr cpb, int level, boolean noRemove,
-            boolean skip, IPostProcess postprocess,
+            SkipStrategy skip, IPostProcess postprocess,
             IWeakeningStrategy removeStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats);
 }

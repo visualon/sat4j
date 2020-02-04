@@ -51,7 +51,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     protected boolean hasBeenReduced = false;
     protected long numberOfReductions = 0;
-    private boolean allowSkipping = false;
+    private SkipStrategy skip = SkipStrategy.NO_SKIP;
     private boolean endingSkipping = true;
     /**
      * to store the slack of the current resolvant
@@ -82,7 +82,7 @@ public class ConflictMap extends MapPb implements IConflict {
      */
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, IPostProcess postProcessing,
+            boolean noRemove, SkipStrategy skip, IPostProcess postProcessing,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
@@ -93,7 +93,8 @@ public class ConflictMap extends MapPb implements IConflict {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    boolean noRemove, SkipStrategy skip,
+                    IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
@@ -110,30 +111,30 @@ public class ConflictMap extends MapPb implements IConflict {
     }
 
     ConflictMap(PBConstr cpb, int level) {
-        this(cpb, level, false, false, NoPostProcess.instance(),
+        this(cpb, level, false, SkipStrategy.NO_SKIP, NoPostProcess.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove) {
-        this(cpb, level, noRemove, false, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST,
+        this(cpb, level, noRemove, SkipStrategy.NO_SKIP,
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, null);
     }
 
-    ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
+    ConflictMap(PBConstr cpb, int level, boolean noRemove, SkipStrategy skip,
             PBSolverStats stats) {
         this(cpb, level, noRemove, skip, NoPostProcess.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, stats);
     }
 
-    ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
+    ConflictMap(PBConstr cpb, int level, boolean noRemove, SkipStrategy skip,
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, autoDivisionStrategy);
         this.stats = stats;
-        this.allowSkipping = skip;
+        this.skip = skip;
         this.voc = cpb.getVocabulary();
         this.currentLevel = level;
         initStructures();
@@ -299,27 +300,16 @@ public class ConflictMap extends MapPb implements IConflict {
             return this.degree;
         }
 
-        if (this.allowSkipping) {
-            if (this.weightedLits.get(nLitImplied).negate()
-                    .compareTo(slackConflict()) > 0) {
-                if (this.endingSkipping)
-                    stats.incNumberOfEndingSkipping();
-                else
-                    stats.incNumberOfInternalSkipping();
+        if (skip.skip(this, litImplied)) {
+            if (this.endingSkipping)
+                stats.incNumberOfEndingSkipping();
+            else
+                stats.incNumberOfInternalSkipping();
+            assert slackConflict().signum() < 0;
+            return this.degree;
 
-                // no resolution
-                // undo operation should be anticipated
-                int litLevel = levelToIndex(this.voc.getLevel(litImplied));
-                this.byLevel[litLevel].remove(nLitImplied);
-                if (this.byLevel[0] == null) {
-                    this.byLevel[0] = new VecInt();
-                }
-                this.byLevel[0].push(nLitImplied);
-                assert slackConflict().signum() < 0;
-                return this.degree;
-            } else
-                this.endingSkipping = false;
-
+        } else {
+            this.endingSkipping = false;
         }
 
         stats.incNumberOfDerivationSteps();

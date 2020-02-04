@@ -22,6 +22,7 @@ import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.pb.SolverFactory;
 import org.sat4j.pb.constraints.PBMaxClauseCardConstrDataStructure;
 import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
+import org.sat4j.pb.constraints.pb.ConflictMapDivideByPivot;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByGCD;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceByPowersOf2;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
@@ -30,6 +31,7 @@ import org.sat4j.pb.constraints.pb.ConflictMapRounding;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.PostProcessToCard;
 import org.sat4j.pb.constraints.pb.PostProcessToClause;
+import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
 import org.sat4j.pb.reader.OPBReader2012;
@@ -58,9 +60,9 @@ public class KTHLauncher {
         options.addOption("fb", "find-best-divisor-when-dividing-for-overflow",
                 true, "rounding coefficient. Legal values are true or false.");
         options.addOption("wr", "when-resolve", true,
-                "behavior when performing conflict analysis. Legal values are skip or always.");
+                "behavior when performing conflict analysis. Legal values are skip, weaken or always.");
         options.addOption("rr", "round-reason", true,
-                "Rounding strategy during conflict analysis. Legal values are divide-v1, divide-unless-equal, divide-unless-divisor, round-to-gcd, or never.");
+                "Rounding strategy during conflict analysis. Legal values are divide-v1, divide-unless-equal, divide-unless-divisor, round-to-gcd, never, weaken-and-divide, or partial-weaken-and-divide.");
         options.addOption("rwp", "rounding-weaken-priority", true,
                 "Which literals are removed to ensure conflicting constraints. Legal values are any, satisfied, unassigned");
         options.addOption("tlc", "type-of-learned-constraint", true,
@@ -141,7 +143,7 @@ public class KTHLauncher {
 
             PBSolverCP cpsolver = SolverFactory.newCuttingPlanes();
             cpsolver.setNoRemove(true);
-            cpsolver.setSkipAllow(false);
+            cpsolver.setSkipAllow(SkipStrategy.NO_SKIP);
             IPBSolver pbsolver = cpsolver;
             if (line.hasOption("detect-cards")) {
                 String value = line.getOptionValue("detect-cards");
@@ -154,14 +156,14 @@ public class KTHLauncher {
                     InprocCardConstrLearningSolver solver = new InprocCardConstrLearningSolver(
                             new MiniSATLearning<PBDataStructureFactory>(),
                             new PBMaxClauseCardConstrDataStructure(),
-                            new VarOrderHeap(), true, false);
+                            new VarOrderHeap(), true, SkipStrategy.NO_SKIP);
                     solver.setDetectCardFromAllConstraintsInCflAnalysis(true);
                     cpsolver = solver;
                 } else if ("lazy".equals(value)) {
                     cpsolver = new InprocCardConstrLearningSolver(
                             new MiniSATLearning<PBDataStructureFactory>(),
                             new PBMaxClauseCardConstrDataStructure(),
-                            new VarOrderHeap(), true, false);
+                            new VarOrderHeap(), true, SkipStrategy.NO_SKIP);
                 } else {
                     log(value
                             + " is not a supported value for option detect-cards");
@@ -205,9 +207,11 @@ public class KTHLauncher {
             if (line.hasOption("when-resolve")) {
                 String value = line.getOptionValue("when-resolve");
                 if ("always".equals(value)) {
-                    cpsolver.setSkipAllow(false);
+                    cpsolver.setSkipAllow(SkipStrategy.NO_SKIP);
                 } else if ("skip".equals(value)) {
-                    cpsolver.setSkipAllow(true);
+                    cpsolver.setSkipAllow(SkipStrategy.SKIP);
+                } else if ("weaken".equals(value)) {
+                    cpsolver.setSkipAllow(SkipStrategy.WEAKEN_AND_SKIP);
                 } else {
                     log(value
                             + " is not a supported value for option when-resolve");
@@ -226,6 +230,10 @@ public class KTHLauncher {
                             ConflictMapReduceToCard.factory());
                 } else if ("divide-v1".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapRounding.factory());
+                } else if ("weaken-and-divide".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningFactory());
+                } else if ("partial-weaken-and-divide".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningFactory());
                 } else {
                     // "divide-unless-equal":
                     // "divide-unless-divisor":
