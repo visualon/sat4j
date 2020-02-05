@@ -82,7 +82,7 @@ public class KTHLauncher {
         options.addOption("autodiv", "auto-division", false,
                 "Apply division automatically when a common factor is identified.");
         options.addOption("pc", "preprocess-conflict", true,
-                "Preprocessing strategy to apply on the conflict before resolving. Legal values are none or reduce");
+                "Preprocessing strategy to apply on the conflict before resolving. Legal values are none, reduce-not-falsified or reduce");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -216,7 +216,9 @@ public class KTHLauncher {
                 if ("none".equals(value)) {
                     // default case, do nothing
                 } else if ("reduce".equals(value)) {
-                    cpsolver.setPreprocess(PreProcessReduceConflict.instance());
+                    cpsolver.setPreprocess(PreProcessReduceConflict.instanceWithFalsified());
+                } else if ("reduce-not-falsified".equals(value)) {
+                    cpsolver.setPreprocess(PreProcessReduceConflict.instanceWithoutFalsified());
                 } else {
                     log(value + " is not a supported value for option preprocess-conflict");
                     return;

@@ -11,14 +11,24 @@ import java.math.BigInteger;
  */
 public class PreProcessReduceConflict implements IPreProcess {
 
-    private static final IPreProcess INSTANCE = new PreProcessReduceConflict();
+    private static final IPreProcess INSTANCE_WITH_FALSIFIED = new PreProcessReduceConflict(
+            true);
 
-    private PreProcessReduceConflict() {
-        // TODO Auto-generated constructor stub
+    private static final IPreProcess INSTANCE_WITHOUT_FALSIFIED = new PreProcessReduceConflict(
+            false);
+
+    private final boolean considerFalsified;
+
+    private PreProcessReduceConflict(boolean considerFalsified) {
+        this.considerFalsified = considerFalsified;
     }
 
-    public static final IPreProcess instance() {
-        return INSTANCE;
+    public static final IPreProcess instanceWithFalsified() {
+        return INSTANCE_WITH_FALSIFIED;
+    }
+
+    public static final IPreProcess instanceWithoutFalsified() {
+        return INSTANCE_WITHOUT_FALSIFIED;
     }
 
     @Override
@@ -39,7 +49,8 @@ public class PreProcessReduceConflict implements IPreProcess {
                 conflictMap.removeCoef(lit);
                 degree = degree.subtract(coef);
 
-            } else if (coef.negate().compareTo(slack) > 0) {
+            } else if (considerFalsified
+                    && coef.negate().compareTo(slack) > 0) {
                 // The slack will increase, but will remain negative.
                 // In other words, the constraint remains conflictual.
                 conflictMap.removeCoef(lit);
