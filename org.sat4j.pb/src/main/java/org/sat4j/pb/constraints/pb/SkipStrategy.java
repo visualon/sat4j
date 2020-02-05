@@ -3,6 +3,8 @@
  */
 package org.sat4j.pb.constraints.pb;
 
+import java.math.BigInteger;
+
 import org.sat4j.core.VecInt;
 
 /**
@@ -55,7 +57,10 @@ public enum SkipStrategy {
             int nLitImplied = litImplied ^ 1;
             if (map.weightedLits.get(nLitImplied).negate()
                     .compareTo(map.slackConflict()) > 0) {
+                BigInteger coef = map.weightedLits.get(nLitImplied);
                 map.removeCoef(nLitImplied);
+                map.degree = map.degree.subtract(coef);
+                map.saturation();
                 return true;
             }
             return false;
