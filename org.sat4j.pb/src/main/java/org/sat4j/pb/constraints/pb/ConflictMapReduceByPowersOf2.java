@@ -6,32 +6,34 @@ public class ConflictMapReduceByPowersOf2 extends ConflictMap {
 
     public ConflictMapReduceByPowersOf2(PBConstr cpb, int level,
             boolean noRemove, SkipStrategy skip,
-            IWeakeningStrategy weakeningStrategy, IPostProcess postProcessing,
+            IWeakeningStrategy weakeningStrategy, IPreProcess preprocess,
+            IPostProcess postProcessing,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
-        super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
-                autoDivisionStrategy, stats);
+        super(cpb, level, noRemove, skip, preprocess, postProcessing,
+                weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, SkipStrategy skip, IPostProcess postprocess,
-            IWeakeningStrategy weakeningStrategy,
+            boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+            IPostProcess postprocess, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceByPowersOf2(cpb, level, noRemove, skip,
-                weakeningStrategy, postprocess, autoDivisionStrategy, stats);
+                weakeningStrategy, preprocess, postprocess,
+                autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, SkipStrategy skip,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
                     IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
                 return ConflictMapReduceByPowersOf2.createConflict(cpb, level,
-                        noRemove, skip, postprocess, weakeningStrategy,
-                        autoDivisionStrategy, stats);
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats);
             }
 
             @Override

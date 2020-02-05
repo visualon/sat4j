@@ -42,8 +42,10 @@ import org.sat4j.pb.constraints.pb.ConflictMap;
 import org.sat4j.pb.constraints.pb.IConflict;
 import org.sat4j.pb.constraints.pb.IConflictFactory;
 import org.sat4j.pb.constraints.pb.IPostProcess;
+import org.sat4j.pb.constraints.pb.IPreProcess;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.NoPostProcess;
+import org.sat4j.pb.constraints.pb.NoPreProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.specs.Constr;
@@ -72,6 +74,7 @@ public class PBSolverCP extends PBSolver {
 
     private IConflictFactory conflictFactory = ConflictMap.factory();
 
+    private IPreProcess preprocess = NoPreProcess.instance();
     private IPostProcess postprocess = NoPostProcess.instance();
 
     private IWeakeningStrategy weakeningStrategy = IWeakeningStrategy.UNASSIGNED_FIRST;
@@ -204,8 +207,8 @@ public class PBSolverCP extends PBSolver {
 
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
         return conflictFactory.createConflict(myconfl, level, noRemove,
-                skipAllow, postprocess, weakeningStrategy, autoDivisionStrategy,
-                pbStats);
+                skipAllow, preprocess, postprocess, weakeningStrategy,
+                autoDivisionStrategy, pbStats);
     }
 
     @Override
@@ -216,9 +219,9 @@ public class PBSolverCP extends PBSolver {
                         : prefix + " - Removing satisfied literals at a higher level before CP \n")
                 + prefix + " - " + skipAllow.getDescription() + "\n" + prefix
                 + " - " + autoDivisionStrategy + "\n" + prefix + " - "
-                + postprocess + "\n" + prefix + " - " + conflictFactory + "\n"
-                + prefix + " - " + weakeningStrategy + "\n"
-                + super.toString(prefix);
+                + postprocess + "\n" + prefix + " - " + preprocess + "\n"
+                + prefix + " - " + conflictFactory + "\n" + prefix + " - "
+                + weakeningStrategy + "\n" + super.toString(prefix);
     }
 
     private final IVec<String> conflictVariables = new Vec<String>();
@@ -261,6 +264,10 @@ public class PBSolverCP extends PBSolver {
 
     public void setConflictFactory(IConflictFactory conflictFactory) {
         this.conflictFactory = conflictFactory;
+    }
+
+    public void setPreprocess(IPreProcess preprocess) {
+        this.preprocess = preprocess;
     }
 
     public IPostProcess getPostprocess() {

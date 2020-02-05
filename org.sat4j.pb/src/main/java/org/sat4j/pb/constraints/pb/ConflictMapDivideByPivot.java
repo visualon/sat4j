@@ -46,37 +46,37 @@ public class ConflictMapDivideByPivot extends ConflictMap {
     private final DivisionStrategy divisionStrategy;
 
     public ConflictMapDivideByPivot(PBConstr cpb, int level, boolean noRemove,
-            SkipStrategy skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy,
+            SkipStrategy skip, IPreProcess preprocess,
+            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats,
             DivisionStrategy divisionStrategy) {
-        super(cpb, level, noRemove, skip, postProcessing, weakeningStrategy,
-                autoDivisionStrategy, stats);
+        super(cpb, level, noRemove, skip, preprocess, postProcessing,
+                weakeningStrategy, autoDivisionStrategy, stats);
         this.divisionStrategy = divisionStrategy;
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, SkipStrategy skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy,
+            boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats,
             DivisionStrategy divisionStrategy) {
         return new ConflictMapDivideByPivot(cpb, level, noRemove, skip,
-                postProcessing, weakeningStrategy, autoDivisionStrategy, stats,
-                divisionStrategy);
+                preprocess, postProcessing, weakeningStrategy,
+                autoDivisionStrategy, stats, divisionStrategy);
     }
 
     public static IConflictFactory fullWeakeningFactory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, SkipStrategy skip,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
                     IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
                 return ConflictMapDivideByPivot.createConflict(cpb, level,
-                        noRemove, skip, postprocess, weakeningStrategy,
-                        autoDivisionStrategy, stats,
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats,
                         DivisionStrategy.FULL_WEAKENING);
             }
 
@@ -91,14 +91,14 @@ public class ConflictMapDivideByPivot extends ConflictMap {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, SkipStrategy skip,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
                     IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
                 return ConflictMapDivideByPivot.createConflict(cpb, level,
-                        noRemove, skip, postprocess, weakeningStrategy,
-                        autoDivisionStrategy, stats,
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats,
                         DivisionStrategy.PARTIAL_WEAKENING);
             }
 

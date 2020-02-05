@@ -64,6 +64,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     final PBSolverStats stats;
 
+    protected IPreProcess preProcess = NoPreProcess.instance();
     /**
      * allows to access directly to all variables belonging to a particular
      * level At index 0, unassigned literals are stored (usually level -1); so
@@ -82,25 +83,25 @@ public class ConflictMap extends MapPb implements IConflict {
      */
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, SkipStrategy skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy,
+            boolean noRemove, SkipStrategy skip, IPreProcess preProcessing,
+            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
-        return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
-                weakeningStrategy, autoDivisionStrategy, stats);
+        return new ConflictMap(cpb, level, noRemove, skip, preProcessing,
+                postProcessing, weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, SkipStrategy skip,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
                     IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
                 return ConflictMap.createConflict(cpb, level, noRemove, skip,
-                        postprocess, weakeningStrategy, autoDivisionStrategy,
-                        stats);
+                        preprocess, postprocess, weakeningStrategy,
+                        autoDivisionStrategy, stats);
             }
 
             @Override
@@ -111,26 +112,28 @@ public class ConflictMap extends MapPb implements IConflict {
     }
 
     ConflictMap(PBConstr cpb, int level) {
-        this(cpb, level, false, SkipStrategy.NO_SKIP, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST,
+        this(cpb, level, false, SkipStrategy.NO_SKIP, NoPreProcess.instance(),
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove) {
         this(cpb, level, noRemove, SkipStrategy.NO_SKIP,
-                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
+                NoPreProcess.instance(), NoPostProcess.instance(),
+                IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove, SkipStrategy skip,
             PBSolverStats stats) {
-        this(cpb, level, noRemove, skip, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST,
+        this(cpb, level, noRemove, skip, NoPreProcess.instance(),
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, stats);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove, SkipStrategy skip,
-            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
+            IPreProcess preProcessing, IPostProcess postProcessing,
+            IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, autoDivisionStrategy);
         this.stats = stats;
@@ -312,6 +315,7 @@ public class ConflictMap extends MapPb implements IConflict {
             this.endingSkipping = false;
         }
 
+        preProcess();
         stats.incNumberOfDerivationSteps();
         assert slackConflict().signum() < 0;
         assert this.degree.signum() >= 0;
@@ -408,6 +412,10 @@ public class ConflictMap extends MapPb implements IConflict {
         assert slackConflict().signum() < 0;
         divideCoefs();
         return this.degree;
+    }
+
+    public void preProcess() {
+        this.preProcess.preProcess(currentLevel, this);
     }
 
     void divideCoefs() {

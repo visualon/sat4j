@@ -68,6 +68,10 @@ public class PBSolverStats extends SolverStats {
 
     private long numberOfRemainingAssigned;
 
+    private long falsifiedLiteralsRemovedFromConflict;
+
+    private long falsifiedLiteralsRemovedFromReason;
+
     @Override
     public void reset() {
         super.reset();
@@ -126,6 +130,12 @@ public class PBSolverStats extends SolverStats {
                 + this.numberOfRemainingUnassigned);
         out.println(prefix + "number of remaining assigned \t: "
                 + this.numberOfRemainingAssigned);
+        out.println(
+                prefix + "number of falsified literals weakened from reason\t: "
+                        + this.falsifiedLiteralsRemovedFromReason);
+        out.println(prefix
+                + "number of falsified literals weakened from conflict\t: "
+                + this.falsifiedLiteralsRemovedFromConflict);
     }
 
     public long getNumberOfReductions() {
@@ -238,6 +248,16 @@ public class PBSolverStats extends SolverStats {
 
     public void incNumberOfRemainingAssigned() {
         this.numberOfRemainingAssigned++;
+    }
+
+    public void incFalsifiedLiteralsRemovedFromReason() {
+        this.falsifiedLiteralsRemovedFromReason++;
+
+    }
+
+    public void incFalsifiedLiteralsRemovedFromConflict() {
+        this.falsifiedLiteralsRemovedFromConflict++;
+
     }
 
 }
