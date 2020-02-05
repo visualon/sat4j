@@ -41,9 +41,9 @@ import org.sat4j.pb.core.PBSolverStats;
  * 
  * @version 0.1.0
  */
-public class ConflictMapWeakenReason extends ConflictMap {
+public class ConflictMapWeakenToClash extends ConflictMap {
 
-    public ConflictMapWeakenReason(PBConstr cpb, int level, boolean noRemove,
+    public ConflictMapWeakenToClash(PBConstr cpb, int level, boolean noRemove,
             SkipStrategy skip, IPreProcess preprocess,
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
@@ -55,7 +55,7 @@ public class ConflictMapWeakenReason extends ConflictMap {
             boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
-        return new ConflictMapWeakenReason(cpb, level, noRemove, skip,
+        return new ConflictMapWeakenToClash(cpb, level, noRemove, skip,
                 preprocess, postProcessing, weakeningStrategy,
                 autoDivisionStrategy, stats);
     }
@@ -69,14 +69,14 @@ public class ConflictMapWeakenReason extends ConflictMap {
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
-                return ConflictMapWeakenReason.createConflict(cpb, level,
+                return ConflictMapWeakenToClash.createConflict(cpb, level,
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats);
             }
 
             @Override
             public String toString() {
-                return "Weaken the reasons to as few literals as possible";
+                return "Weaken reason to find a multiple of the pivot";
             }
         };
     }
@@ -88,41 +88,49 @@ public class ConflictMapWeakenReason extends ConflictMap {
     @Override
     protected BigInteger reduceUntilConflict(int litImplied, int ind,
             BigInteger[] reducedCoefs, BigInteger degreeReduced, IWatchPb wpb) {
+        int nLitImplied = litImplied ^ 1;
+        BigInteger coefImplied = reducedCoefs[ind];
+        BigInteger coefNImplied = weightedLits.get(nLitImplied);
         BigInteger degree = degreeReduced;
-        for (int i = 0; i < wpb.size(); i++) {
-            if (i == ind) {
-                // The implied literal is not touched.
-                continue;
+
+        int cmp = coefImplied.compareTo(coefNImplied);
+        if (cmp < 0) {
+            // The coefficient is bigger in the conflict.
+            BigInteger[] res = coefNImplied.divideAndRemainder(coefImplied);
+            if (res[1].signum() != 0) {
+                BigInteger mult = res[0].add(BigInteger.ONE);
+                for (int i = 0; i < reducedCoefs.length; i++) {
+                    if (i == ind) {
+                        // This coefficient becomes the same coefficient as in
+                        // the conflict.
+                        // This is an implicit weakening.
+                        reducedCoefs[i] = coefNImplied;
+
+                    } else {
+                        // This coefficient is simply multiplied.
+                        reducedCoefs[i] = reducedCoefs[i].multiply(mult);
+                    }
+                }
+
+                // Applying the weakening to the degree.
+                degree = degree.multiply(mult).subtract(coefImplied)
+                        .subtract(res[1]);
+                degree = saturation(reducedCoefs, degree, wpb);
             }
 
-            if (!voc.isFalsified(wpb.get(i))) {
-                // Weakening on this literal preserves the propagation.
-                degree = degree.subtract(reducedCoefs[i]);
-                reducedCoefs[i] = BigInteger.ZERO;
-            }
+        } else if (cmp > 0) {
+            // The coefficient is bigger in the reason.
+            // It has to be weakened to a multiple of coefNImplied.
+            BigInteger modulo = coefImplied.mod(coefNImplied);
+            reducedCoefs[ind] = coefImplied.subtract(modulo);
+            degree = degree.subtract(modulo);
+            degree = saturation(reducedCoefs, degree, wpb);
+
+        } else {
+            // In this case, both coefficients are equal.
+            // There is nothing to do.
         }
 
-        // The coefficient of the literal is now at least equal to degree.
-        // Any other coefficient having strictly less than the degree may be
-        // safely weakened (in the worst case, a clause will be inferred).
-        // This approach may be use to lazily detect irrelevant literals.
-
-        for (int i = 0; i < wpb.size()
-                && degree.compareTo(BigInteger.ONE) > 0; i++) {
-            if (!voc.isFalsified(wpb.get(i))) {
-                // Satisfied literals have already been considered.
-                continue;
-            }
-
-            if (reducedCoefs[i].compareTo(degree) < 0) {
-                // Weakening on this literal preserves the propagation.
-                degree = degree.subtract(reducedCoefs[i]);
-                reducedCoefs[i] = BigInteger.ZERO;
-                stats.incFalsifiedLiteralsRemovedFromReason();
-            }
-        }
-
-        degree = saturation(reducedCoefs, degree, wpb);
         return super.reduceUntilConflict(litImplied, ind, reducedCoefs, degree,
                 wpb);
     }

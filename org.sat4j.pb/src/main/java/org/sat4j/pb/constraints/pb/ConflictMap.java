@@ -140,6 +140,7 @@ public class ConflictMap extends MapPb implements IConflict {
         this.skip = skip;
         this.voc = cpb.getVocabulary();
         this.currentLevel = level;
+        this.preProcess = preProcessing;
         initStructures();
 
         this.postProcess = postProcessing;
@@ -277,6 +278,7 @@ public class ConflictMap extends MapPb implements IConflict {
     public BigInteger resolve(PBConstr cpb, int litImplied,
             VarActivityListener val) {
         assert litImplied > 1;
+        preProcess();
         int nLitImplied = litImplied ^ 1;
         if (cpb == null || !this.weightedLits.containsKey(nLitImplied)) {
             // no resolution
@@ -314,8 +316,6 @@ public class ConflictMap extends MapPb implements IConflict {
         } else {
             this.endingSkipping = false;
         }
-
-        preProcess();
         stats.incNumberOfDerivationSteps();
         assert slackConflict().signum() < 0;
         assert this.degree.signum() >= 0;
@@ -453,7 +453,6 @@ public class ConflictMap extends MapPb implements IConflict {
             // search of the multiplying coefficients
             assert this.weightedLits.get(litImplied ^ 1).signum() > 0;
             assert reducedCoefs[ind].signum() > 0;
-
             if (!reducedCoefs[ind].equals(previousCoefLitImplied)) {
                 assert coefLitImplied
                         .equals(this.weightedLits.get(litImplied ^ 1));

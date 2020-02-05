@@ -30,13 +30,16 @@ public class PreProcessReduceConflict implements IPreProcess {
             int lit = conflictMap.weightedLits.getLit(i);
             BigInteger coef = conflictMap.weightedLits.getCoef(i);
 
+            if (coef.compareTo(degree) >= 0) {
+                continue;
+            }
+
             if (!conflictMap.voc.isFalsified(lit)) {
                 // Weakening on this literal will not modify the slack.
                 conflictMap.removeCoef(lit);
                 degree = degree.subtract(coef);
 
-            } else if (conflictMap.voc.getLevel(lit) >= dl
-                    && coef.negate().compareTo(slack) > 0) {
+            } else if (coef.negate().compareTo(slack) > 0) {
                 // The slack will increase, but will remain negative.
                 // In other words, the constraint remains conflictual.
                 conflictMap.removeCoef(lit);

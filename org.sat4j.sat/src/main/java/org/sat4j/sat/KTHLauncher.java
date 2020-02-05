@@ -29,6 +29,7 @@ import org.sat4j.pb.constraints.pb.ConflictMapReduceToCard;
 import org.sat4j.pb.constraints.pb.ConflictMapReduceToClause;
 import org.sat4j.pb.constraints.pb.ConflictMapRounding;
 import org.sat4j.pb.constraints.pb.ConflictMapWeakenReason;
+import org.sat4j.pb.constraints.pb.ConflictMapWeakenToClash;
 import org.sat4j.pb.constraints.pb.IWeakeningStrategy;
 import org.sat4j.pb.constraints.pb.PostProcessToCard;
 import org.sat4j.pb.constraints.pb.PostProcessToClause;
@@ -63,7 +64,7 @@ public class KTHLauncher {
         options.addOption("wr", "when-resolve", true,
                 "behavior when performing conflict analysis. Legal values are skip, weaken or always.");
         options.addOption("rr", "round-reason", true,
-                "Rounding strategy during conflict analysis. Legal values are divide-v1, divide-unless-equal, divide-unless-divisor, round-to-gcd, never, weaken-and-divide, weaken, or partial-weaken-and-divide.");
+                "Rounding strategy during conflict analysis. Legal values are divide-v1, divide-unless-equal, divide-unless-divisor, round-to-gcd, never, weaken-and-divide, weaken, weaken-to-clash, or partial-weaken-and-divide.");
         options.addOption("rwp", "rounding-weaken-priority", true,
                 "Which literals are removed to ensure conflicting constraints. Legal values are any, satisfied, unassigned");
         options.addOption("tlc", "type-of-learned-constraint", true,
@@ -80,7 +81,7 @@ public class KTHLauncher {
                 "Use a static order for decisions, using the natural order of the variables, from 1 to n.");
         options.addOption("autodiv", "auto-division", false,
                 "Apply division automatically when a common factor is identified.");
-        options.addOption("pc", "preprocess-conflict", false,
+        options.addOption("pc", "preprocess-conflict", true,
                 "Preprocessing strategy to apply on the conflict before resolving. Legal values are none or reduce");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
@@ -249,6 +250,8 @@ public class KTHLauncher {
                     cpsolver.setConflictFactory(ConflictMapRounding.factory());
                 } else if ("weaken".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapWeakenReason.factory());
+                } else if ("weaken-to-clash".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapWeakenToClash.factory());
                 } else if ("weaken-and-divide".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningFactory());
                 } else if ("partial-weaken-and-divide".equals(value)) {
@@ -358,7 +361,7 @@ public class KTHLauncher {
             } catch (ContradictionException e) {
                 log("UNSATISFIABLE", "s ");
             } catch (Exception e) {
-                log(e.getMessage());
+                e.printStackTrace();
             }
         } catch (ParseException exp) {
             log("Unexpected exception:" + exp.getMessage());
