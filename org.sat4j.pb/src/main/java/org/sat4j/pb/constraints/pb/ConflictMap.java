@@ -445,7 +445,8 @@ public class ConflictMap extends MapPb implements IConflict {
         do {
             if (slackResolve.signum() >= 0) {
                 assert slackThis.signum() > 0;
-                tmp = reduceInConstraint(wpb, reducedCoefs, ind, reducedDegree);
+                tmp = reduceInConstraint(wpb, reducedCoefs, ind, reducedDegree,
+                        slackResolve);
                 assert tmp.compareTo(reducedDegree) < 0
                         && tmp.compareTo(BigInteger.ONE) >= 0;
                 reducedDegree = tmp;
@@ -486,7 +487,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     }
 
-    private BigInteger possConstraint(IWatchPb wpb, BigInteger[] theCoefs) {
+    protected BigInteger possConstraint(IWatchPb wpb, BigInteger[] theCoefs) {
         BigInteger poss = BigInteger.ZERO;
         // for each literal
         for (int i = 0; i < wpb.size(); i++) {
@@ -696,7 +697,7 @@ public class ConflictMap extends MapPb implements IConflict {
      */
     public BigInteger reduceInConstraint(IWatchPb wpb,
             final BigInteger[] coefsBis, final int indLitImplied,
-            final BigInteger degreeBis) {
+            final BigInteger degreeBis, BigInteger slackResolve) {
         assert degreeBis.compareTo(BigInteger.ONE) > 0;
         // search of a literal to remove
         int lit = weakeningStrategy.findLiteralToRemove(this.voc, wpb, coefsBis,

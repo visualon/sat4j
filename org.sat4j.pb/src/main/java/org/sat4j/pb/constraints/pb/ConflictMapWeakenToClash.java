@@ -30,9 +30,18 @@
 
 package org.sat4j.pb.constraints.pb;
 
-import java.math.BigInteger;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
 
+import java.math.BigInteger;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
+import org.sat4j.core.VecInt;
 import org.sat4j.pb.core.PBSolverStats;
+import org.sat4j.specs.IVecInt;
+import org.sat4j.specs.IteratorInt;
 
 /**
  * 
@@ -88,51 +97,174 @@ public class ConflictMapWeakenToClash extends ConflictMap {
     @Override
     protected BigInteger reduceUntilConflict(int litImplied, int ind,
             BigInteger[] reducedCoefs, BigInteger degreeReduced, IWatchPb wpb) {
-        int nLitImplied = litImplied ^ 1;
-        BigInteger coefImplied = reducedCoefs[ind];
-        BigInteger coefNImplied = weightedLits.get(nLitImplied);
-        BigInteger degree = degreeReduced;
+        BigInteger slackResolve = BigInteger.ONE.negate();
+        BigInteger slackThis = BigInteger.ZERO;
+        BigInteger slackIndex;
+        BigInteger slackConflict = slackConflict();
+        BigInteger reducedDegree = degreeReduced;
+        BigInteger previousCoefLitImplied = BigInteger.ZERO;
+        BigInteger tmp;
+        BigInteger[] mult = new BigInteger[] { ONE, ONE, ZERO };
+        BigInteger coefLitImplied = this.weightedLits.get(litImplied ^ 1);
+        this.possReducedCoefs = possConstraint(wpb, reducedCoefs);
 
-        int cmp = coefImplied.compareTo(coefNImplied);
-        if (cmp < 0) {
-            // The coefficient is bigger in the conflict.
-            BigInteger[] res = coefNImplied.divideAndRemainder(coefImplied);
-            if (res[1].signum() != 0) {
-                BigInteger mult = res[0].add(BigInteger.ONE);
-                for (int i = 0; i < reducedCoefs.length; i++) {
-                    if (i == ind) {
-                        // This coefficient becomes the same coefficient as in
-                        // the conflict.
-                        // This is an implicit weakening.
-                        reducedCoefs[i] = coefNImplied;
+        // Ensuring that the addition of the constraint preserves the conflict.
+        do {
+            if (slackResolve.signum() >= 0) {
+                assert slackThis.signum() > 0;
+                tmp = reduceInConstraint(wpb, reducedCoefs, ind, reducedDegree,
+                        slackResolve);
+                assert tmp.compareTo(reducedDegree) < 0
+                        && tmp.compareTo(BigInteger.ONE) >= 0;
+                reducedDegree = tmp;
+            }
+            // search of the multiplying coefficients
+            assert this.weightedLits.get(litImplied ^ 1).signum() > 0;
+            assert reducedCoefs[ind].signum() > 0;
+            if (!reducedCoefs[ind].equals(previousCoefLitImplied)) {
+                assert coefLitImplied
+                        .equals(this.weightedLits.get(litImplied ^ 1));
+                mult = findMult(coefLitImplied, reducedCoefs[ind]);
+                assert mult[0].signum() > 0;
+                assert mult[1].signum() > 0;
 
-                    } else {
-                        // This coefficient is simply multiplied.
-                        reducedCoefs[i] = reducedCoefs[i].multiply(mult);
-                    }
-                }
+                this.coefMult = mult[0];
+                this.coefMultCons = mult[1];
 
-                // Applying the weakening to the degree.
-                degree = degree.multiply(mult).subtract(coefImplied)
-                        .subtract(res[1]);
-                degree = saturation(reducedCoefs, degree, wpb);
+                assert this.coefMult.multiply(coefLitImplied)
+                        .equals(this.coefMultCons.multiply(reducedCoefs[ind])
+                                .subtract(mult[2]));
+                previousCoefLitImplied = reducedCoefs[ind];
             }
 
-        } else if (cmp > 0) {
-            // The coefficient is bigger in the reason.
-            // It has to be weakened to a multiple of coefNImplied.
-            BigInteger modulo = coefImplied.mod(coefNImplied);
-            reducedCoefs[ind] = coefImplied.subtract(modulo);
-            degree = degree.subtract(modulo);
-            degree = saturation(reducedCoefs, degree, wpb);
+            // slacks computed for each constraint
+            slackThis = this.possReducedCoefs.subtract(reducedDegree)
+                    .multiply(this.coefMultCons);
+            assert slackThis
+                    .equals(wpb.slackConstraint(reducedCoefs, reducedDegree)
+                            .multiply(this.coefMultCons));
+            assert slackConflict.equals(slackConflict());
+            slackIndex = slackConflict.multiply(this.coefMult);
+            assert slackIndex.signum() <= 0;
+            // estimate of the slack after the cutting plane
+            slackResolve = slackThis.add(slackIndex);
+        } while ((slackResolve.signum() >= 0) || this.isUnsat());
 
-        } else {
-            // In this case, both coefficients are equal.
-            // There is nothing to do.
+        // Ensuring that the literal will be removed.
+        // We need to apply weakening so that the degree becomes equal to the
+        // expected value.
+
+        // First, applying the multiplication.
+        Map<BigInteger, IVecInt> coefs = new TreeMap<BigInteger, IVecInt>();
+        for (int i = 0; i < reducedCoefs.length; i++) {
+            BigInteger coef = reducedCoefs[i].multiply(coefMultCons);
+            reducedCoefs[i] = coef;
+
+            if (!voc.isFalsified(wpb.get(i)) && i != ind) {
+                IVecInt lits = coefs.get(coef);
+                if (lits == null) {
+                    lits = new VecInt();
+                    coefs.put(coef, lits);
+                }
+                lits.push(i);
+            }
+        }
+        reducedDegree = reducedDegree.multiply(coefMultCons);
+        coefMultCons = BigInteger.ONE;
+
+        if (mult[2].signum() == 0) {
+            // There is nothing to weaken.
+            reducedDegree = saturation(reducedCoefs, reducedDegree, wpb);
+            if (reducedDegree.equals(BigInteger.ONE)) {
+                coefMultCons = coefLitImplied;
+            }
+            return reducedDegree;
         }
 
-        return super.reduceUntilConflict(litImplied, ind, reducedCoefs, degree,
-                wpb);
+        // Weakening the literals.
+        BigInteger toWeaken = reducedDegree
+                .subtract(coefMult.multiply(coefLitImplied));
+        assert toWeaken.signum() >= 0;
+        for (Entry<BigInteger, IVecInt> entry : coefs.entrySet()) {
+            if (toWeaken.signum() == 0) {
+                break;
+            }
+
+            BigInteger coef = entry.getKey();
+            for (IteratorInt it = entry.getValue().iterator(); it.hasNext();) {
+                int index = it.next();
+                if (coef.compareTo(toWeaken) > 0) {
+                    // Partial weakening.
+                    reducedCoefs[index] = coef.subtract(toWeaken);
+                    reducedDegree = reducedDegree.subtract(toWeaken);
+                    toWeaken = BigInteger.ZERO;
+                    break;
+                }
+
+                // Full weakening.
+                reducedCoefs[index] = BigInteger.ZERO;
+                reducedDegree = reducedDegree.subtract(coef);
+                toWeaken = toWeaken.subtract(coef);
+            }
+        }
+
+        if (toWeaken.signum() > 0) {
+            // Weakening on the propagated literal.
+            reducedCoefs[ind] = reducedCoefs[ind].subtract(toWeaken);
+            reducedDegree = reducedDegree.subtract(toWeaken);
+        }
+
+        reducedDegree = saturation(reducedCoefs, reducedDegree, wpb);
+        if (reducedDegree.equals(BigInteger.ONE)) {
+            coefMultCons = coefLitImplied;
+            coefMult = BigInteger.ONE;
+        }
+        return reducedDegree;
+    }
+
+    /**
+     * Finds the value by which the reason must be multiplied to clash with the
+     * conflict.
+     * 
+     * @param conflict
+     *            The coefficient in the conflict.
+     * @param reason
+     *            The coefficient in the reason.
+     * 
+     * @return An array containing the value by which to multiply the conflict,
+     *         the value by which to multiply the reason and the amount to
+     *         weaken on the implied literal.
+     */
+    protected BigInteger[] findMult(BigInteger conflict, BigInteger reason) {
+        int cmp = conflict.compareTo(reason);
+        if (cmp == 0) {
+            // Both coefficients are equal.
+            // We can keep coefficients as is.
+            return new BigInteger[] { ONE, ONE, ZERO };
+        }
+
+        if (cmp < 0) {
+            // The coefficient is bigger in the reason.
+            // It has to be weakened to a multiple of the coefficient in the
+            // conflict.
+            BigInteger[] divMod = reason.divideAndRemainder(conflict);
+            return new BigInteger[] { divMod[0], ONE, divMod[1] };
+        }
+
+        // The coefficient is bigger in the conflict.
+        BigInteger[] divMod = conflict.divideAndRemainder(reason);
+
+        if (divMod[1].signum() == 0) {
+            // In this case, the coefficient in the conflict is a multiple of
+            // that in the reason.
+            // We just need to multiply the reason.
+            return new BigInteger[] { ONE, divMod[0], ZERO };
+        }
+
+        // We need to find a value that is greater than the coefficient to
+        // allow weakening.
+        return new BigInteger[] { ONE, divMod[0].add(ONE),
+                reason.subtract(divMod[1]) };
     }
 
 }
