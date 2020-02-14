@@ -185,7 +185,7 @@ public final class MaxWatchPbLong extends WatchPbLong {
      *            the solver
      * @param p
      *            the propagated literal (it must be falsified)
-     * @return false iff there is a conflict
+     * @return false if a conflict is detected
      */
     @Override
     public boolean propagate(UnitPropagationListener s, int p) {
@@ -252,6 +252,8 @@ public final class MaxWatchPbLong extends WatchPbLong {
 
         assert this.learnt || this.watchCumul >= computeLeftSide();
         assert this.watchCumul >= computeLeftSide();
+        // No conflict was detected, but this does NOT mean that the constraint
+        // is not conflictual.
         return true;
     }
 
