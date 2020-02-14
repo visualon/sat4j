@@ -217,6 +217,37 @@ public class ConflictMapWeakenToClash extends ConflictMap {
                 reducedDegree = reducedDegree.subtract(coef);
             }
         }
+        if (toWeaken.signum() > 0
+                && reducedCoefs[ind].compareTo(reducedDegree) < 0) {
+            // Weakening on falsified literals.
+            for (Entry<BigInteger, IVecInt> entry : coefsFals.entrySet()) {
+                if (toWeaken.signum() == 0) {
+                    break;
+                }
+
+                BigInteger coef = entry.getKey();
+                for (IteratorInt it = entry.getValue().iterator(); it
+                        .hasNext();) {
+                    int index = it.next();
+                    if (weightedLits.containsKey(wpb.get(index) ^ 1)) {
+                        continue;
+                    }
+                    if (coef.compareTo(toWeaken) > 0) {
+                        // Partial weakening.
+                        reducedCoefs[index] = coef.subtract(toWeaken);
+                        reducedDegree = reducedDegree.subtract(toWeaken);
+                        toWeaken = BigInteger.ZERO;
+                        break;
+                    }
+
+                    // Full weakening.
+                    reducedCoefs[index] = BigInteger.ZERO;
+                    toWeaken = toWeaken.subtract(coef);
+                    reducedDegree = reducedDegree.subtract(coef);
+                }
+            }
+        }
+
         if (toWeaken.signum() > 0) {
             // Weakening on the propagated literal.
             toWeaken = toWeaken.min(reducedCoefs[ind].subtract(expected));
@@ -230,7 +261,8 @@ public class ConflictMapWeakenToClash extends ConflictMap {
             coefMultCons = coefLitImplied;
             coefMult = BigInteger.ONE;
         }
-        return reducedDegree;
+        return reduceUntilConflict(litImplied, ind, reducedCoefs, degreeReduced,
+                wpb);
     }
 
     /**
