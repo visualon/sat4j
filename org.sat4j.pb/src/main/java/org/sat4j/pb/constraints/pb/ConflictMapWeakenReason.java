@@ -104,7 +104,7 @@ public class ConflictMapWeakenReason extends ConflictMap {
 
         // The coefficient of the literal is now at least equal to degree.
         // Any other coefficient having strictly less than the degree may be
-        // safely weakened (in the worst case, a clause will be inferred).
+        // safely weakened: a clause will be derived.
         // This approach may be use to lazily detect irrelevant literals.
 
         for (int i = 0; i < wpb.size()

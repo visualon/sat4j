@@ -105,8 +105,9 @@ public class ConflictMapWeakenToClash extends ConflictMap {
         BigInteger previousCoefLitImplied = BigInteger.ZERO;
         BigInteger tmp;
         BigInteger[] mult = new BigInteger[] { ONE, ONE, ZERO };
-        BigInteger coefLitImplied = this.weightedLits.get(litImplied ^ 1);
+        final BigInteger coefLitImplied = this.weightedLits.get(litImplied ^ 1);
         this.possReducedCoefs = possConstraint(wpb, reducedCoefs);
+        // assert possReducedCoefs.compareTo(reducedDegree) >= 0;
 
         // Ensuring that the addition of the constraint preserves the conflict.
         do {
@@ -155,18 +156,27 @@ public class ConflictMapWeakenToClash extends ConflictMap {
         // expected value.
 
         // First, applying the multiplication.
-        Map<BigInteger, IVecInt> coefs = new TreeMap<BigInteger, IVecInt>();
+        Map<BigInteger, IVecInt> coefsSat = new TreeMap<BigInteger, IVecInt>();
+        Map<BigInteger, IVecInt> coefsFals = new TreeMap<BigInteger, IVecInt>();
         for (int i = 0; i < reducedCoefs.length; i++) {
             BigInteger coef = reducedCoefs[i].multiply(coefMultCons);
             reducedCoefs[i] = coef;
 
             if (!voc.isFalsified(wpb.get(i)) && i != ind) {
-                IVecInt lits = coefs.get(coef);
+                IVecInt lits = coefsSat.get(coef);
                 if (lits == null) {
                     lits = new VecInt();
-                    coefs.put(coef, lits);
+                    coefsSat.put(coef, lits);
                 }
                 lits.push(i);
+            } else if (voc.isFalsified(wpb.get(i))) {
+                IVecInt lits = coefsFals.get(coef);
+                if (lits == null) {
+                    lits = new VecInt();
+                    coefsSat.put(coef, lits);
+                }
+                lits.push(i);
+
             }
         }
         reducedDegree = reducedDegree.multiply(coefMultCons);
@@ -182,10 +192,10 @@ public class ConflictMapWeakenToClash extends ConflictMap {
         }
 
         // Weakening the literals.
-        BigInteger toWeaken = reducedDegree
-                .subtract(coefMult.multiply(coefLitImplied));
+        BigInteger expected = coefMult.multiply(coefLitImplied);
+        BigInteger toWeaken = reducedDegree.subtract(expected);
         assert toWeaken.signum() >= 0;
-        for (Entry<BigInteger, IVecInt> entry : coefs.entrySet()) {
+        for (Entry<BigInteger, IVecInt> entry : coefsSat.entrySet()) {
             if (toWeaken.signum() == 0) {
                 break;
             }
@@ -203,15 +213,16 @@ public class ConflictMapWeakenToClash extends ConflictMap {
 
                 // Full weakening.
                 reducedCoefs[index] = BigInteger.ZERO;
-                reducedDegree = reducedDegree.subtract(coef);
                 toWeaken = toWeaken.subtract(coef);
+                reducedDegree = reducedDegree.subtract(coef);
             }
         }
-
         if (toWeaken.signum() > 0) {
             // Weakening on the propagated literal.
+            toWeaken = toWeaken.min(reducedCoefs[ind].subtract(expected));
             reducedCoefs[ind] = reducedCoefs[ind].subtract(toWeaken);
             reducedDegree = reducedDegree.subtract(toWeaken);
+
         }
 
         reducedDegree = saturation(reducedCoefs, reducedDegree, wpb);
