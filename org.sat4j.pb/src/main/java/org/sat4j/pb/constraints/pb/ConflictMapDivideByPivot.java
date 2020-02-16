@@ -43,29 +43,34 @@ import org.sat4j.pb.core.PBSolverStats;
  */
 public class ConflictMapDivideByPivot extends ConflictMap {
 
-    private final DivisionStrategy divisionStrategy;
+    final DivisionStrategy divisionStrategy;
+
+    final IReduceConflictStrategy reduceConflict;
 
     public ConflictMapDivideByPivot(PBConstr cpb, int level, boolean noRemove,
             SkipStrategy skip, IPreProcess preprocess,
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats,
-            DivisionStrategy divisionStrategy) {
+            DivisionStrategy divisionStrategy,
+            IReduceConflictStrategy reduceConflict) {
         super(cpb, level, noRemove, skip, preprocess, postProcessing,
                 weakeningStrategy, autoDivisionStrategy, stats);
         this.divisionStrategy = divisionStrategy;
+        this.reduceConflict = reduceConflict;
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
             boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats,
-            DivisionStrategy divisionStrategy) {
+            DivisionStrategy divisionStrategy,
+            IReduceConflictStrategy reduceConflict) {
         return new ConflictMapDivideByPivot(cpb, level, noRemove, skip,
                 preprocess, postProcessing, weakeningStrategy,
-                autoDivisionStrategy, stats, divisionStrategy);
+                autoDivisionStrategy, stats, divisionStrategy, reduceConflict);
     }
 
-    public static IConflictFactory fullWeakeningFactory() {
+    public static IConflictFactory fullWeakeningOnReasonFactory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
@@ -77,17 +82,18 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                 return ConflictMapDivideByPivot.createConflict(cpb, level,
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats,
-                        DivisionStrategy.FULL_WEAKENING);
+                        DivisionStrategy.FULL_WEAKENING,
+                        NoReduceConflict.instance());
             }
 
             @Override
             public String toString() {
-                return "Divide the constraint by the coefficient of the pivot when resolving, and weaken away non-divisible coefficient.";
+                return "Divide the reason by the coefficient of the pivot when resolving, and weaken away non-divisible coefficient.";
             }
         };
     }
 
-    public static IConflictFactory partialWeakeningFactory() {
+    public static IConflictFactory partialWeakeningOnReasonFactory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
@@ -99,12 +105,59 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                 return ConflictMapDivideByPivot.createConflict(cpb, level,
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats,
-                        DivisionStrategy.PARTIAL_WEAKENING);
+                        DivisionStrategy.PARTIAL_WEAKENING,
+                        NoReduceConflict.instance());
             }
 
             @Override
             public String toString() {
-                return "Divide the constraint by the coefficient of the pivot when resolving, and partially weaken non-divisible coefficient.";
+                return "Divide the reason by the coefficient of the pivot when resolving, and partially weaken non-divisible coefficient.";
+            }
+        };
+    }
+
+    public static IConflictFactory fullWeakeningOnBothFactory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+                    IPostProcess postprocess,
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
+                return ConflictMapDivideByPivot.createConflict(cpb, level,
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats,
+                        DivisionStrategy.FULL_WEAKENING,
+                        ReduceConflict.instance());
+            }
+
+            @Override
+            public String toString() {
+                return "Divide both constraints by the coefficient of the pivot when resolving, and weaken away non-divisible coefficient.";
+            }
+        };
+    }
+
+    public static IConflictFactory partialWeakeningOnBothFactory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+                    IPostProcess postprocess,
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
+                return ConflictMapDivideByPivot.createConflict(cpb, level,
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats,
+                        DivisionStrategy.PARTIAL_WEAKENING,
+                        ReduceConflict.instance());
+            }
+
+            @Override
+            public String toString() {
+                return "Divide both constraints by the coefficient of the pivot when resolving, and partially weaken non-divisible coefficient.";
             }
         };
     }
@@ -141,10 +194,11 @@ public class ConflictMapDivideByPivot extends ConflictMap {
         this.coefMultCons = this.weightedLits.get(litImplied ^ 1);
         this.coefMult = BigInteger.ONE;
         this.stats.incNumberOfRoundingOperations();
+        this.reduceConflict.reduceConflict(this, litImplied ^ 1);
         return outputDegree;
     }
 
-    private static BigInteger ceildiv(BigInteger p, BigInteger q) {
+    static BigInteger ceildiv(BigInteger p, BigInteger q) {
         return p.add(q).subtract(BigInteger.ONE).divide(q);
     }
 
