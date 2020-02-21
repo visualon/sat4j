@@ -255,9 +255,13 @@ public class KTHLauncher {
                 } else if ("weaken-to-clash".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapWeakenToClash.factory());
                 } else if ("weaken-and-divide".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnReasonFactory());
                 } else if ("partial-weaken-and-divide".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnReasonFactory());
+                } else if ("weaken-and-divide-both".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnBothFactory());
+                } else if ("partial-weaken-and-divide-both".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnBothFactory());
                 } else {
                     // "divide-unless-equal":
                     // "divide-unless-divisor":

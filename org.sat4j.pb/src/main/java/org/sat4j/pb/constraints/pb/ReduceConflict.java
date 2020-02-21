@@ -57,6 +57,8 @@ public class ReduceConflict implements IReduceConflictStrategy {
             conflict.removeCoef(it.next());
         }
 
+        conflict.degree = ConflictMapDivideByPivot.ceildiv(conflict.degree,
+                coef);
         conflict.saturation();
         conflict.coefMultCons = BigInteger.ONE;
         conflict.stats.incNumberOfRoundingOperations();

@@ -173,7 +173,7 @@ public class ConflictMapWeakenToClash extends ConflictMap {
                 IVecInt lits = coefsFals.get(coef);
                 if (lits == null) {
                     lits = new VecInt();
-                    coefsSat.put(coef, lits);
+                    coefsFals.put(coef, lits);
                 }
                 lits.push(i);
 
@@ -232,6 +232,7 @@ public class ConflictMapWeakenToClash extends ConflictMap {
                     if (weightedLits.containsKey(wpb.get(index) ^ 1)) {
                         continue;
                     }
+                    stats.incFalsifiedLiteralsRemovedFromReason();
                     if (coef.compareTo(toWeaken) > 0) {
                         // Partial weakening.
                         reducedCoefs[index] = coef.subtract(toWeaken);
@@ -261,8 +262,7 @@ public class ConflictMapWeakenToClash extends ConflictMap {
             coefMultCons = coefLitImplied;
             coefMult = BigInteger.ONE;
         }
-        return reduceUntilConflict(litImplied, ind, reducedCoefs, degreeReduced,
-                wpb);
+        return reducedDegree;
     }
 
     /**
