@@ -43,6 +43,7 @@ import org.sat4j.pb.core.PBSolverStats;
  */
 public class ConflictMapDivideByPivot extends ConflictMap {
 
+    final boolean divideReason;
     final DivisionStrategy divisionStrategy;
 
     final IReduceConflictStrategy reduceConflict;
@@ -52,11 +53,12 @@ public class ConflictMapDivideByPivot extends ConflictMap {
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats,
             DivisionStrategy divisionStrategy,
-            IReduceConflictStrategy reduceConflict) {
+            IReduceConflictStrategy reduceConflict, boolean divideReason) {
         super(cpb, level, noRemove, skip, preprocess, postProcessing,
                 weakeningStrategy, autoDivisionStrategy, stats);
         this.divisionStrategy = divisionStrategy;
         this.reduceConflict = reduceConflict;
+        this.divideReason = divideReason;
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
@@ -64,10 +66,11 @@ public class ConflictMapDivideByPivot extends ConflictMap {
             IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats,
             DivisionStrategy divisionStrategy,
-            IReduceConflictStrategy reduceConflict) {
+            IReduceConflictStrategy reduceConflict, boolean divideReason) {
         return new ConflictMapDivideByPivot(cpb, level, noRemove, skip,
                 preprocess, postProcessing, weakeningStrategy,
-                autoDivisionStrategy, stats, divisionStrategy, reduceConflict);
+                autoDivisionStrategy, stats, divisionStrategy, reduceConflict,
+                divideReason);
     }
 
     public static IConflictFactory fullWeakeningOnReasonFactory() {
@@ -83,7 +86,7 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats,
                         DivisionStrategy.FULL_WEAKENING,
-                        NoReduceConflict.instance());
+                        NoReduceConflict.instance(), true);
             }
 
             @Override
@@ -106,7 +109,7 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats,
                         DivisionStrategy.PARTIAL_WEAKENING,
-                        NoReduceConflict.instance());
+                        NoReduceConflict.instance(), true);
             }
 
             @Override
@@ -129,7 +132,7 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats,
                         DivisionStrategy.FULL_WEAKENING,
-                        ReduceConflict.instance());
+                        ReduceConflict.instance(), true);
             }
 
             @Override
@@ -152,12 +155,58 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                         noRemove, skip, preprocess, postprocess,
                         weakeningStrategy, autoDivisionStrategy, stats,
                         DivisionStrategy.PARTIAL_WEAKENING,
-                        ReduceConflict.instance());
+                        ReduceConflict.instance(), true);
             }
 
             @Override
             public String toString() {
                 return "Divide both constraints by the coefficient of the pivot when resolving, and partially weaken non-divisible coefficient.";
+            }
+        };
+    }
+
+    public static IConflictFactory fullWeakeningOnConflictFactory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+                    IPostProcess postprocess,
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
+                return ConflictMapDivideByPivot.createConflict(cpb, level,
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats,
+                        DivisionStrategy.FULL_WEAKENING,
+                        ReduceConflict.instance(), false);
+            }
+
+            @Override
+            public String toString() {
+                return "Divide the conflict by the coefficient of the pivot when resolving, and weaken away non-divisible coefficient.";
+            }
+        };
+    }
+
+    public static IConflictFactory partialWeakeningOnConflictFactory() {
+        return new IConflictFactory() {
+            @Override
+            public IConflict createConflict(PBConstr cpb, int level,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+                    IPostProcess postprocess,
+                    IWeakeningStrategy weakeningStrategy,
+                    AutoDivisionStrategy autoDivisionStrategy,
+                    PBSolverStats stats) {
+                return ConflictMapDivideByPivot.createConflict(cpb, level,
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats,
+                        DivisionStrategy.PARTIAL_WEAKENING,
+                        ReduceConflict.instance(), false);
+            }
+
+            @Override
+            public String toString() {
+                return "Divide the conflict by the coefficient of the pivot when resolving, and partially weaken non-divisible coefficient.";
             }
         };
     }
@@ -173,28 +222,30 @@ public class ConflictMapDivideByPivot extends ConflictMap {
         BigInteger outputDegree = degreeReduced;
         int size = wpb.size();
 
-        for (int i = 0; i < size; i++) {
-            if (voc.isFalsified(wpb.get(i))) {
-                // The coefficient is not rounded up after division.
-                reducedCoefs[i] = ceildiv(reducedCoefs[i], coeffImplied);
+        if (divideReason) {
+            for (int i = 0; i < size; i++) {
+                if (voc.isFalsified(wpb.get(i))) {
+                    // The coefficient is not rounded up after division.
+                    reducedCoefs[i] = ceildiv(reducedCoefs[i], coeffImplied);
 
-            } else {
-                // Partially weakening the coefficient to allow its division.
-                // No rounding up here: coefficients are rounded down, and the
-                // remainder is subtracted from the degree.
-                BigInteger[] tmp = divisionStrategy.divide(reducedCoefs[i],
-                        coeffImplied);
-                reducedCoefs[i] = tmp[0];
-                outputDegree = outputDegree.subtract(tmp[1]);
+                } else {
+                    // Partially weakening the coefficient to allow its
+                    // division.
+                    // No rounding up here: coefficients are rounded down, and
+                    // the remainder is subtracted from the degree.
+                    BigInteger[] tmp = divisionStrategy.divide(reducedCoefs[i],
+                            coeffImplied);
+                    reducedCoefs[i] = tmp[0];
+                    outputDegree = outputDegree.subtract(tmp[1]);
+                }
             }
+            outputDegree = saturation(reducedCoefs,
+                    ceildiv(outputDegree, coeffImplied), wpb);
         }
-
-        outputDegree = saturation(reducedCoefs,
-                ceildiv(outputDegree, coeffImplied), wpb);
-        this.coefMultCons = this.weightedLits.get(litImplied ^ 1);
-        this.coefMult = BigInteger.ONE;
         this.stats.incNumberOfRoundingOperations();
         this.reduceConflict.reduceConflict(this, litImplied ^ 1);
+        this.coefMultCons = this.weightedLits.get(litImplied ^ 1);
+        this.coefMult = reducedCoefs[ind];
         return outputDegree;
     }
 

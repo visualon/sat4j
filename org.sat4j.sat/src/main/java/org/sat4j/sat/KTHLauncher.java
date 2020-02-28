@@ -262,6 +262,10 @@ public class KTHLauncher {
                     cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnBothFactory());
                 } else if ("partial-weaken-and-divide-both".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnBothFactory());
+                } else if ("weaken-and-divide-conflict".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnConflictFactory());
+                } else if ("partial-weaken-and-divide-conflict".equals(value)) {
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnConflictFactory());
                 } else {
                     // "divide-unless-equal":
                     // "divide-unless-divisor":
