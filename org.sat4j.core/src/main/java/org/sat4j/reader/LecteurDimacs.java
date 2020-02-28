@@ -271,9 +271,7 @@ public class LecteurDimacs extends Reader implements Serializable {
         } else if (isUsingMapping()) {
             String[] values = str.split("=");
             if (values.length == 2) {
-                if (mapping == null) {
-                    mapping = new HashMap<Integer, String>();
-                }
+                startsMapping();
                 mapping.put(Integer.valueOf(values[0].trim()),
                         values[1].trim());
             }
@@ -338,5 +336,11 @@ public class LecteurDimacs extends Reader implements Serializable {
     @Override
     public Map<Integer, String> getMapping() {
         return mapping;
+    }
+
+    protected void startsMapping() {
+        if (mapping == null) {
+            mapping = new HashMap<Integer, String>();
+        }
     }
 }
