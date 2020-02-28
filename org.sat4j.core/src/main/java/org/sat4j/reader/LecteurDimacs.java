@@ -252,7 +252,7 @@ public class LecteurDimacs extends Reader implements Serializable {
 
     private Map<Integer, String> mapping;
 
-    private char manageCommentLine() throws IOException {
+    protected char manageCommentLine() throws IOException {
         char car;
         StringBuilder stb = new StringBuilder();
         do {
