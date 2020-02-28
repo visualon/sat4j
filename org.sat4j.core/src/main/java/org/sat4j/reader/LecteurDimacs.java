@@ -64,7 +64,7 @@ public class LecteurDimacs extends Reader implements Serializable {
 
     private ISolver s;
 
-    private transient BufferedInputStream in;
+    protected transient BufferedInputStream in;
 
     /* nombre de literaux dans le fichier */
     private int nbVars = -1;
