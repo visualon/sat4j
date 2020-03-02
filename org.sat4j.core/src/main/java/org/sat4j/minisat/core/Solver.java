@@ -1352,7 +1352,7 @@ public class Solver<D extends DataStructureFactory>
     private Constr preventTheSameDecisionsToBeMade() {
         IVecInt clause = new VecInt(nVars());
         int p;
-        for (int i = this.trail.size() - 1; i >= this.rootLevel; i--) {
+        for (int i = this.trail.size() - 1; i >= 0; i--) {
             p = this.trail.get(i);
             if (this.voc.getReason(p) == null) {
                 clause.push(p ^ 1);
