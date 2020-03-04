@@ -371,11 +371,11 @@ public class ManyCore<S extends ISolver>
 
     public boolean isSatisfiable(boolean globalTimeout)
             throws TimeoutException {
-        throw new UnsupportedOperationException();
+        return isSatisfiable(VecInt.EMPTY, globalTimeout);
     }
 
     public boolean isSatisfiable(IVecInt assumps) throws TimeoutException {
-        throw new UnsupportedOperationException();
+        return isSatisfiable(assumps, false);
     }
 
     public int[] model() {
