@@ -442,7 +442,6 @@ public class ConflictMap extends MapPb implements IConflict {
         BigInteger tmp;
         BigInteger coefLitImplied = this.weightedLits.get(litImplied ^ 1);
         this.possReducedCoefs = possConstraint(wpb, reducedCoefs);
-        assert possReducedCoefs.compareTo(reducedDegree) >= 0;
         do {
             if (slackResolve.signum() >= 0) {
                 assert slackThis.signum() > 0;

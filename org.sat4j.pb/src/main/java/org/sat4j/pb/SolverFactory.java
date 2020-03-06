@@ -62,6 +62,7 @@ import org.sat4j.pb.constraints.PBMinDataStructure;
 import org.sat4j.pb.constraints.PuebloPBMinClauseAtLeastConstrDataStructure;
 import org.sat4j.pb.constraints.PuebloPBMinClauseCardConstrDataStructure;
 import org.sat4j.pb.constraints.PuebloPBMinDataStructure;
+import org.sat4j.pb.constraints.pb.ConflictMapDivideByPivot;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolver;
@@ -1138,6 +1139,20 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
                 new MiniSATLearning<PBDataStructureFactory>(),
                 new PBMaxClauseCardConstrDataStructure(), new VarOrderHeap(),
                 true, SkipStrategy.SKIP);
+    }
+
+    public static IPBSolver newPartialRoundingSat() {
+        PBSolverCP solver = newCuttingPlanes();
+        solver.setConflictFactory(
+                ConflictMapDivideByPivot.partialWeakeningOnBothFactory());
+        return solver;
+    }
+
+    public static IPBSolver newRoundingSat() {
+        PBSolverCP solver = newCuttingPlanes();
+        solver.setConflictFactory(
+                ConflictMapDivideByPivot.fullWeakeningOnBothFactory());
+        return solver;
     }
 
 }
