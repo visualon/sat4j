@@ -33,18 +33,10 @@ import org.sat4j.specs.Constr;
 
 class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
 
-    /**
-     * 
-     */
-    private final Solver<D> solver;
-    /**
-    	 * 
-    	 */
     private static final long serialVersionUID = 1L;
 
     Glucose2LCDS(Solver<D> solver, ConflictTimer timer) {
         super(solver, timer);
-        this.solver = solver;
     }
 
     @Override
@@ -58,7 +50,7 @@ class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
         if (from.getActivity() > 2.0) {
             int nblevel = computeLBD(from);
             if (nblevel < from.getActivity()) {
-                solver.stats.incUpdateLBD();
+                getSolver().stats.incUpdateLBD();
                 from.setActivity(nblevel);
             }
         }

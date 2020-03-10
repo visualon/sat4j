@@ -66,7 +66,8 @@ class GlucoseLCDS<D extends DataStructureFactory>
         }
         if (solver.isVerbose()) {
             solver.out.log(this.solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
-                    + (learnedConstrs.size() - j) + " clauses out of " + learnedConstrs.size() + " with flag " //$NON-NLS-1$ //$NON-NLS-2$
+                    + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
+                    + learnedConstrs.size() + " with flag " //$NON-NLS-1$
                     + this.flag + "/" + solver.stats.getConflicts());
             // out.flush();
         }
@@ -119,5 +120,9 @@ class GlucoseLCDS<D extends DataStructureFactory>
 
     public void onPropagation(Constr from) {
 
+    }
+
+    protected Solver<D> getSolver() {
+        return solver;
     }
 }
