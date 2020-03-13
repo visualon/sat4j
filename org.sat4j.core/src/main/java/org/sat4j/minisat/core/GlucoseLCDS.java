@@ -32,8 +32,8 @@ package org.sat4j.minisat.core;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
-class GlucoseLCDS<D extends DataStructureFactory> implements
-        LearnedConstraintsDeletionStrategy {
+public class GlucoseLCDS<D extends DataStructureFactory>
+        implements LearnedConstraintsDeletionStrategy {
 
     /**
      * 
@@ -46,7 +46,7 @@ class GlucoseLCDS<D extends DataStructureFactory> implements
 
     private final ConflictTimer timer;
 
-    GlucoseLCDS(Solver<D> solver, ConflictTimer timer) {
+    protected GlucoseLCDS(Solver<D> solver, ConflictTimer timer) {
         this.solver = solver;
         this.timer = timer;
     }
@@ -54,7 +54,8 @@ class GlucoseLCDS<D extends DataStructureFactory> implements
     public void reduce(IVec<Constr> learnedConstrs) {
         this.solver.sortOnActivity();
         int i, j;
-        for (i = j = learnedConstrs.size() / 2; i < learnedConstrs.size(); i++) {
+        for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
+                .size(); i++) {
             Constr c = learnedConstrs.get(i);
             if (c.locked() || c.getActivity() <= 2.0) {
                 learnedConstrs.set(j++, solver.learnts.get(i));
@@ -64,10 +65,10 @@ class GlucoseLCDS<D extends DataStructureFactory> implements
             }
         }
         if (solver.isVerbose()) {
-            solver.out
-                    .log(this.solver.getLogPrefix()
-                            + "cleaning " + (learnedConstrs.size() - j) //$NON-NLS-1$
-                            + " clauses out of " + learnedConstrs.size() + " with flag " + this.flag + "/" + solver.stats.getConflicts()); //$NON-NLS-1$ //$NON-NLS-2$
+            solver.out.log(this.solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
+                    + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
+                    + learnedConstrs.size() + " with flag " //$NON-NLS-1$
+                    + this.flag + "/" + solver.stats.getConflicts());
             // out.flush();
         }
         solver.learnts.shrinkTo(j);

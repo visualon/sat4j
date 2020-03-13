@@ -209,13 +209,13 @@ public class MapPb implements IDataStructurePB {
 
         if (reducedCoefs == null) {
             for (int i = 0; i < cpb.size(); i++) {
-                val.varBumpActivity(cpb.get(i));
+                val.varBumpActivity(cpb, i);
                 cuttingPlaneStep(cpb.get(i),
                         multiplyCoefficient(cpb.getCoef(i), coefMult));
             }
         } else {
             for (int i = 0; i < cpb.size(); i++) {
-                val.varBumpActivity(cpb.get(i));
+                val.varBumpActivity(cpb, i);
                 cuttingPlaneStep(cpb.get(i),
                         multiplyCoefficient(reducedCoefs[i], coefMult));
             }

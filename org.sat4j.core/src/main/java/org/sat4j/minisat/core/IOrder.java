@@ -78,6 +78,16 @@ public interface IOrder {
     void updateVar(int p);
 
     /**
+     * To be called when the activity of a literal changed.
+     * 
+     * @param p
+     *            a literal. The associated variable will be updated.
+     * @param value
+     *            The value to update the literal with.
+     */
+    void updateVar(int p, double value);
+
+    /**
      * that method has the responsibility to initialize all arrays in the
      * heuristics. PLEASE CALL super.init() IF YOU OVERRIDE THAT METHOD.
      */

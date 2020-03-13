@@ -1061,6 +1061,10 @@ public class Solver<D extends DataStructureFactory>
         this.order.updateVar(p);
     }
 
+    public void varBumpActivity(Constr constr, int i) {
+        this.order.updateVar(constr.get(i));
+    }
+
     private void claRescalActivity() {
         for (int i = 0; i < this.learnts.size(); i++) {
             this.learnts.get(i).rescaleBy(CLAUSE_RESCALE_FACTOR);

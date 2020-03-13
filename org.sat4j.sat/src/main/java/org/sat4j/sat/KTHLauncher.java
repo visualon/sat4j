@@ -12,9 +12,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.sat4j.minisat.core.ConflictTimer;
+import org.sat4j.minisat.core.LearnedConstraintsDeletionStrategy;
 import org.sat4j.minisat.learning.MiniSATLearning;
 import org.sat4j.minisat.orders.NaturalStaticOrder;
 import org.sat4j.minisat.orders.VarOrderHeap;
+import org.sat4j.minisat.restarts.Glucose21Restarts;
+import org.sat4j.minisat.restarts.LubyRestarts;
 import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.OptToPBSATAdapter;
 import org.sat4j.pb.PBSolverHandle;
@@ -37,7 +41,10 @@ import org.sat4j.pb.constraints.pb.PreProcessReduceConflict;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
+import org.sat4j.pb.lcds.PBGlucoseLCDS;
+import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.reader.OPBReader2012;
+import org.sat4j.pb.restarts.GrowingCoefficientRestarts;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
 import org.sat4j.pb.tools.PreprocCardConstrLearningSolver;
 import org.sat4j.specs.ContradictionException;
@@ -83,6 +90,12 @@ public class KTHLauncher {
                 "Apply division automatically when a common factor is identified.");
         options.addOption("pc", "preprocess-conflict", true,
                 "Preprocessing strategy to apply on the conflict before resolving. Legal values are none, reduce-not-falsified or reduce");
+        options.addOption("r", "restart-strategy", true,
+                "Restart strategy to apply, among luby, picosat, lbd, size");
+        options.addOption("b", "bump-strategy", true,
+                "Bumping strategy to apply, among one, degree, coefficient, ratio");
+        options.addOption("lcds", "deletion-strategy", true,
+                "Learned constraint deletion strategy, among lbd, assigned, unassigned-same, unassigned-different, effective,, degree");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -104,6 +117,12 @@ public class KTHLauncher {
         op = options.getOption("detect-cards");
         op.setArgName("strategy");
         op = options.getOption("preprocess-conflict");
+        op.setArgName("strategy");
+        op = options.getOption("restart-strategy");
+        op.setArgName("strategy");
+        op = options.getOption("bump-strategy");
+        op.setArgName("strategy");
+        op = options.getOption("deletion-strategy");
         op.setArgName("strategy");
         return options;
     }
@@ -323,6 +342,82 @@ public class KTHLauncher {
             }
             if (line.hasOption("autodiv")) {
                 cpsolver.setAutoDivisionStrategy(AutoDivisionStrategy.ENABLED);
+            }
+            
+            if (line.hasOption("restart-strategy")) {
+                String value = line.getOptionValue("restart-strategy");
+
+                if ("picosat".equals(value)) {
+                   // This is the default.
+                    
+                } else if ("luby".equals(value)) {
+                    cpsolver.setRestartStrategy(new LubyRestarts());
+                    
+                } else if ("lbd".equals(value)) {
+                    cpsolver.setRestartStrategy(new Glucose21Restarts());
+                    
+                } else if ("size".equals(value)) {
+                    cpsolver.setRestartStrategy(new GrowingCoefficientRestarts());
+                    
+                } else {
+                    log(value
+                            + " is not a supported value for option restart-strategy");
+                    return;
+                }
+            }
+            
+            if (line.hasOption("bump-strategy")) {
+                String value = line.getOptionValue("bump-strategy");
+
+                if ("one".equals(value)) {
+                    cpsolver.setBumpStrategy(BumpStrategy.ALWAYS_ONE);
+                    
+                } else if ("degree".equals(value)) {
+                    cpsolver.setBumpStrategy(BumpStrategy.DEGREE);
+                    
+                } else if ("coefficient".equals(value)) {
+                    cpsolver.setBumpStrategy(BumpStrategy.COEFFICIENT);
+                    
+                } else if ("ratio".equals(value)) {
+                    cpsolver.setBumpStrategy(BumpStrategy.RATIO);
+                    
+                } else {
+                    log(value
+                            + " is not a supported value for option bump-strategy");
+                    return;
+                }
+            }
+            
+            if (line.hasOption("deletion-strategy")) {
+                String value = line.getOptionValue("deletion-strategy");
+                ConflictTimer timer = cpsolver.lbd_based.getTimer();
+                if ("lbd".equals(value)) {
+                    
+                } else if ("assigned".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newIgnoreUnassigned(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    
+                } else if ("unassigned-same".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newUnassignedSame(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    
+                } else if ("unassigned-different".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newUnassignedDifferent(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    
+                } else if ("effective".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newEffectiveOnly(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    
+                } else if ("degree".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newDegree(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    
+                } else {
+                    log(value
+                            + " is not a supported value for option deletion-strategy");
+                    return;
+                }
             }
             System.out.println(pbsolver.toString("c "));
             String[] leftArgs = line.getArgs();

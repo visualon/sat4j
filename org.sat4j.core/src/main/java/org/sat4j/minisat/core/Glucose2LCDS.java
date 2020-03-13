@@ -31,18 +31,19 @@ package org.sat4j.minisat.core;
 
 import org.sat4j.specs.Constr;
 
-class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
+public class Glucose2LCDS<D extends DataStructureFactory>
+        extends GlucoseLCDS<D> {
 
     /**
      * 
      */
-    private final Solver<D> solver;
+    protected final Solver<D> solver;
     /**
     	 * 
     	 */
     private static final long serialVersionUID = 1L;
 
-    Glucose2LCDS(Solver<D> solver, ConflictTimer timer) {
+    protected Glucose2LCDS(Solver<D> solver, ConflictTimer timer) {
         super(solver, timer);
         this.solver = solver;
     }

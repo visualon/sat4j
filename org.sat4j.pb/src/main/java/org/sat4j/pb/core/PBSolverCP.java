@@ -48,6 +48,7 @@ import org.sat4j.pb.constraints.pb.NoPostProcess;
 import org.sat4j.pb.constraints.pb.NoPreProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
+import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.TimeoutException;
@@ -80,6 +81,8 @@ public class PBSolverCP extends PBSolver {
     private IWeakeningStrategy weakeningStrategy = IWeakeningStrategy.UNASSIGNED_FIRST;
 
     private AutoDivisionStrategy autoDivisionStrategy = AutoDivisionStrategy.DISABLED;
+
+    private BumpStrategy bumpStrategy = BumpStrategy.ALWAYS_ONE;
 
     /**
      * @param acg
@@ -221,7 +224,8 @@ public class PBSolverCP extends PBSolver {
                 + " - " + autoDivisionStrategy + "\n" + prefix + " - "
                 + postprocess + "\n" + prefix + " - " + preprocess + "\n"
                 + prefix + " - " + conflictFactory + "\n" + prefix + " - "
-                + weakeningStrategy + "\n" + super.toString(prefix);
+                + weakeningStrategy + "\n" + prefix + " - Bump strategy: "
+                + bumpStrategy + "\n" + super.toString(prefix);
     }
 
     private final IVec<String> conflictVariables = new Vec<String>();
@@ -240,6 +244,10 @@ public class PBSolverCP extends PBSolver {
     }
 
     protected void updateNumberOfReducedLearnedConstraints(IConflict confl) {
+    }
+
+    public void setBumpStrategy(BumpStrategy bumpStrategy) {
+        this.bumpStrategy = bumpStrategy;
     }
 
     public SkipStrategy isSkipAllow() {
@@ -289,6 +297,11 @@ public class PBSolverCP extends PBSolver {
     public void setAutoDivisionStrategy(
             AutoDivisionStrategy autoDivisionStrategy) {
         this.autoDivisionStrategy = autoDivisionStrategy;
+    }
+
+    @Override
+    public void varBumpActivity(Constr constr, int i) {
+        bumpStrategy.varBumpActivity(getOrder(), (PBConstr) constr, i);
     }
 
 }
