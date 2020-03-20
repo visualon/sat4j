@@ -131,6 +131,7 @@ public class OPBReader2005 extends Reader implements Serializable {
      */
     protected void metaData(int nbvar, int nbconstr) {
         this.solver.newVar(nbvar);
+        this.solver.setExpectedNumberOfClauses(nbconstr);
     }
 
     /**
@@ -765,7 +766,7 @@ public class OPBReader2005 extends Reader implements Serializable {
                             ParseFormatException.PARSING_ERROR.length()));
         } catch (Exception e) {
             throw new ParseFormatException(" line "
-                    + (input.getLineNumber() + 1) + ", " + e.toString());
+                    + (input.getLineNumber() + 1) + ", " + e.toString(), e);
 
         }
     }
