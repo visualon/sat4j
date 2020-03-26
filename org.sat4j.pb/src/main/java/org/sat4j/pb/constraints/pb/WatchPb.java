@@ -676,7 +676,14 @@ public abstract class WatchPb
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        BigInteger satisfied = BigInteger.ZERO;
+        for (int i = 0; i < this.lits.length; i++) {
+            if (this.voc.isSatisfied(this.lits[i])) {
+                assert this.coefs[i].signum() >= 0;
+                satisfied = satisfied.add(this.coefs[i]);
+            }
+        }
+        return satisfied.compareTo(degree) >= 0;
     }
 
     public String toString(VarMapper mapper) {
