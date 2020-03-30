@@ -32,6 +32,17 @@ package org.sat4j.minisat.core;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
+/**
+ * LBD based clauses cleaning strategy, as found in Glucose.
+ * 
+ * This strategy expects the constraints to be clauses, i.e. the LBD computation
+ * may not be correct for other constraints (cardinality constraints, PB
+ * constraints).
+ * 
+ * @author leberre
+ *
+ * @param <D>
+ */
 class GlucoseLCDS<D extends DataStructureFactory>
         implements LearnedConstraintsDeletionStrategy {
 
