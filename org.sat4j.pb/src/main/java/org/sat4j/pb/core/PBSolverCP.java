@@ -191,6 +191,7 @@ public class PBSolverCP extends PBSolver {
         confl.postProcess(currentLevel);
         PBConstr resConstr = (PBConstr) this.dsfactory
                 .createUnregisteredPseudoBooleanConstraint(confl);
+        getLearnedConstraintsDeletionStrategy().onClauseLearning(resConstr);
         results.setReason(resConstr);
 
         // the conflict give the highest decision level for the backtrack
@@ -212,8 +213,8 @@ public class PBSolverCP extends PBSolver {
                 + this.getClass().getName() + ")\n"
                 + (this.noRemove ? ""
                         : prefix + " - Removing satisfied literals at a higher level before CP \n")
-                + (this.skipAllow
-                        ? prefix + " - Skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm \n"
+                + (this.skipAllow ? prefix
+                        + " - Skipping as much as possible cutting planes during analysis conflict- Jan Elffers's algorithm \n"
                         : "")
                 + prefix + " - " + autoDivisionStrategy + "\n" + prefix + " - "
                 + postprocess + "\n" + prefix + " - " + conflictFactory + "\n"
