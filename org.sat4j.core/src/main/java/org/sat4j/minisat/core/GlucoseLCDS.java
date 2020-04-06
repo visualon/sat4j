@@ -117,7 +117,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
         int currentLevel;
         for (int i = 1; i < constr.size(); i++) {
             currentLevel = solver.voc.getLevel(constr.get(i));
-            if (this.flags[currentLevel] != this.flag) {
+            if (currentLevel >= 0 && this.flags[currentLevel] != this.flag) {
                 this.flags[currentLevel] = this.flag;
                 nblevel++;
             }
