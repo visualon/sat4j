@@ -705,6 +705,9 @@ public class SumLeximinDecompositionOWAOptimizer
         return solver.addParity(literals, even);
     }
 
+    public boolean wasPropagated(int p) {
+        return solver.wasPropagated(p);
+    }
     // END DELEGATION
 
 }

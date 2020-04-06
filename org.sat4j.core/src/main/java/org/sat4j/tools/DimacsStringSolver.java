@@ -271,4 +271,7 @@ public class DimacsStringSolver extends AbstractOutputSolver
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
+    public boolean wasPropagated(int p) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
 }

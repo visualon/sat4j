@@ -633,6 +633,10 @@ public class ManyCore<S extends ISolver>
         checkWinnerId();
         return winnerId;
     }
+
+    public boolean wasPropagated(int p) {
+        return this.solvers.get(getWinnerId()).wasPropagated(p);
+    }
 }
 
 class RunnableSolver implements Runnable {

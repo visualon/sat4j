@@ -555,4 +555,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
         return this.solver.addParity(literals, even);
     }
 
+    public boolean wasPropagated(int p) {
+        return this.solver.wasPropagated(p);
+    }
 }

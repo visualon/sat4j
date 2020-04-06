@@ -1364,10 +1364,16 @@ public class Solver<D extends DataStructureFactory>
     protected void analyzeAtRootLevel(Constr conflict) {
     }
 
-    final IVecInt implied = new VecInt();
-    final IVecInt decisions = new VecInt();
+    protected final IVecInt implied = new VecInt();
+    protected final IVecInt decisions = new VecInt();
 
+    private boolean[] propagated;
     int[] fullmodel;
+
+    @Override
+    public boolean wasPropagated(int p) {
+        return propagated[Math.abs(p) - 1];
+    }
 
     /**
      * 
@@ -1375,6 +1381,7 @@ public class Solver<D extends DataStructureFactory>
     void modelFound() {
         decisions.clear();
         IVecInt tempmodel = new VecInt(nVars());
+        propagated = new boolean[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
         Constr reason;
@@ -1394,6 +1401,7 @@ public class Solver<D extends DataStructureFactory>
                         this.decisions.push(tempmodel.last());
                     } else {
                         this.implied.push(tempmodel.last());
+                        this.propagated[i - 1] = true;
                     }
                 }
             }
@@ -1411,6 +1419,7 @@ public class Solver<D extends DataStructureFactory>
                             this.decisions.push(tempmodel.last());
                         } else {
                             this.implied.push(tempmodel.last());
+                            this.propagated[i - 1] = true;
                         }
                     }
                 }

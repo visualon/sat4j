@@ -31,7 +31,6 @@ package org.sat4j;
 
 import java.io.PrintWriter;
 
-import org.sat4j.core.VecInt;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.ILogAble;
 import org.sat4j.specs.IProblem;
@@ -47,10 +46,15 @@ import org.sat4j.tools.Backbone;
  * 
  */
 final class DecisionMode implements ILauncherMode {
+    private static final String RED = ((char) 27) + "[0;31m";
+    private static final String GREEN = ((char) 27) + "[0;32m";
+    private static final String BLANK = ((char) 27) + "[0m";
     private ExitCode exitCode = ExitCode.UNKNOWN;
     private int nbSolutionFound;
     private PrintWriter out;
     private long beginTime;
+    private Reader reader;
+    private ISolver solver;
 
     public void displayResult(ISolver solver, IProblem problem, ILogAble logger,
             PrintWriter out, Reader reader, long beginTime,
@@ -96,12 +100,31 @@ final class DecisionMode implements ILauncherMode {
                 if (nbSolutionFound >= 1) {
                     logger.log("Found " + nbSolutionFound + " solution(s)");
                 } else {
-                    out.print(SOLUTION_PREFIX);
-                    reader.decode(model, out);
-                    out.println();
+                    printSolution(solver, out, reader, model);
                 }
             }
             logger.log("Total wall clock time (in seconds) : " + wallclocktime); //$NON-NLS-1$
+        }
+    }
+
+    private void printSolution(ISolver solver, PrintWriter out, Reader reader,
+            int[] model) {
+        out.print(SOLUTION_PREFIX);
+        if (System.getProperty("color") == null) {
+            reader.decode(model, out);
+            out.println();
+        } else {
+            for (int p : model) {
+                if (solver.wasPropagated(p)) {
+                    out.print(RED);
+                } else {
+                    out.print(GREEN);
+                }
+                out.print(p);
+                out.print(BLANK);
+                out.print(" ");
+            }
+            out.println("0");
         }
     }
 
@@ -111,6 +134,9 @@ final class DecisionMode implements ILauncherMode {
         this.out = out;
         this.nbSolutionFound = 0;
         this.beginTime = beginTime;
+        this.reader = reader;
+        this.solver = (ISolver) problem;
+
         try {
             if (problem.isSatisfiable()) {
                 if (this.exitCode == ExitCode.UNKNOWN) {
@@ -140,8 +166,7 @@ final class DecisionMode implements ILauncherMode {
         this.out.printf("c Found solution #%d  (%.2f)s%n", nbSolutionFound,
                 (System.currentTimeMillis() - beginTime) / 1000.0);
         if (System.getProperty("printallmodels") != null) {
-            this.out.println(SOLUTION_PREFIX
-                    + new VecInt(solution).toString().replace(",", " ") + " 0");
+            printSolution(solver, out, reader, solution);
         }
     }
 

@@ -461,4 +461,8 @@ public class StatisticsSolver implements ISolver {
     public IConstr addParity(IVecInt literals, boolean even) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
+
+    public boolean wasPropagated(int p) {
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+    }
 }

@@ -562,4 +562,16 @@ public interface ISolver extends IProblem, Serializable {
      * @since 2.3.3
      */
     ISolver getSolvingEngine();
+
+    /**
+     * Check with the solver if the value of that literal was heuristically set
+     * or due to constraint propagation.
+     * 
+     * @param p
+     *            a literal
+     * @return true iff that literal was propagated by a constraint
+     * @see #model()
+     * @since 2.3.6
+     */
+    boolean wasPropagated(int p);
 }

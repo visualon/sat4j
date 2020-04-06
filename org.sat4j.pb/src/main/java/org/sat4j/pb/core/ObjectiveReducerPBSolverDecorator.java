@@ -442,4 +442,7 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
         return decorated.addParity(literals, even);
     }
 
+    public boolean wasPropagated(int p) {
+        return decorated.wasPropagated(p);
+    }
 }
