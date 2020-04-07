@@ -33,6 +33,7 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IGroupSolver;
@@ -235,7 +236,7 @@ public class DimacsOutputSolver extends AbstractOutputSolver
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    public boolean wasPropagated(int p) {
+    public AssignmentOrigin getOriginInModel(int p) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 }

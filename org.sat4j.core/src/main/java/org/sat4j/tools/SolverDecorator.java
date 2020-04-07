@@ -33,6 +33,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -555,7 +556,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
         return this.solver.addParity(literals, even);
     }
 
-    public boolean wasPropagated(int p) {
-        return this.solver.wasPropagated(p);
+    public AssignmentOrigin getOriginInModel(int p) {
+        return this.solver.getOriginInModel(p);
     }
 }

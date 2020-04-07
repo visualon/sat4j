@@ -38,6 +38,7 @@ import java.util.Map;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.Counter;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -462,7 +463,7 @@ public class StatisticsSolver implements ISolver {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
-    public boolean wasPropagated(int p) {
+    public AssignmentOrigin getOriginInModel(int p) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 }

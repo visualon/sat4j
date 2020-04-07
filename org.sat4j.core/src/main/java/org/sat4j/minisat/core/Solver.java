@@ -55,6 +55,7 @@ import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.constraints.xor.Xor;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -1367,11 +1368,11 @@ public class Solver<D extends DataStructureFactory>
     protected final IVecInt implied = new VecInt();
     protected final IVecInt decisions = new VecInt();
 
-    private boolean[] propagated;
+    private AssignmentOrigin[] propagated;
     int[] fullmodel;
 
     @Override
-    public boolean wasPropagated(int p) {
+    public AssignmentOrigin getOriginInModel(int p) {
         return propagated[Math.abs(p) - 1];
     }
 
@@ -1381,7 +1382,7 @@ public class Solver<D extends DataStructureFactory>
     void modelFound() {
         decisions.clear();
         IVecInt tempmodel = new VecInt(nVars());
-        propagated = new boolean[realNumberOfVariables()];
+        propagated = new AssignmentOrigin[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
         Constr reason;
@@ -1399,9 +1400,16 @@ public class Solver<D extends DataStructureFactory>
                             // decisions.
                             || reason != null && reason.learnt()) {
                         this.decisions.push(tempmodel.last());
+                        if (reason != null) {
+                            this.propagated[i
+                                    - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                        } else {
+                            this.propagated[i - 1] = AssignmentOrigin.DECIDED;
+                        }
                     } else {
                         this.implied.push(tempmodel.last());
-                        this.propagated[i - 1] = true;
+                        this.propagated[i
+                                - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
                     }
                 }
             }
@@ -1417,9 +1425,16 @@ public class Solver<D extends DataStructureFactory>
                         this.userbooleanmodel[i - 1] = this.voc.isSatisfied(p);
                         if (this.voc.getReason(p) == null) {
                             this.decisions.push(tempmodel.last());
+                            this.propagated[i - 1] = AssignmentOrigin.DECIDED;
                         } else {
                             this.implied.push(tempmodel.last());
-                            this.propagated[i - 1] = true;
+                            if (this.voc.getReason(p).learnt()) {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                            } else {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
+                            }
                         }
                     }
                 }

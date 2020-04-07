@@ -42,6 +42,7 @@ import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.Counter;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -634,8 +635,8 @@ public class ManyCore<S extends ISolver>
         return winnerId;
     }
 
-    public boolean wasPropagated(int p) {
-        return this.solvers.get(getWinnerId()).wasPropagated(p);
+    public AssignmentOrigin getOriginInModel(int p) {
+        return this.solvers.get(getWinnerId()).getOriginInModel(p);
     }
 }
 

@@ -49,6 +49,8 @@ final class DecisionMode implements ILauncherMode {
     private static final String RED = ((char) 27) + "[0;31m";
     private static final String GREEN = ((char) 27) + "[0;32m";
     private static final String BLANK = ((char) 27) + "[0m";
+    private static final String PURPLE = ((char) 27) + "[0;35m";
+    private static final String LIGHT_GRAY = ((char) 27) + "[0;37m";
     private ExitCode exitCode = ExitCode.UNKNOWN;
     private int nbSolutionFound;
     private PrintWriter out;
@@ -115,10 +117,18 @@ final class DecisionMode implements ILauncherMode {
             out.println();
         } else {
             for (int p : model) {
-                if (solver.wasPropagated(p)) {
+                switch (solver.getOriginInModel(p)) {
+                case PROPAGATED_ORIGINAL:
                     out.print(RED);
-                } else {
+                    break;
+                case PROPAGATED_LEARNED:
+                    out.print(PURPLE);
+                    break;
+                case DECIDED:
                     out.print(GREEN);
+                    break;
+                default:
+                    out.print(LIGHT_GRAY);
                 }
                 out.print(p);
                 out.print(BLANK);

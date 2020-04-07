@@ -573,5 +573,5 @@ public interface ISolver extends IProblem, Serializable {
      * @see #model()
      * @since 2.3.6
      */
-    boolean wasPropagated(int p);
+    AssignmentOrigin getOriginInModel(int p);
 }
