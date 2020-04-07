@@ -15,6 +15,7 @@ import org.sat4j.pb.IIntegerPBSolver;
 import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.pb.core.IntegerVariable;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -705,8 +706,8 @@ public class SumLeximinDecompositionOWAOptimizer
         return solver.addParity(literals, even);
     }
 
-    public boolean wasPropagated(int p) {
-        return solver.wasPropagated(p);
+    public AssignmentOrigin getOriginInModel(int p) {
+        return solver.getOriginInModel(p);
     }
     // END DELEGATION
 

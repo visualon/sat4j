@@ -45,6 +45,7 @@ import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.ObjectiveFunction;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -442,7 +443,7 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
         return decorated.addParity(literals, even);
     }
 
-    public boolean wasPropagated(int p) {
-        return decorated.wasPropagated(p);
+    public AssignmentOrigin getOriginInModel(int p) {
+        return decorated.getOriginInModel(p);
     }
 }
