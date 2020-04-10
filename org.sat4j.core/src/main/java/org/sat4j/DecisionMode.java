@@ -32,6 +32,7 @@ package org.sat4j;
 import java.io.PrintWriter;
 
 import org.sat4j.reader.Reader;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.ILogAble;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
@@ -49,6 +50,7 @@ final class DecisionMode implements ILauncherMode {
     private static final String RED = ((char) 27) + "[0;31m";
     private static final String GREEN = ((char) 27) + "[0;32m";
     private static final String BLANK = ((char) 27) + "[0m";
+    private static final String BLUE = ((char) 27) + "[0;34m";
     private static final String PURPLE = ((char) 27) + "[0;35m";
     private static final String LIGHT_GRAY = ((char) 27) + "[0;37m";
     private ExitCode exitCode = ExitCode.UNKNOWN;
@@ -116,13 +118,16 @@ final class DecisionMode implements ILauncherMode {
             reader.decode(model, out);
             out.println();
         } else {
+            int[] stats = new int[AssignmentOrigin.values().length];
+            AssignmentOrigin origin;
             for (int p : model) {
-                switch (solver.getOriginInModel(p)) {
+                origin = solver.getOriginInModel(p);
+                switch (origin) {
                 case PROPAGATED_ORIGINAL:
                     out.print(RED);
                     break;
                 case PROPAGATED_LEARNED:
-                    out.print(PURPLE);
+                    out.print(BLUE);
                     break;
                 case DECIDED:
                     out.print(GREEN);
@@ -133,8 +138,14 @@ final class DecisionMode implements ILauncherMode {
                 out.print(p);
                 out.print(BLANK);
                 out.print(" ");
+                stats[origin.ordinal()]++;
             }
             out.println("0");
+            out.print(solver.getLogPrefix());
+            for (AssignmentOrigin ao : AssignmentOrigin.values()) {
+                out.printf("%s: %d ", ao, stats[ao.ordinal()]);
+            }
+            out.println();
         }
     }
 
