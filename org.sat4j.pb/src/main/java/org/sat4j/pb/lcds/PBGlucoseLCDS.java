@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.sat4j.pb.lcds;
 
@@ -19,7 +19,7 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
         extends Glucose2LCDS<D> {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private final transient ILBDComputerStrategy lbdStrategy;
@@ -63,13 +63,13 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
     @Override
     public void init() {
         super.init();
-        lbdStrategy.init(solver.nVars());
+        lbdStrategy.init(getSolver().nVars());
     }
 
     @Override
     protected int computeLBD(Constr constr) {
         if (constr instanceof PBConstr) {
-            return lbdStrategy.computeLBD(solver.getVocabulary(),
+            return lbdStrategy.computeLBD(getSolver().getVocabulary(),
                     (PBConstr) constr);
         }
         return super.computeLBD(constr);

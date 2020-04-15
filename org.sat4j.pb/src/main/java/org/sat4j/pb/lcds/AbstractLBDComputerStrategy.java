@@ -26,6 +26,7 @@ public abstract class AbstractLBDComputerStrategy implements ILBDComputerStrateg
             int currentLevel = voc.getLevel(constr.get(i));
             if (currentLevel < 0) {
                 nblevel += unassignedLiteral(voc, constr, i);
+                continue;
             }
             if (this.flags[currentLevel] != this.flag) {
                 this.flags[currentLevel] = this.flag;

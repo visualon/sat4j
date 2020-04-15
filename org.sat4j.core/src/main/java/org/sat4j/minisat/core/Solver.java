@@ -1656,7 +1656,7 @@ public class Solver<D extends DataStructureFactory>
     public final LearnedConstraintsDeletionStrategy size_based = new SizeLCDS(
             this, this.lbdTimer);
 
-    protected LearnedConstraintsDeletionStrategy learnedConstraintsDeletionStrategy = this.lbd_based;
+    private LearnedConstraintsDeletionStrategy learnedConstraintsDeletionStrategy = this.lbd_based;
 
     /*
      * (non-Javadoc)
@@ -2345,6 +2345,14 @@ public class Solver<D extends DataStructureFactory>
 
     public IVec<Constr> getLearnedConstraints() {
         return this.learnts;
+    }
+
+    /**
+     * @return the current deletion strategy for learned constraints
+     * @since 2.3.6
+     */
+    public LearnedConstraintsDeletionStrategy getLearnedConstraintsDeletionStrategy() {
+        return learnedConstraintsDeletionStrategy;
     }
 
     /**
