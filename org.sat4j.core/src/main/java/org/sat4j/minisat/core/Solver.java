@@ -1404,7 +1404,16 @@ public class Solver<D extends DataStructureFactory>
                             this.propagated[i
                                     - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
                         } else {
-                            this.propagated[i - 1] = AssignmentOrigin.DECIDED;
+                            this.voc.satisfies(p ^ 1);
+                            if (reduceClausesContainingTheNegationOf(
+                                    p ^ 1) != null) {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.DECIDED_PROPAGATED;
+                            } else {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.DECIDED;
+                            }
+                            this.voc.satisfies(p);
                         }
                     } else {
                         this.implied.push(tempmodel.last());
@@ -1412,6 +1421,8 @@ public class Solver<D extends DataStructureFactory>
                                 - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
                     }
                 }
+            } else {
+                this.propagated[i - 1] = AssignmentOrigin.UNASSIGNED;
             }
         }
         this.model = new int[tempmodel.size()];
@@ -1425,6 +1436,7 @@ public class Solver<D extends DataStructureFactory>
                         this.userbooleanmodel[i - 1] = this.voc.isSatisfied(p);
                         if (this.voc.getReason(p) == null) {
                             this.decisions.push(tempmodel.last());
+
                             this.propagated[i - 1] = AssignmentOrigin.DECIDED;
                         } else {
                             this.implied.push(tempmodel.last());
@@ -1437,6 +1449,8 @@ public class Solver<D extends DataStructureFactory>
                             }
                         }
                     }
+                } else {
+                    this.propagated[i - 1] = AssignmentOrigin.UNASSIGNED;
                 }
             }
             this.fullmodel = new int[tempmodel.size()];

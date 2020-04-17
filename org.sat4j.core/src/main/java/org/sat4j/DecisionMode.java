@@ -132,6 +132,9 @@ final class DecisionMode implements ILauncherMode {
                 case DECIDED:
                     out.print(GREEN);
                     break;
+                case DECIDED_PROPAGATED:
+                    out.print(PURPLE);
+                    break;
                 default:
                     out.print(LIGHT_GRAY);
                 }
