@@ -1404,9 +1404,10 @@ public class Solver<D extends DataStructureFactory>
                             this.propagated[i
                                     - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
                         } else {
-                            this.voc.satisfies(p ^ 1);
+                            int q = this.voc.isSatisfied(p) ? p : p ^ 1;
+                            this.voc.satisfies(q ^ 1);
                             if (reduceClausesContainingTheNegationOf(
-                                    p ^ 1) != null) {
+                                    q ^ 1) != null) {
                                 this.propagated[i
                                         - 1] = AssignmentOrigin.DECIDED_PROPAGATED;
                             } else {
