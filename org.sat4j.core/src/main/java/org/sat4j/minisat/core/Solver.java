@@ -1414,7 +1414,7 @@ public class Solver<D extends DataStructureFactory>
                                 this.propagated[i
                                         - 1] = AssignmentOrigin.DECIDED;
                             }
-                            this.voc.satisfies(p);
+                            this.voc.satisfies(q);
                         }
                     } else {
                         this.implied.push(tempmodel.last());
