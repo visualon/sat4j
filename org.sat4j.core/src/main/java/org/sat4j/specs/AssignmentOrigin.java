@@ -36,5 +36,20 @@ package org.sat4j.specs;
  * @since 2.3.6
  */
 public enum AssignmentOrigin {
-    UNASSIGNED, DECIDED, PROPAGATED_ORIGINAL, PROPAGATED_LEARNED, DECIDED_PROPAGATED;
+    UNASSIGNED((char) 27 + "[0;37m"), DECIDED(
+            (char) 27 + "[0;32m"), PROPAGATED_ORIGINAL(
+                    (char) 27 + "[0;31m"), PROPAGATED_LEARNED(
+                            (char) 27 + "[0;34m"), DECIDED_PROPAGATED(
+                                    (char) 27 + "[0;35m");
+
+    public static final String BLANK = (char) 27 + "[0m";
+    private final String color;
+
+    AssignmentOrigin(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
 }
