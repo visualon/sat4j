@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.Lbool;
@@ -42,12 +43,13 @@ import org.sat4j.specs.SearchListenerAdapter;
  * @author leberre
  * 
  */
-public class SearchEnumeratorListener extends
-        SearchListenerAdapter<ISolverService> {
+@Feature("searchlistener")
+public class SearchEnumeratorListener
+        extends SearchListenerAdapter<ISolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private ISolverService solverService;

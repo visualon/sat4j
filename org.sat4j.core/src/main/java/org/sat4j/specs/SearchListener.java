@@ -31,6 +31,8 @@ package org.sat4j.specs;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Interface to the solver main steps. Useful for integrating search
  * visualization or debugging.
@@ -40,6 +42,7 @@ import java.io.Serializable;
  * @author daniel
  * @since 2.1
  */
+@Feature("searchlistener")
 public interface SearchListener<S extends ISolverService> extends Serializable {
 
     /**
