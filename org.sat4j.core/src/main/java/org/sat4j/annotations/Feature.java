@@ -36,7 +36,7 @@ package org.sat4j.annotations;
  * @since 2.3.6
  */
 public @interface Feature {
-    String name();
+    String value();
 
     String parent() default "user";
 }
