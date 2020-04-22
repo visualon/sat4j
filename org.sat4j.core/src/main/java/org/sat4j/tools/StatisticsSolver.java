@@ -49,6 +49,7 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 public class StatisticsSolver implements ISolver {
@@ -465,5 +466,10 @@ public class StatisticsSolver implements ISolver {
 
     public AssignmentOrigin getOriginInModel(int p) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 }

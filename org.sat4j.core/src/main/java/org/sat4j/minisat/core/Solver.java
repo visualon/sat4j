@@ -69,6 +69,7 @@ import org.sat4j.specs.Lbool;
 import org.sat4j.specs.Propagatable;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 /**
@@ -172,6 +173,8 @@ public class Solver<D extends DataStructureFactory>
     private int declaredMaxVarId = 0;
 
     private UnitClauseProvider unitClauseProvider = UnitClauseProvider.VOID;
+
+    private UnitClauseConsumer unitClauseConsumer = UnitClauseConsumer.VOID;
 
     private final boolean classifyLiterals = System
             .getProperty("color") != null;
@@ -1138,6 +1141,7 @@ public class Solver<D extends DataStructureFactory>
         if (constr.size() == 1) {
             this.stats.incLearnedliterals();
             this.slistener.learnUnit(p);
+            this.unitClauseConsumer.learnUnit(p);
         } else {
             this.learner.learns(constr);
         }
@@ -2555,5 +2559,10 @@ public class Solver<D extends DataStructureFactory>
 
     public void setUnitClauseProvider(UnitClauseProvider ucp) {
         this.unitClauseProvider = ucp;
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        this.unitClauseConsumer = ucc;
     }
 }

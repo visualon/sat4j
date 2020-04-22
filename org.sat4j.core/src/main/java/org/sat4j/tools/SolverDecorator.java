@@ -43,6 +43,7 @@ import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 /**
@@ -558,5 +559,10 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
 
     public AssignmentOrigin getOriginInModel(int p) {
         return this.solver.getOriginInModel(p);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        this.solver.setUnitClauseConsumer(ucc);
     }
 }

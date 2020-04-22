@@ -39,6 +39,7 @@ import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IGroupSolver;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
+import org.sat4j.specs.UnitClauseConsumer;
 
 /**
  * Solver used to display in a writer the CNF instance in Dimacs format.
@@ -237,6 +238,11 @@ public class DimacsOutputSolver extends AbstractOutputSolver
     }
 
     public AssignmentOrigin getOriginInModel(int p) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 }

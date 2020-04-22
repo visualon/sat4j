@@ -26,6 +26,7 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 public class SumLeximinDecompositionOWAOptimizer
@@ -708,6 +709,11 @@ public class SumLeximinDecompositionOWAOptimizer
 
     public AssignmentOrigin getOriginInModel(int p) {
         return solver.getOriginInModel(p);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        solver.setUnitClauseConsumer(ucc);
     }
     // END DELEGATION
 

@@ -43,7 +43,8 @@ import org.sat4j.annotations.Feature;
  * @since 2.1
  */
 @Feature("searchlistener")
-public interface SearchListener<S extends ISolverService> extends Serializable {
+public interface SearchListener<S extends ISolverService>
+        extends UnitClauseConsumer, Serializable {
 
     /**
      * Provide access to the solver's controllable interface.
@@ -97,15 +98,6 @@ public interface SearchListener<S extends ISolverService> extends Serializable {
      * @param c
      */
     void learn(IConstr c);
-
-    /**
-     * learn a new unit clause (a literal)
-     * 
-     * @param p
-     *            a literal in Dimacs format.
-     * @since 2.3.4
-     */
-    void learnUnit(int p);
 
     /**
      * delete a clause

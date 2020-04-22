@@ -432,6 +432,15 @@ public interface ISolver extends IProblem, Serializable {
     void setUnitClauseProvider(UnitClauseProvider ucp);
 
     /**
+     * Allow the solver to communicate the unit clauses it learns.
+     * 
+     * @param ucc
+     *            an object interested in unit clauses.
+     * @since 2.3.6
+     */
+    void setUnitClauseConsumer(UnitClauseConsumer ucc);
+
+    /**
      * Get the current SearchListener.
      * 
      * @return a Search Listener.
