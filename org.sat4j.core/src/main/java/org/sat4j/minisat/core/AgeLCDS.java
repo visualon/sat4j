@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
@@ -39,12 +40,14 @@ import org.sat4j.specs.IVec;
  * @author daniel
  * 
  */
+@Feature(value = "deletion", parent = "expert")
 final class AgeLCDS implements LearnedConstraintsDeletionStrategy {
     private static final long serialVersionUID = 1L;
     private final ConflictTimer timer;
     private final Solver<? extends DataStructureFactory> solver;
 
-    AgeLCDS(Solver<? extends DataStructureFactory> solver, ConflictTimer timer) {
+    AgeLCDS(Solver<? extends DataStructureFactory> solver,
+            ConflictTimer timer) {
         this.timer = timer;
         this.solver = solver;
     }
@@ -64,9 +67,8 @@ final class AgeLCDS implements LearnedConstraintsDeletionStrategy {
             solver.learnts.set(j++, solver.learnts.get(i));
         }
         if (solver.isVerbose()) {
-            solver.out.log(solver.getLogPrefix()
-                    + "cleaning " + (solver.learnts.size() - j) //$NON-NLS-1$
-                    + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$ 
+            solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
+                    + (solver.learnts.size() - j) + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$
             // out.flush();
         }
         solver.learnts.shrinkTo(j);

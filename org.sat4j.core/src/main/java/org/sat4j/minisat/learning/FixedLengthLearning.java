@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.learning;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.DataStructureFactory;
 import org.sat4j.specs.Constr;
 
@@ -38,8 +39,9 @@ import org.sat4j.specs.Constr;
  * 
  * @author leberre
  */
-public final class FixedLengthLearning<D extends DataStructureFactory> extends
-        LimitedLearning<D> {
+@Feature(value = "learning", parent = "expert")
+public final class FixedLengthLearning<D extends DataStructureFactory>
+        extends LimitedLearning<D> {
 
     private static final long serialVersionUID = 1L;
 

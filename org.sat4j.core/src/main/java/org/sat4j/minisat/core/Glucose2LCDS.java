@@ -29,8 +29,10 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 
+@Feature(value = "deletion", parent = "expert")
 class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
 
     private static final long serialVersionUID = 1L;

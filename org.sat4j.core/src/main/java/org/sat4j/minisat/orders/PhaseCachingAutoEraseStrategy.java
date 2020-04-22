@@ -31,15 +31,18 @@ package org.sat4j.minisat.orders;
 
 import static org.sat4j.core.LiteralsUtils.var;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * @since 2.2
  */
-public final class PhaseCachingAutoEraseStrategy extends
-        AbstractPhaserecordingSelectionStrategy {
+@Feature(value = "phaseheuristics", parent = "expert")
+public final class PhaseCachingAutoEraseStrategy
+        extends AbstractPhaserecordingSelectionStrategy {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public void assignLiteral(int p) {

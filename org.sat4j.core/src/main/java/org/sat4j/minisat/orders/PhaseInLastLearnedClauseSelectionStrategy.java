@@ -31,14 +31,17 @@ package org.sat4j.minisat.orders;
 
 import static org.sat4j.core.LiteralsUtils.var;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Keeps record of the phase of a variable in the lastest recorded clause.
  * 
  * @author leberre
  * 
  */
-public final class PhaseInLastLearnedClauseSelectionStrategy extends
-        AbstractPhaserecordingSelectionStrategy {
+@Feature(value = "phaseheuristics", parent = "expert")
+public final class PhaseInLastLearnedClauseSelectionStrategy
+        extends AbstractPhaserecordingSelectionStrategy {
 
     /**
      * 

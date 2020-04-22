@@ -331,12 +331,12 @@ public final class Solvers {
                     logger.log("No solver for option s. Launching default solver.");
                     logger.log("Available solvers: "
                             + Arrays.asList(factory.solverNames()));
-                    asolver = (Solver<?>) factory.defaultSolver();
+                    asolver = (ICDCL<?>) factory.defaultSolver();
                 } else {
-                    asolver = (Solver<?>) factory.createSolverByName(solvername);
+                    asolver = (ICDCL<?>) factory.createSolverByName(solvername);
                 }
             } else {
-                asolver = (Solver<?>) factory.defaultSolver();
+                asolver = (ICDCL<?>) factory.defaultSolver();
             }
 
             if (cmd.hasOption("S")) {

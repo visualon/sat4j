@@ -50,6 +50,7 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
@@ -747,6 +748,7 @@ public class Solver<D extends DataStructureFactory>
         return outLearnt;
     }
 
+    @Feature(value = "simplifications", parent = "expert")
     public static final ISimplifier NO_SIMPLIFICATION = new ISimplifier() {
         /**
          * 
@@ -762,6 +764,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier SIMPLE_SIMPLIFICATION = new ISimplifier() {
         /**
          * 
@@ -778,6 +781,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier EXPENSIVE_SIMPLIFICATION = new ISimplifier() {
 
         /**
@@ -795,6 +799,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier EXPENSIVE_SIMPLIFICATION_WLONLY = new ISimplifier() {
 
         /**
@@ -1602,6 +1607,7 @@ public class Solver<D extends DataStructureFactory>
         return isSatisfiable(assumps, false);
     }
 
+    @Feature(value = "deletion", parent = "expert")
     public final LearnedConstraintsDeletionStrategy fixedSize(
             final int maxsize) {
         return new LearnedConstraintsDeletionStrategy() {

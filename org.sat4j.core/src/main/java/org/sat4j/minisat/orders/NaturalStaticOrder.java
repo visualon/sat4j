@@ -31,6 +31,7 @@ package org.sat4j.minisat.orders;
 
 import java.io.PrintWriter;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.minisat.core.IOrder;
@@ -45,6 +46,7 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
  * @author leberre
  *
  */
+@Feature(value = "varheuristics", parent = "expert")
 public class NaturalStaticOrder implements IOrder {
 
     private ILits voc;

@@ -31,14 +31,17 @@ package org.sat4j.minisat.orders;
 
 import static org.sat4j.core.LiteralsUtils.var;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Keeps track of the phase of the latest assignment.
  * 
  * @author leberre
  * 
  */
-public final class RSATLastLearnedClausesPhaseSelectionStrategy extends
-        AbstractPhaserecordingSelectionStrategy {
+@Feature(value = "phaseheuristics", parent = "expert")
+public final class RSATLastLearnedClausesPhaseSelectionStrategy
+        extends AbstractPhaserecordingSelectionStrategy {
 
     /**
      * 

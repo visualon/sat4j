@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.learning;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.constraints.cnf.WLClause;
 import org.sat4j.minisat.core.DataStructureFactory;
 import org.sat4j.specs.Constr;
@@ -41,6 +42,7 @@ import org.sat4j.specs.Constr;
  * @param <D>
  *            a data structure for the clauses.
  */
+@Feature(value = "learning", parent = "expert")
 public final class ClauseOnlyLearning<D extends DataStructureFactory>
         extends LimitedLearning<D> {
 

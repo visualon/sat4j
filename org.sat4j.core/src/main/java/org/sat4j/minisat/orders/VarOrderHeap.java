@@ -34,6 +34,7 @@ import static org.sat4j.core.LiteralsUtils.var;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.Heap;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.minisat.core.IOrder;
@@ -47,6 +48,7 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
  * @author leberre Heuristique du prouveur. Changement par rapport au MiniSAT
  *         original : la gestion activity est faite ici et non plus dans Solver.
  */
+@Feature(value = "varheuristics", parent = "expert")
 public class VarOrderHeap implements IOrder, Serializable {
 
     private static final long serialVersionUID = 1L;

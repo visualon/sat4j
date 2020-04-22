@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.restarts;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
@@ -37,6 +38,7 @@ import org.sat4j.specs.Constr;
 /**
  * Luby series
  */
+@Feature(value = "restarts", parent = "expert")
 public final class LubyRestarts implements RestartStrategy {
 
     public static final int DEFAULT_LUBY_FACTOR = 32;

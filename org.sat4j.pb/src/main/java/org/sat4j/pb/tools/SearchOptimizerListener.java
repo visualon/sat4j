@@ -32,6 +32,7 @@ package org.sat4j.pb.tools;
 import java.math.BigInteger;
 
 import org.sat4j.ILauncherMode;
+import org.sat4j.annotations.Feature;
 import org.sat4j.pb.IPBSolverService;
 import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.specs.IConstr;
@@ -40,12 +41,13 @@ import org.sat4j.specs.RandomAccessModel;
 import org.sat4j.specs.SearchListenerAdapter;
 import org.sat4j.tools.SolutionFoundListener;
 
-public final class SearchOptimizerListener extends
-        SearchListenerAdapter<IPBSolverService> {
+@Feature("searchlistener")
+public final class SearchOptimizerListener
+        extends SearchListenerAdapter<IPBSolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private IPBSolverService solverService;

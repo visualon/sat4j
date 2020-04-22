@@ -31,6 +31,7 @@ package org.sat4j.minisat.core;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
@@ -40,11 +41,12 @@ import org.sat4j.specs.IVec;
  * @author leberre
  * 
  */
+@Feature(value = "deletion", parent = "expert")
 public interface LearnedConstraintsDeletionStrategy extends Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     void init();
 
     ConflictTimer getTimer();

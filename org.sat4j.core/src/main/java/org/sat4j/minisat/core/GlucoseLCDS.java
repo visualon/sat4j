@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
@@ -43,6 +44,7 @@ import org.sat4j.specs.IVec;
  *
  * @param <D>
  */
+@Feature(value = "deletion", parent = "expert")
 class GlucoseLCDS<D extends DataStructureFactory>
         implements LearnedConstraintsDeletionStrategy {
 

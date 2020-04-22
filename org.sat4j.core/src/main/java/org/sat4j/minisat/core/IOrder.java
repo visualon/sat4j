@@ -31,6 +31,8 @@ package org.sat4j.minisat.core;
 
 import java.io.PrintWriter;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Interface for the variable ordering heuristics. It has both the
  * responsibility to choose the next variable to branch on and the phase of the
@@ -39,6 +41,7 @@ import java.io.PrintWriter;
  * @author daniel
  * 
  */
+@Feature(value = "varheuristics", parent = "expert")
 public interface IOrder {
 
     /**
