@@ -173,6 +173,9 @@ public class Solver<D extends DataStructureFactory>
 
     private UnitClauseProvider unitClauseProvider = UnitClauseProvider.VOID;
 
+    private final boolean classifyLiterals = System
+            .getProperty("color") != null;
+
     /**
      * Translates an IvecInt containing Dimacs formatted variables into and
      * IVecInt containing internal formatted variables.
@@ -1404,19 +1407,27 @@ public class Solver<D extends DataStructureFactory>
                             this.propagated[i
                                     - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
                         } else {
-                            int q = this.voc.isSatisfied(p) ? p : p ^ 1;
-                            this.voc.unassign(q);
-                            this.voc.satisfies(q ^ 1);
-                            if (reduceClausesContainingTheNegationOf(
-                                    q ^ 1) != null) {
-                                this.propagated[i
-                                        - 1] = AssignmentOrigin.DECIDED_PROPAGATED;
+                            if (classifyLiterals) {
+                                int q = this.voc.isSatisfied(p) ? p : p ^ 1;
+                                this.voc.unassign(q);
+                                this.voc.satisfies(q ^ 1);
+                                // can change invariants in constraints data
+                                // structures
+                                // should only be used with care
+                                if (reduceClausesContainingTheNegationOf(
+                                        q ^ 1) != null) {
+                                    this.propagated[i
+                                            - 1] = AssignmentOrigin.DECIDED_PROPAGATED;
+                                } else {
+                                    this.propagated[i
+                                            - 1] = AssignmentOrigin.DECIDED;
+                                }
+                                this.voc.unassign(q);
+                                this.voc.satisfies(q);
                             } else {
                                 this.propagated[i
                                         - 1] = AssignmentOrigin.DECIDED;
                             }
-                            this.voc.unassign(q);
-                            this.voc.satisfies(q);
                         }
                     } else {
                         this.implied.push(tempmodel.last());
