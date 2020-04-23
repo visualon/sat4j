@@ -1397,6 +1397,7 @@ public class Solver<D extends DataStructureFactory>
         propagated = new AssignmentOrigin[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
+        AssignmentOrigin origin = AssignmentOrigin.UNASSIGNED;
         Constr reason;
         for (int i = 1; i <= nVars(); i++) {
             if (this.voc.belongsToPool(i)) {
@@ -1413,8 +1414,7 @@ public class Solver<D extends DataStructureFactory>
                             || reason != null && reason.learnt()) {
                         this.decisions.push(tempmodel.last());
                         if (reason != null) {
-                            this.propagated[i
-                                    - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                            origin = AssignmentOrigin.PROPAGATED_LEARNED;
                         } else {
                             if (classifyLiterals) {
                                 int q = this.voc.isSatisfied(p) ? p : p ^ 1;
@@ -1423,30 +1423,29 @@ public class Solver<D extends DataStructureFactory>
                                 // can change invariants in constraints data
                                 // structures
                                 // should only be used with care
-                                if (reduceClausesContainingTheNegationOf(
-                                        q ^ 1) != null) {
-                                    this.propagated[i
-                                            - 1] = AssignmentOrigin.DECIDED_PROPAGATED;
+                                if ((reason = reduceClausesContainingTheNegationOf(
+                                        q ^ 1)) != null) {
+                                    if (reason.learnt()) {
+                                        origin = AssignmentOrigin.DECIDED_PROPAGATED_LEARNED;
+                                    } else {
+                                        origin = AssignmentOrigin.DECIDED_PROPAGATED;
+                                    }
                                 } else {
-                                    this.propagated[i
-                                            - 1] = AssignmentOrigin.DECIDED;
+                                    origin = AssignmentOrigin.DECIDED;
                                 }
                                 this.voc.unassign(q);
                                 this.voc.satisfies(q);
                             } else {
-                                this.propagated[i
-                                        - 1] = AssignmentOrigin.DECIDED;
+                                origin = AssignmentOrigin.DECIDED;
                             }
                         }
                     } else {
                         this.implied.push(tempmodel.last());
-                        this.propagated[i
-                                - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
+                        origin = AssignmentOrigin.PROPAGATED_ORIGINAL;
                     }
                 }
-            } else {
-                this.propagated[i - 1] = AssignmentOrigin.UNASSIGNED;
             }
+            this.propagated[i - 1] = origin;
         }
         this.model = new int[tempmodel.size()];
         tempmodel.copyTo(this.model);

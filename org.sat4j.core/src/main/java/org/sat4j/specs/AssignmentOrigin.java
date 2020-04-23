@@ -39,8 +39,9 @@ public enum AssignmentOrigin {
     UNASSIGNED((char) 27 + "[0;37m"), DECIDED(
             (char) 27 + "[0;32m"), PROPAGATED_ORIGINAL(
                     (char) 27 + "[0;31m"), PROPAGATED_LEARNED(
-                            (char) 27 + "[0;34m"), DECIDED_PROPAGATED(
-                                    (char) 27 + "[0;35m");
+                            (char) 27 + "[0;34m"), DECIDED_PROPAGATED((char) 27
+                                    + "[0;35m"), DECIDED_PROPAGATED_LEARNED(
+                                            (char) 27 + "[0;36m");
 
     public static final String BLANK = (char) 27 + "[0m";
     private final String color;
