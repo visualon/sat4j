@@ -1380,12 +1380,12 @@ public class Solver<D extends DataStructureFactory>
     protected final IVecInt implied = new VecInt();
     protected final IVecInt decisions = new VecInt();
 
-    private AssignmentOrigin[] propagated;
+    private AssignmentOrigin[] assignmentOrigins;
     int[] fullmodel;
 
     @Override
     public AssignmentOrigin getOriginInModel(int p) {
-        return propagated[Math.abs(p) - 1];
+        return assignmentOrigins[Math.abs(p) - 1];
     }
 
     /**
@@ -1394,7 +1394,7 @@ public class Solver<D extends DataStructureFactory>
     void modelFound() {
         decisions.clear();
         IVecInt tempmodel = new VecInt(nVars());
-        propagated = new AssignmentOrigin[realNumberOfVariables()];
+        assignmentOrigins = new AssignmentOrigin[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
         AssignmentOrigin origin = AssignmentOrigin.UNASSIGNED;
@@ -1445,7 +1445,7 @@ public class Solver<D extends DataStructureFactory>
                     }
                 }
             }
-            this.propagated[i - 1] = origin;
+            this.assignmentOrigins[i - 1] = origin;
         }
         this.model = new int[tempmodel.size()];
         tempmodel.copyTo(this.model);
@@ -1459,20 +1459,20 @@ public class Solver<D extends DataStructureFactory>
                         if (this.voc.getReason(p) == null) {
                             this.decisions.push(tempmodel.last());
 
-                            this.propagated[i - 1] = AssignmentOrigin.DECIDED;
+                            this.assignmentOrigins[i - 1] = AssignmentOrigin.DECIDED;
                         } else {
                             this.implied.push(tempmodel.last());
                             if (this.voc.getReason(p).learnt()) {
-                                this.propagated[i
+                                this.assignmentOrigins[i
                                         - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
                             } else {
-                                this.propagated[i
+                                this.assignmentOrigins[i
                                         - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
                             }
                         }
                     }
                 } else {
-                    this.propagated[i - 1] = AssignmentOrigin.UNASSIGNED;
+                    this.assignmentOrigins[i - 1] = AssignmentOrigin.UNASSIGNED;
                 }
             }
             this.fullmodel = new int[tempmodel.size()];
