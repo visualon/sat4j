@@ -1398,7 +1398,52 @@ public class Solver<D extends DataStructureFactory>
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
         AssignmentOrigin origin = AssignmentOrigin.UNASSIGNED;
+
         Constr reason;
+        if (classifyLiterals) {
+            StringBuffer stb = new StringBuffer(getLogPrefix());
+            int q;
+            for (int i = 0; i < trailLim.size(); i++) {
+                q = trail.get(trailLim.get(i));
+                stb.append(LiteralsUtils.toDimacs(q));
+                this.voc.unassign(q);
+                this.voc.satisfies(q ^ 1);
+                // can change invariants in constraints data
+                // structures
+                // should only be used with care
+                if ((reason = reduceClausesContainingTheNegationOf(
+                        q ^ 1)) != null) {
+                    if (reason.learnt()) {
+                        origin = AssignmentOrigin.DECIDED_PROPAGATED_LEARNED;
+                    } else {
+                        origin = AssignmentOrigin.DECIDED_PROPAGATED;
+                    }
+
+                    int max = 0;
+                    int r;
+                    for (int j = 0; j < reason.size(); j++) {
+                        r = reason.get(j);
+                        if (r != q) {
+                            max = Math.max(max, this.voc.getLevel(r));
+                        }
+                    }
+
+                    stb.append(":");
+                    stb.append(max);
+                    if (voc.getLevel(q) == max) {
+                        origin = AssignmentOrigin.DECIDED_CYCLE;
+                    }
+                } else {
+                    origin = AssignmentOrigin.DECIDED;
+                }
+
+                this.voc.unassign(q);
+                this.voc.satisfies(q);
+                stb.append(" ");
+                this.assignmentOrigins[(q >> 1) - 1] = origin;
+            }
+            System.out.println(stb);
+        }
         for (int i = 1; i <= nVars(); i++) {
             if (this.voc.belongsToPool(i)) {
                 int p = this.voc.getFromPool(i);
@@ -1414,38 +1459,16 @@ public class Solver<D extends DataStructureFactory>
                             || reason != null && reason.learnt()) {
                         this.decisions.push(tempmodel.last());
                         if (reason != null) {
-                            origin = AssignmentOrigin.PROPAGATED_LEARNED;
-                        } else {
-                            if (classifyLiterals) {
-                                int q = this.voc.isSatisfied(p) ? p : p ^ 1;
-                                this.voc.unassign(q);
-                                this.voc.satisfies(q ^ 1);
-                                // can change invariants in constraints data
-                                // structures
-                                // should only be used with care
-                                if ((reason = reduceClausesContainingTheNegationOf(
-                                        q ^ 1)) != null) {
-                                    if (reason.learnt()) {
-                                        origin = AssignmentOrigin.DECIDED_PROPAGATED_LEARNED;
-                                    } else {
-                                        origin = AssignmentOrigin.DECIDED_PROPAGATED;
-                                    }
-                                } else {
-                                    origin = AssignmentOrigin.DECIDED;
-                                }
-                                this.voc.unassign(q);
-                                this.voc.satisfies(q);
-                            } else {
-                                origin = AssignmentOrigin.DECIDED;
-                            }
+                            this.assignmentOrigins[i
+                                    - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
                         }
                     } else {
                         this.implied.push(tempmodel.last());
-                        origin = AssignmentOrigin.PROPAGATED_ORIGINAL;
+                        this.assignmentOrigins[i
+                                - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
                     }
                 }
             }
-            this.assignmentOrigins[i - 1] = origin;
         }
         this.model = new int[tempmodel.size()];
         tempmodel.copyTo(this.model);
@@ -1458,8 +1481,6 @@ public class Solver<D extends DataStructureFactory>
                         this.userbooleanmodel[i - 1] = this.voc.isSatisfied(p);
                         if (this.voc.getReason(p) == null) {
                             this.decisions.push(tempmodel.last());
-
-                            this.assignmentOrigins[i - 1] = AssignmentOrigin.DECIDED;
                         } else {
                             this.implied.push(tempmodel.last());
                             if (this.voc.getReason(p).learnt()) {
@@ -1860,6 +1881,7 @@ public class Solver<D extends DataStructureFactory>
                 this.undertimeout = true;
                 ConflictTimer conflictTimeout = new ConflictTimerAdapter(this,
                         (int) this.timeout) {
+
                     private static final long serialVersionUID = 1L;
 
                     @Override
@@ -1881,10 +1903,13 @@ public class Solver<D extends DataStructureFactory>
         // Solve
         while (status == Lbool.UNDEFINED && this.undertimeout
                 && this.lastConflictMeansUnsat) {
+
             int before = this.trail.size();
             unitClauseProvider.provideUnitClauses(this);
             this.stats.incImportedUnits(this.trail.size() - before);
-            status = search(assumps);
+            status =
+
+                    search(assumps);
             if (status == Lbool.UNDEFINED) {
                 this.restarter.onRestart();
                 this.slistener.restarting();
