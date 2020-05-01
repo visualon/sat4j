@@ -1582,8 +1582,8 @@ public class Solver<D extends DataStructureFactory>
         this.learnedConstraintsDeletionStrategy.reduce(this.learnts);
     }
 
-    protected void sortOnActivity() {
-        this.learnts.sort(this.comparator);
+    protected ActivityComparator getActivityComparator() {
+        return this.comparator;
     }
 
     /**
@@ -1907,9 +1907,7 @@ public class Solver<D extends DataStructureFactory>
             int before = this.trail.size();
             unitClauseProvider.provideUnitClauses(this);
             this.stats.incImportedUnits(this.trail.size() - before);
-            status =
-
-                    search(assumps);
+            status = search(assumps);
             if (status == Lbool.UNDEFINED) {
                 this.restarter.onRestart();
                 this.slistener.restarting();

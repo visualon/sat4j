@@ -65,13 +65,13 @@ class GlucoseLCDS<D extends DataStructureFactory>
     }
 
     public void reduce(IVec<Constr> learnedConstrs) {
-        this.solver.sortOnActivity();
+        learnedConstrs.sort(solver.getActivityComparator());
         int i, j;
         for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
                 .size(); i++) {
             Constr c = learnedConstrs.get(i);
             if (c.locked() || c.getActivity() <= 2.0) {
-                learnedConstrs.set(j++, solver.learnts.get(i));
+                learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
                 c.remove(solver);
                 solver.slistener.delete(c);
@@ -84,7 +84,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
                     + this.flag + "/" + solver.stats.getConflicts());
             // out.flush();
         }
-        solver.learnts.shrinkTo(j);
+        learnedConstrs.shrinkTo(j);
 
     }
 

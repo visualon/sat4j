@@ -265,18 +265,19 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory>
             for (i = j = 0; i < learnedConstrs.size(); i++) {
                 Constr c = learnedConstrs.get(i);
                 if (c.locked() || c.getActivity() <= 2.0) {
-                    learnedConstrs.set(j++, PBSolver.this.learnts.get(i));
+                    learnedConstrs.set(j++, learnedConstrs.get(i));
                 } else {
                     c.remove(PBSolver.this);
                 }
             }
             if (isVerbose()) {
                 System.out.println(getLogPrefix() + "cleaning " //$NON-NLS-1$
-                        + (learnedConstrs.size() - j) + " clauses out of " + learnedConstrs.size() + "/" //$NON-NLS-1$ //$NON-NLS-2$
+                        + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
+                        + learnedConstrs.size() + "/" //$NON-NLS-1$
                         + PBSolver.this.pbStats.getConflicts());
                 System.out.flush();
             }
-            PBSolver.this.learnts.shrinkTo(j);
+            learnedConstrs.shrinkTo(j);
 
         }
 

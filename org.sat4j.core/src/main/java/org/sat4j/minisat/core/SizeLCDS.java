@@ -50,13 +50,13 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
     }
 
     public void reduce(IVec<Constr> learnedConstrs) {
-        solver.learnts.sort(comparator);
+        learnedConstrs.sort(comparator);
         int i, j;
         for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
                 .size(); i++) {
             Constr c = learnedConstrs.get(i);
             if (c.locked() || c.size() == 2) {
-                learnedConstrs.set(j++, solver.learnts.get(i));
+                learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
                 c.remove(solver);
                 solver.slistener.delete(c);
@@ -64,10 +64,11 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
         }
         if (solver.isVerbose()) {
             solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
-                    + (solver.learnts.size() - j) + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$
+                    + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
+                    + learnedConstrs.size());
             // out.flush();
         }
-        solver.learnts.shrinkTo(j);
+        learnedConstrs.shrinkTo(j);
     }
 
     public ConflictTimer getTimer() {
