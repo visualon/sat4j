@@ -33,12 +33,14 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IGroupSolver;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
+import org.sat4j.specs.UnitClauseConsumer;
 
 /**
  * Solver used to write down a CNF into a String.
@@ -271,4 +273,12 @@ public class DimacsStringSolver extends AbstractOutputSolver
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
+    public AssignmentOrigin getOriginInModel(int p) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
 }

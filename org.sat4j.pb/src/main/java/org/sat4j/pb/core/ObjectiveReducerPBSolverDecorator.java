@@ -45,6 +45,7 @@ import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.ObjectiveFunction;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -55,6 +56,7 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
@@ -442,4 +444,12 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
         return decorated.addParity(literals, even);
     }
 
+    public AssignmentOrigin getOriginInModel(int p) {
+        return decorated.getOriginInModel(p);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        decorated.setUnitClauseConsumer(ucc);
+    }
 }

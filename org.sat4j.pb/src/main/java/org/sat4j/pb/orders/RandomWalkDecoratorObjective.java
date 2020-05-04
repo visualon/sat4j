@@ -29,26 +29,28 @@
  *******************************************************************************/
 package org.sat4j.pb.orders;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.orders.RandomWalkDecorator;
 import org.sat4j.pb.ObjectiveFunction;
 
-public class RandomWalkDecoratorObjective extends RandomWalkDecorator implements
-		IOrderObjective {
+@Feature(value = "varheuristics", parent = "expert")
+public class RandomWalkDecoratorObjective extends RandomWalkDecorator
+        implements IOrderObjective {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	private final IOrderObjective objorder;
+    private final IOrderObjective objorder;
 
-	public RandomWalkDecoratorObjective(VarOrderHeapObjective order, double p) {
-		super(order, p);
-		this.objorder = order;
-	}
+    public RandomWalkDecoratorObjective(VarOrderHeapObjective order, double p) {
+        super(order, p);
+        this.objorder = order;
+    }
 
-	public void setObjectiveFunction(ObjectiveFunction obj) {
-		this.objorder.setObjectiveFunction(obj);
-	}
+    public void setObjectiveFunction(ObjectiveFunction obj) {
+        this.objorder.setObjectiveFunction(obj);
+    }
 
 }

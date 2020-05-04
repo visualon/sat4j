@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.restarts;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.CircularBuffer;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
@@ -43,6 +44,7 @@ import org.sat4j.specs.Constr;
  * @author leberre
  * 
  */
+@Feature(value = "restarts", parent = "expert")
 public class Glucose21Restarts implements RestartStrategy {
 
     /**
@@ -96,8 +98,8 @@ public class Glucose21Restarts implements RestartStrategy {
         // was
         // ... && bufferLBD.average() * 0.8 > sumOfAllLBD / stats.conflicts
         // uses now only integers to avoid rounding issues
-        return bufferLBD.isFull()
-                && bufferLBD.average() * stats.getConflicts() * 4L > sumOfAllLBD * 5L;
+        return bufferLBD.isFull() && bufferLBD.average() * stats.getConflicts()
+                * 4L > sumOfAllLBD * 5L;
     }
 
     public void onRestart() {

@@ -50,11 +50,13 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.constraints.xor.Xor;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -68,6 +70,7 @@ import org.sat4j.specs.Lbool;
 import org.sat4j.specs.Propagatable;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 /**
@@ -171,6 +174,11 @@ public class Solver<D extends DataStructureFactory>
     private int declaredMaxVarId = 0;
 
     private UnitClauseProvider unitClauseProvider = UnitClauseProvider.VOID;
+
+    private UnitClauseConsumer unitClauseConsumer = UnitClauseConsumer.VOID;
+
+    private final boolean classifyLiterals = System
+            .getProperty("color") != null;
 
     /**
      * Translates an IvecInt containing Dimacs formatted variables into and
@@ -740,6 +748,7 @@ public class Solver<D extends DataStructureFactory>
         return outLearnt;
     }
 
+    @Feature(value = "simplifications", parent = "expert")
     public static final ISimplifier NO_SIMPLIFICATION = new ISimplifier() {
         /**
          * 
@@ -755,6 +764,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier SIMPLE_SIMPLIFICATION = new ISimplifier() {
         /**
          * 
@@ -771,6 +781,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier EXPENSIVE_SIMPLIFICATION = new ISimplifier() {
 
         /**
@@ -788,6 +799,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier EXPENSIVE_SIMPLIFICATION_WLONLY = new ISimplifier() {
 
         /**
@@ -1138,6 +1150,7 @@ public class Solver<D extends DataStructureFactory>
         if (constr.size() == 1) {
             this.stats.incLearnedliterals();
             this.slistener.learnUnit(p);
+            this.unitClauseConsumer.learnUnit(p);
         } else {
             this.learner.learns(constr);
         }
@@ -1368,10 +1381,16 @@ public class Solver<D extends DataStructureFactory>
     protected void analyzeAtRootLevel(Constr conflict) {
     }
 
-    final IVecInt implied = new VecInt();
-    final IVecInt decisions = new VecInt();
+    protected final IVecInt implied = new VecInt();
+    protected final IVecInt decisions = new VecInt();
 
+    private AssignmentOrigin[] propagated;
     int[] fullmodel;
+
+    @Override
+    public AssignmentOrigin getOriginInModel(int p) {
+        return propagated[Math.abs(p) - 1];
+    }
 
     /**
      * 
@@ -1379,6 +1398,7 @@ public class Solver<D extends DataStructureFactory>
     void modelFound() {
         decisions.clear();
         IVecInt tempmodel = new VecInt(nVars());
+        propagated = new AssignmentOrigin[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
         Constr reason;
@@ -1396,10 +1416,40 @@ public class Solver<D extends DataStructureFactory>
                             // decisions.
                             || reason != null && reason.learnt()) {
                         this.decisions.push(tempmodel.last());
+                        if (reason != null) {
+                            this.propagated[i
+                                    - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                        } else {
+                            if (classifyLiterals) {
+                                int q = this.voc.isSatisfied(p) ? p : p ^ 1;
+                                this.voc.unassign(q);
+                                this.voc.satisfies(q ^ 1);
+                                // can change invariants in constraints data
+                                // structures
+                                // should only be used with care
+                                if (reduceClausesContainingTheNegationOf(
+                                        q ^ 1) != null) {
+                                    this.propagated[i
+                                            - 1] = AssignmentOrigin.DECIDED_PROPAGATED;
+                                } else {
+                                    this.propagated[i
+                                            - 1] = AssignmentOrigin.DECIDED;
+                                }
+                                this.voc.unassign(q);
+                                this.voc.satisfies(q);
+                            } else {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.DECIDED;
+                            }
+                        }
                     } else {
                         this.implied.push(tempmodel.last());
+                        this.propagated[i
+                                - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
                     }
                 }
+            } else {
+                this.propagated[i - 1] = AssignmentOrigin.UNASSIGNED;
             }
         }
         this.model = new int[tempmodel.size()];
@@ -1413,10 +1463,21 @@ public class Solver<D extends DataStructureFactory>
                         this.userbooleanmodel[i - 1] = this.voc.isSatisfied(p);
                         if (this.voc.getReason(p) == null) {
                             this.decisions.push(tempmodel.last());
+
+                            this.propagated[i - 1] = AssignmentOrigin.DECIDED;
                         } else {
                             this.implied.push(tempmodel.last());
+                            if (this.voc.getReason(p).learnt()) {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                            } else {
+                                this.propagated[i
+                                        - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
+                            }
                         }
                     }
+                } else {
+                    this.propagated[i - 1] = AssignmentOrigin.UNASSIGNED;
                 }
             }
             this.fullmodel = new int[tempmodel.size()];
@@ -1550,6 +1611,7 @@ public class Solver<D extends DataStructureFactory>
         return isSatisfiable(assumps, false);
     }
 
+    @Feature(value = "deletion", parent = "expert")
     public final LearnedConstraintsDeletionStrategy fixedSize(
             final int maxsize) {
         return new LearnedConstraintsDeletionStrategy() {
@@ -2507,5 +2569,10 @@ public class Solver<D extends DataStructureFactory>
 
     public void setUnitClauseProvider(UnitClauseProvider ucp) {
         this.unitClauseProvider = ucp;
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        this.unitClauseConsumer = ucc;
     }
 }

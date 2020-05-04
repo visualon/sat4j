@@ -27,37 +27,30 @@
  * Contributors:
  *   CRIL - initial API and implementation
  *******************************************************************************/
-package org.sat4j.minisat.learning;
-
-import org.sat4j.annotations.Feature;
-import org.sat4j.minisat.constraints.cnf.WLClause;
-import org.sat4j.minisat.core.DataStructureFactory;
-import org.sat4j.specs.Constr;
+package org.sat4j.specs;
 
 /**
- * The solver only records among all the constraints only the clauses.
  * 
- * @author daniel
- * 
- * @param <D>
- *            a data structure for the clauses.
+ * @author leberre
+ * @since 2.3.6
  */
-@Feature(value = "learning", parent = "expert")
-public final class ClauseOnlyLearning<D extends DataStructureFactory>
-        extends LimitedLearning<D> {
+public interface UnitClauseConsumer {
+
+    UnitClauseConsumer VOID = new UnitClauseConsumer() {
+
+        @Override
+        public void learnUnit(int p) {
+            // do nothing
+        }
+    };
 
     /**
+     * learn a new unit clause (a literal)
      * 
+     * @param p
+     *            a literal in Dimacs format.
+     * @since 2.3.4
      */
-    private static final long serialVersionUID = 1L;
+    void learnUnit(int p);
 
-    @Override
-    protected boolean learningCondition(Constr constr) {
-        return constr instanceof WLClause;
-    }
-
-    @Override
-    public String toString() {
-        return "Limit learning to clauses using watched literals only";
-    }
 }

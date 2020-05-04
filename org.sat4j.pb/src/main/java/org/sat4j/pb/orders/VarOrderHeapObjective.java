@@ -41,8 +41,8 @@ import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 
-public class VarOrderHeapObjective extends VarOrderHeap implements
-        IOrderObjective {
+public class VarOrderHeapObjective extends VarOrderHeap
+        implements IOrderObjective {
 
     /**
      * 
@@ -78,8 +78,9 @@ public class VarOrderHeapObjective extends VarOrderHeap implements
                         p = neg(p);
                     }
                     int var = var(p);
-                    this.activity[var] = c.bitLength() < Long.SIZE ? c.abs()
-                            .longValue() : Long.MAX_VALUE;
+                    this.activity[var] = c.bitLength() < Long.SIZE
+                            ? c.abs().longValue()
+                            : Long.MAX_VALUE;
                     if (this.heap.inHeap(var)) {
                         this.heap.increase(var);
                     } else {

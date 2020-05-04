@@ -42,6 +42,7 @@ import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.Counter;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -50,8 +51,8 @@ import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.SearchListener;
-import org.sat4j.specs.SearchListenerAdapter;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 import org.sat4j.specs.UnitPropagationListener;
 
@@ -67,9 +68,8 @@ import org.sat4j.specs.UnitPropagationListener;
  * @param <S>
  *            the type of the solver (ISolver of IPBSolver)
  */
-public class ManyCore<S extends ISolver>
-        extends SearchListenerAdapter<ISolverService>
-        implements ISolver, OutcomeListener, UnitClauseProvider {
+public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
+        UnitClauseProvider, UnitClauseConsumer {
 
     private static final int NORMAL_SLEEP = 500;
 
@@ -105,7 +105,7 @@ public class ManyCore<S extends ISolver>
         S solver;
         for (int i = 0; i < this.numberOfSolvers; i++) {
             solver = factory.createSolverByName(this.availableSolvers[i]);
-            solver.setSearchListener(this);
+            solver.setUnitClauseConsumer(this);
             if (shareLearnedUnitClauses) {
                 solver.setUnitClauseProvider(this);
             }
@@ -147,7 +147,7 @@ public class ManyCore<S extends ISolver>
         this.solvers = new ArrayList<S>(this.numberOfSolvers);
         for (int i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.add(solverObjects[i]);
-            solverObjects[i].setSearchListener(this);
+            solverObjects[i].setUnitClauseConsumer(this);
             if (shareLearnedUnitClauses) {
                 solverObjects[i].setUnitClauseProvider(this);
             }
@@ -632,6 +632,16 @@ public class ManyCore<S extends ISolver>
     public int getWinnerId() {
         checkWinnerId();
         return winnerId;
+    }
+
+    public AssignmentOrigin getOriginInModel(int p) {
+        return this.solvers.get(getWinnerId()).getOriginInModel(p);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        throw new UnsupportedOperationException(
+                "Does not make sense in the parallel context");
     }
 }
 

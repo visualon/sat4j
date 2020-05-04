@@ -33,6 +33,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -42,6 +43,7 @@ import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 /**
@@ -555,4 +557,12 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
         return this.solver.addParity(literals, even);
     }
 
+    public AssignmentOrigin getOriginInModel(int p) {
+        return this.solver.getOriginInModel(p);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        this.solver.setUnitClauseConsumer(ucc);
+    }
 }

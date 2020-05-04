@@ -27,37 +27,29 @@
  * Contributors:
  *   CRIL - initial API and implementation
  *******************************************************************************/
-package org.sat4j.minisat.learning;
-
-import org.sat4j.annotations.Feature;
-import org.sat4j.minisat.constraints.cnf.WLClause;
-import org.sat4j.minisat.core.DataStructureFactory;
-import org.sat4j.specs.Constr;
+package org.sat4j.specs;
 
 /**
- * The solver only records among all the constraints only the clauses.
+ * Origin of the assignment of a literal in a model or implicant.
  * 
- * @author daniel
- * 
- * @param <D>
- *            a data structure for the clauses.
+ * @author leberre
+ * @since 2.3.6
  */
-@Feature(value = "learning", parent = "expert")
-public final class ClauseOnlyLearning<D extends DataStructureFactory>
-        extends LimitedLearning<D> {
+public enum AssignmentOrigin {
+    UNASSIGNED((char) 27 + "[0;37m"), DECIDED(
+            (char) 27 + "[0;32m"), PROPAGATED_ORIGINAL(
+                    (char) 27 + "[0;31m"), PROPAGATED_LEARNED(
+                            (char) 27 + "[0;34m"), DECIDED_PROPAGATED(
+                                    (char) 27 + "[0;35m");
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+    public static final String BLANK = (char) 27 + "[0m";
+    private final String color;
 
-    @Override
-    protected boolean learningCondition(Constr constr) {
-        return constr instanceof WLClause;
+    AssignmentOrigin(String color) {
+        this.color = color;
     }
 
-    @Override
-    public String toString() {
-        return "Limit learning to clauses using watched literals only";
+    public String getColor() {
+        return color;
     }
 }

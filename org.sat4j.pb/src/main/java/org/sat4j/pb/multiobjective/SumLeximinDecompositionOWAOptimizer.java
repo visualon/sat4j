@@ -15,6 +15,7 @@ import org.sat4j.pb.IIntegerPBSolver;
 import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.pb.PseudoOptDecorator;
 import org.sat4j.pb.core.IntegerVariable;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -25,6 +26,7 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 public class SumLeximinDecompositionOWAOptimizer
@@ -705,6 +707,14 @@ public class SumLeximinDecompositionOWAOptimizer
         return solver.addParity(literals, even);
     }
 
+    public AssignmentOrigin getOriginInModel(int p) {
+        return solver.getOriginInModel(p);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        solver.setUnitClauseConsumer(ucc);
+    }
     // END DELEGATION
 
 }

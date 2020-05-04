@@ -33,6 +33,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Random;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
@@ -40,6 +41,7 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
 /**
  * @since 2.2
  */
+@Feature(value = "varheuristics", parent = "expert")
 public class RandomWalkDecorator implements IOrder, Serializable {
 
     /**

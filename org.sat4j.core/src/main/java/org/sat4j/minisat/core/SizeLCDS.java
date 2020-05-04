@@ -31,9 +31,11 @@ package org.sat4j.minisat.core;
 
 import java.util.Comparator;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
+@Feature(value = "deletion", parent = "expert")
 final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
     private static final long serialVersionUID = 1L;
     private final ConflictTimer timer;
@@ -41,7 +43,8 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
 
     private static final Comparator<Constr> comparator = new SizeComparator();
 
-    SizeLCDS(Solver<? extends DataStructureFactory> solver, ConflictTimer timer) {
+    SizeLCDS(Solver<? extends DataStructureFactory> solver,
+            ConflictTimer timer) {
         this.timer = timer;
         this.solver = solver;
     }
@@ -49,7 +52,8 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
     public void reduce(IVec<Constr> learnedConstrs) {
         solver.learnts.sort(comparator);
         int i, j;
-        for (i = j = learnedConstrs.size() / 2; i < learnedConstrs.size(); i++) {
+        for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
+                .size(); i++) {
             Constr c = learnedConstrs.get(i);
             if (c.locked() || c.size() == 2) {
                 learnedConstrs.set(j++, solver.learnts.get(i));
@@ -59,9 +63,8 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
             }
         }
         if (solver.isVerbose()) {
-            solver.out.log(solver.getLogPrefix()
-                    + "cleaning " + (solver.learnts.size() - j) //$NON-NLS-1$
-                    + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$ 
+            solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
+                    + (solver.learnts.size() - j) + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$
             // out.flush();
         }
         solver.learnts.shrinkTo(j);

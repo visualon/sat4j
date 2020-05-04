@@ -29,8 +29,10 @@
  *******************************************************************************/
 package org.sat4j.minisat.orders;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.Heap;
 
+@Feature(value = "varheuristics", parent = "expert")
 public class SubsetVarOrder extends VarOrderHeap {
 
     private final int[] varsToTest;
@@ -42,8 +44,8 @@ public class SubsetVarOrder extends VarOrderHeap {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -55,11 +57,13 @@ public class SubsetVarOrder extends VarOrderHeap {
         this.inSubset = new boolean[nlength];
         this.phaseStrategy.init(nlength);
         this.activity[0] = -1;
-        this.heap = new Heap(new ActivityBasedVariableComparator(this.activity));
+        this.heap = new Heap(
+                new ActivityBasedVariableComparator(this.activity));
         this.heap.setBounds(nlength);
         for (int var : this.varsToTest) {
             assert var > 0;
-            assert var <= this.lits.nVars() : "" + this.lits.nVars() + "/" + var; //$NON-NLS-1$ //$NON-NLS-2$
+            assert var <= this.lits.nVars() : "" + this.lits.nVars() + "/" //$NON-NLS-1$ //$NON-NLS-2$
+                    + var;
             this.inSubset[var] = true;
             this.activity[var] = 0.0;
             if (this.lits.belongsToPool(var)) {

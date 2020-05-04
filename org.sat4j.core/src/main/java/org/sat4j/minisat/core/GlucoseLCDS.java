@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
@@ -43,6 +44,7 @@ import org.sat4j.specs.IVec;
  *
  * @param <D>
  */
+@Feature(value = "deletion", parent = "expert")
 class GlucoseLCDS<D extends DataStructureFactory>
         implements LearnedConstraintsDeletionStrategy {
 
@@ -117,7 +119,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
         int currentLevel;
         for (int i = 1; i < constr.size(); i++) {
             currentLevel = solver.voc.getLevel(constr.get(i));
-            if (this.flags[currentLevel] != this.flag) {
+            if (currentLevel >= 0 && this.flags[currentLevel] != this.flag) {
                 this.flags[currentLevel] = this.flag;
                 nblevel++;
             }

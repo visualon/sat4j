@@ -29,9 +29,11 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
+@Feature(value = "deletion", parent = "expert")
 final class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
     private static final long serialVersionUID = 1L;
     private final ConflictTimer timer;
@@ -59,9 +61,8 @@ final class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
             solver.learnts.set(j++, solver.learnts.get(i));
         }
         if (solver.isVerbose()) {
-            solver.out.log(solver.getLogPrefix()
-                    + "cleaning " + (solver.learnts.size() - j) //$NON-NLS-1$
-                    + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$ 
+            solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
+                    + (solver.learnts.size() - j) + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$
             // out.flush();
         }
         solver.learnts.shrinkTo(j);

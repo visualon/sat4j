@@ -29,12 +29,15 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import org.sat4j.annotations.Feature;
+
+@Feature("searchlistener")
 public abstract class SearchListenerAdapter<S extends ISolverService>
         implements SearchListener<S> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public void init(S solverService) {

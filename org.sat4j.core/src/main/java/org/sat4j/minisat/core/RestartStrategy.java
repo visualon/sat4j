@@ -31,6 +31,7 @@ package org.sat4j.minisat.core;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 
 /**
@@ -39,6 +40,7 @@ import org.sat4j.specs.Constr;
  * @author leberre
  * 
  */
+@Feature(value = "restarts", parent = "expert")
 public interface RestartStrategy extends Serializable, ConflictTimer {
 
     /**

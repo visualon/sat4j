@@ -32,6 +32,7 @@ package org.sat4j.minisat.orders;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.Heap;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
@@ -44,6 +45,7 @@ import org.sat4j.specs.IVecInt;
  * @author leberre
  *
  */
+@Feature(value = "varheuristics", parent = "expert")
 public class LevelBasedVarOrderHeap extends VarOrderHeap {
 
     /**
@@ -64,7 +66,8 @@ public class LevelBasedVarOrderHeap extends VarOrderHeap {
 
     @Override
     protected Heap createHeap(double[] activity) {
-        return new Heap(new LevelAndActivityVariableComparator(activity, level));
+        return new Heap(
+                new LevelAndActivityVariableComparator(activity, level));
     }
 
     /**
@@ -102,7 +105,8 @@ public class LevelBasedVarOrderHeap extends VarOrderHeap {
 
     @Override
     public String toString() {
-        return "Level and activity based heuristics using a heap " + this.phaseStrategy; //$NON-NLS-1$
+        return "Level and activity based heuristics using a heap " //$NON-NLS-1$
+                + this.phaseStrategy;
     }
 
 }

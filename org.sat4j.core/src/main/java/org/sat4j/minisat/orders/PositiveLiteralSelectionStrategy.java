@@ -31,10 +31,12 @@ package org.sat4j.minisat.orders;
 
 import static org.sat4j.core.LiteralsUtils.posLit;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
 
-public final class PositiveLiteralSelectionStrategy implements
-        IPhaseSelectionStrategy {
+@Feature(value = "phaseheuristics", parent = "expert")
+public final class PositiveLiteralSelectionStrategy
+        implements IPhaseSelectionStrategy {
 
     /**
      * 

@@ -32,6 +32,7 @@ package org.sat4j.minisat.orders;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
@@ -41,6 +42,7 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
  * 
  * @since 2.3.2
  */
+@Feature(value = "varheuristics", parent = "expert")
 public class TabuListDecorator implements IOrder {
 
     private final VarOrderHeap decorated;

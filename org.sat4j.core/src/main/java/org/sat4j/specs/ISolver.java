@@ -432,6 +432,15 @@ public interface ISolver extends IProblem, Serializable {
     void setUnitClauseProvider(UnitClauseProvider ucp);
 
     /**
+     * Allow the solver to communicate the unit clauses it learns.
+     * 
+     * @param ucc
+     *            an object interested in unit clauses.
+     * @since 2.3.6
+     */
+    void setUnitClauseConsumer(UnitClauseConsumer ucc);
+
+    /**
      * Get the current SearchListener.
      * 
      * @return a Search Listener.
@@ -562,4 +571,16 @@ public interface ISolver extends IProblem, Serializable {
      * @since 2.3.3
      */
     ISolver getSolvingEngine();
+
+    /**
+     * Check with the solver if the value of that literal was heuristically set
+     * or due to constraint propagation.
+     * 
+     * @param p
+     *            a literal
+     * @return true iff that literal was propagated by a constraint
+     * @see #model()
+     * @since 2.3.6
+     */
+    AssignmentOrigin getOriginInModel(int p);
 }

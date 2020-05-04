@@ -38,6 +38,7 @@ import java.util.Map;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.Counter;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -48,6 +49,7 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 public class StatisticsSolver implements ISolver {
@@ -460,5 +462,14 @@ public class StatisticsSolver implements ISolver {
 
     public IConstr addParity(IVecInt literals, boolean even) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+    }
+
+    public AssignmentOrigin getOriginInModel(int p) {
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 }
