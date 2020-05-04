@@ -46,26 +46,27 @@ final class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
     }
 
     public void reduce(IVec<Constr> learnedConstrs) {
-        solver.sortOnActivity();
+        learnedConstrs.sort(solver.getActivityComparator());
         int i, j;
-        for (i = j = 0; i < solver.learnts.size() / 2; i++) {
-            Constr c = solver.learnts.get(i);
+        for (i = j = 0; i < learnedConstrs.size() / 2; i++) {
+            Constr c = learnedConstrs.get(i);
             if (c.locked() || c.size() == 2) {
-                solver.learnts.set(j++, solver.learnts.get(i));
+                learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
                 c.remove(solver);
                 solver.slistener.delete(c);
             }
         }
-        for (; i < solver.learnts.size(); i++) {
-            solver.learnts.set(j++, solver.learnts.get(i));
+        for (; i < learnedConstrs.size(); i++) {
+            learnedConstrs.set(j++, learnedConstrs.get(i));
         }
         if (solver.isVerbose()) {
             solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
-                    + (solver.learnts.size() - j) + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$
+                    + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
+                    + learnedConstrs.size());
             // out.flush();
         }
-        solver.learnts.shrinkTo(j);
+        learnedConstrs.shrinkTo(j);
     }
 
     public ConflictTimer getTimer() {

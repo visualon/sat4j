@@ -267,7 +267,8 @@ public final class MaxWatchPb extends WatchPb {
         int ind = 0;
         while (ind < this.coefs.length && this.watchCumul
                 .subtract(this.coefs[ind]).compareTo(this.degree) < 0) {
-            if (!this.voc.isUnassigned(this.lits[ind])) {
+            if (!this.voc.isUnassigned(this.lits[ind])
+                    && this.voc.getReason(this.lits[ind]) == this) {
                 upl.unset(this.lits[ind]);
             }
             ind++;

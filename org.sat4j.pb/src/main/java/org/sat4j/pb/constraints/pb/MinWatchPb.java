@@ -132,9 +132,8 @@ public class MinWatchPb extends WatchPb {
     protected void computeWatches() throws ContradictionException {
         assert this.watchCumul.signum() == 0;
         assert this.watchingCount == 0;
-        for (int i = 0; i < this.lits.length
-                && this.watchCumul.subtract(this.coefs[0]).compareTo(
-                        this.degree) < 0; i++) {
+        for (int i = 0; i < this.lits.length && this.watchCumul
+                .subtract(this.coefs[0]).compareTo(this.degree) < 0; i++) {
             if (!this.voc.isFalsified(this.lits[i])) {
                 this.voc.watch(this.lits[i] ^ 1, this);
                 this.watching[this.watchingCount++] = i;
@@ -160,8 +159,8 @@ public class MinWatchPb extends WatchPb {
         int free = 1;
         int maxlevel, maxi, level;
 
-        while (this.watchCumul.subtract(this.coefs[0]).compareTo(this.degree) < 0
-                && free > 0) {
+        while (this.watchCumul.subtract(this.coefs[0])
+                .compareTo(this.degree) < 0 && free > 0) {
             free = 0;
             // looking for the literal falsified
             // at the least (lowest ?) level
@@ -197,9 +196,8 @@ public class MinWatchPb extends WatchPb {
      * 
      * This method is only called in the factory methods.
      * 
-     * @see
-     * org.sat4j.minisat.constraints.WatchPb#computePropagation(org.sat4j.minisat
-     * .UnitPropagationListener)
+     * @see org.sat4j.minisat.constraints.WatchPb#computePropagation(org.sat4j.
+     * minisat .UnitPropagationListener)
      */
     @Override
     protected void computePropagation(UnitPropagationListener s)
@@ -360,10 +358,10 @@ public class MinWatchPb extends WatchPb {
         assert nbOfWatched() == this.watchingCount;
         // Unset root propagated literals, see SAT-110
         int ind = 0;
-        while (ind < this.coefs.length
-                && this.watchCumul.subtract(this.coefs[ind]).compareTo(
-                        this.degree) < 0) {
-            if (!this.voc.isUnassigned(this.lits[ind])) {
+        while (ind < this.coefs.length && this.watchCumul
+                .subtract(this.coefs[ind]).compareTo(this.degree) < 0) {
+            if (!this.voc.isUnassigned(this.lits[ind])
+                    && this.voc.getReason(this.lits[ind]) == this) {
                 upl.unset(this.lits[ind]);
             }
             ind++;
@@ -408,7 +406,8 @@ public class MinWatchPb extends WatchPb {
      * @return a new PB constraint or null if a trivial inconsistency is
      *         detected.
      */
-    public static WatchPb normalizedWatchPbNew(ILits voc, IDataStructurePB mpb) {
+    public static WatchPb normalizedWatchPbNew(ILits voc,
+            IDataStructurePB mpb) {
         return new MinWatchPb(voc, mpb);
     }
 
@@ -463,7 +462,8 @@ public class MinWatchPb extends WatchPb {
                     break;
                 }
                 // while upWatchCumul does not contain enough
-                if (!this.voc.isFalsified(this.lits[ind]) && !this.watched[ind]) {
+                if (!this.voc.isFalsified(this.lits[ind])
+                        && !this.watched[ind]) {
                     // watch one more
                     upWatchCumul = upWatchCumul.add(this.coefs[ind]);
                     // update arrays watched and watching

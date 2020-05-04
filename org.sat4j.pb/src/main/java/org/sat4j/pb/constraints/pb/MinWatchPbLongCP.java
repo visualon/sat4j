@@ -47,8 +47,8 @@ import org.sat4j.specs.UnitPropagationListener;
 public class MinWatchPbLongCP extends WatchPbLongCP {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -197,17 +197,16 @@ public class MinWatchPbLongCP extends WatchPbLongCP {
      * 
      * This method is only called in the factory methods.
      * 
-     * @see
-     * org.sat4j.minisat.constraints.WatchPb#computePropagation(org.sat4j.minisat
-     * .UnitPropagationListener)
+     * @see org.sat4j.minisat.constraints.WatchPb#computePropagation(org.sat4j.
+     * minisat .UnitPropagationListener)
      */
     @Override
     protected void computePropagation(UnitPropagationListener s)
             throws ContradictionException {
         // propagate any possible value
         int ind = 0;
-        while (ind < this.lits.length
-                && this.watchCumul - this.coefs[this.watching[ind]] < this.degree) {
+        while (ind < this.lits.length && this.watchCumul
+                - this.coefs[this.watching[ind]] < this.degree) {
             if (this.voc.isUnassigned(this.lits[ind])
                     && !s.enqueue(this.lits[ind], this)) {
                 throw new ContradictionException("non satisfiable constraint");
@@ -323,8 +322,7 @@ public class MinWatchPbLongCP extends WatchPbLongCP {
             assert this.watchingCount != 0;
             long limit = upWatchCumul - this.degree;
             for (int i = 0; i < this.watchingCount; i++) {
-                if (limit < this.coefs[this.watching[i]]
-                        && i != pIndiceWatching
+                if (limit < this.coefs[this.watching[i]] && i != pIndiceWatching
                         && !this.voc.isSatisfied(this.lits[this.watching[i]])
                         && !s.enqueue(this.lits[this.watching[i]], this)) {
                     this.voc.watch(p, this);
@@ -362,7 +360,8 @@ public class MinWatchPbLongCP extends WatchPbLongCP {
         int ind = 0;
         while (ind < this.coefs.length
                 && this.watchCumul - this.coefs[ind] < this.degree) {
-            if (!this.voc.isUnassigned(this.lits[ind])) {
+            if (!this.voc.isUnassigned(this.lits[ind])
+                    && this.voc.getReason(this.lits[ind]) == this) {
                 upl.unset(this.lits[ind]);
             }
             ind++;
@@ -462,7 +461,8 @@ public class MinWatchPbLongCP extends WatchPbLongCP {
                     break;
                 }
                 // while upWatchCumul does not contain enough
-                if (!this.voc.isFalsified(this.lits[ind]) && !this.watched[ind]) {
+                if (!this.voc.isFalsified(this.lits[ind])
+                        && !this.watched[ind]) {
                     // watch one more
                     upWatchCumul = upWatchCumul + this.coefs[ind];
                     // update arrays watched and watching
