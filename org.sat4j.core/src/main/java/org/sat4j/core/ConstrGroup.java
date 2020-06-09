@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVec;
@@ -42,6 +43,7 @@ import org.sat4j.specs.VarMapper;
  * @since 2.0
  * 
  */
+@Feature("constraint")
 public class ConstrGroup implements IConstr {
 
     private final IVec<IConstr> constrs = new Vec<IConstr>();

@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import org.sat4j.annotations.Feature;
+
 /*
  * Created on 16 oct. 2003
  */
@@ -43,6 +45,7 @@ package org.sat4j.specs;
  * 
  * @author leberre
  */
+@Feature(value = "constraint", parent = "expert")
 public interface Constr extends IConstr {
 
     Constr TAUTOLOGY = new Constr() {

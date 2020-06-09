@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.Constr;
@@ -42,6 +43,7 @@ import org.sat4j.specs.VarMapper;
  * @author daniel
  * @since 2.1
  */
+@Feature("constraint")
 public class UnitClause implements Constr {
 
     protected final int literal;

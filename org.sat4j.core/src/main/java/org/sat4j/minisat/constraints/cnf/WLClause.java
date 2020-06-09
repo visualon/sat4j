@@ -33,6 +33,7 @@ import static org.sat4j.core.LiteralsUtils.var;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.Constr;
@@ -46,6 +47,7 @@ import org.sat4j.specs.VarMapper;
  * 
  * @author leberre
  */
+@Feature("constraint")
 public abstract class WLClause implements Propagatable, Constr, Serializable {
 
     private static final long serialVersionUID = 1L;

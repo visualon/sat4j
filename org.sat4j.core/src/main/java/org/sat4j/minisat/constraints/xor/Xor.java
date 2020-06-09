@@ -1,5 +1,6 @@
 package org.sat4j.minisat.constraints.xor;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.Constr;
@@ -34,6 +35,7 @@ import org.sat4j.specs.VarMapper;
  * @author leberre
  * @since 2.3.6
  */
+@Feature("constraint")
 public class Xor implements Constr, Propagatable {
 
     private final int[] lits;
