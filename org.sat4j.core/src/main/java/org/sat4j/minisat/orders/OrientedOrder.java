@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.ILits;
@@ -20,6 +21,7 @@ import org.sat4j.specs.IVecInt;
  * @author leberre
  *
  */
+@Feature(value = "varheuristics", parent = "expert")
 public class OrientedOrder implements IOrder {
 
     private final IVecInt orderedLits = new VecInt();
