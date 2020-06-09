@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
@@ -55,6 +56,7 @@ import org.sat4j.tools.Minimal4InclusionModel;
  * @author laihem
  * @author leberre
  */
+@Feature(value = "reader", parent = "expert")
 public class LecteurDimacs extends Reader implements Serializable {
 
     private static final long serialVersionUID = 1L;

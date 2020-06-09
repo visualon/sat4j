@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
@@ -45,6 +46,7 @@ import org.sat4j.specs.ISolver;
  * 
  * @author leberre
  */
+@Feature(value = "reader", parent = "expert")
 public class InstanceReader extends Reader {
 
     private AAGReader aag;

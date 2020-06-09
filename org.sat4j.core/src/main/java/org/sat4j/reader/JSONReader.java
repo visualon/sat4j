@@ -38,6 +38,7 @@ import java.io.StringWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
@@ -60,6 +61,7 @@ import org.sat4j.specs.IVecInt;
  *            the type of solver to feed.
  * @since 2.3.3
  */
+@Feature(value = "reader", parent = "expert")
 public class JSONReader<S extends ISolver> extends Reader {
 
     protected final S solver;
