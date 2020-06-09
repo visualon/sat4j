@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -45,6 +46,7 @@ import org.sat4j.specs.TimeoutException;
  * @author leberre
  * @see org.sat4j.specs.ISolver#addAtMost(IVecInt, int)
  */
+@Feature("solver")
 public class Minimal4CardinalityModel extends AbstractMinimalModel {
 
     private static final long serialVersionUID = 1L;

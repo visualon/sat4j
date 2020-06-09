@@ -29,17 +29,19 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.RandomAccessModel;
 import org.sat4j.specs.SearchListenerAdapter;
 
+@Feature("searchlistener")
 public class LearnedTracing extends SearchListenerAdapter<ISolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
     private ISolverService solverService;
 

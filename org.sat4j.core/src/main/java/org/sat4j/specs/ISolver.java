@@ -34,11 +34,14 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * This interface contains all services provided by a SAT solver.
  * 
  * @author leberre
  */
+@Feature("solver")
 public interface ISolver extends IProblem, Serializable {
 
     /**

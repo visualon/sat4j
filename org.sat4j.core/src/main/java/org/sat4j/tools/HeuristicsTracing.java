@@ -29,15 +29,17 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.RandomAccessModel;
 import org.sat4j.specs.SearchListenerAdapter;
 
+@Feature("searchlistener")
 public class HeuristicsTracing extends SearchListenerAdapter<ISolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
     private ISolverService solverService;
     private final IVisualizationTool visuTool;

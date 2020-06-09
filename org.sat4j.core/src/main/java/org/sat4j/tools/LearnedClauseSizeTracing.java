@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
@@ -37,12 +38,13 @@ import org.sat4j.specs.SearchListenerAdapter;
 /**
  * @since 2.2
  */
-public class LearnedClauseSizeTracing extends
-        SearchListenerAdapter<ISolverService> {
+@Feature("searchlistener")
+public class LearnedClauseSizeTracing
+        extends SearchListenerAdapter<ISolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private final IVisualizationTool visuTool;

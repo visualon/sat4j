@@ -33,6 +33,7 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -51,6 +52,7 @@ import org.sat4j.specs.UnitClauseConsumer;
  * @author leberre
  * 
  */
+@Feature("solver")
 public class DimacsStringSolver extends AbstractOutputSolver
         implements IGroupSolver {
 

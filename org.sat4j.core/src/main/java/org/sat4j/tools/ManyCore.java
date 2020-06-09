@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.LiteralsUtils;
@@ -68,6 +69,7 @@ import org.sat4j.specs.UnitPropagationListener;
  * @param <S>
  *            the type of the solver (ISolver of IPBSolver)
  */
+@Feature("solver")
 public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
         UnitClauseProvider, UnitClauseConsumer {
 
