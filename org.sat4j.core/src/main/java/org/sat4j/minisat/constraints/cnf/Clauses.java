@@ -29,7 +29,6 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
-import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IVecInt;
@@ -40,7 +39,6 @@ import org.sat4j.specs.UnitPropagationListener;
  * @author daniel
  * @since 2.1
  */
-@Feature("constraint")
 public abstract class Clauses {
     /**
      * Perform some sanity check before constructing a clause a) if a literal is
