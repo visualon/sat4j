@@ -43,7 +43,6 @@ import org.sat4j.pb.constraints.pb.PreProcessReduceConflict;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
-import org.sat4j.pb.lcds.NullLCDS;
 import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.orders.Bumper;
