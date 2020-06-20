@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
@@ -44,6 +45,7 @@ import org.sat4j.tools.GateTranslator;
  * @author daniel
  * 
  */
+@Feature(value = "reader", parent = "expert")
 public class AIGReader extends Reader {
 
     private static final int FALSE = 0;
@@ -76,8 +78,8 @@ public class AIGReader extends Reader {
         }
     }
 
-    int parseInt(InputStream in, char expected) throws IOException,
-            ParseFormatException {
+    int parseInt(InputStream in, char expected)
+            throws IOException, ParseFormatException {
         int res, ch;
         ch = in.read();
 
@@ -103,8 +105,8 @@ public class AIGReader extends Reader {
      * @see org.sat4j.reader.Reader#parseInstance(java.io.InputStream)
      */
     @Override
-    public IProblem parseInstance(InputStream in) throws ParseFormatException,
-            ContradictionException, IOException {
+    public IProblem parseInstance(InputStream in)
+            throws ParseFormatException, ContradictionException, IOException {
         if (in.read() != 'a' || in.read() != 'i' || in.read() != 'g'
                 || in.read() != ' ') {
             throw new ParseFormatException("AIG format only!");
@@ -132,7 +134,8 @@ public class AIGReader extends Reader {
         return this.solver;
     }
 
-    static int safeGet(InputStream in) throws IOException, ParseFormatException {
+    static int safeGet(InputStream in)
+            throws IOException, ParseFormatException {
         int ch = in.read();
         if (ch == -1) {
             throw new ParseFormatException("AIG Error, EOF met too early");

@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.Counter;
@@ -52,6 +53,7 @@ import org.sat4j.specs.TimeoutException;
 import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
+@Feature("solver")
 public class StatisticsSolver implements ISolver {
 
     private static final String NOT_IMPLEMENTED_YET = "Not implemented yet!";

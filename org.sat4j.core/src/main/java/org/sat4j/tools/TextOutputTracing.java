@@ -31,6 +31,7 @@ package org.sat4j.tools;
 
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
@@ -43,6 +44,7 @@ import org.sat4j.specs.SearchListener;
  * @author daniel
  * @since 2.2
  */
+@Feature("searchlistener")
 public class TextOutputTracing<T> implements SearchListener<ISolverService> {
 
     private static final long serialVersionUID = 1L;

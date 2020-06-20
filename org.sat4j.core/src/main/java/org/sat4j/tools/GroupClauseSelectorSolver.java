@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -41,8 +42,9 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 
-public class GroupClauseSelectorSolver<T extends ISolver> extends
-        AbstractClauseSelectorSolver<T> implements IGroupSolver {
+@Feature("solver")
+public class GroupClauseSelectorSolver<T extends ISolver>
+        extends AbstractClauseSelectorSolver<T> implements IGroupSolver {
 
     private static final long serialVersionUID = 1L;
 

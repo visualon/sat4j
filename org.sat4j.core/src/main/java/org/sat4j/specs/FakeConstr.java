@@ -29,12 +29,15 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Fake constraint which is used typically as a NullObject design pattern.
  * 
  * @author leberre
  *
  */
+@Feature("constraint")
 public final class FakeConstr implements IConstr {
     private static final String FAKE_I_CONSTR_MSG = "Fake IConstr";
 

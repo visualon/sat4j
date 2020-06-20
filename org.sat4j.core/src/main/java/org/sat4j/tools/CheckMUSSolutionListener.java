@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
@@ -42,6 +43,7 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
 
+@Feature("solutionlistener")
 public class CheckMUSSolutionListener implements SolutionFoundListener {
 
     private List<IVecInt> clauses;

@@ -31,6 +31,7 @@ package org.sat4j;
 
 import java.io.PrintWriter;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.ILogAble;
@@ -46,6 +47,7 @@ import org.sat4j.tools.Backbone;
  * @author leberre
  * 
  */
+@Feature("solutionlistener")
 final class DecisionMode implements ILauncherMode {
     private ExitCode exitCode = ExitCode.UNKNOWN;
     private int nbSolutionFound;

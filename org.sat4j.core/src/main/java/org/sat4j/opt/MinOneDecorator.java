@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.opt;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -45,8 +46,9 @@ import org.sat4j.tools.SolverDecorator;
  * 
  * @author leberre
  */
-public final class MinOneDecorator extends SolverDecorator<ISolver> implements
-        IOptimizationProblem {
+@Feature("solver")
+public final class MinOneDecorator extends SolverDecorator<ISolver>
+        implements IOptimizationProblem {
 
     /**
      * 
@@ -75,8 +77,7 @@ public final class MinOneDecorator extends SolverDecorator<ISolver> implements
         boolean result = isSatisfiable(assumps, true);
         if (result) {
             this.prevmodel = super.model();
-            this.prevmodelWithInternalVariables = super
-                    .modelWithInternalVariables();
+            this.prevmodelWithInternalVariables = super.modelWithInternalVariables();
             calculateObjectiveValue();
         } else {
             this.isSolutionOptimal = true;

@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.UnitPropagationListener;
@@ -36,11 +37,12 @@ import org.sat4j.specs.UnitPropagationListener;
 /**
  * @since 2.1
  */
+@Feature("constraint")
 public class OriginalBinaryClause extends BinaryClause {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public OriginalBinaryClause(IVecInt ps, ILits voc) {
@@ -67,8 +69,8 @@ public class OriginalBinaryClause extends BinaryClause {
      * @return the created clause or null if the clause should be ignored
      *         (tautology for example)
      */
-    public static OriginalBinaryClause brandNewClause(
-            UnitPropagationListener s, ILits voc, IVecInt literals) {
+    public static OriginalBinaryClause brandNewClause(UnitPropagationListener s,
+            ILits voc, IVecInt literals) {
         OriginalBinaryClause c = new OriginalBinaryClause(literals, voc);
         c.register();
         return c;

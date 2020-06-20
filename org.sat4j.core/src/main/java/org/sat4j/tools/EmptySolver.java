@@ -35,6 +35,7 @@ import java.util.Map;
 
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
+import org.sat4j.specs.FakeConstr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.ISolverService;
@@ -43,7 +44,6 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
 import org.sat4j.specs.UnitClauseProvider;
-import org.sat4j.specs.VarMapper;
 
 /**
  * Empty solver meant to be specialized to be used instead of real solvers
@@ -60,37 +60,7 @@ public abstract class EmptySolver implements ISolver {
      */
     private static final long serialVersionUID = 1L;
 
-    private final IConstr FAKECONSTR = new IConstr() {
-
-        public String toString(VarMapper mapper) {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-
-        public int size() {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-
-        public boolean learnt() {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-
-        public double getActivity() {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-
-        public int get(int i) {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-
-        public boolean canBePropagatedMultipleTimes() {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-
-        @Override
-        public String dump() {
-            throw new UnsupportedOperationException("Not implemented yet!");
-        }
-    };
+    private final IConstr FAKECONSTR = FakeConstr.instance();
 
     private int nbVars;
 

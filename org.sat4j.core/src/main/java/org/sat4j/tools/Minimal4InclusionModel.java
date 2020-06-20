@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -50,6 +51,7 @@ import org.sat4j.specs.TimeoutException;
  * 
  * @see org.sat4j.specs.ISolver#addClause(IVecInt)
  */
+@Feature("solver")
 public class Minimal4InclusionModel extends AbstractMinimalModel {
 
     private static final long serialVersionUID = 1L;

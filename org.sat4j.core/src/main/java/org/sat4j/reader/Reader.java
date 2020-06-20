@@ -38,6 +38,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
 
@@ -47,6 +48,7 @@ import org.sat4j.specs.IProblem;
  * 
  * @author leberre
  */
+@Feature(value = "reader", parent = "expert")
 public abstract class Reader {
 
     /**

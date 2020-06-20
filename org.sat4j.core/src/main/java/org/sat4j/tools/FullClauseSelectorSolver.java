@@ -33,14 +33,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVecInt;
 
-public class FullClauseSelectorSolver<T extends ISolver> extends
-        AbstractClauseSelectorSolver<T> {
+@Feature("solver")
+public class FullClauseSelectorSolver<T extends ISolver>
+        extends AbstractClauseSelectorSolver<T> {
 
     /**
      * 

@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1407,6 +1408,7 @@ public class Solver<D extends DataStructureFactory>
         if (classifyLiterals) {
             StringBuffer stb = new StringBuffer(getLogPrefix());
             int q;
+            String str;
             for (int i = 0; i < trailLim.size(); i++) {
                 q = trail.get(trailLim.get(i));
                 stb.append(LiteralsUtils.toDimacs(q));
@@ -1422,19 +1424,19 @@ public class Solver<D extends DataStructureFactory>
                     } else {
                         origin = AssignmentOrigin.DECIDED_PROPAGATED;
                     }
-
-                    int max = 0;
                     int r;
+                    TreeSet<Integer> levels = new TreeSet<>();
                     for (int j = 0; j < reason.size(); j++) {
                         r = reason.get(j);
                         if (r != q) {
-                            max = Math.max(max, this.voc.getLevel(r));
+                            levels.add(this.voc.getLevel(r));
                         }
                     }
 
                     stb.append(":");
-                    stb.append(max);
-                    if (voc.getLevel(q) == max) {
+                    str = levels.toString().replaceAll(" ", "");
+                    stb.append(str.substring(1, str.length() - 1));
+                    if (voc.getLevel(q) == levels.last()) {
                         origin = AssignmentOrigin.DECIDED_CYCLE;
                     }
                 } else {
