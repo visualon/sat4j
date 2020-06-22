@@ -70,6 +70,11 @@ public class OrientedOrder implements IOrder {
     }
 
     @Override
+    public void updateVar(int p, double value) {
+        updateVar(p);
+    }
+
+    @Override
     public void init() {
         order.init();
         managed = new boolean[voc.nVars() + 1];
