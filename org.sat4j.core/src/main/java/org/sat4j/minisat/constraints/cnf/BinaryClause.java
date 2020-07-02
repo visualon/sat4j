@@ -34,6 +34,7 @@ import static org.sat4j.core.LiteralsUtils.var;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.Constr;
@@ -49,6 +50,7 @@ import org.sat4j.specs.VarMapper;
  * @author leberre
  * @since 2.1
  */
+@Feature("constraint")
 public abstract class BinaryClause
         implements Propagatable, Constr, Serializable {
 

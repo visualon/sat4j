@@ -29,17 +29,19 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
 import org.sat4j.specs.SearchListenerAdapter;
 
+@Feature("searchlistener")
 public class LBDTracing extends SearchListenerAdapter<ISolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private final IVisualizationTool visuTool;

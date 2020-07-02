@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
@@ -60,6 +61,7 @@ import org.sat4j.specs.TimeoutException;
  * @author leberre
  * 
  */
+@Feature("solver")
 public class SolutionCounter extends SolverDecorator<ISolver> {
 
     /**

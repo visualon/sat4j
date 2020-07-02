@@ -32,6 +32,7 @@ package org.sat4j.tools;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
@@ -48,8 +49,9 @@ import org.sat4j.specs.TimeoutException;
  * 
  * @param <T>
  */
-public class NegationDecorator<T extends ISolver> extends
-        AbstractClauseSelectorSolver<T> {
+@Feature("solver")
+public class NegationDecorator<T extends ISolver>
+        extends AbstractClauseSelectorSolver<T> {
 
     /**
      * 

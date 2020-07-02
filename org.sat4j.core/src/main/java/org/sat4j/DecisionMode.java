@@ -31,8 +31,9 @@ package org.sat4j;
 
 import java.io.PrintWriter;
 
-import org.sat4j.core.VecInt;
+import org.sat4j.annotations.Feature;
 import org.sat4j.reader.Reader;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.ILogAble;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
@@ -46,11 +47,14 @@ import org.sat4j.tools.Backbone;
  * @author leberre
  * 
  */
+@Feature("solutionlistener")
 final class DecisionMode implements ILauncherMode {
     private ExitCode exitCode = ExitCode.UNKNOWN;
     private int nbSolutionFound;
     private PrintWriter out;
     private long beginTime;
+    private Reader reader;
+    private ISolver solver;
 
     public void displayResult(ISolver solver, IProblem problem, ILogAble logger,
             PrintWriter out, Reader reader, long beginTime,
@@ -96,12 +100,37 @@ final class DecisionMode implements ILauncherMode {
                 if (nbSolutionFound >= 1) {
                     logger.log("Found " + nbSolutionFound + " solution(s)");
                 } else {
-                    out.print(SOLUTION_PREFIX);
-                    reader.decode(model, out);
-                    out.println();
+                    printSolution(solver, out, reader, model);
                 }
             }
             logger.log("Total wall clock time (in seconds) : " + wallclocktime); //$NON-NLS-1$
+        }
+    }
+
+    private void printSolution(ISolver solver, PrintWriter out, Reader reader,
+            int[] model) {
+        out.print(SOLUTION_PREFIX);
+        if (System.getProperty("color") == null) {
+            reader.decode(model, out);
+            out.println();
+        } else {
+            int[] stats = new int[AssignmentOrigin.values().length];
+            AssignmentOrigin origin;
+            for (int p : model) {
+                origin = solver.getOriginInModel(p);
+                out.print(origin.getColor());
+                out.print(p);
+                out.print(AssignmentOrigin.BLANK);
+                out.print(" ");
+                stats[origin.ordinal()]++;
+            }
+            out.println("0");
+            out.print(solver.getLogPrefix());
+            for (AssignmentOrigin ao : AssignmentOrigin.values()) {
+                out.printf("%s%s%s: %d ", ao.getColor(), ao,
+                        AssignmentOrigin.BLANK, stats[ao.ordinal()]);
+            }
+            out.println();
         }
     }
 
@@ -111,6 +140,9 @@ final class DecisionMode implements ILauncherMode {
         this.out = out;
         this.nbSolutionFound = 0;
         this.beginTime = beginTime;
+        this.reader = reader;
+        this.solver = (ISolver) problem;
+
         try {
             if (problem.isSatisfiable()) {
                 if (this.exitCode == ExitCode.UNKNOWN) {
@@ -140,8 +172,7 @@ final class DecisionMode implements ILauncherMode {
         this.out.printf("c Found solution #%d  (%.2f)s%n", nbSolutionFound,
                 (System.currentTimeMillis() - beginTime) / 1000.0);
         if (System.getProperty("printallmodels") != null) {
-            this.out.println(SOLUTION_PREFIX
-                    + new VecInt(solution).toString().replace(",", " ") + " 0");
+            printSolution(solver, out, reader, solution);
         }
     }
 

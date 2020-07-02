@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.logging.Logger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
@@ -50,6 +51,7 @@ import org.sat4j.specs.SearchListenerAdapter;
  *            a solver service
  * @since 2.3.4
  */
+@Feature("searchlistener")
 public class RupSearchListener<S extends ISolverService>
         extends SearchListenerAdapter<S> {
 

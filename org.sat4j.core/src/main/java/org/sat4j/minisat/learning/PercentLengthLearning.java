@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.learning;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.DataStructureFactory;
 import org.sat4j.specs.Constr;
 
@@ -39,6 +40,7 @@ import org.sat4j.specs.Constr;
  * @author daniel
  * 
  */
+@Feature(value = "learning", parent = "expert")
 public final class PercentLengthLearning<D extends DataStructureFactory>
         extends LimitedLearning<D> {
 

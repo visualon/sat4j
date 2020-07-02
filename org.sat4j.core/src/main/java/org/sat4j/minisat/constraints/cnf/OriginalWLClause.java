@@ -29,11 +29,13 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.MandatoryLiteralListener;
 import org.sat4j.specs.UnitPropagationListener;
 
+@Feature("constraint")
 public final class OriginalWLClause extends WLClause {
 
     public OriginalWLClause(IVecInt ps, ILits voc) {

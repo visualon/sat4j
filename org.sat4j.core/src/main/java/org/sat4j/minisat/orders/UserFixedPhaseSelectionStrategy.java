@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.orders;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Selection strategy where the phase selection is decided at init time and is
  * not updated during the search.
@@ -36,8 +38,9 @@ package org.sat4j.minisat.orders;
  * @author leberre
  * 
  */
-public final class UserFixedPhaseSelectionStrategy extends
-        AbstractPhaserecordingSelectionStrategy {
+@Feature(value = "phaseheuristics", parent = "expert")
+public final class UserFixedPhaseSelectionStrategy
+        extends AbstractPhaserecordingSelectionStrategy {
 
     /**
      * 

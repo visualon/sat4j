@@ -34,6 +34,7 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.Lits;
 import org.sat4j.minisat.constraints.cnf.UnitClauses;
@@ -47,6 +48,7 @@ import org.sat4j.specs.Propagatable;
 import org.sat4j.specs.UnitPropagationListener;
 import org.sat4j.specs.VarMapper;
 
+@Feature("constraint")
 public final class MaxWatchCard
         implements Propagatable, Constr, Undoable, Serializable {
 

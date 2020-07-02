@@ -31,6 +31,7 @@ package org.sat4j.minisat.core;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IVecInt;
 
 /**
@@ -39,6 +40,7 @@ import org.sat4j.specs.IVecInt;
  * @author daniel
  * 
  */
+@Feature(value = "simplifications", parent = "expert")
 public interface ISimplifier extends Serializable {
     void simplify(IVecInt outLearnt);
 }

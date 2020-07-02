@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Interface for engines able to derive unit clauses for the current problem.
  * 
@@ -36,6 +38,7 @@ package org.sat4j.specs;
  * @since 2.3.4
  * 
  */
+@Feature(value = "unitclauseprovider", parent = "expert")
 public interface UnitClauseProvider {
 
     UnitClauseProvider VOID = new UnitClauseProvider() {

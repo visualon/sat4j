@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.restarts;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
@@ -40,6 +41,7 @@ import org.sat4j.specs.Constr;
  * @author leberre
  * 
  */
+@Feature(value = "restarts", parent = "expert")
 public final class NoRestarts implements RestartStrategy {
 
     private static final long serialVersionUID = 1L;

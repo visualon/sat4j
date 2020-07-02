@@ -31,6 +31,7 @@ package org.sat4j.minisat.core;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 
 /**
@@ -39,8 +40,9 @@ import org.sat4j.specs.Constr;
  * 
  * @author leberre
  */
-public interface LearningStrategy<D extends DataStructureFactory> extends
-        Serializable {
+@Feature(value = "learning", parent = "expert")
+public interface LearningStrategy<D extends DataStructureFactory>
+        extends Serializable {
 
     /**
      * hook method called just before the search begins. Useful to compute

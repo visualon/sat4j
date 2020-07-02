@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
@@ -61,6 +62,7 @@ import org.sat4j.specs.IVecInt;
  * @author dlb
  * @author or
  */
+@Feature(value = "reader", parent = "expert")
 public class DimacsReader extends Reader implements Serializable {
 
     private static final long serialVersionUID = 1L;

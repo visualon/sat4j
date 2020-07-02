@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolver;
@@ -44,12 +45,13 @@ import org.sat4j.tools.encoding.Policy;
  * @since 2.3.1
  * @param <T>
  */
-public class ClausalCardinalitiesDecorator<T extends ISolver> extends
-        SolverDecorator<T> {
+@Feature("solver")
+public class ClausalCardinalitiesDecorator<T extends ISolver>
+        extends SolverDecorator<T> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private final EncodingStrategyAdapter encodingAdapter;
@@ -103,9 +105,8 @@ public class ClausalCardinalitiesDecorator<T extends ISolver> extends
 
     @Override
     public String toString(String prefix) {
-        return super.toString(prefix) + "\n"
-                + "Cardinality to SAT encoding: \n" + "Encoding: "
-                + this.encodingAdapter + "\n";
+        return super.toString(prefix) + "\n" + "Cardinality to SAT encoding: \n"
+                + "Encoding: " + this.encodingAdapter + "\n";
     }
 
 }

@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.learning;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.DataStructureFactory;
 import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.Solver;
@@ -39,8 +40,9 @@ import org.sat4j.specs.Constr;
  * 
  * @author leberre
  */
-public final class ActiveLearning<D extends DataStructureFactory> extends
-        LimitedLearning<D> {
+@Feature(value = "learning", parent = "expert")
+public final class ActiveLearning<D extends DataStructureFactory>
+        extends LimitedLearning<D> {
 
     private static final long serialVersionUID = 1L;
 
@@ -96,7 +98,8 @@ public final class ActiveLearning<D extends DataStructureFactory> extends
 
     @Override
     public String toString() {
-        return "Limit learning to clauses containing active literals (" + this.percent * 100 + "%)"; //$NON-NLS-1$
+        return "Limit learning to clauses containing active literals (" //$NON-NLS-1$
+                + this.percent * 100 + "%)";
     }
 
     public void setLimit(int percent) {

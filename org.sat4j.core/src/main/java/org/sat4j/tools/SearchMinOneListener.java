@@ -29,10 +29,11 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ISolverService;
+import org.sat4j.specs.Lbool;
 import org.sat4j.specs.RandomAccessModel;
 import org.sat4j.specs.SearchListenerAdapter;
-import org.sat4j.specs.Lbool;
 
 /**
  * That class allows to iterate over the models from the inside: conflicts are
@@ -41,11 +42,13 @@ import org.sat4j.specs.Lbool;
  * @author leberre
  * 
  */
-public class SearchMinOneListener extends SearchListenerAdapter<ISolverService> {
+@Feature("searchlistener")
+public class SearchMinOneListener
+        extends SearchListenerAdapter<ISolverService> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private ISolverService solverService;

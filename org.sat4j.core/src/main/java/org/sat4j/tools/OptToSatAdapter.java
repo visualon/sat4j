@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IOptimizationProblem;
@@ -36,6 +37,7 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
 
+@Feature("solver")
 public class OptToSatAdapter extends SolverDecorator<ISolver> {
 
     /**
@@ -97,8 +99,8 @@ public class OptToSatAdapter extends SolverDecorator<ISolver> {
                     System.out.println(getLogPrefix()
                             + "Current objective function value: "
                             + this.problem.getObjectiveValue() + "("
-                            + (System.currentTimeMillis() - this.begin)
-                            / 1000.0 + "s)");
+                            + (System.currentTimeMillis() - this.begin) / 1000.0
+                            + "s)");
                 }
             } while (this.problem.admitABetterSolution(myAssumps));
             expireTimeout();

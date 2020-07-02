@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IVecInt;
 
 /**
@@ -40,6 +41,7 @@ import org.sat4j.specs.IVecInt;
  * @since 2.3.3
  * 
  */
+@Feature("solutionlistener")
 public interface SolutionFoundListener {
 
     SolutionFoundListener VOID = new SolutionFoundListener() {

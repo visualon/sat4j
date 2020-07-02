@@ -31,6 +31,7 @@ package org.sat4j.minisat.constraints.cnf;
 
 import static org.sat4j.core.LiteralsUtils.neg;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.MandatoryLiteralListener;
@@ -39,6 +40,7 @@ import org.sat4j.specs.MandatoryLiteralListener;
  * @author daniel
  * @since 2.1
  */
+@Feature("constraint")
 public class LearntHTClause extends HTClause {
 
     public LearntHTClause(IVecInt ps, ILits voc) {

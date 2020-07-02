@@ -31,6 +31,8 @@ package org.sat4j.specs;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * Interface to the solver main steps. Useful for integrating search
  * visualization or debugging.
@@ -40,7 +42,9 @@ import java.io.Serializable;
  * @author daniel
  * @since 2.1
  */
-public interface SearchListener<S extends ISolverService> extends Serializable {
+@Feature("searchlistener")
+public interface SearchListener<S extends ISolverService>
+        extends UnitClauseConsumer, Serializable {
 
     /**
      * Provide access to the solver's controllable interface.
@@ -94,15 +98,6 @@ public interface SearchListener<S extends ISolverService> extends Serializable {
      * @param c
      */
     void learn(IConstr c);
-
-    /**
-     * learn a new unit clause (a literal)
-     * 
-     * @param p
-     *            a literal in Dimacs format.
-     * @since 2.3.4
-     */
-    void learnUnit(int p);
 
     /**
      * delete a clause

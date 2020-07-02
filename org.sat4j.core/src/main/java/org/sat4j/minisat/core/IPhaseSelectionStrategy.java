@@ -31,6 +31,8 @@ package org.sat4j.minisat.core;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * The responsibility of that class is to choose the phase (positive or
  * negative) of the variable that was selected by the IOrder.
@@ -38,6 +40,7 @@ import java.io.Serializable;
  * @author leberre
  * 
  */
+@Feature(value = "phaseheuristics", parent = "expert")
 public interface IPhaseSelectionStrategy extends Serializable {
 
     /**

@@ -34,6 +34,7 @@ import static org.sat4j.core.LiteralsUtils.posLit;
 
 import java.util.Random;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
 
 /**
@@ -43,8 +44,9 @@ import org.sat4j.minisat.core.IPhaseSelectionStrategy;
  * @author leberre
  * 
  */
-public final class RandomLiteralSelectionStrategy implements
-        IPhaseSelectionStrategy {
+@Feature(value = "phaseheuristics", parent = "expert")
+public final class RandomLiteralSelectionStrategy
+        implements IPhaseSelectionStrategy {
 
     /**
      * 

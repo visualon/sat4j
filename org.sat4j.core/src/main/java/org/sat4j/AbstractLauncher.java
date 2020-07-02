@@ -39,6 +39,9 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.sat4j.core.ASolverFactory;
+import org.sat4j.minisat.core.ICDCL;
+import org.sat4j.minisat.core.IOrder;
+import org.sat4j.minisat.orders.OrientedOrder;
 import org.sat4j.reader.ParseFormatException;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.ContradictionException;
@@ -211,6 +214,17 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
             if (!this.isSilent()) {
                 System.out.println(this.solver.getLogPrefix()
                         + "Generating unsat proof in file " + proofFile);
+            }
+        }
+        if (System.getProperty("forceorder") != null) {
+            String orderFile = problemname + ".order";
+            ICDCL solverService = (ICDCL) solver;
+            IOrder order = new OrientedOrder(orderFile,
+                    solverService.getOrder());
+            solverService.setOrder(order);
+            if (!this.isSilent()) {
+                System.out.println(this.solver.getLogPrefix()
+                        + "Forcing heuristics using file " + orderFile);
             }
         }
         if (feedWithDecorated) {

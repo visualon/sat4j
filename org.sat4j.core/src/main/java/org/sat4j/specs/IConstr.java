@@ -29,12 +29,15 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * The most general abstraction for handling a constraint.
  * 
  * @author leberre
  * 
  */
+@Feature("constraint")
 public interface IConstr {
 
     /**

@@ -29,14 +29,27 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
-public class GlucoseLCDS<D extends DataStructureFactory>
+/**
+ * LBD based clauses cleaning strategy, as found in Glucose.
+ *
+ * This strategy expects the constraints to be clauses, i.e. the LBD computation
+ * may not be correct for other constraints (cardinality constraints, PB
+ * constraints).
+ *
+ * @author leberre
+ *
+ * @param <D>
+ */
+@Feature(value = "deletion", parent = "expert")
+class GlucoseLCDS<D extends DataStructureFactory>
         implements LearnedConstraintsDeletionStrategy {
 
     /**
-     * 
+     *
      */
     private final Solver<D> solver;
     private static final long serialVersionUID = 1L;
@@ -52,13 +65,13 @@ public class GlucoseLCDS<D extends DataStructureFactory>
     }
 
     public void reduce(IVec<Constr> learnedConstrs) {
-        this.solver.sortOnActivity();
+        learnedConstrs.sort(solver.getActivityComparator());
         int i, j;
         for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
                 .size(); i++) {
             Constr c = learnedConstrs.get(i);
             if (c.locked() || c.getActivity() <= 2.0) {
-                learnedConstrs.set(j++, solver.learnts.get(i));
+                learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
                 c.remove(solver);
                 solver.slistener.delete(c);
@@ -71,7 +84,7 @@ public class GlucoseLCDS<D extends DataStructureFactory>
                     + this.flag + "/" + solver.stats.getConflicts());
             // out.flush();
         }
-        solver.learnts.shrinkTo(j);
+        learnedConstrs.shrinkTo(j);
 
     }
 
@@ -97,7 +110,7 @@ public class GlucoseLCDS<D extends DataStructureFactory>
 
     public void onClauseLearning(Constr constr) {
         int nblevel = computeLBD(constr);
-        constr.incActivity(nblevel);
+        constr.setActivity(nblevel);
     }
 
     protected int computeLBD(Constr constr) {
@@ -106,7 +119,7 @@ public class GlucoseLCDS<D extends DataStructureFactory>
         int currentLevel;
         for (int i = 1; i < constr.size(); i++) {
             currentLevel = solver.voc.getLevel(constr.get(i));
-            if (this.flags[currentLevel] != this.flag) {
+            if (currentLevel >= 0 && this.flags[currentLevel] != this.flag) {
                 this.flags[currentLevel] = this.flag;
                 nblevel++;
             }
@@ -120,5 +133,9 @@ public class GlucoseLCDS<D extends DataStructureFactory>
 
     public void onPropagation(Constr from) {
 
+    }
+
+    protected Solver<D> getSolver() {
+        return solver;
     }
 }

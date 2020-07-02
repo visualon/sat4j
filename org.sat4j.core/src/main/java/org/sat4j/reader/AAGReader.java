@@ -32,6 +32,7 @@ package org.sat4j.reader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
@@ -45,6 +46,7 @@ import org.sat4j.tools.GateTranslator;
  * @author daniel
  * 
  */
+@Feature(value = "reader", parent = "expert")
 public class AAGReader extends Reader {
 
     private static final int FALSE = 0;

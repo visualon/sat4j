@@ -47,14 +47,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.constraints.xor.Xor;
+import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
@@ -68,6 +71,7 @@ import org.sat4j.specs.Lbool;
 import org.sat4j.specs.Propagatable;
 import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.specs.UnitClauseConsumer;
 import org.sat4j.specs.UnitClauseProvider;
 
 /**
@@ -171,6 +175,11 @@ public class Solver<D extends DataStructureFactory>
     private int declaredMaxVarId = 0;
 
     private UnitClauseProvider unitClauseProvider = UnitClauseProvider.VOID;
+
+    private UnitClauseConsumer unitClauseConsumer = UnitClauseConsumer.VOID;
+
+    private final boolean classifyLiterals = System
+            .getProperty("color") != null;
 
     /**
      * Translates an IvecInt containing Dimacs formatted variables into and
@@ -740,6 +749,7 @@ public class Solver<D extends DataStructureFactory>
         return outLearnt;
     }
 
+    @Feature(value = "simplifications", parent = "expert")
     public static final ISimplifier NO_SIMPLIFICATION = new ISimplifier() {
         /**
          * 
@@ -755,6 +765,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier SIMPLE_SIMPLIFICATION = new ISimplifier() {
         /**
          * 
@@ -771,6 +782,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier EXPENSIVE_SIMPLIFICATION = new ISimplifier() {
 
         /**
@@ -788,6 +800,7 @@ public class Solver<D extends DataStructureFactory>
         }
     };
 
+    @Feature(value = "simplifications", parent = "expert")
     public final ISimplifier EXPENSIVE_SIMPLIFICATION_WLONLY = new ISimplifier() {
 
         /**
@@ -1138,6 +1151,7 @@ public class Solver<D extends DataStructureFactory>
         if (constr.size() == 1) {
             this.stats.incLearnedliterals();
             this.slistener.learnUnit(p);
+            this.unitClauseConsumer.learnUnit(p);
         } else {
             this.learner.learns(constr);
         }
@@ -1368,10 +1382,16 @@ public class Solver<D extends DataStructureFactory>
     protected void analyzeAtRootLevel(Constr conflict) {
     }
 
-    final IVecInt implied = new VecInt();
-    final IVecInt decisions = new VecInt();
+    protected final IVecInt implied = new VecInt();
+    protected final IVecInt decisions = new VecInt();
 
+    private AssignmentOrigin[] assignmentOrigins;
     int[] fullmodel;
+
+    @Override
+    public AssignmentOrigin getOriginInModel(int p) {
+        return assignmentOrigins[Math.abs(p) - 1];
+    }
 
     /**
      * 
@@ -1379,9 +1399,57 @@ public class Solver<D extends DataStructureFactory>
     void modelFound() {
         decisions.clear();
         IVecInt tempmodel = new VecInt(nVars());
+        assignmentOrigins = new AssignmentOrigin[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
+        AssignmentOrigin origin = AssignmentOrigin.UNASSIGNED;
+
         Constr reason;
+        if (classifyLiterals) {
+            StringBuffer stb = new StringBuffer(getLogPrefix());
+            int q;
+            String str;
+            for (int i = 0; i < trailLim.size(); i++) {
+                q = trail.get(trailLim.get(i));
+                stb.append(LiteralsUtils.toDimacs(q));
+                this.voc.unassign(q);
+                this.voc.satisfies(q ^ 1);
+                // can change invariants in constraints data
+                // structures
+                // should only be used with care
+                if ((reason = reduceClausesContainingTheNegationOf(
+                        q ^ 1)) != null) {
+                    if (reason.learnt()) {
+                        origin = AssignmentOrigin.DECIDED_PROPAGATED_LEARNED;
+                    } else {
+                        origin = AssignmentOrigin.DECIDED_PROPAGATED;
+                    }
+                    int r;
+                    TreeSet<Integer> levels = new TreeSet<>();
+                    for (int j = 0; j < reason.size(); j++) {
+                        r = reason.get(j);
+                        if (r != q) {
+                            levels.add(this.voc.getLevel(r));
+                        }
+                    }
+
+                    stb.append(":");
+                    str = levels.toString().replaceAll(" ", "");
+                    stb.append(str.substring(1, str.length() - 1));
+                    if (voc.getLevel(q) == levels.last()) {
+                        origin = AssignmentOrigin.DECIDED_CYCLE;
+                    }
+                } else {
+                    origin = AssignmentOrigin.DECIDED;
+                }
+
+                this.voc.unassign(q);
+                this.voc.satisfies(q);
+                stb.append(" ");
+                this.assignmentOrigins[(q >> 1) - 1] = origin;
+            }
+            System.out.println(stb);
+        }
         for (int i = 1; i <= nVars(); i++) {
             if (this.voc.belongsToPool(i)) {
                 int p = this.voc.getFromPool(i);
@@ -1396,8 +1464,14 @@ public class Solver<D extends DataStructureFactory>
                             // decisions.
                             || reason != null && reason.learnt()) {
                         this.decisions.push(tempmodel.last());
+                        if (reason != null) {
+                            this.assignmentOrigins[i
+                                    - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                        }
                     } else {
                         this.implied.push(tempmodel.last());
+                        this.assignmentOrigins[i
+                                - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
                     }
                 }
             }
@@ -1415,8 +1489,17 @@ public class Solver<D extends DataStructureFactory>
                             this.decisions.push(tempmodel.last());
                         } else {
                             this.implied.push(tempmodel.last());
+                            if (this.voc.getReason(p).learnt()) {
+                                this.assignmentOrigins[i
+                                        - 1] = AssignmentOrigin.PROPAGATED_LEARNED;
+                            } else {
+                                this.assignmentOrigins[i
+                                        - 1] = AssignmentOrigin.PROPAGATED_ORIGINAL;
+                            }
                         }
                     }
+                } else {
+                    this.assignmentOrigins[i - 1] = AssignmentOrigin.UNASSIGNED;
                 }
             }
             this.fullmodel = new int[tempmodel.size()];
@@ -1505,8 +1588,8 @@ public class Solver<D extends DataStructureFactory>
         this.learnedConstraintsDeletionStrategy.reduce(this.learnts);
     }
 
-    protected void sortOnActivity() {
-        this.learnts.sort(this.comparator);
+    protected ActivityComparator getActivityComparator() {
+        return this.comparator;
     }
 
     /**
@@ -1550,6 +1633,7 @@ public class Solver<D extends DataStructureFactory>
         return isSatisfiable(assumps, false);
     }
 
+    @Feature(value = "deletion", parent = "expert")
     public final LearnedConstraintsDeletionStrategy fixedSize(
             final int maxsize) {
         return new LearnedConstraintsDeletionStrategy() {
@@ -1656,7 +1740,7 @@ public class Solver<D extends DataStructureFactory>
     public final LearnedConstraintsDeletionStrategy size_based = new SizeLCDS(
             this, this.lbdTimer);
 
-    protected LearnedConstraintsDeletionStrategy learnedConstraintsDeletionStrategy = this.lbd_based;
+    private LearnedConstraintsDeletionStrategy learnedConstraintsDeletionStrategy = this.lbd_based;
 
     /*
      * (non-Javadoc)
@@ -1803,6 +1887,7 @@ public class Solver<D extends DataStructureFactory>
                 this.undertimeout = true;
                 ConflictTimer conflictTimeout = new ConflictTimerAdapter(this,
                         (int) this.timeout) {
+
                     private static final long serialVersionUID = 1L;
 
                     @Override
@@ -1824,6 +1909,7 @@ public class Solver<D extends DataStructureFactory>
         // Solve
         while (status == Lbool.UNDEFINED && this.undertimeout
                 && this.lastConflictMeansUnsat) {
+
             int before = this.trail.size();
             unitClauseProvider.provideUnitClauses(this);
             this.stats.incImportedUnits(this.trail.size() - before);
@@ -2348,6 +2434,14 @@ public class Solver<D extends DataStructureFactory>
     }
 
     /**
+     * @return the current deletion strategy for learned constraints
+     * @since 2.3.6
+     */
+    public LearnedConstraintsDeletionStrategy getLearnedConstraintsDeletionStrategy() {
+        return learnedConstraintsDeletionStrategy;
+    }
+
+    /**
      * @since 2.3.2
      */
     public void setLearnedConstraintsDeletionStrategy(ConflictTimer timer,
@@ -2499,5 +2593,10 @@ public class Solver<D extends DataStructureFactory>
 
     public void setUnitClauseProvider(UnitClauseProvider ucp) {
         this.unitClauseProvider = ucp;
+    }
+
+    @Override
+    public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
+        this.unitClauseConsumer = ucc;
     }
 }

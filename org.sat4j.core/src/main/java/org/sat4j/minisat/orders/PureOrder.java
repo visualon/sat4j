@@ -29,10 +29,13 @@
  *******************************************************************************/
 package org.sat4j.minisat.orders;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * @author leberre TODO To change the template for this generated type comment
  *         go to Window - Preferences - Java - Code Style - Code Templates
  */
+@Feature(value = "varheuristics", parent = "expert")
 public final class PureOrder extends VarOrderHeap {
 
     /**
@@ -76,8 +79,7 @@ public final class PureOrder extends VarOrderHeap {
             this.cpt = 0;
             int nblits = 2 * this.lits.nVars();
             for (int i = 2; i <= nblits; i++) {
-                if (this.lits.isUnassigned(i)
-                        && this.lits.watches(i).size() > 0
+                if (this.lits.isUnassigned(i) && this.lits.watches(i).size() > 0
                         && this.lits.watches(i ^ 1).size() == 0) {
                     return i;
                 }

@@ -31,6 +31,7 @@ package org.sat4j.tools;
 
 import java.math.BigInteger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.Vec;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.ContradictionException;
@@ -45,6 +46,7 @@ import org.sat4j.specs.IVecInt;
  * @author leberre
  * 
  */
+@Feature("solver")
 public class GateTranslator extends SolverDecorator<ISolver> {
 
     /**

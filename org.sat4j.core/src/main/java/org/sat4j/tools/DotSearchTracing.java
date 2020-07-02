@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.Vec;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
@@ -59,6 +60,7 @@ import org.sat4j.specs.VarMapper;
  * @author daniel
  * @since 2.2
  */
+@Feature("searchlistener")
 public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
         implements VarMapper {
 

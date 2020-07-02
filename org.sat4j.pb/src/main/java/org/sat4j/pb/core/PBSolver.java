@@ -31,6 +31,7 @@ package org.sat4j.pb.core;
 
 import java.math.BigInteger;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.ConstrGroup;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
@@ -55,8 +56,8 @@ import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 
-public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
-        IPBCDCLSolver<PBDataStructureFactory>, IPBSolverService {
+public abstract class PBSolver extends Solver<PBDataStructureFactory>
+        implements IPBCDCLSolver<PBDataStructureFactory>, IPBSolverService {
 
     private ObjectiveFunction objf;
 
@@ -68,7 +69,8 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
     protected PBSolverStats pbStats;
 
     public PBSolver(LearningStrategy<PBDataStructureFactory> learner,
-            PBDataStructureFactory dsf, IOrder order, RestartStrategy restarter) {
+            PBDataStructureFactory dsf, IOrder order,
+            RestartStrategy restarter) {
         super(learner, dsf, order, restarter);
         this.pbStats = new PBSolverStats();
         initStats(this.pbStats);
@@ -195,7 +197,8 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
         return this.sharedConflict;
     }
 
-    public IConstr addAtMostOnTheFly(IVecInt literals, IVecInt coefs, int degree) {
+    public IConstr addAtMostOnTheFly(IVecInt literals, IVecInt coefs,
+            int degree) {
         IVec<BigInteger> coeffsCpy = new Vec<BigInteger>(coefs.size());
         for (IteratorInt iterator = coefs.iterator(); iterator.hasNext();) {
             coeffsCpy.push(BigInteger.valueOf(iterator.next()));
@@ -222,6 +225,7 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
     /**
      * @since 2.1
      */
+    @Feature(value = "deletion", parent = "expert")
     public final LearnedConstraintsDeletionStrategy objectiveFunctionBased = new LearnedConstraintsDeletionStrategy() {
 
         private static final long serialVersionUID = 1L;
@@ -261,19 +265,19 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
             for (i = j = 0; i < learnedConstrs.size(); i++) {
                 Constr c = learnedConstrs.get(i);
                 if (c.locked() || c.getActivity() <= 2.0) {
-                    learnedConstrs.set(j++, PBSolver.this.learnts.get(i));
+                    learnedConstrs.set(j++, learnedConstrs.get(i));
                 } else {
                     c.remove(PBSolver.this);
                 }
             }
             if (isVerbose()) {
-                System.out
-                        .println(getLogPrefix()
-                                + "cleaning " + (learnedConstrs.size() - j) //$NON-NLS-1$
-                                + " clauses out of " + learnedConstrs.size() + "/" + PBSolver.this.pbStats.getConflicts()); //$NON-NLS-1$ //$NON-NLS-2$
+                System.out.println(getLogPrefix() + "cleaning " //$NON-NLS-1$
+                        + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
+                        + learnedConstrs.size() + "/" //$NON-NLS-1$
+                        + PBSolver.this.pbStats.getConflicts());
                 System.out.flush();
             }
-            PBSolver.this.learnts.shrinkTo(j);
+            learnedConstrs.shrinkTo(j);
 
         }
 
@@ -303,9 +307,8 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory> implements
             boolean fullObj = true;
 
             for (int i = 0; i < constr.size(); i++) {
-                fullObj = fullObj
-                        && this.inObjectiveFunction[LiteralsUtils.var(constr
-                                .get(i))];
+                fullObj = fullObj && this.inObjectiveFunction[LiteralsUtils
+                        .var(constr.get(i))];
             }
             if (fullObj) {
                 constr.incActivity(1.0);

@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.constraints.cnf.Lits;
@@ -52,6 +53,7 @@ import org.sat4j.specs.VarMapper;
 /**
  * @author leberre Contrainte de cardinalit?
  */
+@Feature("constraint")
 public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
 
     private static final long serialVersionUID = 1L;

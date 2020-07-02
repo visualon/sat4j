@@ -32,6 +32,7 @@ package org.sat4j.pb.core;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.core.Vec;
 import org.sat4j.minisat.core.IOrder;
+import org.sat4j.minisat.core.LearnedConstraintsEvaluationType;
 import org.sat4j.minisat.core.LearningStrategy;
 import org.sat4j.minisat.core.Pair;
 import org.sat4j.minisat.core.RestartStrategy;
@@ -49,6 +50,7 @@ import org.sat4j.pb.constraints.pb.NoPreProcess;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.orders.BumpStrategy;
+import org.sat4j.pb.orders.Bumper;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.TimeoutException;
@@ -84,6 +86,8 @@ public class PBSolverCP extends PBSolver {
 
     private BumpStrategy bumpStrategy = BumpStrategy.ALWAYS_ONE;
 
+    private Bumper bumper = Bumper.ANY;
+
     /**
      * @param acg
      * @param learner
@@ -93,17 +97,23 @@ public class PBSolverCP extends PBSolver {
             PBDataStructureFactory dsf, IOrder order) {
         super(learner, dsf, new SearchParams(1.5, 100), order,
                 new MiniSATRestarts());
+        setLearnedConstraintsDeletionStrategy(
+                LearnedConstraintsEvaluationType.ACTIVITY);
     }
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order,
             RestartStrategy restarter) {
         super(learner, dsf, params, order, restarter);
+        setLearnedConstraintsDeletionStrategy(
+                LearnedConstraintsEvaluationType.ACTIVITY);
     }
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
             PBDataStructureFactory dsf, SearchParams params, IOrder order) {
         super(learner, dsf, params, order, new MiniSATRestarts());
+        setLearnedConstraintsDeletionStrategy(
+                LearnedConstraintsEvaluationType.ACTIVITY);
     }
 
     public PBSolverCP(LearningStrategy<PBDataStructureFactory> learner,
@@ -199,6 +209,7 @@ public class PBSolverCP extends PBSolver {
         confl.postProcess(currentLevel);
         PBConstr resConstr = (PBConstr) this.dsfactory
                 .createUnregisteredPseudoBooleanConstraint(confl);
+        getLearnedConstraintsDeletionStrategy().onClauseLearning(resConstr);
         results.setReason(resConstr);
 
         // the conflict give the highest decision level for the backtrack
@@ -225,7 +236,8 @@ public class PBSolverCP extends PBSolver {
                 + postprocess + "\n" + prefix + " - " + preprocess + "\n"
                 + prefix + " - " + conflictFactory + "\n" + prefix + " - "
                 + weakeningStrategy + "\n" + prefix + " - Bump strategy: "
-                + bumpStrategy + "\n" + super.toString(prefix);
+                + bumpStrategy + "\n" + prefix + " - Bumper: " + bumper + "\n"
+                + super.toString(prefix);
     }
 
     private final IVec<String> conflictVariables = new Vec<String>();
@@ -248,6 +260,10 @@ public class PBSolverCP extends PBSolver {
 
     public void setBumpStrategy(BumpStrategy bumpStrategy) {
         this.bumpStrategy = bumpStrategy;
+    }
+
+    public void setBumper(Bumper bumper) {
+        this.bumper = bumper;
     }
 
     public SkipStrategy isSkipAllow() {
@@ -301,7 +317,8 @@ public class PBSolverCP extends PBSolver {
 
     @Override
     public void varBumpActivity(Constr constr, int i) {
-        bumpStrategy.varBumpActivity(getOrder(), (PBConstr) constr, i);
+        bumper.varBumpActivity(voc, bumpStrategy, getOrder(), (PBConstr) constr,
+                i);
     }
 
 }

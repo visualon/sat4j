@@ -29,6 +29,7 @@ package org.sat4j.minisat.constraints.cnf;
 
 import java.io.Serializable;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.Constr;
@@ -43,6 +44,7 @@ import org.sat4j.specs.VarMapper;
  * 
  * @author leberre
  */
+@Feature("constraint")
 public class BinaryClauses implements Constr, Propagatable, Serializable {
 
     private static final long serialVersionUID = 1L;

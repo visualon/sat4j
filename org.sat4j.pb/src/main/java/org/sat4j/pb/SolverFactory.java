@@ -598,7 +598,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -611,7 +611,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -623,7 +623,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -637,7 +637,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -650,7 +650,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -663,7 +663,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -675,7 +675,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -687,7 +687,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -699,7 +699,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 
@@ -712,7 +712,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
         return solver;
     }
 

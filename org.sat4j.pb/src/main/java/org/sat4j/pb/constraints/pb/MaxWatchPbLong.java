@@ -271,7 +271,8 @@ public final class MaxWatchPbLong extends WatchPbLong {
         int ind = 0;
         while (ind < this.coefs.length
                 && this.watchCumul - this.coefs[ind] < this.degree) {
-            if (!this.voc.isUnassigned(this.lits[ind])) {
+            if (!this.voc.isUnassigned(this.lits[ind])
+                    && this.voc.getReason(this.lits[ind]) == this) {
                 upl.unset(this.lits[ind]);
             }
             ind++;
