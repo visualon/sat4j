@@ -32,7 +32,6 @@ package org.sat4j.pb.constraints.pb;
 
 import java.math.BigInteger;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import org.sat4j.core.VecInt;
@@ -130,8 +129,7 @@ public class ConflictMapMinimizeWeakening extends ConflictMap {
                 }
             }
         }
-        IVecInt vec = map.entrySet().stream().findFirst()
-                .orElseThrow(NoSuchElementException::new).getValue();
+        IVecInt vec = map.entrySet().stream().findFirst().get().getValue();
         int lit = vec.last();
         vec.pop();
         return lit;
