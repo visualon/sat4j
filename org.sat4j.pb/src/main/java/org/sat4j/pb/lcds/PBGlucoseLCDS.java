@@ -9,6 +9,7 @@ import org.sat4j.minisat.core.Glucose2LCDS;
 import org.sat4j.minisat.core.LearnedConstraintsDeletionStrategy;
 import org.sat4j.minisat.core.Solver;
 import org.sat4j.pb.constraints.pb.PBConstr;
+import org.sat4j.pb.core.PBSolverStats;
 import org.sat4j.specs.Constr;
 
 /**
@@ -81,4 +82,12 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
                 + lbdStrategy;
     }
 
+    @Override
+    protected void onRemove(Constr c) {
+        PBConstr constr = (PBConstr) c;
+        PBSolverStats stats = (PBSolverStats) solver.getStats();
+        stats.incNbRemoved();
+        stats.setMinRemoved(constr.getDegree());
+        stats.setMaxRemoved(constr.getDegree());
+    }
 }

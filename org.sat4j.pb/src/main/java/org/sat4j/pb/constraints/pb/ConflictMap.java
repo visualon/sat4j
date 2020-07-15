@@ -386,12 +386,15 @@ public class ConflictMap extends MapPb implements IConflict {
             }
 
             // coefficients of the conflict must be multiplied by coefMult
+            long before = System.nanoTime();
             if (!this.coefMult.equals(BigInteger.ONE)) {
                 for (int i = 0; i < size(); i++) {
                     changeCoef(i, this.weightedLits.getCoef(i)
                             .multiply(this.coefMult));
                 }
             }
+            long after = System.nanoTime();
+            stats.incTimeForArithmeticOperations(after - before);
         }
         assert slackConflict().signum() < 0;
 
@@ -674,8 +677,13 @@ public class ConflictMap extends MapPb implements IConflict {
      *            second integer
      * @return the least common factor
      */
-    protected static BigInteger ppcm(BigInteger a, BigInteger b) {
-        return a.divide(a.gcd(b)).multiply(b);
+    protected BigInteger ppcm(BigInteger a, BigInteger b) {
+        long before = System.nanoTime();
+        BigInteger lcm = a.divide(a.gcd(b)).multiply(b);
+        long after = System.nanoTime();
+        stats.incTimeForArithmeticOperations(after - before);
+        return lcm;
+
     }
 
     /**

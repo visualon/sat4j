@@ -30,6 +30,7 @@
 package org.sat4j.pb.core;
 
 import java.io.PrintWriter;
+import java.math.BigInteger;
 
 import org.sat4j.minisat.core.SolverStats;
 
@@ -71,6 +72,14 @@ public class PBSolverStats extends SolverStats {
     private long falsifiedLiteralsRemovedFromConflict;
 
     private long falsifiedLiteralsRemovedFromReason;
+
+    private long timeForArtithmeticOperations;
+
+    private BigInteger minRemoved;
+
+    private BigInteger maxRemoved;
+
+    private int nbRemoved;
 
     @Override
     public void reset() {
@@ -136,6 +145,14 @@ public class PBSolverStats extends SolverStats {
         out.println(prefix
                 + "number of falsified literals weakened from conflict\t: "
                 + this.falsifiedLiteralsRemovedFromConflict);
+        out.println(prefix + "time for arithmetic operations\t: "
+                + this.timeForArtithmeticOperations);
+        out.println(prefix + "minimum degree of deleted constraints\t: "
+                + this.minRemoved);
+        out.println(prefix + "maximum degree of deleted constraints\t: "
+                + this.maxRemoved);
+        out.println(
+                prefix + "number of deleted constraints\t: " + this.nbRemoved);
     }
 
     public long getNumberOfReductions() {
@@ -258,6 +275,30 @@ public class PBSolverStats extends SolverStats {
     public void incFalsifiedLiteralsRemovedFromConflict() {
         this.falsifiedLiteralsRemovedFromConflict++;
 
+    }
+
+    public void incTimeForArithmeticOperations(long time) {
+        this.timeForArtithmeticOperations += time;
+    }
+
+    public void setMinRemoved(BigInteger minRemoved) {
+        if (minRemoved == null) {
+            this.minRemoved = minRemoved;
+        } else {
+            this.minRemoved = this.minRemoved.min(minRemoved);
+        }
+    }
+
+    public void setMaxRemoved(BigInteger maxRemoved) {
+        if (maxRemoved == null) {
+            this.maxRemoved = maxRemoved;
+        } else {
+            this.maxRemoved = this.maxRemoved.max(maxRemoved);
+        }
+    }
+
+    public void incNbRemoved() {
+        this.nbRemoved++;
     }
 
 }

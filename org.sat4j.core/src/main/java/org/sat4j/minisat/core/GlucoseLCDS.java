@@ -51,7 +51,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
     /**
      *
      */
-    private final Solver<D> solver;
+    protected final Solver<D> solver;
     private static final long serialVersionUID = 1L;
     private int[] flags = new int[0];
     private int flag = 0;
@@ -75,6 +75,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
             } else {
                 c.remove(solver);
                 solver.slistener.delete(c);
+                onRemove(c);
             }
         }
         if (solver.isVerbose()) {
@@ -86,6 +87,10 @@ class GlucoseLCDS<D extends DataStructureFactory>
         }
         learnedConstrs.shrinkTo(j);
 
+    }
+
+    protected void onRemove(Constr c) {
+        // Nothing to do by default.
     }
 
     public ConflictTimer getTimer() {
