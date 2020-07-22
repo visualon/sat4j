@@ -35,6 +35,7 @@ import static org.sat4j.core.LiteralsUtils.var;
 
 import java.util.Comparator;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
@@ -53,6 +54,7 @@ import org.sat4j.specs.Propagatable;
  * @author leberre
  * 
  */
+@Feature(value = "primeimplicant", parent = "expert")
 public class WatcherBasedPrimeImplicantStrategy
         implements PrimeImplicantStrategy, MandatoryLiteralListener {
 

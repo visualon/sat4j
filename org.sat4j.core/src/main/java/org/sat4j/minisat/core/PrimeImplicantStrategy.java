@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import org.sat4j.annotations.Feature;
+
 /**
  * The aim of those classes is to reduce the model found by a SAT solver into a
  * prime implicant. See Computing prime implicants, David Deharbe, Pascal
@@ -37,6 +39,7 @@ package org.sat4j.minisat.core;
  * @author leberre
  * 
  */
+@Feature(value = "primeimplicant", parent = "expert")
 public interface PrimeImplicantStrategy {
 
     /**

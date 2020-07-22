@@ -31,6 +31,7 @@ package org.sat4j.minisat.core;
 
 import static org.sat4j.core.LiteralsUtils.toInternal;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.core.VecInt;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVecInt;
@@ -46,8 +47,9 @@ import org.sat4j.specs.IteratorInt;
  * @author leberre
  * 
  */
-public class CounterBasedPrimeImplicantStrategy implements
-        PrimeImplicantStrategy {
+@Feature(value = "primeimplicant", parent = "expert")
+public class CounterBasedPrimeImplicantStrategy
+        implements PrimeImplicantStrategy {
 
     private int[] prime;
 
@@ -128,11 +130,11 @@ public class CounterBasedPrimeImplicantStrategy implements
             System.out.printf(
                     "%s prime implicant computation statistics ALGO2%n",
                     solver.getLogPrefix());
-            System.out
-                    .printf("%s implied: %d, decision: %d, removed %d (+%d), propagated %d, time(ms):%d %n",
-                            solver.getLogPrefix(), solver.implied.size(),
-                            solver.decisions.size(), removed, posremoved,
-                            propagated, end - begin);
+            System.out.printf(
+                    "%s implied: %d, decision: %d, removed %d (+%d), propagated %d, time(ms):%d %n",
+                    solver.getLogPrefix(), solver.implied.size(),
+                    solver.decisions.size(), removed, posremoved, propagated,
+                    end - begin);
         }
         return implicant;
     }

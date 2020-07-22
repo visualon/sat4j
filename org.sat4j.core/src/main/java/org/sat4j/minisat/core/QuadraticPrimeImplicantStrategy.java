@@ -32,6 +32,7 @@ package org.sat4j.minisat.core;
 import static org.sat4j.core.LiteralsUtils.neg;
 import static org.sat4j.core.LiteralsUtils.toInternal;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IteratorInt;
 
@@ -44,6 +45,7 @@ import org.sat4j.specs.IteratorInt;
  * @author leberre
  * 
  */
+@Feature(value = "primeimplicant", parent = "expert")
 public class QuadraticPrimeImplicantStrategy implements PrimeImplicantStrategy {
 
     private int[] prime;
@@ -55,7 +57,8 @@ public class QuadraticPrimeImplicantStrategy implements PrimeImplicantStrategy {
      *            a literal
      * @return true if no conflict is reached, false if a conflict is found.
      */
-    boolean setAndPropagate(Solver<? extends DataStructureFactory> solver, int p) {
+    boolean setAndPropagate(Solver<? extends DataStructureFactory> solver,
+            int p) {
         if (solver.voc.isUnassigned(p)) {
             assert !solver.trail.contains(p);
             assert !solver.trail.contains(neg(p));
@@ -154,11 +157,11 @@ public class QuadraticPrimeImplicantStrategy implements PrimeImplicantStrategy {
             System.out.printf(
                     "%s prime implicant computation statistics ORIG%n",
                     solver.getLogPrefix());
-            System.out
-                    .printf("%s implied: %d, decision: %d, removed %d (+%d), tested %d, propagated %d), l2 propagation:%d, time(ms):%d %n",
-                            solver.getLogPrefix(), solver.implied.size(),
-                            solver.decisions.size(), removed, posremoved,
-                            tested, propagated, l2propagation, end - begin);
+            System.out.printf(
+                    "%s implied: %d, decision: %d, removed %d (+%d), tested %d, propagated %d), l2 propagation:%d, time(ms):%d %n",
+                    solver.getLogPrefix(), solver.implied.size(),
+                    solver.decisions.size(), removed, posremoved, tested,
+                    propagated, l2propagation, end - begin);
         }
         return implicant;
 
