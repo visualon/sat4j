@@ -95,13 +95,13 @@ public interface IDataStructurePB {
         @Override
         public BigInteger cuttingPlane(PBConstr cpb, BigInteger degreeCons,
                 BigInteger[] reducedCoefs, BigInteger coefMult,
-                VarActivityListener val) {
+                VarActivityListener val, int p) {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public BigInteger cuttingPlane(PBConstr cpb, BigInteger deg,
-                BigInteger[] reducedCoefs, VarActivityListener val) {
+                BigInteger[] reducedCoefs, VarActivityListener val, int p) {
             throw new UnsupportedOperationException();
         }
 
@@ -119,11 +119,11 @@ public interface IDataStructurePB {
     BigInteger saturation();
 
     BigInteger cuttingPlane(PBConstr cpb, BigInteger deg,
-            BigInteger[] reducedCoefs, VarActivityListener val);
+            BigInteger[] reducedCoefs, VarActivityListener val, int p);
 
     BigInteger cuttingPlane(PBConstr cpb, BigInteger degreeCons,
             BigInteger[] reducedCoefs, BigInteger coefMult,
-            VarActivityListener val);
+            VarActivityListener val, int p);
 
     BigInteger cuttingPlane(int[] lits, BigInteger[] reducedCoefs,
             BigInteger deg);

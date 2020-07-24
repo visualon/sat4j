@@ -1074,7 +1074,7 @@ public class Solver<D extends DataStructureFactory>
         this.order.updateVar(p);
     }
 
-    public void varBumpActivity(Constr constr, int i) {
+    public void varBumpActivity(Constr constr, int i, int p) {
         this.order.updateVar(constr.get(i));
     }
 
@@ -2598,5 +2598,10 @@ public class Solver<D extends DataStructureFactory>
     @Override
     public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
         this.unitClauseConsumer = ucc;
+    }
+
+    @Override
+    public void postBumpActivity(Constr constr) {
+        // Nothing to do by default.
     }
 }

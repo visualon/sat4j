@@ -53,6 +53,8 @@ public interface VarActivityListener extends Serializable {
     /**
      * Update the activity of a variable v.
      */
-    void varBumpActivity(Constr constr, int i);
+    void varBumpActivity(Constr constr, int i, int p);
+
+    void postBumpActivity(Constr constr);
 
 }

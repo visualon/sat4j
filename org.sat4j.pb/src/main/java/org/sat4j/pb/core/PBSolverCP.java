@@ -51,6 +51,7 @@ import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.orders.Bumper;
+import org.sat4j.pb.orders.IBumper;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.TimeoutException;
@@ -86,7 +87,7 @@ public class PBSolverCP extends PBSolver {
 
     private BumpStrategy bumpStrategy = BumpStrategy.ALWAYS_ONE;
 
-    private Bumper bumper = Bumper.ANY;
+    private IBumper bumper = Bumper.ANY;
 
     /**
      * @param acg
@@ -262,8 +263,8 @@ public class PBSolverCP extends PBSolver {
         this.bumpStrategy = bumpStrategy;
     }
 
-    public void setBumper(Bumper bumper) {
-        this.bumper = bumper;
+    public void setBumper(IBumper bumperEffective) {
+        this.bumper = bumperEffective;
     }
 
     public SkipStrategy isSkipAllow() {
@@ -316,9 +317,14 @@ public class PBSolverCP extends PBSolver {
     }
 
     @Override
-    public void varBumpActivity(Constr constr, int i) {
+    public void varBumpActivity(Constr constr, int i, int p) {
         bumper.varBumpActivity(voc, bumpStrategy, getOrder(), (PBConstr) constr,
-                i);
+                i, p);
+    }
+
+    @Override
+    public void postBumpActivity(Constr constr) {
+        bumper.postBumpActivity(getOrder(), (PBConstr) constr);
     }
 
 }

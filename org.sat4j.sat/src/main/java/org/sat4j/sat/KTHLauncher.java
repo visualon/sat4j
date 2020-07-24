@@ -14,7 +14,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.sat4j.minisat.core.ConflictTimer;
 import org.sat4j.minisat.core.LearnedConstraintsDeletionStrategy;
-import org.sat4j.minisat.core.LearnedConstraintsEvaluationType;
 import org.sat4j.minisat.learning.MiniSATLearning;
 import org.sat4j.minisat.orders.NaturalStaticOrder;
 import org.sat4j.minisat.orders.VarOrderHeap;
@@ -46,6 +45,7 @@ import org.sat4j.pb.core.PBSolverCP;
 import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.orders.Bumper;
+import org.sat4j.pb.orders.BumperEffective;
 import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.pb.restarts.GrowingCoefficientRestarts;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
@@ -409,6 +409,9 @@ public class KTHLauncher {
                     
                 } else if ("falsified".equals(value)) {
                     cpsolver.setBumper(Bumper.FALSIFIED);
+                    
+                } else if ("effective".equals(value)) {
+                    cpsolver.setBumper(new BumperEffective());
                     
                 } else {
                     log(value

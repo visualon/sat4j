@@ -400,7 +400,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
         // cutting plane
         this.degree = cuttingPlane(cpb, degreeCons, coefsCons,
-                this.coefMultCons, val);
+                this.coefMultCons, val, ind);
         // neither litImplied nor nLitImplied is present in coefs structure
         assert !this.weightedLits.containsKey(litImplied);
         assert !this.weightedLits.containsKey(nLitImplied);
