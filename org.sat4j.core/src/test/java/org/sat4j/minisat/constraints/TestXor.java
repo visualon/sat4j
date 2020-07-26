@@ -85,11 +85,12 @@ public class TestXor {
         IVecInt lits = new VecInt(new int[] { 1, 2, 3 });
         solver.addParity(lits, true);
         ModelIterator iterator = new ModelIterator(solver);
+        int[] model = {};
         while (iterator.isSatisfiable()) {
-            iterator.model(); // to go to the next model
+            model = iterator.model(); // to go to the next model
         }
         assertEquals(4, iterator.numberOfModelsFoundSoFar());
-        System.out.println(new VecInt(solver.model()));
+        System.out.println(new VecInt(model));
     }
 
     @Test
@@ -104,11 +105,12 @@ public class TestXor {
         clause.push(-1).push(-3);
         solver.addClause(clause);
         ModelIterator iterator = new ModelIterator(solver);
+        int[] model = {};
         while (iterator.isSatisfiable()) {
-            iterator.model(); // to go to the next model
+            model = iterator.model(); // to go to the next model
         }
         assertEquals(2, iterator.numberOfModelsFoundSoFar());
-        System.out.println(new VecInt(solver.model()));
+        System.out.println(new VecInt(model));
     }
 
     @Test
@@ -119,10 +121,11 @@ public class TestXor {
         solver.addParity(lits, true);
         solver.addAtLeast(lits, 1);
         ModelIterator iterator = new ModelIterator(solver);
+        int[] model = {};
         while (iterator.isSatisfiable()) {
-            iterator.model(); // to go to the next model
+            model = iterator.model(); // to go to the next model
         }
         assertEquals(3, iterator.numberOfModelsFoundSoFar());
-        System.out.println(new VecInt(solver.model()));
+        System.out.println(new VecInt(model));
     }
 }
