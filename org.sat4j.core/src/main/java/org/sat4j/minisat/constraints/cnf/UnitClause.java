@@ -49,8 +49,15 @@ public class UnitClause implements Constr {
     protected final int literal;
     protected double activity;
 
+    private boolean learnt;
+
     public UnitClause(int value) {
+        this(value, false);
+    }
+
+    public UnitClause(int value, boolean learnt) {
         this.literal = value;
+        this.learnt = learnt;
     }
 
     public void assertConstraint(UnitPropagationListener s) {
@@ -100,7 +107,7 @@ public class UnitClause implements Constr {
     }
 
     public void setLearnt() {
-        throw new UnsupportedOperationException();
+        learnt = true;
     }
 
     public boolean simplify() {
@@ -119,7 +126,7 @@ public class UnitClause implements Constr {
     }
 
     public boolean learnt() {
-        return false;
+        return learnt;
     }
 
     public int size() {

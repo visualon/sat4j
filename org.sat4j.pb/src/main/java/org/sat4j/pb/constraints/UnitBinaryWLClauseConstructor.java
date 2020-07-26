@@ -58,7 +58,7 @@ public class UnitBinaryWLClauseConstructor implements IClauseConstructor {
 
     public Constr constructLearntClause(ILits voc, IVecInt literals) {
         if (literals.size() == 1) {
-            return new UnitClause(literals.last());
+            return new UnitClause(literals.last(), true);
         }
         if (literals.size() == 2) {
             return new LearntBinaryClause(literals, voc);

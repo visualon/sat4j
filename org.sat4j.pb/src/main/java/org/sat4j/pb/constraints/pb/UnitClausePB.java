@@ -45,6 +45,11 @@ public final class UnitClausePB extends UnitClause implements PBConstr {
         this.voc = voc;
     }
 
+    public UnitClausePB(int value, boolean learnt, ILits voc) {
+        super(value, learnt);
+        this.voc = voc;
+    }
+
     /**
      * 
      */

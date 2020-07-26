@@ -39,7 +39,8 @@ import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.UnitPropagationListener;
 
-public class UnitConciseBinaryWLClauseConstructor implements IClauseConstructor {
+public class UnitConciseBinaryWLClauseConstructor
+        implements IClauseConstructor {
 
     private BinaryClauses[] binaryClauses;
 
@@ -64,7 +65,8 @@ public class UnitConciseBinaryWLClauseConstructor implements IClauseConstructor 
         if (binaryClauses == null) {
             binaryClauses = new BinaryClauses[voc.nVars() * 2 + 2];
         } else if (binaryClauses.length < voc.nVars() * 2 + 1) {
-            BinaryClauses[] newBinaryClauses = new BinaryClauses[voc.nVars() * 2 + 2];
+            BinaryClauses[] newBinaryClauses = new BinaryClauses[voc.nVars() * 2
+                    + 2];
             System.arraycopy(binaryClauses, 0, newBinaryClauses, 0,
                     binaryClauses.length);
             binaryClauses = newBinaryClauses;
@@ -90,7 +92,7 @@ public class UnitConciseBinaryWLClauseConstructor implements IClauseConstructor 
 
     public Constr constructLearntClause(ILits voc, IVecInt literals) {
         if (literals.size() == 1) {
-            return new UnitClause(literals.last());
+            return new UnitClause(literals.last(), true);
         }
         if (literals.size() == 2) {
             return new LearntBinaryClause(literals, voc);

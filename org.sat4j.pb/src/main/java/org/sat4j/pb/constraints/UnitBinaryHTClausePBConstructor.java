@@ -58,7 +58,7 @@ public class UnitBinaryHTClausePBConstructor implements IClauseConstructor {
 
     public Constr constructLearntClause(ILits voc, IVecInt literals) {
         if (literals.size() == 1) {
-            return new UnitClausePB(literals.last(), voc);
+            return new UnitClausePB(literals.last(), true, voc);
         }
         if (literals.size() == 2) {
             return new LearntBinaryClausePB(literals, voc);

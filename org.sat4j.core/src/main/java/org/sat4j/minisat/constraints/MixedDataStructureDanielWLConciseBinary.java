@@ -46,8 +46,8 @@ import org.sat4j.specs.IVecInt;
  * @author leberre
  * @since 2.1
  */
-public class MixedDataStructureDanielWLConciseBinary extends
-        AbstractDataStructureFactory {
+public class MixedDataStructureDanielWLConciseBinary
+        extends AbstractDataStructureFactory {
 
     private BinaryClauses[] binaryClauses;
 
@@ -126,7 +126,7 @@ public class MixedDataStructureDanielWLConciseBinary extends
 
     public Constr createUnregisteredClause(IVecInt literals) {
         if (literals.size() == 1) {
-            return new UnitClause(literals.last());
+            return new UnitClause(literals.last(), true);
         }
         if (literals.size() == 2) {
             return new LearntBinaryClause(literals, getVocabulary());
