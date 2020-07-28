@@ -389,8 +389,11 @@ public class KTHLauncher {
                 } else if ("coefficient".equals(value)) {
                     cpsolver.setBumpStrategy(BumpStrategy.COEFFICIENT);
                     
-                } else if ("ratio".equals(value)) {
-                    cpsolver.setBumpStrategy(BumpStrategy.RATIO);
+                } else if ("ratio-cd".equals(value)) {
+                    cpsolver.setBumpStrategy(BumpStrategy.RATIO_CD);
+                    
+                } else if ("ratio-dc".equals(value)) {
+                    cpsolver.setBumpStrategy(BumpStrategy.RATIO_DC);
                     
                 } else {
                     log(value
