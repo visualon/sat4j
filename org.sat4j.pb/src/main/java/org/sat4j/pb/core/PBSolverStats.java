@@ -282,7 +282,7 @@ public class PBSolverStats extends SolverStats {
     }
 
     public void setMinRemoved(BigInteger minRemoved) {
-        if (minRemoved == null) {
+        if (this.minRemoved == null) {
             this.minRemoved = minRemoved;
         } else {
             this.minRemoved = this.minRemoved.min(minRemoved);
@@ -290,7 +290,7 @@ public class PBSolverStats extends SolverStats {
     }
 
     public void setMaxRemoved(BigInteger maxRemoved) {
-        if (maxRemoved == null) {
+        if (this.maxRemoved == null) {
             this.maxRemoved = maxRemoved;
         } else {
             this.maxRemoved = this.maxRemoved.max(maxRemoved);

@@ -42,6 +42,7 @@ import org.sat4j.pb.constraints.pb.PreProcessReduceConflict;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
+import org.sat4j.pb.lcds.PBActivityLCDS;
 import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.orders.Bumper;
@@ -424,6 +425,8 @@ public class KTHLauncher {
                 String value = line.getOptionValue("deletion-strategy");
                 ConflictTimer timer = cpsolver.lbd_based.getTimer();
                 if ("activity".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = new PBActivityLCDS(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
                     
                 } else if ("assigned".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newIgnoreUnassigned(cpsolver, timer);
@@ -444,12 +447,6 @@ public class KTHLauncher {
                 } else if ("degree".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newDegree(cpsolver, timer);
                     cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
-                    
-                } else if ("size".equals(value)) {
-                    cpsolver.setLearnedConstraintsDeletionStrategy(cpsolver.size_based);
-                    
-                } else if ("age".equals(value)) {
-                    cpsolver.setLearnedConstraintsDeletionStrategy(cpsolver.age_based);
                     
                 } else {
                     log(value
