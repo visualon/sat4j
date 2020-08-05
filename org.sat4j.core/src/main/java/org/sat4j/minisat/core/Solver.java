@@ -575,7 +575,7 @@ public class Solver<D extends DataStructureFactory>
         this.voc.setReason(p, from);
         this.trail.push(p);
         if (from != null && from.learnt()) {
-            this.learnedConstraintsDeletionStrategy.onPropagation(from);
+            this.learnedConstraintsDeletionStrategy.onPropagation(from, p);
         }
         return true;
     }
@@ -1698,7 +1698,7 @@ public class Solver<D extends DataStructureFactory>
                 return this.aTimer;
             }
 
-            public void onPropagation(Constr from) {
+            public void onPropagation(Constr from, int propagated) {
                 // TODO Auto-generated method stub
 
             }

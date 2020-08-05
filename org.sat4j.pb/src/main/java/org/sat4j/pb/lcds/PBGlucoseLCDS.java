@@ -37,6 +37,12 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
                 new IgnoreUnassignedLiteralsLBDComputerStrategy());
     }
 
+    public static <D extends DataStructureFactory> LearnedConstraintsDeletionStrategy newFalsifiedOnly(
+            Solver<D> solver, ConflictTimer timer) {
+        return new PBGlucoseLCDS<D>(solver, timer,
+                new FalsifiedLiteralsOnlyLBDComputerStrategy());
+    }
+
     public static <D extends DataStructureFactory> LearnedConstraintsDeletionStrategy newEffectiveOnly(
             Solver<D> solver, ConflictTimer timer) {
         return new PBGlucoseLCDS<D>(solver, timer,
@@ -68,12 +74,13 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
     }
 
     @Override
-    protected int computeLBD(Constr constr) {
+    protected int computeLBD(Constr constr, int propagated) {
         if (constr instanceof PBConstr) {
-            return lbdStrategy.computeLBD(getSolver().getVocabulary(),
-                    (PBConstr) constr);
+            PBConstr pbconstr = (PBConstr) constr;
+            return lbdStrategy.computeLBD(getSolver().getVocabulary(), pbconstr,
+                    propagated);
         }
-        return super.computeLBD(constr);
+        return super.computeLBD(constr, propagated);
     }
 
     @Override

@@ -48,8 +48,8 @@ public class NullLCDS implements LearnedConstraintsDeletionStrategy {
     }
 
     @Override
-    public void onPropagation(Constr from) {
-        decorated.onPropagation(from);
+    public void onPropagation(Constr from, int propagated) {
+        decorated.onPropagation(from, propagated);
     }
 
 }

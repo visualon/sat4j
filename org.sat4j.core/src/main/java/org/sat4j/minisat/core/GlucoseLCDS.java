@@ -114,11 +114,11 @@ class GlucoseLCDS<D extends DataStructureFactory>
     }
 
     public void onClauseLearning(Constr constr) {
-        int nblevel = computeLBD(constr);
+        int nblevel = computeLBD(constr, -1);
         constr.setActivity(nblevel);
     }
 
-    protected int computeLBD(Constr constr) {
+    protected int computeLBD(Constr constr, int propagated) {
         int nblevel = 1;
         this.flag++;
         int currentLevel;
@@ -136,7 +136,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
 
     }
 
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
 
     }
 

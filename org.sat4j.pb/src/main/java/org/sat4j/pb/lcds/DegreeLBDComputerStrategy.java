@@ -21,7 +21,7 @@ public class DegreeLBDComputerStrategy implements ILBDComputerStrategy {
     }
 
     @Override
-    public int computeLBD(ILits voc, PBConstr constr) {
+    public int computeLBD(ILits voc, PBConstr constr, int propagated) {
         BigInteger degree = constr.getDegree();
         if (degree.bitLength() < Integer.SIZE) {
             return degree.intValue();

@@ -49,9 +49,9 @@ public class Glucose2LCDS<D extends DataStructureFactory>
     }
 
     @Override
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
         if (from.getActivity() > 2.0) {
-            int nblevel = computeLBD(from);
+            int nblevel = computeLBD(from, propagated);
             if (nblevel < from.getActivity()) {
                 getSolver().stats.incUpdateLBD();
                 from.setActivity(nblevel);

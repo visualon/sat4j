@@ -39,7 +39,7 @@ public class BumperEffective implements IBumper {
 
         } else if (!voc.isFalsified(constr.get(lit))) {
             // Weakening on this literal preserves the propagation.
-            constrDegree = constrDegree.subtract(constr.getCoefs()[lit]);
+            constrDegree = constrDegree.subtract(constr.getCoef(lit));
 
         } else {
             // The literal may be effective.
@@ -51,8 +51,10 @@ public class BumperEffective implements IBumper {
     public void postBumpActivity(IOrder order, PBConstr constr) {
         for (IteratorInt it = bumpableCandidates.iterator(); it.hasNext();) {
             int v = it.next();
-            if (constr.getCoefs()[v].compareTo(constrDegree) >= 0) {
+            if (constr.getCoef(v).compareTo(constrDegree) >= 0) {
                 bumpStrategy.varBumpActivity(order, constr, v);
+            } else {
+                break;
             }
         }
     }

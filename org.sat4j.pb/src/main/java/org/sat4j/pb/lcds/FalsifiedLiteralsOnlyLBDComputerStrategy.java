@@ -10,28 +10,19 @@ import org.sat4j.pb.constraints.pb.PBConstr;
  * @author wallon
  *
  */
-public class UnassignedLiteralsHaveSameLevelLBDComputerStrategy
+public class FalsifiedLiteralsOnlyLBDComputerStrategy
         extends AbstractLBDComputerStrategy {
-
-    private boolean unassignedFound;
-
-    @Override
-    protected void startComputeLBD(PBConstr constr, int propagated) {
-        this.unassignedFound = false;
-    }
 
     @Override
     protected int unassignedLiteral(ILits voc, PBConstr constr, int i) {
-        if (unassignedFound) {
-            return 0;
-        }
-
-        unassignedFound = true;
-        return 1;
+        return 0;
     }
 
     @Override
     protected int assignedLiteral(ILits voc, PBConstr constr, int i) {
+        if (voc.isSatisfied(constr.get(i))) {
+            return 0;
+        }
         return 1;
     }
 }

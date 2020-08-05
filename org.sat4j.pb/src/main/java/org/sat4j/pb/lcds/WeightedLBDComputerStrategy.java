@@ -19,8 +19,9 @@ public class WeightedLBDComputerStrategy extends LBDComputerStrategyDecorator {
     }
 
     @Override
-    public int computeLBD(ILits voc, PBConstr constr) {
-        BigInteger lbd = BigInteger.valueOf(super.computeLBD(voc, constr));
+    public int computeLBD(ILits voc, PBConstr constr, int propagated) {
+        BigInteger lbd = BigInteger
+                .valueOf(super.computeLBD(voc, constr, propagated));
         BigInteger weighted = lbd.multiply(constr.getDegree().multiply(lbd));
         if (weighted.bitLength() < Integer.SIZE) {
             return weighted.intValue();

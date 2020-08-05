@@ -321,7 +321,7 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory>
             // do nothing
         }
 
-        public void onPropagation(Constr from) {
+        public void onPropagation(Constr from, int propagated) {
             // do nothing
         }
     };

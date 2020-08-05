@@ -7,6 +7,6 @@ public interface ILBDComputerStrategy {
 
     void init(int howmany);
 
-    int computeLBD(ILits voc, PBConstr constr);
+    int computeLBD(ILits voc, PBConstr constr, int propagated);
 
 }

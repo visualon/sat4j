@@ -42,6 +42,7 @@ import org.sat4j.pb.constraints.pb.PreProcessReduceConflict;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
+import org.sat4j.pb.lcds.NullLCDS;
 import org.sat4j.pb.lcds.PBActivityLCDS;
 import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.BumpStrategy;
@@ -429,27 +430,31 @@ public class KTHLauncher {
                 ConflictTimer timer = cpsolver.lbd_based.getTimer();
                 if ("activity".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = new PBActivityLCDS(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
                     
                 } else if ("assigned".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newIgnoreUnassigned(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
                     
                 } else if ("unassigned-same".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newUnassignedSame(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
                     
                 } else if ("unassigned-different".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newUnassignedDifferent(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
+                    
+                } else if ("falsified".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newFalsifiedOnly(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
                     
                 } else if ("effective".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newEffectiveOnly(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
                     
                 } else if ("degree".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newDegree(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
                     
                 } else {
                     log(value

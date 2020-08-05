@@ -3,7 +3,8 @@ package org.sat4j.pb.lcds;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.pb.constraints.pb.PBConstr;
 
-public abstract class AbstractLBDComputerStrategy implements ILBDComputerStrategy {
+public abstract class AbstractLBDComputerStrategy
+        implements ILBDComputerStrategy {
 
     protected int[] flags = new int[0];
 
@@ -18,10 +19,10 @@ public abstract class AbstractLBDComputerStrategy implements ILBDComputerStrateg
     }
 
     @Override
-    public int computeLBD(ILits voc, PBConstr constr) {
+    public int computeLBD(ILits voc, PBConstr constr, int propagated) {
         int nblevel = 1;
         this.flag++;
-        startComputeLBD();
+        startComputeLBD(constr, propagated);
         for (int i = 0; i < constr.size(); i++) {
             int currentLevel = voc.getLevel(constr.get(i));
             if (currentLevel < 0) {
@@ -36,12 +37,16 @@ public abstract class AbstractLBDComputerStrategy implements ILBDComputerStrateg
         return nblevel;
     }
 
-    protected void startComputeLBD() {
+    protected void startComputeLBD(PBConstr constr, int propagated) {
 
     }
 
     protected abstract int unassignedLiteral(ILits voc, PBConstr constr, int i);
 
     protected abstract int assignedLiteral(ILits voc, PBConstr constr, int i);
+
+    protected int fixLbd(PBConstr constr, int lbd) {
+        return lbd;
+    }
 
 }

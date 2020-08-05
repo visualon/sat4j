@@ -24,8 +24,8 @@ public class LBDComputerStrategyDecorator implements ILBDComputerStrategy {
     }
 
     @Override
-    public int computeLBD(ILits voc, PBConstr constr) {
-        return decorated.computeLBD(voc, constr);
+    public int computeLBD(ILits voc, PBConstr constr, int propagated) {
+        return decorated.computeLBD(voc, constr, propagated);
     }
 
 }
