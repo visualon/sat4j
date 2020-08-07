@@ -101,8 +101,8 @@ public class KTHLauncher {
                 "Restart strategy to apply, among luby, picosat, lbd, size");
         options.addOption("b", "bump-strategy", true,
                 "Bumping strategy to apply, among one, degree, coefficient, ratio");
-        options.addOption("br", "bumper", true,
-                "Literal bumper, among any, assigned and falsified");
+        options.addOption("lcds", "deletion-strategy", true,
+                "Learned constraint deletion strategy, among lbd, assigned, unassigned-same, unassigned-different, effective,, degree");
         options.addOption("br", "bumper", true,
                 "Literal bumper, among any, assigned and falsified");
         options.addOption("db", "double-bump-clashing", false,
