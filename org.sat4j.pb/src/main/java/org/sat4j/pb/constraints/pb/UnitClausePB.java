@@ -82,4 +82,9 @@ public final class UnitClausePB extends UnitClause implements PBConstr {
         stb.append(" >= 1");
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
 }

@@ -759,4 +759,9 @@ public abstract class WatchPbLongCP
         }
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(sumcoefs);
+    }
 }

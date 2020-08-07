@@ -67,6 +67,18 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
                 new DegreeLBDComputerStrategy());
     }
 
+    public static <D extends DataStructureFactory> LearnedConstraintsDeletionStrategy newDegreeSize(
+            Solver<D> solver, ConflictTimer timer) {
+        return new PBGlucoseLCDS<D>(solver, timer,
+                new DegreeSizeLBDComputerStrategy());
+    }
+
+    public static <D extends DataStructureFactory> LearnedConstraintsDeletionStrategy newRatio(
+            Solver<D> solver, ConflictTimer timer) {
+        return new PBGlucoseLCDS<D>(solver, timer,
+                new RatioCoefficientsDegreeLBDComputerStrategy());
+    }
+
     @Override
     public void init() {
         super.init();

@@ -42,12 +42,14 @@ import org.sat4j.pb.constraints.pb.PreProcessReduceConflict;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
-import org.sat4j.pb.lcds.NullLCDS;
 import org.sat4j.pb.lcds.PBActivityLCDS;
 import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.orders.Bumper;
 import org.sat4j.pb.orders.BumperEffective;
+import org.sat4j.pb.orders.BumperEffectiveAndPropagated;
+import org.sat4j.pb.orders.DoubleBumpClashingLiteralsDecorator;
+import org.sat4j.pb.orders.IBumper;
 import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.pb.restarts.GrowingCoefficientRestarts;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
@@ -101,8 +103,10 @@ public class KTHLauncher {
                 "Bumping strategy to apply, among one, degree, coefficient, ratio");
         options.addOption("br", "bumper", true,
                 "Literal bumper, among any, assigned and falsified");
-        options.addOption("lcds", "deletion-strategy", true,
-                "Learned constraint deletion strategy, among lbd, assigned, unassigned-same, unassigned-different, effective,, degree");
+        options.addOption("br", "bumper", true,
+                "Literal bumper, among any, assigned and falsified");
+        options.addOption("db", "double-bump-clashing", false,
+                "Whether clashing literal should be doubly bumped");
         Option op = options.getOption("coeflim");
         op.setArgName("limit");
         op = options.getOption("coeflim-small");
@@ -244,11 +248,14 @@ public class KTHLauncher {
                 if ("none".equals(value)) {
                     // default case, do nothing
                 } else if ("reduce".equals(value)) {
-                    cpsolver.setPreprocess(PreProcessReduceConflict.instanceWithFalsified());
+                    cpsolver.setPreprocess(
+                            PreProcessReduceConflict.instanceWithFalsified());
                 } else if ("reduce-not-falsified".equals(value)) {
-                    cpsolver.setPreprocess(PreProcessReduceConflict.instanceWithoutFalsified());
+                    cpsolver.setPreprocess(PreProcessReduceConflict
+                            .instanceWithoutFalsified());
                 } else {
-                    log(value + " is not a supported value for option preprocess-conflict");
+                    log(value
+                            + " is not a supported value for option preprocess-conflict");
                     return;
                 }
             }
@@ -279,21 +286,29 @@ public class KTHLauncher {
                 } else if ("divide-v1".equals(value)) {
                     cpsolver.setConflictFactory(ConflictMapRounding.factory());
                 } else if ("weaken".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapWeakenReason.factory());
+                    cpsolver.setConflictFactory(
+                            ConflictMapWeakenReason.factory());
                 } else if ("weaken-to-clash".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapWeakenToClash.factory());
+                    cpsolver.setConflictFactory(
+                            ConflictMapWeakenToClash.factory());
                 } else if ("weaken-and-divide".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnReasonFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot
+                            .fullWeakeningOnReasonFactory());
                 } else if ("partial-weaken-and-divide".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnReasonFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot
+                            .partialWeakeningOnReasonFactory());
                 } else if ("weaken-and-divide-both".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnBothFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot
+                            .fullWeakeningOnBothFactory());
                 } else if ("partial-weaken-and-divide-both".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnBothFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot
+                            .partialWeakeningOnBothFactory());
                 } else if ("weaken-and-divide-conflict".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.fullWeakeningOnConflictFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot
+                            .fullWeakeningOnConflictFactory());
                 } else if ("partial-weaken-and-divide-conflict".equals(value)) {
-                    cpsolver.setConflictFactory(ConflictMapDivideByPivot.partialWeakeningOnConflictFactory());
+                    cpsolver.setConflictFactory(ConflictMapDivideByPivot
+                            .partialWeakeningOnConflictFactory());
                 } else {
                     // "divide-unless-equal":
                     // "divide-unless-divisor":
@@ -352,110 +367,141 @@ public class KTHLauncher {
             if (line.hasOption("autodiv")) {
                 cpsolver.setAutoDivisionStrategy(AutoDivisionStrategy.ENABLED);
             }
-            
+
             if (line.hasOption("restart-strategy")) {
                 String value = line.getOptionValue("restart-strategy");
 
                 if ("picosat".equals(value)) {
-                   // This is the default.
-                    
+                    // This is the default.
+
                 } else if ("luby".equals(value)) {
                     cpsolver.setRestartStrategy(new LubyRestarts());
-                    
+
                 } else if ("lbd".equals(value)) {
                     cpsolver.setRestartStrategy(new Glucose21Restarts());
-                    
+
                 } else if ("size".equals(value)) {
-                    cpsolver.setRestartStrategy(new GrowingCoefficientRestarts());
-                    
+                    cpsolver.setRestartStrategy(
+                            new GrowingCoefficientRestarts());
+
                 } else if ("none".equals(value)) {
                     cpsolver.setRestartStrategy(new NoRestarts());
-                    
+
                 } else {
                     log(value
                             + " is not a supported value for option restart-strategy");
                     return;
                 }
             }
-            
+
             if (line.hasOption("bump-strategy")) {
                 String value = line.getOptionValue("bump-strategy");
 
                 if ("one".equals(value)) {
                     cpsolver.setBumpStrategy(BumpStrategy.ALWAYS_ONE);
-                    
+
                 } else if ("degree".equals(value)) {
                     cpsolver.setBumpStrategy(BumpStrategy.DEGREE);
-                    
+
                 } else if ("coefficient".equals(value)) {
                     cpsolver.setBumpStrategy(BumpStrategy.COEFFICIENT);
-                    
+
                 } else if ("ratio-cd".equals(value)) {
                     cpsolver.setBumpStrategy(BumpStrategy.RATIO_CD);
-                    
+
                 } else if ("ratio-dc".equals(value)) {
                     cpsolver.setBumpStrategy(BumpStrategy.RATIO_DC);
-                    
+
                 } else {
                     log(value
                             + " is not a supported value for option bump-strategy");
                     return;
                 }
             }
-            
+
             if (line.hasOption("bumper")) {
                 String value = line.getOptionValue("bumper");
+                IBumper bumper = null;
 
                 if ("any".equals(value)) {
-                    cpsolver.setBumper(Bumper.ANY);
-                    
+                    bumper = Bumper.ANY;
+
                 } else if ("assigned".equals(value)) {
-                    cpsolver.setBumper(Bumper.ASSIGNED);
-                    
+                    bumper = Bumper.ASSIGNED;
+
                 } else if ("falsified".equals(value)) {
-                    cpsolver.setBumper(Bumper.FALSIFIED);
-                    
+                    bumper = Bumper.FALSIFIED;
+
+                } else if ("falsified-and-propagated".equals(value)) {
+                    bumper = Bumper.FALSIFIED_AND_PROPAGATED;
+
                 } else if ("effective".equals(value)) {
-                    cpsolver.setBumper(new BumperEffective());
-                    
+                    bumper = new BumperEffective();
+
+                } else if ("effective-and-propagated".equals(value)) {
+                    bumper = new BumperEffectiveAndPropagated();
+
                 } else {
                     log(value
                             + " is not a supported value for option bump-strategy");
                     return;
                 }
+
+                if (line.hasOption("double-bump-clashing")) {
+                    bumper = new DoubleBumpClashingLiteralsDecorator(bumper);
+                }
+
+                cpsolver.setBumper(bumper);
             }
-            
+
             if (line.hasOption("deletion-strategy")) {
                 String value = line.getOptionValue("deletion-strategy");
                 ConflictTimer timer = cpsolver.lbd_based.getTimer();
                 if ("activity".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = new PBActivityLCDS(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = new PBActivityLCDS(
+                            cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else if ("assigned".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newIgnoreUnassigned(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newIgnoreUnassigned(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else if ("unassigned-same".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newUnassignedSame(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newUnassignedSame(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else if ("unassigned-different".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newUnassignedDifferent(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newUnassignedDifferent(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else if ("falsified".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newFalsifiedOnly(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newFalsifiedOnly(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else if ("effective".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newEffectiveOnly(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newEffectiveOnly(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else if ("degree".equals(value)) {
-                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newDegree(cpsolver, timer);
-                    cpsolver.setLearnedConstraintsDeletionStrategy(new NullLCDS(lcds));
-                    
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newDegree(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
+                } else if ("degree-size".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newDegreeSize(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
+                } else if ("ratio".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newRatio(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else {
                     log(value
                             + " is not a supported value for option deletion-strategy");

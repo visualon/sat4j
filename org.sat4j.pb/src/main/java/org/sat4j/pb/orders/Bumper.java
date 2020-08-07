@@ -8,28 +8,35 @@ public enum Bumper implements IBumper {
 
     ANY {
         @Override
-        boolean isBumpable(ILits voc, int i) {
+        boolean isBumpable(ILits voc, int i, int p) {
             return true;
         }
     },
 
     ASSIGNED {
         @Override
-        boolean isBumpable(ILits voc, int i) {
+        boolean isBumpable(ILits voc, int i, int p) {
             return !voc.isUnassigned(i);
         }
     },
 
     FALSIFIED {
         @Override
-        boolean isBumpable(ILits voc, int i) {
+        boolean isBumpable(ILits voc, int i, int p) {
             return voc.isFalsified(i);
+        }
+    },
+
+    FALSIFIED_AND_PROPAGATED {
+        @Override
+        boolean isBumpable(ILits voc, int i, int p) {
+            return voc.isFalsified(i) || (voc.getLevel(i) == voc.getLevel(p));
         }
     };
 
     public void varBumpActivity(ILits voc, BumpStrategy bumpStrategy,
             IOrder order, PBConstr constr, int i, int propagated) {
-        if (isBumpable(voc, constr.get(i))) {
+        if (isBumpable(voc, constr.get(i), constr.get(propagated))) {
             bumpStrategy.varBumpActivity(order, constr, i);
         }
     }
@@ -39,6 +46,6 @@ public enum Bumper implements IBumper {
         // Everything has already been done.
     }
 
-    abstract boolean isBumpable(ILits voc, int i);
+    abstract boolean isBumpable(ILits voc, int i, int p);
 
 }

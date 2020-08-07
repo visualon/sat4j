@@ -729,4 +729,8 @@ public abstract class WatchPbLong
         }
         return stb.toString();
     }
+
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(sumcoefs);
+    }
 }

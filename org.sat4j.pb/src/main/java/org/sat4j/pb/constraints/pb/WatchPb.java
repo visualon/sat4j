@@ -722,4 +722,9 @@ public abstract class WatchPb
         }
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return sumcoefs;
+    }
 }
