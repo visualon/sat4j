@@ -79,6 +79,12 @@ public class PBGlucoseLCDS<D extends DataStructureFactory>
                 new RatioCoefficientsDegreeLBDComputerStrategy());
     }
 
+    public static <D extends DataStructureFactory> LearnedConstraintsDeletionStrategy newSlack(
+            Solver<D> solver, ConflictTimer timer) {
+        return new PBGlucoseLCDS<D>(solver, timer,
+                new SlackLBDComputerStrategy());
+    }
+
     @Override
     public void init() {
         super.init();

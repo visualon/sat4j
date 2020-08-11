@@ -502,6 +502,11 @@ public class KTHLauncher {
                             .newRatio(cpsolver, timer);
                     cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
 
+                } else if ("slack".equals(value)) {
+                    LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                            .newSlack(cpsolver, timer);
+                    cpsolver.setLearnedConstraintsDeletionStrategy(lcds);
+
                 } else {
                     log(value
                             + " is not a supported value for option deletion-strategy");
