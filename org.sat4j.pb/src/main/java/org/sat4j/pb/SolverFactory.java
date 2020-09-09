@@ -32,6 +32,7 @@ package org.sat4j.pb;
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
+import org.sat4j.minisat.core.LearnedConstraintsDeletionStrategy;
 import org.sat4j.minisat.core.Solver;
 import org.sat4j.minisat.learning.ClauseOnlyLearning;
 import org.sat4j.minisat.learning.MiniSATLearning;
@@ -82,7 +83,11 @@ import org.sat4j.pb.core.PBSolverClause;
 import org.sat4j.pb.core.PBSolverResCP;
 import org.sat4j.pb.core.PBSolverResolution;
 import org.sat4j.pb.core.PBSolverWithImpliedClause;
+import org.sat4j.pb.lcds.PBGlucoseLCDS;
+import org.sat4j.pb.orders.Bumper;
+import org.sat4j.pb.orders.BumperEffective;
 import org.sat4j.pb.orders.VarOrderHeapObjective;
+import org.sat4j.pb.restarts.GrowingCoefficientRestarts;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
 import org.sat4j.pb.tools.ManyCorePB;
 import org.sat4j.pb.tools.PreprocCardConstrLearningSolver;
@@ -1153,6 +1158,119 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         solver.setConflictFactory(
                 ConflictMapDivideByPivot.fullWeakeningOnBothFactory());
         return solver;
+    }
+
+    public static IPBSolver newCuttingPlanesPOS2020() {
+        PBSolverCP solver = newCuttingPlanes();
+
+        // Best bumping strategy: bump-effective.
+        solver.setBumper(new BumperEffective());
+
+        // Best LCD strategy: lbd-s.
+        LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                .newUnassignedSame(solver, solver.lbd_based.getTimer());
+        solver.setLearnedConstraintsDeletionStrategy(lcds);
+
+        // Best restart strategy: degree.
+        solver.setRestartStrategy(new GrowingCoefficientRestarts());
+
+        return solver;
+    }
+
+    public static IPBSolver newPartialRoundingSatPOS2020() {
+        PBSolverCP solver = (PBSolverCP) newPartialRoundingSat();
+
+        // Best bumping strategy: bump-assigned.
+        solver.setBumper(Bumper.ASSIGNED);
+
+        // Best LCD strategy: degree-size.
+        LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS
+                .newDegreeSize(solver, solver.lbd_based.getTimer());
+        solver.setLearnedConstraintsDeletionStrategy(lcds);
+
+        // Best restart strategy: Picosat's, which is the default.
+
+        return solver;
+    }
+
+    public static IPBSolver newRoundingSatPOS2020() {
+        PBSolverCP solver = (PBSolverCP) newPartialRoundingSat();
+
+        // Best bumping strategy: bump-assigned.
+        solver.setBumper(Bumper.ASSIGNED);
+
+        // Best LCD strategy: degree-size.
+        LearnedConstraintsDeletionStrategy lcds = PBGlucoseLCDS.newSlack(solver,
+                solver.lbd_based.getTimer());
+        solver.setLearnedConstraintsDeletionStrategy(lcds);
+
+        // Best restart strategy: Picosat's, which is the default.
+        return solver;
+    }
+
+    public static IPBSolver newCuttingPlanesPOS2020WL() {
+        PBSolverCP solver = (PBSolverCP) newCuttingPlanesPOS2020();
+        solver.setDataStructureFactory(new PuebloPBMinDataStructure());
+        return solver;
+    }
+
+    public static IPBSolver newPartialRoundingSatPOS2020WL() {
+        PBSolverCP solver = (PBSolverCP) newPartialRoundingSatPOS2020();
+        solver.setDataStructureFactory(new PuebloPBMinDataStructure());
+        return solver;
+    }
+
+    public static IPBSolver newRoundingSatPOS2020WL() {
+        PBSolverCP solver = (PBSolverCP) newRoundingSatPOS2020();
+        solver.setDataStructureFactory(new PuebloPBMinDataStructure());
+        return solver;
+    }
+
+    public static IPBSolver newBothPOS2020() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newCuttingPlanesPOS2020());
+    }
+
+    public static IPBSolver newBothPOS2020WL() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newCuttingPlanesPOS2020WL());
+    }
+
+    public static IPBSolver newBothPartialRoundingSatPOS2020WL() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newPartialRoundingSatPOS2020WL());
+    }
+
+    public static IPBSolver newBothPartialRoundingSatPOS2020() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newPartialRoundingSatPOS2020());
+    }
+
+    public static IPBSolver newBothRoundingSatPOS2020WL() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newRoundingSatPOS2020WL());
+    }
+
+    public static IPBSolver newBothRoundingSatPOS2020() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newRoundingSatPOS2020());
+    }
+
+    public static IPBSolver newAllPOS2020WL() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newRoundingSatPOS2020WL(), newPartialRoundingSatPOS2020WL(),
+                newCuttingPlanesPOS2020WL());
+    }
+
+    public static IPBSolver newAllPOS2020() {
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                newRoundingSatPOS2020(), newPartialRoundingSatPOS2020(),
+                newCuttingPlanesPOS2020());
+    }
+
+    public static IPBSolver newAllSAT2020() {
+        return new ManyCorePB<IPBSolver>(newResolution(), newRoundingSat(),
+                newPartialRoundingSat(), newCuttingPlanes());
     }
 
 }
