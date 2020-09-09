@@ -1194,7 +1194,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newRoundingSatPOS2020() {
-        PBSolverCP solver = (PBSolverCP) newPartialRoundingSat();
+        PBSolverCP solver = (PBSolverCP) newRoundingSat();
 
         // Best bumping strategy: bump-assigned.
         solver.setBumper(Bumper.ASSIGNED);
