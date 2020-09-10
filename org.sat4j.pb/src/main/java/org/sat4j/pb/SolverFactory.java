@@ -870,6 +870,20 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     /**
+     * Resolution and CuttingPlanes based solvers running in parallel. Does only
+     * make sense if run on a computer with several cores.
+     * 
+     * @return a parallel solver using both resolution and cutting planes proof
+     *         system.
+     */
+    public static IPBSolver newSoberBoth() {
+        PBSolverCP cp = newCuttingPlanes();
+        cp.setTimeout(60);
+        return new ManyCorePB<IPBSolver>(newResolution(),
+                new PBTimeoutIsolator(cp));
+    }
+
+    /**
      * Resolution and CuttingPlanesStar based solvers running in parallel. Does
      * only make sense if run on a computer with several cores.
      * 
