@@ -866,6 +866,22 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     /**
+     * Resolution based solver (i.e. classic SAT solver able to handle generic
+     * constraints. No specific inference mechanism.
+     * 
+     * @return the best available resolution based solver of the library.
+     */
+    public static IPBSolver newResolutionWL() {
+        PBSolverResolution solver = newCompetPBResMixedConstraintsObjectiveExpSimp(
+                new PuebloPBMinDataStructure());
+        solver.setSimplifier(Solver.NO_SIMPLIFICATION);
+        solver.setRestartStrategy(new Glucose21Restarts());
+        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        return solver;
+    }
+
+    /**
      * Resolution and CuttingPlanes based solvers running in parallel. Does only
      * make sense if run on a computer with several cores.
      * 
@@ -1232,12 +1248,12 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newBothPOS2020WL() {
-        return new ManyCorePB<IPBSolver>(newResolution(),
+        return new ManyCorePB<IPBSolver>(newResolutionWL(),
                 newCuttingPlanesPOS2020WL());
     }
 
     public static IPBSolver newBothPartialRoundingSatPOS2020WL() {
-        return new ManyCorePB<IPBSolver>(newResolution(),
+        return new ManyCorePB<IPBSolver>(newResolutionWL(),
                 newPartialRoundingSatPOS2020WL());
     }
 
@@ -1247,7 +1263,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newBothRoundingSatPOS2020WL() {
-        return new ManyCorePB<IPBSolver>(newResolution(),
+        return new ManyCorePB<IPBSolver>(newResolutionWL(),
                 newRoundingSatPOS2020WL());
     }
 
@@ -1257,7 +1273,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newAllPOS2020WL() {
-        return new ManyCorePB<IPBSolver>(newResolution(),
+        return new ManyCorePB<IPBSolver>(newResolutionWL(),
                 newRoundingSatPOS2020WL(), newPartialRoundingSatPOS2020WL(),
                 newCuttingPlanesPOS2020WL());
     }
