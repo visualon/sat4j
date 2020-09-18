@@ -802,9 +802,11 @@ public class ConflictMap extends MapPb implements IConflict {
                     // updating the new slack
                     lits = ConflictMap.this.byLevel[indLevel];
                     int lit;
+                    boolean anyFalsified = false;
                     for (IteratorInt iterator = lits.iterator(); iterator
                             .hasNext();) {
                         lit = iterator.next();
+                        anyFalsified |= this.voc.isFalsified(lit);
                         if (ConflictMap.this.voc.isFalsified(lit)
                                 && ConflictMap.this.voc.getLevel(
                                         lit) == indexToLevel(indLevel))
@@ -812,7 +814,7 @@ public class ConflictMap extends MapPb implements IConflict {
                                     ConflictMap.this.weightedLits.get(lit));
 
                     }
-                    if (!lits.isEmpty())
+                    if (anyFalsified)
                         previous = level;
 
                 }
@@ -842,8 +844,10 @@ public class ConflictMap extends MapPb implements IConflict {
         // where there is a literal belonging to the constraint
         int retour = 0;
         for (int i = 0; i < size(); i++) {
-            litLevel = this.voc.getLevel(this.weightedLits.getLit(i));
-            if (litLevel > retour && litLevel < borneMax) {
+            int lit = this.weightedLits.getLit(i);
+            litLevel = this.voc.getLevel(lit);
+            if (this.voc.isFalsified(lit) && litLevel > retour
+                    && litLevel < borneMax) {
                 retour = litLevel;
             }
         }
