@@ -99,4 +99,9 @@ public final class LearntHTClausePB extends LearntHTClause implements PBConstr {
         return stb.toString();
     }
 
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
+
 }

@@ -103,4 +103,9 @@ public final class OriginalHTClausePB extends OriginalHTClause
         stb.append(" >= 1");
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
 }

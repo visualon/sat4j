@@ -82,6 +82,11 @@ public class NaturalStaticOrder implements IOrder {
     }
 
     @Override
+    public void updateVar(int p, double value) {
+        updateVar(p);
+    }
+
+    @Override
     public void init() {
         index = 1;
     }

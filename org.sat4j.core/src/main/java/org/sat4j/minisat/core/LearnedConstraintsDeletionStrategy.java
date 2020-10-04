@@ -79,5 +79,5 @@ public interface LearnedConstraintsDeletionStrategy extends Serializable {
      * 
      * @param from
      */
-    void onPropagation(Constr from);
+    void onPropagation(Constr from, int propagated);
 }

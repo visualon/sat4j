@@ -41,15 +41,17 @@ import org.sat4j.specs.IVecInt;
  */
 public interface PBConstr extends Constr {
 
-	BigInteger getCoef(int literal);
+    BigInteger getCoef(int literal);
 
-	BigInteger getDegree();
+    BigInteger getDegree();
 
-	ILits getVocabulary();
+    ILits getVocabulary();
 
-	int[] getLits();
+    int[] getLits();
 
-	BigInteger[] getCoefs();
+    BigInteger[] getCoefs();
 
-	IVecInt computeAnImpliedClause();
+    IVecInt computeAnImpliedClause();
+
+    BigInteger getSumCoefs();
 }

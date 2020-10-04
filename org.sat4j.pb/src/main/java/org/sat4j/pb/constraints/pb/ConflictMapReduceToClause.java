@@ -36,32 +36,34 @@ import org.sat4j.pb.core.PBSolverStats;
 public final class ConflictMapReduceToClause extends ConflictMap {
 
     public ConflictMapReduceToClause(PBConstr cpb, int level, boolean noRemove,
-            boolean skip, IPostProcess postprocess,
+            SkipStrategy skip, IPreProcess preprocess, IPostProcess postprocess,
             IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
-        super(cpb, level, noRemove, skip, postprocess, weakeningStrategy,
-                autoDivisionStrategy, stats);
+        super(cpb, level, noRemove, skip, preprocess, postprocess,
+                weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, IPostProcess postprocess,
-            IWeakeningStrategy weakeningStrategy,
+            boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+            IPostProcess postprocess, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         return new ConflictMapReduceToClause(cpb, level, noRemove, skip,
-                postprocess, weakeningStrategy, autoDivisionStrategy, stats);
+                preprocess, postprocess, weakeningStrategy,
+                autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+                    IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
                 return ConflictMapReduceToClause.createConflict(cpb, level,
-                        noRemove, skip, postprocess, weakeningStrategy,
-                        autoDivisionStrategy, stats);
+                        noRemove, skip, preprocess, postprocess,
+                        weakeningStrategy, autoDivisionStrategy, stats);
             }
 
             @Override

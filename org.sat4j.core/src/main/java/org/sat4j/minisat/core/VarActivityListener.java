@@ -31,6 +31,8 @@ package org.sat4j.minisat.core;
 
 import java.io.Serializable;
 
+import org.sat4j.specs.Constr;
+
 /**
  * Interface providing the capability to increase the activity of a given
  * variable.
@@ -47,4 +49,12 @@ public interface VarActivityListener extends Serializable {
      *            <code>v&lt;&lt;1^1</code>)
      */
     void varBumpActivity(int p);
+
+    /**
+     * Update the activity of a variable v.
+     */
+    void varBumpActivity(Constr constr, int i, int p);
+
+    void postBumpActivity(Constr constr);
+
 }

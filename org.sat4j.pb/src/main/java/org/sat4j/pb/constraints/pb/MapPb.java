@@ -197,29 +197,29 @@ public class MapPb implements IDataStructurePB {
     }
 
     public BigInteger cuttingPlane(PBConstr cpb, BigInteger deg,
-            BigInteger[] reducedCoefs, VarActivityListener val) {
-        return cuttingPlane(cpb, deg, reducedCoefs, BigInteger.ONE, val);
+            BigInteger[] reducedCoefs, VarActivityListener val, int p) {
+        return cuttingPlane(cpb, deg, reducedCoefs, BigInteger.ONE, val, p);
     }
 
     public BigInteger cuttingPlane(PBConstr cpb, BigInteger degreeCons,
             BigInteger[] reducedCoefs, BigInteger coefMult,
-            VarActivityListener val) {
+            VarActivityListener val, int p) {
         this.degree = this.degree.add(degreeCons);
         assert this.degree.signum() > 0;
-
         if (reducedCoefs == null) {
             for (int i = 0; i < cpb.size(); i++) {
-                val.varBumpActivity(cpb.get(i));
+                val.varBumpActivity(cpb, i, p);
                 cuttingPlaneStep(cpb.get(i),
                         multiplyCoefficient(cpb.getCoef(i), coefMult));
             }
         } else {
             for (int i = 0; i < cpb.size(); i++) {
-                val.varBumpActivity(cpb.get(i));
+                val.varBumpActivity(cpb, i, p);
                 cuttingPlaneStep(cpb.get(i),
                         multiplyCoefficient(reducedCoefs[i], coefMult));
             }
         }
+        val.postBumpActivity(cpb);
 
         return this.degree;
     }
