@@ -65,7 +65,7 @@ public class BasicLauncher<T extends ISolver> extends AbstractLauncher {
     public static void main(final String[] args) {
         BasicLauncher<ISolver> lanceur = new BasicLauncher<ISolver>(
                 SolverFactory.instance());
-        if (args.length == 0 || args.length > 2) {
+        if (args.length == 0 || args.length > 3) {
             lanceur.usage();
             return;
         }
@@ -77,12 +77,16 @@ public class BasicLauncher<T extends ISolver> extends AbstractLauncher {
     @Override
     protected ISolver configureSolver(String[] args) {
         ISolver asolver;
-        if (args.length == 2) {
+        if (args.length >= 2) {
             asolver = this.factory.createSolverByName(args[0]);
         } else {
             asolver = this.factory.defaultSolver();
         }
-        asolver.setTimeout(Integer.MAX_VALUE);
+        if (args.length == 3) {
+            asolver.setTimeout(Integer.valueOf(args[1]));
+        } else {
+            asolver.setTimeout(Integer.MAX_VALUE);
+        }
         if (!"BRESIL".equals(System.getProperty("prime"))
                 && System.getProperty("all") == null) {
             asolver.setDBSimplificationAllowed(true);
