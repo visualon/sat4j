@@ -46,6 +46,7 @@ import org.sat4j.minisat.learning.PercentLengthLearning;
 import org.sat4j.minisat.orders.PhaseCachingAutoEraseStrategy;
 import org.sat4j.minisat.orders.RSATLastLearnedClausesPhaseSelectionStrategy;
 import org.sat4j.minisat.orders.RSATPhaseSelectionStrategy;
+import org.sat4j.minisat.orders.RandomLiteralSelectionStrategy;
 import org.sat4j.minisat.orders.RandomWalkDecorator;
 import org.sat4j.minisat.orders.VarOrderHeap;
 import org.sat4j.minisat.restarts.ArminRestarts;
@@ -171,6 +172,23 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                 learning, new MixedDataStructureDanielWL(),
                 new RandomWalkDecorator(
                         new VarOrderHeap(new RSATPhaseSelectionStrategy())),
+                new NoRestarts());
+        // solver.setSearchParams(new SearchParams(1.1, 100));
+        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        return solver;
+    }
+
+    /**
+     * 
+     * @since 2.3.6
+     */
+    public static ICDCL<DataStructureFactory> newRandomSolver() {
+        MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<DataStructureFactory>();
+        Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
+                learning, new MixedDataStructureDanielWL(),
+                new RandomWalkDecorator(
+                        new VarOrderHeap(new RandomLiteralSelectionStrategy()),
+                        1.0),
                 new NoRestarts());
         // solver.setSearchParams(new SearchParams(1.1, 100));
         solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
