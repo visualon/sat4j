@@ -56,7 +56,9 @@ public final class RandomLiteralSelectionStrategy
     /**
      * @since 2.2
      */
-    public static final Random RAND = new Random(123456789);
+    public static final Random RAND = System
+            .getProperty("NONDETERMINISTIC") == null ? new Random(123456789)
+                    : new Random();
 
     public void assignLiteral(int p) {
     }

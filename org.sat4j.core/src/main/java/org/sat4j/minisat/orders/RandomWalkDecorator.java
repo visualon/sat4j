@@ -53,7 +53,9 @@ public class RandomWalkDecorator implements IOrder, Serializable {
 
     private double p;
 
-    private static final Random RAND = new Random(123456789);
+    private static final Random RAND = System
+            .getProperty("NONDETERMINISTIC") == null ? new Random(123456789)
+                    : new Random();
     private ILits voc;
     private int nbRandomWalks;
 
