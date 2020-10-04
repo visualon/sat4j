@@ -51,7 +51,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     protected boolean hasBeenReduced = false;
     protected long numberOfReductions = 0;
-    private boolean allowSkipping = false;
+    private SkipStrategy skip = SkipStrategy.NO_SKIP;
     private boolean endingSkipping = true;
     /**
      * to store the slack of the current resolvant
@@ -64,6 +64,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     final PBSolverStats stats;
 
+    protected IPreProcess preProcess = NoPreProcess.instance();
     /**
      * allows to access directly to all variables belonging to a particular
      * level At index 0, unassigned literals are stored (usually level -1); so
@@ -82,24 +83,25 @@ public class ConflictMap extends MapPb implements IConflict {
      */
 
     public static IConflict createConflict(PBConstr cpb, int level,
-            boolean noRemove, boolean skip, IPostProcess postProcessing,
-            IWeakeningStrategy weakeningStrategy,
+            boolean noRemove, SkipStrategy skip, IPreProcess preProcessing,
+            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
-        return new ConflictMap(cpb, level, noRemove, skip, postProcessing,
-                weakeningStrategy, autoDivisionStrategy, stats);
+        return new ConflictMap(cpb, level, noRemove, skip, preProcessing,
+                postProcessing, weakeningStrategy, autoDivisionStrategy, stats);
     }
 
     public static IConflictFactory factory() {
         return new IConflictFactory() {
             @Override
             public IConflict createConflict(PBConstr cpb, int level,
-                    boolean noRemove, boolean skip, IPostProcess postprocess,
+                    boolean noRemove, SkipStrategy skip, IPreProcess preprocess,
+                    IPostProcess postprocess,
                     IWeakeningStrategy weakeningStrategy,
                     AutoDivisionStrategy autoDivisionStrategy,
                     PBSolverStats stats) {
                 return ConflictMap.createConflict(cpb, level, noRemove, skip,
-                        postprocess, weakeningStrategy, autoDivisionStrategy,
-                        stats);
+                        preprocess, postprocess, weakeningStrategy,
+                        autoDivisionStrategy, stats);
             }
 
             @Override
@@ -110,32 +112,35 @@ public class ConflictMap extends MapPb implements IConflict {
     }
 
     ConflictMap(PBConstr cpb, int level) {
-        this(cpb, level, false, false, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST,
+        this(cpb, level, false, SkipStrategy.NO_SKIP, NoPreProcess.instance(),
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, null);
     }
 
     ConflictMap(PBConstr cpb, int level, boolean noRemove) {
-        this(cpb, level, noRemove, false, NoPostProcess.instance(),
+        this(cpb, level, noRemove, SkipStrategy.NO_SKIP,
+                NoPreProcess.instance(), NoPostProcess.instance(),
                 IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, null);
     }
 
-    ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
+    ConflictMap(PBConstr cpb, int level, boolean noRemove, SkipStrategy skip,
             PBSolverStats stats) {
-        this(cpb, level, noRemove, skip, NoPostProcess.instance(),
-                IWeakeningStrategy.UNASSIGNED_FIRST,
+        this(cpb, level, noRemove, skip, NoPreProcess.instance(),
+                NoPostProcess.instance(), IWeakeningStrategy.UNASSIGNED_FIRST,
                 AutoDivisionStrategy.ENABLED, stats);
     }
 
-    ConflictMap(PBConstr cpb, int level, boolean noRemove, boolean skip,
-            IPostProcess postProcessing, IWeakeningStrategy weakeningStrategy,
+    ConflictMap(PBConstr cpb, int level, boolean noRemove, SkipStrategy skip,
+            IPreProcess preProcessing, IPostProcess postProcessing,
+            IWeakeningStrategy weakeningStrategy,
             AutoDivisionStrategy autoDivisionStrategy, PBSolverStats stats) {
         super(cpb, level, noRemove, autoDivisionStrategy);
         this.stats = stats;
-        this.allowSkipping = skip;
+        this.skip = skip;
         this.voc = cpb.getVocabulary();
         this.currentLevel = level;
+        this.preProcess = preProcessing;
         initStructures();
 
         this.postProcess = postProcessing;
@@ -273,6 +278,7 @@ public class ConflictMap extends MapPb implements IConflict {
     public BigInteger resolve(PBConstr cpb, int litImplied,
             VarActivityListener val) {
         assert litImplied > 1;
+        preProcess();
         int nLitImplied = litImplied ^ 1;
         if (cpb == null || !this.weightedLits.containsKey(nLitImplied)) {
             // no resolution
@@ -299,29 +305,17 @@ public class ConflictMap extends MapPb implements IConflict {
             return this.degree;
         }
 
-        if (this.allowSkipping) {
-            if (this.weightedLits.get(nLitImplied).negate()
-                    .compareTo(slackConflict()) > 0) {
-                if (this.endingSkipping)
-                    stats.incNumberOfEndingSkipping();
-                else
-                    stats.incNumberOfInternalSkipping();
+        if (skip.skip(this, litImplied)) {
+            if (this.endingSkipping)
+                stats.incNumberOfEndingSkipping();
+            else
+                stats.incNumberOfInternalSkipping();
+            assert slackConflict().signum() < 0;
+            return this.degree;
 
-                // no resolution
-                // undo operation should be anticipated
-                int litLevel = levelToIndex(this.voc.getLevel(litImplied));
-                this.byLevel[litLevel].remove(nLitImplied);
-                if (this.byLevel[0] == null) {
-                    this.byLevel[0] = new VecInt();
-                }
-                this.byLevel[0].push(nLitImplied);
-                assert slackConflict().signum() < 0;
-                return this.degree;
-            } else
-                this.endingSkipping = false;
-
+        } else {
+            this.endingSkipping = false;
         }
-
         stats.incNumberOfDerivationSteps();
         assert slackConflict().signum() < 0;
         assert this.degree.signum() >= 0;
@@ -392,18 +386,21 @@ public class ConflictMap extends MapPb implements IConflict {
             }
 
             // coefficients of the conflict must be multiplied by coefMult
+            long before = System.nanoTime();
             if (!this.coefMult.equals(BigInteger.ONE)) {
                 for (int i = 0; i < size(); i++) {
                     changeCoef(i, this.weightedLits.getCoef(i)
                             .multiply(this.coefMult));
                 }
             }
+            long after = System.nanoTime();
+            stats.incTimeForArithmeticOperations(after - before);
         }
         assert slackConflict().signum() < 0;
 
         // cutting plane
         this.degree = cuttingPlane(cpb, degreeCons, coefsCons,
-                this.coefMultCons, val);
+                this.coefMultCons, val, ind);
         // neither litImplied nor nLitImplied is present in coefs structure
         assert !this.weightedLits.containsKey(litImplied);
         assert !this.weightedLits.containsKey(nLitImplied);
@@ -418,6 +415,10 @@ public class ConflictMap extends MapPb implements IConflict {
         assert slackConflict().signum() < 0;
         divideCoefs();
         return this.degree;
+    }
+
+    public void preProcess() {
+        this.preProcess.preProcess(currentLevel, this);
     }
 
     void divideCoefs() {
@@ -447,7 +448,8 @@ public class ConflictMap extends MapPb implements IConflict {
         do {
             if (slackResolve.signum() >= 0) {
                 assert slackThis.signum() > 0;
-                tmp = reduceInConstraint(wpb, reducedCoefs, ind, reducedDegree);
+                tmp = reduceInConstraint(wpb, reducedCoefs, ind, reducedDegree,
+                        slackResolve);
                 assert tmp.compareTo(reducedDegree) < 0
                         && tmp.compareTo(BigInteger.ONE) >= 0;
                 reducedDegree = tmp;
@@ -455,7 +457,6 @@ public class ConflictMap extends MapPb implements IConflict {
             // search of the multiplying coefficients
             assert this.weightedLits.get(litImplied ^ 1).signum() > 0;
             assert reducedCoefs[ind].signum() > 0;
-
             if (!reducedCoefs[ind].equals(previousCoefLitImplied)) {
                 assert coefLitImplied
                         .equals(this.weightedLits.get(litImplied ^ 1));
@@ -489,7 +490,7 @@ public class ConflictMap extends MapPb implements IConflict {
 
     }
 
-    private BigInteger possConstraint(IWatchPb wpb, BigInteger[] theCoefs) {
+    protected BigInteger possConstraint(IWatchPb wpb, BigInteger[] theCoefs) {
         BigInteger poss = BigInteger.ZERO;
         // for each literal
         for (int i = 0; i < wpb.size(); i++) {
@@ -676,8 +677,13 @@ public class ConflictMap extends MapPb implements IConflict {
      *            second integer
      * @return the least common factor
      */
-    protected static BigInteger ppcm(BigInteger a, BigInteger b) {
-        return a.divide(a.gcd(b)).multiply(b);
+    protected BigInteger ppcm(BigInteger a, BigInteger b) {
+        long before = System.nanoTime();
+        BigInteger lcm = a.divide(a.gcd(b)).multiply(b);
+        long after = System.nanoTime();
+        stats.incTimeForArithmeticOperations(after - before);
+        return lcm;
+
     }
 
     /**
@@ -699,7 +705,7 @@ public class ConflictMap extends MapPb implements IConflict {
      */
     public BigInteger reduceInConstraint(IWatchPb wpb,
             final BigInteger[] coefsBis, final int indLitImplied,
-            final BigInteger degreeBis) {
+            final BigInteger degreeBis, BigInteger slackResolve) {
         assert degreeBis.compareTo(BigInteger.ONE) > 0;
         // search of a literal to remove
         int lit = weakeningStrategy.findLiteralToRemove(this.voc, wpb, coefsBis,

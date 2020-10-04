@@ -150,16 +150,21 @@ public class VarOrderHeap implements IOrder, Serializable {
      *            a literal
      */
     public void updateVar(int p) {
+        updateVar(p, 1);
+    }
+
+    @Override
+    public void updateVar(int p, double value) {
         int var = var(p);
-        updateActivity(var);
+        updateActivity(var, value);
         this.phaseStrategy.updateVar(p);
         if (this.heap.inHeap(var)) {
             this.heap.increase(var);
         }
     }
 
-    protected void updateActivity(final int var) {
-        if ((this.activity[var] += this.varInc) > VAR_RESCALE_BOUND) {
+    protected void updateActivity(final int var, double inc) {
+        if ((this.activity[var] += (inc * varInc)) > VAR_RESCALE_BOUND) {
             varRescaleActivity();
         }
     }

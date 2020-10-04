@@ -34,12 +34,12 @@ import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVec;
 
 @Feature(value = "deletion", parent = "expert")
-final class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
+public class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
     private static final long serialVersionUID = 1L;
     private final ConflictTimer timer;
-    private final Solver<? extends DataStructureFactory> solver;
+    protected final Solver<? extends DataStructureFactory> solver;
 
-    ActivityLCDS(Solver<? extends DataStructureFactory> solver,
+    public ActivityLCDS(Solver<? extends DataStructureFactory> solver,
             ConflictTimer timer) {
         this.timer = timer;
         this.solver = solver;
@@ -53,6 +53,7 @@ final class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
             if (c.locked() || c.size() == 2) {
                 learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
+                onRemove(c);
                 c.remove(solver);
                 solver.slistener.delete(c);
             }
@@ -94,7 +95,11 @@ final class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
         }
     }
 
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
         // do nothing
+    }
+
+    protected void onRemove(Constr c) {
+        // Nothing to do by default.
     }
 }

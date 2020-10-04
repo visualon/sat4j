@@ -149,4 +149,9 @@ public final class AtLeastPB extends AtLeast implements PBConstr {
 
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
 }

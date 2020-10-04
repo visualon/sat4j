@@ -217,4 +217,9 @@ public final class MinWatchCardPB extends MinWatchCard implements PBConstr {
 
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
 }

@@ -35,11 +35,11 @@ import org.sat4j.specs.IVec;
 
 /**
  * LBD based clauses cleaning strategy, as found in Glucose.
- * 
+ *
  * This strategy expects the constraints to be clauses, i.e. the LBD computation
  * may not be correct for other constraints (cardinality constraints, PB
  * constraints).
- * 
+ *
  * @author leberre
  *
  * @param <D>
@@ -49,9 +49,9 @@ class GlucoseLCDS<D extends DataStructureFactory>
         implements LearnedConstraintsDeletionStrategy {
 
     /**
-     * 
+     *
      */
-    private final Solver<D> solver;
+    protected final Solver<D> solver;
     private static final long serialVersionUID = 1L;
     private int[] flags = new int[0];
     private int flag = 0;
@@ -59,7 +59,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
 
     private final ConflictTimer timer;
 
-    GlucoseLCDS(Solver<D> solver, ConflictTimer timer) {
+    protected GlucoseLCDS(Solver<D> solver, ConflictTimer timer) {
         this.solver = solver;
         this.timer = timer;
     }
@@ -75,6 +75,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
             } else {
                 c.remove(solver);
                 solver.slistener.delete(c);
+                onRemove(c);
             }
         }
         if (solver.isVerbose()) {
@@ -86,6 +87,10 @@ class GlucoseLCDS<D extends DataStructureFactory>
         }
         learnedConstrs.shrinkTo(j);
 
+    }
+
+    protected void onRemove(Constr c) {
+        // Nothing to do by default.
     }
 
     public ConflictTimer getTimer() {
@@ -109,11 +114,11 @@ class GlucoseLCDS<D extends DataStructureFactory>
     }
 
     public void onClauseLearning(Constr constr) {
-        int nblevel = computeLBD(constr);
+        int nblevel = computeLBD(constr, -1);
         constr.setActivity(nblevel);
     }
 
-    protected int computeLBD(Constr constr) {
+    protected int computeLBD(Constr constr, int propagated) {
         int nblevel = 1;
         this.flag++;
         int currentLevel;
@@ -131,7 +136,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
 
     }
 
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
 
     }
 

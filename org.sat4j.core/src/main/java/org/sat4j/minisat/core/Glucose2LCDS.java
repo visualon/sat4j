@@ -33,11 +33,12 @@ import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 
 @Feature(value = "deletion", parent = "expert")
-class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
+public class Glucose2LCDS<D extends DataStructureFactory>
+        extends GlucoseLCDS<D> {
 
     private static final long serialVersionUID = 1L;
 
-    Glucose2LCDS(Solver<D> solver, ConflictTimer timer) {
+    protected Glucose2LCDS(Solver<D> solver, ConflictTimer timer) {
         super(solver, timer);
     }
 
@@ -48,9 +49,9 @@ class Glucose2LCDS<D extends DataStructureFactory> extends GlucoseLCDS<D> {
     }
 
     @Override
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
         if (from.getActivity() > 2.0) {
-            int nblevel = computeLBD(from);
+            int nblevel = computeLBD(from, propagated);
             if (nblevel < from.getActivity()) {
                 getSolver().stats.incUpdateLBD();
                 from.setActivity(nblevel);

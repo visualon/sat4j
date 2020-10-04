@@ -68,7 +68,8 @@ final class AgeLCDS implements LearnedConstraintsDeletionStrategy {
         }
         if (solver.isVerbose()) {
             solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
-                    + (solver.learnts.size() - j) + " clauses out of " + solver.learnts.size()); //$NON-NLS-1$
+                    + (solver.learnts.size() - j) + " clauses out of " //$NON-NLS-1$
+                    + solver.learnts.size());
             // out.flush();
         }
         solver.learnts.shrinkTo(j);
@@ -97,7 +98,7 @@ final class AgeLCDS implements LearnedConstraintsDeletionStrategy {
         // do nothing
     }
 
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
         // do nothing
     }
 }

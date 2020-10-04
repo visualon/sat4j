@@ -78,4 +78,9 @@ public final class LearntBinaryClausePB extends LearntBinaryClause
         stb.append(" >= 1");
         return stb.toString();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
 }

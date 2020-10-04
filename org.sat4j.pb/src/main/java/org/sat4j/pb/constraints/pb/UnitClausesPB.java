@@ -64,4 +64,9 @@ public class UnitClausesPB extends UnitClauses implements PBConstr {
     public IVecInt computeAnImpliedClause() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.ONE;
+    }
 }

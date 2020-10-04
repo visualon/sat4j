@@ -575,7 +575,7 @@ public class Solver<D extends DataStructureFactory>
         this.voc.setReason(p, from);
         this.trail.push(p);
         if (from != null && from.learnt()) {
-            this.learnedConstraintsDeletionStrategy.onPropagation(from);
+            this.learnedConstraintsDeletionStrategy.onPropagation(from, p);
         }
         return true;
     }
@@ -1072,6 +1072,10 @@ public class Solver<D extends DataStructureFactory>
 
     public void varBumpActivity(int p) {
         this.order.updateVar(p);
+    }
+
+    public void varBumpActivity(Constr constr, int i, int p) {
+        this.order.updateVar(constr.get(i));
     }
 
     private void claRescalActivity() {
@@ -1694,7 +1698,7 @@ public class Solver<D extends DataStructureFactory>
                 return this.aTimer;
             }
 
-            public void onPropagation(Constr from) {
+            public void onPropagation(Constr from, int propagated) {
                 // TODO Auto-generated method stub
 
             }
@@ -2594,5 +2598,10 @@ public class Solver<D extends DataStructureFactory>
     @Override
     public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
         this.unitClauseConsumer = ucc;
+    }
+
+    @Override
+    public void postBumpActivity(Constr constr) {
+        // Nothing to do by default.
     }
 }

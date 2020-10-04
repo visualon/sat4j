@@ -96,7 +96,7 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
         }
     }
 
-    public void onPropagation(Constr from) {
+    public void onPropagation(Constr from, int propagated) {
         // do nothing
     }
 }

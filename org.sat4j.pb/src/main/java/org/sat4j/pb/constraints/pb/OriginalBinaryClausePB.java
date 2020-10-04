@@ -100,4 +100,9 @@ public final class OriginalBinaryClausePB extends OriginalBinaryClause
         return stb.toString();
     }
 
+    @Override
+    public BigInteger getSumCoefs() {
+        return BigInteger.valueOf(size());
+    }
+
 }

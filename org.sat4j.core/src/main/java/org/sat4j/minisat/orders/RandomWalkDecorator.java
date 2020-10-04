@@ -130,6 +130,11 @@ public class RandomWalkDecorator implements IOrder, Serializable {
         this.decorated.updateVar(q);
     }
 
+    @Override
+    public void updateVar(int p, double value) {
+        updateVar(p);
+    }
+
     public double varActivity(int q) {
         return this.decorated.varActivity(q);
     }

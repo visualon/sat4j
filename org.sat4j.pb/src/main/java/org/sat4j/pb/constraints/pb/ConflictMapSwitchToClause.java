@@ -42,7 +42,7 @@ public final class ConflictMapSwitchToClause extends ConflictMap {
     }
 
     public ConflictMapSwitchToClause(PBConstr cpb, int level, boolean noRemove,
-            boolean skip, PBSolverStats stats) {
+            SkipStrategy skip, PBSolverStats stats) {
         super(cpb, level, noRemove, skip, stats);
     }
 
