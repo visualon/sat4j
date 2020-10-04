@@ -176,6 +176,8 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
             stb.append(Lits.toString(lit));
             stb.append("["); //$NON-NLS-1$
             stb.append(this.voc.valueToString(lit));
+            stb.append("@");
+            stb.append(this.voc.getLevel(lit));
             stb.append("]"); //$NON-NLS-1$
             stb.append(" "); //$NON-NLS-1$
         }
@@ -191,6 +193,8 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
             stb.append(mapper.map(LiteralsUtils.toDimacs(lit)));
             stb.append("["); //$NON-NLS-1$
             stb.append(this.voc.valueToString(lit));
+            stb.append("@");
+            stb.append(this.voc.getLevel(lit));
             stb.append("]"); //$NON-NLS-1$
             stb.append(" "); //$NON-NLS-1$
         }

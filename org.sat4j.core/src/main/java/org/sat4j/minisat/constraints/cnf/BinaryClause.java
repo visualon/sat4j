@@ -158,11 +158,15 @@ public abstract class BinaryClause
         stb.append(Lits.toString(this.head));
         stb.append("["); //$NON-NLS-1$
         stb.append(this.voc.valueToString(this.head));
+        stb.append("@");
+        stb.append(this.voc.getLevel(this.head));
         stb.append("]"); //$NON-NLS-1$
         stb.append(" "); //$NON-NLS-1$
         stb.append(Lits.toString(this.tail));
         stb.append("["); //$NON-NLS-1$
         stb.append(this.voc.valueToString(this.tail));
+        stb.append("@");
+        stb.append(this.voc.getLevel(this.tail));
         stb.append("]"); //$NON-NLS-1$
         return stb.toString();
     }
