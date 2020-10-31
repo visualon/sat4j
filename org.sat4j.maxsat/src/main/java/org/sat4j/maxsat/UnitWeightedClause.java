@@ -29,9 +29,11 @@
  *******************************************************************************/
 package org.sat4j.maxsat;
 
+import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.VarMapper;
 
+@Feature("constraint")
 public class UnitWeightedClause implements IConstr {
 
     private static final UnitWeightedClause INSTANCE = new UnitWeightedClause();
