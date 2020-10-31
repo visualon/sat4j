@@ -53,7 +53,9 @@ public class ParityConstraintGenerator {
      * constraints. This differs from the original paper, which uses numbers
      * generated from <a href="http://fourmilab.ch/hotbits/">HotBits</a>.
      */
-    private static final Random RANDOM = new Random(1234567890);
+    private static final Random RANDOM = System
+            .getProperty("NONDETERMINISTIC") == null ? new Random(123456789)
+                    : new Random();
 
     /**
      * The solver in which parity constraints are added.
