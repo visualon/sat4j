@@ -308,7 +308,7 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
     @Override
     public <I extends ISolverService> void setSearchListener(
             SearchListener<I> sl) {
-        throw new UnsupportedOperationException();
+        this.solvers.get(solverIndex).setSearchListener(sl);
     }
 
     @Override
@@ -442,6 +442,12 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
     @Override
     public boolean removeConstr(IConstr c) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IVecInt createBlockingClauseForCurrentModel() {
+        return this.solvers.get(solverIndex)
+                .createBlockingClauseForCurrentModel();
     }
 
 }
