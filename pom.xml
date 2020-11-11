@@ -295,7 +295,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+            </plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
