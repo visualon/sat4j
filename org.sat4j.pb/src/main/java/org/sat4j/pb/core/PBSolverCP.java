@@ -340,5 +340,4 @@ public class PBSolverCP extends PBSolver {
     public void postBumpActivity(Constr constr) {
         bumper.postBumpActivity(getOrder(), (PBConstr) constr);
     }
-
 }
