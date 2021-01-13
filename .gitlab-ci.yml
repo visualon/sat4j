@@ -7,9 +7,8 @@ variables:
   # `installAtEnd` and `deployAtEnd`are only effective with recent version of the corresponding plugins.
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
-
-java8-sonar:
-    image: maven:3.5.4-jdk-8-alpine
+maven36-java11-sonar:
+    image: maven:3.6.3-jdk-11-slim
     stage: build
     only: 
       - master
@@ -20,8 +19,8 @@ java8-sonar:
        paths:
         - .m2/repository 
 
-java8:
-    image: maven:3.5.4-jdk-8-alpine
+maven36-java11:
+    image: maven:3.6.3-jdk-11-slim
     stage: build
     except: 
       - master
@@ -30,40 +29,9 @@ java8:
     cache:
        paths:
         - .m2/repository 
-        
-jars-j8:
-    image: frekele/ant:1.10.1-jdk8
-    stage: build
-    script: 
-      - ant -Drelease=NIGHTLY sat
-    artifacts:
-       paths:
-        - dist/NIGHTLY/*.jar
-       expire_in: 4 weeks
 
-java7:
-    image: maven:3.5.4-jdk-7-alpine
-    stage: test
-    script: 
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
-    allow_failure: true
-
-maven36-java8:
-    image: maven:3.6.2-jdk-8-slim
-    stage: test
-    script: 
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
-    allow_failure: true
-    
-maven36-java11:
-    image: maven:3.6.2-jdk-11-slim
-    stage: test
-    script: 
-      - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
-    allow_failure: true
-
-maven36-java13:
-    image: maven:3.6.2-jdk-13
+maven36-java15:
+    image: maven:3.6.3-openjdk-15
     stage: test
     script:
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
