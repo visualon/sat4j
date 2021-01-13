@@ -9,7 +9,7 @@
 	<groupId>org.ow2.sat4j</groupId>
 	<artifactId>org.ow2.sat4j.pom</artifactId>
 	<packaging>pom</packaging>
-	<version>2.3.6</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<name>SAT4J</name>
 	<url>http://www.sat4j.org/</url>
 	<description>
@@ -19,7 +19,6 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 		<connection>scm:git:https://gitlab.ow2.org/sat4j/sat4j/</connection>
 		<url>https://gitlab.ow2.org/sat4j/sat4j/</url>
 		<developerConnection>scm:git:https://gitlab.ow2.org/sat4j/sat4j/</developerConnection>
-	  <tag>2_3_6</tag>
   </scm>
 	<licenses>
 		<license>
@@ -74,10 +73,10 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 	</developers>
 	<properties>
 		<!-- compiler params -->
-		<javaSource>1.7</javaSource>
-		<javaTarget>1.7</javaTarget>
-		<testSource>1.7</testSource>
-		<testTarget>1.7</testTarget>
+		<javaSource>11</javaSource>
+		<javaTarget>11</javaTarget>
+		<testSource>11</testSource>
+		<testTarget>11</testTarget>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- common distribution locations -->
 		<siteRepositoryId />
@@ -105,13 +104,13 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
+			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -188,7 +187,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.2</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>${javaSource}</source>
 					<target>${javaTarget}</target>
