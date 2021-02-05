@@ -37,6 +37,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.sat4j.AbstractLauncher;
+import org.sat4j.ExitCode;
 import org.sat4j.ILauncherMode;
 import org.sat4j.maxsat.reader.WDimacsReader;
 import org.sat4j.opt.MinOneDecorator;
@@ -123,7 +124,7 @@ public class GenericOptLauncher extends AbstractLauncher {
     protected Reader createReader(ISolver aSolver, String problemname) {
         Reader reader;
         if (problemname.contains(".wcnf")) { //$NON-NLS-1$
-            reader = new WDimacsReader(this.wmsd);
+            reader = new WDimacsReader(this.maxSatSolver);
         } else {
             reader = new LecteurDimacs(aSolver);
         }
@@ -137,6 +138,8 @@ public class GenericOptLauncher extends AbstractLauncher {
     }
 
     private WeightedMaxSatDecorator wmsd;
+    
+    private WeightedPartialMaxsat maxSatSolver;
 
     @Override
     protected ISolver configureSolver(String[] args) {
@@ -171,19 +174,23 @@ public class GenericOptLauncher extends AbstractLauncher {
                         this.wmsd = new WeightedMaxSatDecorator(
                                 org.sat4j.pb.SolverFactory.newSATUNSAT(),
                                 equivalence);
+                        this.maxSatSolver=this.wmsd;
                     } else if (cmd.hasOption("p")) {
                         this.wmsd = new WeightedMaxSatDecorator(
                                 org.sat4j.pb.SolverFactory.newBoth(),
                                 equivalence);
+                        this.maxSatSolver=this.wmsd;
                     } else {
                         this.wmsd = new WeightedMaxSatDecorator(
                                 org.sat4j.pb.SolverFactory.instance().createSolverByName(aPBSolverName), equivalence);
+                        this.maxSatSolver=this.wmsd;
                     }
                     if (cmd.hasOption("l")) {
                         asolver = new ConstraintRelaxingPseudoOptDecorator(
                                 this.wmsd);
                     } else if (cmd.hasOption("hs"))  {
                         asolver = org.sat4j.maxsat.SolverFactory.newMaxHSLike();
+                        this.maxSatSolver=(WeightedPartialMaxsat) asolver;
                         setLauncherMode(ILauncherMode.DECISION);
                     } else if (cmd.hasOption("I")){
                         this.wmsd.setSearchListener(new SearchOptimizerListener(ILauncherMode.DECISION));
@@ -229,6 +236,15 @@ public class GenericOptLauncher extends AbstractLauncher {
         }
         return asolver;
     }
+    
+    @Override
+    protected void displayResult() {
+        super.displayResult();
+        if(maxSatSolver!=null && getLauncherMode().getCurrentExitCode()==ExitCode.SATISFIABLE) {
+            System.out.println(COMMENT_PREFIX+"objective function="+maxSatSolver.violatedWeight());
+        }
+    }
+    
 
     public static void main(String[] args) {
         AbstractLauncher lanceur = new GenericOptLauncher();
