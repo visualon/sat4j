@@ -36,6 +36,7 @@ import org.sat4j.minisat.constraints.cnf.Lits;
 import org.sat4j.minisat.core.VarActivityListener;
 import org.sat4j.pb.IPBSolverService;
 import org.sat4j.pb.tools.PBSearchListener;
+import org.sat4j.pb.tools.VoidPBTracing;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 
@@ -52,7 +53,7 @@ public class MapPb implements IDataStructurePB {
      */
     protected InternalMapPBStructure weightedLits;
 
-    protected PBSearchListener<IPBSolverService> listener;
+    protected PBSearchListener<IPBSolverService> listener = new VoidPBTracing();
 
     protected BigInteger degree;
 
