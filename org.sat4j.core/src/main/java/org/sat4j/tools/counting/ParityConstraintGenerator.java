@@ -108,6 +108,8 @@ public class ParityConstraintGenerator {
      *            The number of constraints to generate.
      */
     public void generate(int nb) {
+        System.out.printf(
+                "c adding %d parity constraints in the current solver%n", nb);
         for (int i = 0; i < nb; i++) {
             // Looking for the variables to put in the constraint.
             IVecInt lits = new VecInt();

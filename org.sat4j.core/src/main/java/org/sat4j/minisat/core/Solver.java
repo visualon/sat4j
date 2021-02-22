@@ -2604,4 +2604,16 @@ public class Solver<D extends DataStructureFactory>
     public void postBumpActivity(Constr constr) {
         // Nothing to do by default.
     }
+
+    @Override
+    public int[] decisions() {
+        if (model == null) {
+            throw new IllegalStateException(
+                    "Can only call that method when the problem is satisfiable!");
+        }
+        int n = decisions.size();
+        int[] outdecisions = new int[n];
+        System.arraycopy(decisions.toArray(), 0, outdecisions, 0, n);
+        return outdecisions;
+    }
 }
