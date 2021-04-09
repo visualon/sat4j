@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.ow2</groupId>
 		<artifactId>ow2</artifactId>
-		<version>1.5</version>
+		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.ow2.sat4j</groupId>
 	<artifactId>org.ow2.sat4j.pom</artifactId>
