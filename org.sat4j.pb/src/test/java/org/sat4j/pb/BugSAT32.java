@@ -84,9 +84,10 @@ public class BugSAT32 {
                 literals, coefs, true, BigInteger.ZERO));
         assertEquals(BigInteger.ZERO, Pseudos.niceParametersForCompetition(
                 literals, coefs, false, BigInteger.ZERO));
-        assertEquals(BigInteger.ZERO, Pseudos.niceParametersForCompetition(
-                literals, coefs, true, BigInteger.ONE.negate()));
-        assertEquals(BigInteger.ZERO, Pseudos.niceParametersForCompetition(
+        assertEquals(BigInteger.ONE.negate(),
+                Pseudos.niceParametersForCompetition(literals, coefs, true,
+                        BigInteger.ONE.negate()));
+        assertEquals(BigInteger.ONE, Pseudos.niceParametersForCompetition(
                 literals, coefs, false, BigInteger.ONE));
 
     }
