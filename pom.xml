@@ -120,7 +120,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.10.19</version>
+			<version>3.8.25</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
