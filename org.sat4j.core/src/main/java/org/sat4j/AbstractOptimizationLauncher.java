@@ -52,8 +52,8 @@ import org.sat4j.specs.TimeoutException;
 public abstract class AbstractOptimizationLauncher extends AbstractLauncher {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private static final String CURRENT_OPTIMUM_VALUE_PREFIX = "o "; //$NON-NLS-1$
@@ -87,15 +87,15 @@ public abstract class AbstractOptimizationLauncher extends AbstractLauncher {
         System.out.flush();
         PrintWriter out = getLogWriter();
         out.flush();
-        this.solver.printStat(out, COMMENT_PREFIX);
-        this.solver.printInfos(out, COMMENT_PREFIX);
+        this.solver.printStat(out, OutputPrefix.COMMENT_PREFIX.toString());
+        this.solver.printInfos(out, OutputPrefix.COMMENT_PREFIX.toString());
         ExitCode exitCode = getExitCode();
-        out.println(ILauncherMode.ANSWER_PREFIX + exitCode);
+        out.printf("%s%s%n", OutputPrefix.ANSWER_PREFIX, exitCode);
         if (exitCode == ExitCode.SATISFIABLE
-                || exitCode == ExitCode.OPTIMUM_FOUND || this.incomplete
-                && exitCode == ExitCode.UPPER_BOUND) {
+                || exitCode == ExitCode.OPTIMUM_FOUND
+                || this.incomplete && exitCode == ExitCode.UPPER_BOUND) {
             if (this.displaySolutionLine) {
-                out.print(ILauncherMode.SOLUTION_PREFIX);
+                out.print(OutputPrefix.ANSWER_PREFIX);
                 getReader().decode(this.solver.model(), out);
                 out.println();
             }
@@ -129,10 +129,9 @@ public abstract class AbstractOptimizationLauncher extends AbstractLauncher {
                 }
                 log("Got one! Elapsed wall clock time (in seconds):" //$NON-NLS-1$
                         + (System.currentTimeMillis() - getBeginTime())
-                        / 1000.0);
-                getLogWriter().println(
-                        CURRENT_OPTIMUM_VALUE_PREFIX
-                                + optproblem.getObjectiveValue());
+                                / 1000.0);
+                getLogWriter().println(CURRENT_OPTIMUM_VALUE_PREFIX
+                        + optproblem.getObjectiveValue());
                 optproblem.discardCurrentSolution();
             }
             if (isSatisfiable) {
