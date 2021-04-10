@@ -119,8 +119,8 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>3.8.25</version>
+			<artifactId>mockito-core</artifactId>
+			<version>3.9.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -296,7 +296,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.2</version>
+				<version>0.8.6</version>
 				<executions>
 					<execution>
 						<phase>process-test-classes</phase>
