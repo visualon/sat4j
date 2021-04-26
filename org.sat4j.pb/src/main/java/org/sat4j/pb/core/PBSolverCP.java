@@ -352,7 +352,7 @@ public class PBSolverCP extends PBSolver {
         if (sl instanceof PBSearchListener) {
             super.setSearchListener(sl);
         } else {
-            super.setSearchListener(new PBSearchListenerDecorator<>(sl));
+            super.setSearchListener(new PBSearchListenerDecorator<S>(sl));
         }
     }
 }
