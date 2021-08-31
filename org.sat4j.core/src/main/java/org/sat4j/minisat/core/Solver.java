@@ -1285,6 +1285,9 @@ public class Solver<D extends DataStructureFactory>
                     if (this.sharedConflict == null) {
                         // New variable decision
                         this.stats.incDecisions();
+                        if (this.stats.getConflicts() > 0L) {
+                            this.stats.setNoDecisionAfterFirstConflict(false);
+                        }
                         int p = this.order.select();
                         if (p == ILits.UNDEFINED) {
                             // check (expensive) if all the constraints are not
