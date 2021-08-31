@@ -36,10 +36,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.sat4j.minisat.core.ILits;
+import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.MandatoryLiteralListener;
 import org.sat4j.specs.UnitPropagationListener;
+import org.sat4j.specs.VarMapper;
 
 /**
  * Data structure for pseudo-boolean constraint with watched literals.
@@ -424,8 +426,8 @@ public final class MaxWatchPbLong extends WatchPbLong {
             this.cstr = cstr;
         }
 
-        public boolean propagatePI(MandatoryLiteralListener l, int p) {
-            return cstr.propagatePI(l, p);
+        public void propagatePI(MandatoryLiteralListener l, int p) {
+            cstr.propagatePI(l, p);
         }
 
         public boolean isAssertive(int dl) {

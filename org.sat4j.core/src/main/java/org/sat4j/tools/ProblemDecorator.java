@@ -103,4 +103,9 @@ public class ProblemDecorator<T extends IProblem> implements IProblem {
         return decorated;
     }
 
+    @Override
+    public int[] decisions() {
+        return decorated.decisions();
+    }
+
 }
