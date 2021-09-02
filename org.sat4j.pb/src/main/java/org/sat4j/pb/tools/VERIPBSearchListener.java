@@ -185,22 +185,22 @@ public class VERIPBSearchListener implements PBSearchListener<ISolverService> {
 
     @Override
     public void weakenOnReason(int p) {
-        this.reason.append(" " + p).append(" w");
+        this.reason.append(" x" + abs(p)).append(" w");
     }
 
     @Override
     public void weakenOnReason(BigInteger coeff, int p) {
-        this.reason.append(" " + coeff).append(" " + p).append(" W");
+        this.reason.append(" " + coeff).append(" x" + abs(p)).append(" W");
     }
 
     @Override
     public void weakenOnConflict(int p) {
-        this.conflict.append(" " + p).append(" w");
+        this.conflict.append(" x" + abs(p)).append(" w");
     }
 
     @Override
     public void weakenOnConflict(BigInteger coeff, int p) {
-        this.conflict.append(" " + coeff).append(" " + p).append(" W");
+        this.conflict.append(" " + coeff).append(" x" + abs(p)).append(" W");
     }
 
     @Override
