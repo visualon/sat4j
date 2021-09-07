@@ -191,7 +191,13 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
     @Override
     public final void learn(final IConstr constr) {
         String learned = this.currentNodeName + "_learned";
-        saveLine(lineTab("\"" + learned + "\" [label=\"" + constr.toString(this)
+        String text;
+        if (constr == null) {
+            text = "null";
+        } else {
+            text = constr.toString(this);
+        }
+        saveLine(lineTab("\"" + learned + "\" [label=\"" + text
                 + "\", shape=box, color=\"orange\", style=dotted]"));
         saveLine("\"" + learned + "\"" + "--" + "\"" + this.currentNodeName
                 + "\"" + "[label=\"\", color=orange, style=dotted]");
