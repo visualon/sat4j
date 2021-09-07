@@ -193,7 +193,7 @@ public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
         String learned = this.currentNodeName + "_learned";
         String text;
         if (constr == null) {
-            text = "null";
+            text = "0 >= 1";
         } else {
             text = constr.toString(this);
         }
