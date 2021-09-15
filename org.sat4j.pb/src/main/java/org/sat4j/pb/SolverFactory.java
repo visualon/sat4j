@@ -39,6 +39,7 @@ import org.sat4j.minisat.learning.MiniSATLearning;
 import org.sat4j.minisat.learning.NoLearningButHeuristics;
 import org.sat4j.minisat.orders.PhaseInLastLearnedClauseSelectionStrategy;
 import org.sat4j.minisat.orders.RSATPhaseSelectionStrategy;
+import org.sat4j.minisat.orders.RandomLiteralSelectionStrategy;
 import org.sat4j.minisat.orders.RandomWalkDecorator;
 import org.sat4j.minisat.orders.UserFixedPhaseSelectionStrategy;
 import org.sat4j.minisat.orders.VarOrderHeap;
@@ -1210,8 +1211,10 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     public static IPBSolver newCuttingPlanesGreedy() {
         PBSolverCP solver = newCuttingPlanes();
-        solver.setOrder(
-                new RandomWalkDecorator((VarOrderHeap) solver.getOrder(), 1.0));
+        IOrder order = new RandomWalkDecorator((VarOrderHeap) solver.getOrder(),
+                1.0);
+        order.setPhaseSelectionStrategy(new RandomLiteralSelectionStrategy());
+        solver.setOrder(order);
         return solver;
     }
 
