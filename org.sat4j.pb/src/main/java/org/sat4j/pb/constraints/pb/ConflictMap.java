@@ -776,6 +776,7 @@ public class ConflictMap extends MapPb implements IConflict {
                     }
                 }
             }
+            listener.divideReason(degree);
         }
         return degreeResult;
     }
