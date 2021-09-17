@@ -1036,7 +1036,6 @@ public class ConflictMap extends MapPb implements IConflict {
             }
             this.byLevel[0].push(lit);
         }
-
     }
 
 }
