@@ -194,6 +194,7 @@ public class MapPb implements IDataStructurePB {
         // a clause has been learned
         if (minimum.equals(this.degree)
                 && minimum.compareTo(BigInteger.ONE) > 0) {
+            listener.divideConflict(this.degree);
             this.degree = BigInteger.ONE;
             for (int ind = 0; ind < size(); ind++) {
                 changeCoef(ind, BigInteger.ONE);
