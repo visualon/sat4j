@@ -756,10 +756,8 @@ public class ConflictMap extends MapPb implements IConflict {
                             .subtract(coefs[i]);
                     this.possReducedCoefs = this.possReducedCoefs.add(degree);
                 }
-                if (!(degree.equals(coefs[i]))) {
-                    useSaturation = true;
-                }
                 coefs[i] = degree;
+                useSaturation = true;
             } else if (comparison < 0 && coefs[i].signum() > 0) {
                 isMinimumEqualsToDegree = false;
             }
