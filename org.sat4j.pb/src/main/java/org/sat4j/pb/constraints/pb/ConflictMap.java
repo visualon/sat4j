@@ -743,10 +743,10 @@ public class ConflictMap extends MapPb implements IConflict {
 
     protected BigInteger saturation(BigInteger[] coefs, BigInteger degree,
             IWatchPb wpb) {
-        listener.saturateReason();
         assert degree.signum() > 0;
         BigInteger degreeResult = degree;
         boolean isMinimumEqualsToDegree = true;
+        boolean useSaturation = false;
         int comparison;
         for (int i = 0; i < coefs.length; i++) {
             comparison = coefs[i].compareTo(degree);
@@ -755,6 +755,9 @@ public class ConflictMap extends MapPb implements IConflict {
                     this.possReducedCoefs = this.possReducedCoefs
                             .subtract(coefs[i]);
                     this.possReducedCoefs = this.possReducedCoefs.add(degree);
+                }
+                if (!(degree.equals(coefs[i]))) {
+                    useSaturation = true;
                 }
                 coefs[i] = degree;
             } else if (comparison < 0 && coefs[i].signum() > 0) {
@@ -777,6 +780,9 @@ public class ConflictMap extends MapPb implements IConflict {
                 }
             }
             listener.divideReason(degree);
+        }
+        if (useSaturation) {
+            listener.saturateReason();
         }
         return degreeResult;
     }

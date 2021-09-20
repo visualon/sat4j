@@ -179,12 +179,13 @@ public class MapPb implements IDataStructurePB {
     }
 
     public BigInteger saturation() {
-        listener.saturateConflict();
         assert this.degree.signum() > 0;
         BigInteger minimum = this.degree;
+        boolean useSaturation = false;
         for (int ind = 0; ind < size(); ind++) {
             assert this.weightedLits.getCoef(ind).signum() >= 0;
             if (this.degree.compareTo(this.weightedLits.getCoef(ind)) < 0) {
+                useSaturation = true;
                 changeCoef(ind, this.degree);
             }
             assert this.weightedLits.getCoef(ind).signum() >= 0;
@@ -200,7 +201,9 @@ public class MapPb implements IDataStructurePB {
                 changeCoef(ind, BigInteger.ONE);
             }
         }
-
+        if (useSaturation) {
+            listener.saturateConflict();
+        }
         return this.degree;
     }
 
