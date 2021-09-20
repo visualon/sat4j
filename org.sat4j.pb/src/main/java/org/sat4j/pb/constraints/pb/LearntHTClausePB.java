@@ -104,4 +104,15 @@ public final class LearntHTClausePB extends LearntHTClause implements PBConstr {
         return BigInteger.valueOf(size());
     }
 
+    private int id;
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
 }

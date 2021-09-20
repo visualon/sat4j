@@ -34,9 +34,12 @@ import org.sat4j.DecisionMode;
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.pb.tools.OptimalModelIterator;
+import org.sat4j.pb.tools.PBSearchListener;
+import org.sat4j.pb.tools.VERIPBSearchListener;
 import org.sat4j.reader.DimacsReader;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.ISolver;
+import org.sat4j.specs.ISolverService;
 
 /**
  * Launcher for the Pseudo Boolean 2007 competition.
@@ -61,6 +64,13 @@ public class LanceurPseudo2007 extends LanceurPseudo2005 {
 
     @Override
     protected Reader createReader(ISolver theSolver, String problemname) {
+        String veripb = System.getProperty("veripb");
+        if (veripb != null) {
+            PBSearchListener<ISolverService> listener = new VERIPBSearchListener(
+                    problemname);
+            this.solver.setSearchListener(listener);
+            log("using VERIPB proof format");
+        }
         if (problemname.endsWith(".cnf"))
             return new DimacsReader(theSolver);
         return new OPBReader2012(handle);

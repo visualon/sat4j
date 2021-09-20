@@ -34,6 +34,9 @@ import java.math.BigInteger;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.constraints.cnf.Lits;
 import org.sat4j.minisat.core.VarActivityListener;
+import org.sat4j.pb.IPBSolverService;
+import org.sat4j.pb.tools.PBSearchListener;
+import org.sat4j.pb.tools.VoidPBTracing;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
 
@@ -49,6 +52,8 @@ public class MapPb implements IDataStructurePB {
      * degree.
      */
     protected InternalMapPBStructure weightedLits;
+
+    protected PBSearchListener<IPBSolverService> listener = new VoidPBTracing();
 
     protected BigInteger degree;
 
@@ -176,9 +181,11 @@ public class MapPb implements IDataStructurePB {
     public BigInteger saturation() {
         assert this.degree.signum() > 0;
         BigInteger minimum = this.degree;
+        boolean useSaturation = false;
         for (int ind = 0; ind < size(); ind++) {
             assert this.weightedLits.getCoef(ind).signum() >= 0;
             if (this.degree.compareTo(this.weightedLits.getCoef(ind)) < 0) {
+                useSaturation = true;
                 changeCoef(ind, this.degree);
             }
             assert this.weightedLits.getCoef(ind).signum() >= 0;
@@ -188,12 +195,15 @@ public class MapPb implements IDataStructurePB {
         // a clause has been learned
         if (minimum.equals(this.degree)
                 && minimum.compareTo(BigInteger.ONE) > 0) {
+            listener.divideConflict(this.degree);
             this.degree = BigInteger.ONE;
             for (int ind = 0; ind < size(); ind++) {
                 changeCoef(ind, BigInteger.ONE);
             }
         }
-
+        if (useSaturation) {
+            listener.saturateConflict();
+        }
         return this.degree;
     }
 
@@ -205,6 +215,8 @@ public class MapPb implements IDataStructurePB {
     public BigInteger cuttingPlane(PBConstr cpb, BigInteger degreeCons,
             BigInteger[] reducedCoefs, BigInteger coefMult,
             VarActivityListener val, int p) {
+        listener.multiplyReason(coefMult);
+        listener.addReasonAndConflict();
         this.degree = this.degree.add(degreeCons);
         assert this.degree.signum() > 0;
         if (reducedCoefs == null) {
@@ -234,6 +246,7 @@ public class MapPb implements IDataStructurePB {
 
     public BigInteger cuttingPlane(int lits[], BigInteger[] reducedCoefs,
             BigInteger degreeCons, BigInteger coefMult) {
+        listener.multiplyReason(coefMult);
         this.degree = this.degree.add(degreeCons);
         assert this.degree.signum() > 0;
 

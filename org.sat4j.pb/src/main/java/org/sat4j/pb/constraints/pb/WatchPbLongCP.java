@@ -764,4 +764,16 @@ public abstract class WatchPbLongCP
     public BigInteger getSumCoefs() {
         return BigInteger.valueOf(sumcoefs);
     }
+
+    private int id;
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
 }

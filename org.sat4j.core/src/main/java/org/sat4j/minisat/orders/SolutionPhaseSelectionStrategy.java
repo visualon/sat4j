@@ -27,72 +27,59 @@
  * Contributors:
  *   CRIL - initial API and implementation
  *******************************************************************************/
-package org.sat4j.pb.constraints.pb;
+package org.sat4j.minisat.orders;
 
-import java.math.BigInteger;
+import static org.sat4j.core.LiteralsUtils.negLit;
+import static org.sat4j.core.LiteralsUtils.var;
 
 import org.sat4j.core.LiteralsUtils;
-import org.sat4j.minisat.constraints.cnf.LearntBinaryClause;
-import org.sat4j.minisat.core.ILits;
-import org.sat4j.specs.IVecInt;
 
-public final class LearntBinaryClausePB extends LearntBinaryClause
-        implements PBConstr {
-
-    public LearntBinaryClausePB(IVecInt ps, ILits voc) {
-        super(ps, voc);
-    }
+/**
+ * Keeps track of the phase of the latest assignment during search, while
+ * preserving the one of the latest solution found (typically for optimization).
+ * 
+ * (implemented after seeing a talk at PoS 18 :
+ * https://easychair.org/smart-program/FLoC2018/POS-2018-07-07.html#talk:72764)
+ * 
+ * @author leberre
+ * 
+ */
+public final class SolutionPhaseSelectionStrategy
+        extends AbstractPhaserecordingSelectionStrategy {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-    public IVecInt computeAnImpliedClause() {
-        return null;
-    }
-
-    public BigInteger getCoef(int literal) {
-        return BigInteger.ONE;
-    }
-
-    public BigInteger[] getCoefs() {
-        BigInteger[] tmp = new BigInteger[size()];
-        for (int i = 0; i < tmp.length; i++) {
-            tmp[i] = BigInteger.ONE;
+    @Override
+    public void init(int nlength) {
+        if (this.phase == null || this.phase.length < nlength) {
+            this.phase = new int[nlength];
+            for (int i = 1; i < nlength; i++) {
+                this.phase[i] = negLit(i);
+            }
         }
-        return tmp;
     }
 
-    public BigInteger getDegree() {
-        return BigInteger.ONE;
-    }
-
-    @Override
-    public String dump() {
-        StringBuilder stb = new StringBuilder();
-        stb.append("+1 ");
-        stb.append(LiteralsUtils.toOPB(head));
-        stb.append(" +1 ");
-        stb.append(LiteralsUtils.toOPB(tail));
-        stb.append(" >= 1");
-        return stb.toString();
+    public void assignLiteral(int p) {
+        this.phase[var(p)] = p;
     }
 
     @Override
-    public BigInteger getSumCoefs() {
-        return BigInteger.valueOf(size());
+    public String toString() {
+        return "lightweight component caching from RSAT plus solution phase";
     }
 
-    private int id;
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
+    public void updateVar(int p) {
     }
 
-    @Override
-    public int getId() {
-        return id;
+    public void updateVarAtDecisionLevel(int p) {
+    }
+
+    public void onModelFound(int[] model) {
+        for (int l : model) {
+            this.phase[Math.abs(l)] = LiteralsUtils.toInternal(l);
+        }
     }
 }
