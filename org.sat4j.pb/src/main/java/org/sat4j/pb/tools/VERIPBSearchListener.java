@@ -18,12 +18,20 @@ public class VERIPBSearchListener implements PBSearchListener<ISolverService> {
 
     private StringBuilder conflict;
     private StringBuilder reason;
-    private final String filename;
+    private String filename;
     private int nConstraints;
     private boolean foundContradiction;
 
     public VERIPBSearchListener(String problemname) {
-        this.filename = problemname.replace(".opb", ".pbp");
+        int positionDot;
+        if (!(problemname.endsWith(".opb"))) {
+            positionDot = problemname.lastIndexOf('.');
+            this.filename = problemname.substring(0, positionDot);
+        } else {
+            this.filename = problemname;
+        }
+        assert this.filename.endsWith(".opb");
+        this.filename = this.filename.replace(".opb", ".pbp");
         File f = new File(filename);
         if (f.exists()) {
             f.delete();
