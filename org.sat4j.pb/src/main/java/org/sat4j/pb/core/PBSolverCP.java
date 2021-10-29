@@ -38,6 +38,7 @@ import org.sat4j.minisat.core.Pair;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.restarts.MiniSATRestarts;
+import org.sat4j.pb.IPBSolverService;
 import org.sat4j.pb.constraints.pb.AutoDivisionStrategy;
 import org.sat4j.pb.constraints.pb.ConflictMap;
 import org.sat4j.pb.constraints.pb.IConflict;
@@ -52,8 +53,13 @@ import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.orders.BumpStrategy;
 import org.sat4j.pb.orders.Bumper;
 import org.sat4j.pb.orders.IBumper;
+import org.sat4j.pb.tools.PBSearchListener;
+import org.sat4j.pb.tools.PBSearchListenerDecorator;
+import org.sat4j.pb.tools.VoidPBTracing;
 import org.sat4j.specs.Constr;
+import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVec;
+import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
 
 /**
@@ -88,6 +94,10 @@ public class PBSolverCP extends PBSolver {
     private BumpStrategy bumpStrategy = BumpStrategy.ALWAYS_ONE;
 
     private IBumper bumper = Bumper.ANY;
+
+    {
+        setSearchListener(new VoidPBTracing());
+    }
 
     /**
      * @param acg
@@ -142,6 +152,11 @@ public class PBSolverCP extends PBSolver {
         this.skipAllow = skipAllow;
     }
 
+    @SuppressWarnings("unchecked")
+    protected PBSearchListener<IPBSolverService> listener() {
+        return (PBSearchListener<IPBSolverService>) slistener;
+    }
+
     @Override
     public void analyze(Constr myconfl, Pair results) throws TimeoutException {
         if (someCriteria()) {
@@ -153,9 +168,11 @@ public class PBSolverCP extends PBSolver {
 
     public void analyzeCP(Constr myconfl, Pair results)
             throws TimeoutException {
+        listener().onConflict((PBConstr) myconfl);
         int litImplied = this.trail.last();
         int currentLevel = this.voc.getLevel(litImplied);
         IConflict confl = chooseConflict((PBConstr) myconfl, currentLevel);
+        confl.setListener(listener());
         confl.setDecisionLevel(currentLevel);
         assert confl.slackConflict().signum() < 0;
         while (!confl.isUnsat() && !confl.isAssertive(currentLevel)) {
@@ -201,6 +218,7 @@ public class PBSolverCP extends PBSolver {
         if (confl.isUnsat() || confl.size() == 0 || decisionLevel() == 0
                 || (this.trail.size() == 0
                         && confl.slackConflict().signum() < 0)) {
+            listener().learn(null);
             results.setReason(null);
             results.setBacktrackLevel(-1);
             return;
@@ -221,9 +239,10 @@ public class PBSolverCP extends PBSolver {
     }
 
     protected IConflict chooseConflict(PBConstr myconfl, int level) {
-        return conflictFactory.createConflict(myconfl, level, noRemove,
-                skipAllow, preprocess, postprocess, weakeningStrategy,
+        IConflict conflict = conflictFactory.createConflict(myconfl, level,
+                noRemove, skipAllow, preprocess, postprocess, weakeningStrategy,
                 autoDivisionStrategy, pbStats);
+        return conflict;
     }
 
     @Override
@@ -317,9 +336,10 @@ public class PBSolverCP extends PBSolver {
     }
 
     @Override
-    public void varBumpActivity(Constr constr, int i, int p) {
+    public void varBumpActivity(Constr constr, int i, int p,
+            boolean conflicting) {
         bumper.varBumpActivity(voc, bumpStrategy, getOrder(), (PBConstr) constr,
-                i, p);
+                i, p, conflicting);
     }
 
     @Override
@@ -327,4 +347,13 @@ public class PBSolverCP extends PBSolver {
         bumper.postBumpActivity(getOrder(), (PBConstr) constr);
     }
 
+    @Override
+    public <S extends ISolverService> void setSearchListener(
+            SearchListener<S> sl) {
+        if (sl instanceof PBSearchListener) {
+            super.setSearchListener(sl);
+        } else {
+            super.setSearchListener(new PBSearchListenerDecorator<S>(sl));
+        }
+    }
 }

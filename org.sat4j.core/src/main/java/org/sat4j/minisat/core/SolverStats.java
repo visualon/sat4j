@@ -78,6 +78,8 @@ public class SolverStats implements Serializable {
 
     private int importedUnits;
 
+    private boolean noDecisionAfterFirstConflict;
+
     public void reset() {
         this.starts = 0;
         this.decisions = 0;
@@ -96,6 +98,7 @@ public class SolverStats implements Serializable {
         this.reduceddb = 0;
         this.updateLBD = 0;
         this.importedUnits = 0;
+        this.noDecisionAfterFirstConflict = true;
     }
 
     public void printStat(PrintWriter out, String prefix) {
@@ -122,6 +125,8 @@ public class SolverStats implements Serializable {
         out.println(prefix + "Number of update (reduction) of LBD\t: "
                 + this.updateLBD);
         out.println(prefix + "Imported unit clauses\t: " + this.importedUnits);
+        out.println(prefix + "No decision after first conflict\t: "
+                + this.noDecisionAfterFirstConflict);
     }
 
     public Map<String, Number> toMap() {
@@ -281,5 +286,14 @@ public class SolverStats implements Serializable {
 
     public void incImportedUnits(int increment) {
         this.importedUnits += increment;
+    }
+
+    public boolean hasNoDecisionAfterFirstConflict() {
+        return noDecisionAfterFirstConflict;
+    }
+
+    public void setNoDecisionAfterFirstConflict(
+            boolean noDecisionAfterFirstConflict) {
+        this.noDecisionAfterFirstConflict = noDecisionAfterFirstConflict;
     }
 }

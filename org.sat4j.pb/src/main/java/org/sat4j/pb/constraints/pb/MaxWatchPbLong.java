@@ -364,7 +364,7 @@ public final class MaxWatchPbLong extends WatchPbLong {
         return new MaxWatchPbLong(voc, mpb);
     }
 
-    public boolean propagatePI(MandatoryLiteralListener l, int p) {
+    public void propagatePI(MandatoryLiteralListener l, int p) {
         this.voc.watch(p, this);
 
         // compute the new value for watchCumul
@@ -404,8 +404,6 @@ public final class MaxWatchPbLong extends WatchPbLong {
             }
             ind++;
         }
-        return true;
-
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
@@ -428,8 +426,8 @@ public final class MaxWatchPbLong extends WatchPbLong {
             this.cstr = cstr;
         }
 
-        public boolean propagatePI(MandatoryLiteralListener l, int p) {
-            return cstr.propagatePI(l, p);
+        public void propagatePI(MandatoryLiteralListener l, int p) {
+            cstr.propagatePI(l, p);
         }
 
         public boolean isAssertive(int dl) {
@@ -608,6 +606,11 @@ public final class MaxWatchPbLong extends WatchPbLong {
         @Override
         public BigInteger getSumCoefs() {
             return cstr.getSumCoefs();
+        }
+
+        @Override
+        public void setId(int id) {
+            cstr.setId(id);
         }
     }
 }

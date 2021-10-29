@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j;
 
+import java.io.Serializable;
+
 /**
  * Enumeration allowing to manage easily exit code for the SAT and PB
  * Competitions.
@@ -36,13 +38,11 @@ package org.sat4j;
  * @author leberre
  * 
  */
-public enum ExitCode {
+public enum ExitCode implements Serializable {
 
-    OPTIMUM_FOUND(30, "OPTIMUM FOUND"),
-    UPPER_BOUND(30, "UPPER BOUND"),
-    SATISFIABLE(10, "SATISFIABLE"),
-    UNKNOWN(0, "UNKNOWN"),
-    UNSATISFIABLE(20, "UNSATISFIABLE");
+    OPTIMUM_FOUND(30, "OPTIMUM FOUND"), UPPER_BOUND(30,
+            "UPPER BOUND"), SATISFIABLE(10, "SATISFIABLE"), UNKNOWN(0,
+                    "UNKNOWN"), UNSATISFIABLE(20, "UNSATISFIABLE");
 
     /** value of the exit code. */
     private final int value;

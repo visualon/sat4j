@@ -69,4 +69,12 @@ public class UnitClausesPB extends UnitClauses implements PBConstr {
     public BigInteger getSumCoefs() {
         return BigInteger.ONE;
     }
+
+    private int id;
+
+    @Override
+    public void setId(int id) {
+        throw new UnsupportedOperationException(
+                "This is a set of unit clauses ...");
+    }
 }
