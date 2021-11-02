@@ -1322,4 +1322,10 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         return solver;
     }
 
+    public static IPBSolver newPreprocessingSolver() {
+        IPBSolver solver = new PreprocessingPBDecorator(newEmptySolver());
+        // ((ICDCL<?>) solver).setOrder(new SubsetVarOrder(new int[0]));
+        return solver;
+    }
+
 }

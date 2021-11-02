@@ -10,6 +10,15 @@
 
 package org.sat4j.pb.constraints.pb;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.sat4j.core.VecInt;
+import org.sat4j.specs.IVecInt;
+import org.sat4j.specs.IteratorInt;
+
 /**
  * The SubsetSum is a method object used to solve instances of the subset-sum
  * problem.
@@ -44,6 +53,8 @@ public final class SubsetSum {
      */
     private final BitMatrix allSubsetSums;
 
+    private final List<Set<Integer>> subsets;
+
     /**
      * Creates a new SubsetSum.
      * 
@@ -54,6 +65,7 @@ public final class SubsetSum {
      */
     public SubsetSum(int maxSum, int maxElements) {
         this.allSubsetSums = new BitMatrix(maxSum, maxElements);
+        this.subsets = new ArrayList<>();
 
         // Initializing the matrix.
         // If sum is 0, taking no element is a solution.
@@ -71,6 +83,7 @@ public final class SubsetSum {
     public void setElements(int[] elements) {
         this.elements = elements;
         this.lastCheckedSum = 0;
+        this.subsets.clear();
     }
 
     /**
@@ -98,6 +111,55 @@ public final class SubsetSum {
         // Updating the last checked sum before returning.
         lastCheckedSum = Math.max(lastCheckedSum, sum);
         return allSubsetSums.get(sum, elements.length);
+    }
+
+    public void computeAllSubset(int i, int sum, IVecInt p) {
+        // If we reached end and sum is non-zero. We print
+        // p[] only if elements[0] is equal to sun OR dp[0][sum]
+        // is true.
+
+        Set<Integer> set = new LinkedHashSet<>();
+
+        if (i == 0 && sum != 0 && this.allSubsetSums.get(0, sum)) {
+            p.push(elements[i]);
+            for (IteratorInt it = p.iterator(); it.hasNext();) {
+                set.add(it.next());
+            }
+            subsets.add(set);
+            p.clear();
+            return;
+        }
+
+        // If sum becomes 0
+        if (i == 0 && sum == 0) {
+            for (IteratorInt it = p.iterator(); it.hasNext();) {
+                set.add(it.next());
+            }
+            subsets.add(set);
+            p.clear();
+            return;
+        }
+
+        // If given sum can be achieved after ignoring
+        // current element.
+        if (this.allSubsetSums.get(i - 1, sum)) {
+            // Create a new vector to store path
+            IVecInt b = new VecInt();
+            p.copyTo(b);
+            computeAllSubset(i - 1, sum, b);
+        }
+
+        // If given sum can be achieved after considering
+        // current element.
+        if (sum >= elements[i]
+                && this.allSubsetSums.get(i - 1, sum - elements[i])) {
+            p.push(elements[i]);
+            computeAllSubset(i - 1, sum - elements[i], p);
+        }
+    }
+
+    public List<Set<Integer>> getSubset() {
+        return subsets;
     }
 
 }

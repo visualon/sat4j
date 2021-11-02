@@ -4,8 +4,11 @@
 package org.sat4j.pb;
 
 import java.math.BigInteger;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
+import org.sat4j.core.LiteralsUtils;
+import org.sat4j.core.VecInt;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.pb.constraints.pb.SubsetSum;
 import org.sat4j.specs.ContradictionException;
@@ -39,54 +42,171 @@ public class PreprocessingPBDecorator extends PBSolverDecorator {
     public IConstr addAtMost(IVecInt literals, IVecInt coeffs, int degree)
             throws ContradictionException {
         PBConstr ctr = (PBConstr) super.addAtMost(literals, coeffs, degree);
-        subset.setElements(coeffs.toArray());
-        applySubsetSum(degree, ctr.getSumCoefs().intValue());
+        preprocessSubsetSum(ctr);
         return ctr;
+    }
+
+    private void preprocessSubsetSum(IConstr ctr)
+            throws ContradictionException {
+        if (!(ctr instanceof PBConstr)) {
+            return;
+        }
+
+        PBConstr pbCtr = (PBConstr) ctr;
+
+        int[] coeffs = new int[ctr.size()];
+
+        for (int i = 0; i < ctr.size(); i++) {
+            coeffs[i] = (pbCtr.getCoefs()[i].intValue());
+        }
+
+        subset.setElements(coeffs);
+
+        // applySubsetSum(coeffs.length, pbCtr.getSumCoefs().intValue());
+        subset.sumExists(pbCtr.getSumCoefs().intValue());
+        subset.computeAllSubset(coeffs.length - 1,
+                pbCtr.getSumCoefs().intValue(), new VecInt());
+        addNotUsedCoeff(coeffs, pbCtr);
+        addAlwaysUsedCoeff(coeffs, pbCtr);
+        addBinaryUsedCoeff(coeffs, pbCtr);
+    }
+
+    private void applySubsetSum(int size, int sum) {
+        subset.sumExists(sum);
+        subset.computeAllSubset(size - 1, sum, new VecInt());
+    }
+
+    private void addBinaryUsedCoeff(int[] coeffs, PBConstr pbCtr)
+            throws ContradictionException {
+        List<Set<Integer>> sets = subset.getSubset();
+        boolean always = true, aNotB = true, bNotA = true;
+        for (int i = 0; i < coeffs.length; i++) {
+            for (int j = 0; j < coeffs.length; j++) {
+                if (i == j) {
+                    continue;
+                }
+                int a = coeffs[i];
+                int b = coeffs[j];
+                for (int k = 0; k < coeffs.length; k++) {
+                    System.out.print(coeffs[k] + " ");
+                }
+                System.out.println();
+                for (Set<Integer> s : sets) {
+                    if (!s.contains(a) && !s.contains(b)) {
+                        continue;
+                    }
+                    always &= s.contains(a) && s.contains(b);
+                    if (always) {
+                        // System.out.println(s);
+                        // System.out.println("a " + a + " b " + b);
+                        aNotB = false;
+                        bNotA = false;
+                        continue;
+                    }
+                    aNotB &= s.contains(a) && !s.contains(b);
+                    bNotA &= !s.contains(a) && s.contains(b);
+                    if (!aNotB && !bNotA) {
+                        break;
+                    }
+                }
+                if (aNotB) {
+                    System.out.println("aNotB");
+                    this.addClause(VecInt.of(LiteralsUtils.neg(pbCtr.get(i)),
+                            pbCtr.get(j)));
+                } else if (bNotA) {
+                    System.out.println("bNotA");
+                    this.addClause(VecInt.of(LiteralsUtils.neg(pbCtr.get(j)),
+                            pbCtr.get(i)));
+                } else {
+                    System.out.println("other case " + aNotB + " " + bNotA + " "
+                            + " " + always);
+
+                }
+            }
+            always = true;
+            aNotB = true;
+            bNotA = true;
+        }
+
     }
 
     @Override
     public IConstr addAtMost(IVecInt literals, IVec<BigInteger> coeffs,
             BigInteger degree) throws ContradictionException {
         PBConstr ctr = (PBConstr) super.addAtMost(literals, coeffs, degree);
-        int[] coeffsInt = Arrays.stream(coeffs.toArray())
-                .mapToInt(BigInteger::intValue).toArray();
-        subset.setElements(coeffsInt);
-        applySubsetSum(degree.intValue(), ctr.getSumCoefs().intValue());
+        preprocessSubsetSum(ctr);
         return ctr;
+    }
+
+    public void addNotUsedCoeff(int[] coeffs, PBConstr ctr)
+            throws ContradictionException {
+        List<Set<Integer>> sets = subset.getSubset();
+        boolean[] used = new boolean[coeffs.length];
+        for (int i = 0; i < coeffs.length; i++) {
+            for (Set<Integer> s : sets) {
+                used[i] |= s.contains(coeffs[i]);
+                if (used[i]) {
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < used.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            int lit = ctr.get(i);
+            this.addClause(VecInt.of(LiteralsUtils.neg(lit)));
+        }
+    }
+
+    public void addAlwaysUsedCoeff(int[] coeffs, PBConstr ctr)
+            throws ContradictionException {
+        assert coeffs.length == ctr.size();
+        List<Set<Integer>> sets = subset.getSubset();
+        boolean[] used = new boolean[coeffs.length];
+        for (int i = 0; i < coeffs.length; i++) {
+            for (Set<Integer> s : sets) {
+                used[i] &= s.contains(coeffs[i]);
+                if (!used[i]) {
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < used.length; i++) {
+            if (!used[i]) {
+                continue;
+            }
+            int lit = ctr.get(i);
+            this.addClause(VecInt.of(LiteralsUtils.neg(lit)));
+        }
     }
 
     @Override
     public IConstr addAtLeast(IVecInt literals, IVecInt coeffs, int degree)
             throws ContradictionException {
-        // TODO Auto-generated method stub
-        return super.addAtLeast(literals, coeffs, degree);
+        IConstr ctr = super.addAtLeast(literals, coeffs, degree);
+        preprocessSubsetSum(ctr);
+        return ctr;
     }
 
     @Override
     public IConstr addAtLeast(IVecInt literals, IVec<BigInteger> coeffs,
             BigInteger degree) throws ContradictionException {
-        // TODO Auto-generated method stub
-        return super.addAtLeast(literals, coeffs, degree);
+        IConstr ctr = super.addAtLeast(literals, coeffs, degree);
+        preprocessSubsetSum(ctr);
+        return ctr;
     }
 
     @Override
     public IConstr addExactly(IVecInt literals, IVecInt coeffs, int weight)
             throws ContradictionException {
-        // TODO Auto-generated method stub
         return super.addExactly(literals, coeffs, weight);
     }
 
     @Override
     public IConstr addExactly(IVecInt literals, IVec<BigInteger> coeffs,
             BigInteger weight) throws ContradictionException {
-        // TODO Auto-generated method stub
         return super.addExactly(literals, coeffs, weight);
-    }
-
-    private void applySubsetSum(int degree, int sumCoeff) {
-        for (int i = degree; i < sumCoeff; i++) {
-            subset.sumExists(i);
-        }
     }
 
 }

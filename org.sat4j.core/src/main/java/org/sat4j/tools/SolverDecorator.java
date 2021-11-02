@@ -213,6 +213,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
      */
     public SolverDecorator(T solver) {
         this.solver = solver;
+        System.out.println(getClass().getName() + " " + solver);
     }
 
     @Deprecated
