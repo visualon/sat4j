@@ -11,6 +11,7 @@
 package org.sat4j.pb.constraints.pb;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -117,10 +118,11 @@ public final class SubsetSum {
         // If we reached end and sum is non-zero. We print
         // p[] only if elements[0] is equal to sun OR dp[0][sum]
         // is true.
-
+        assert sumExists(Arrays.stream(elements).sum());
         Set<Integer> set = new LinkedHashSet<>();
-
-        if (i == 0 && sum != 0 && this.allSubsetSums.get(0, sum)) {
+        if (i <0) return;
+        if (i == 0 && sum != 0 && this.allSubsetSums.get(sum, 0)) {
+            System.out.println("A");
             p.push(elements[i]);
             for (IteratorInt it = p.iterator(); it.hasNext();) {
                 set.add(it.next());
@@ -142,7 +144,7 @@ public final class SubsetSum {
 
         // If given sum can be achieved after ignoring
         // current element.
-        if (this.allSubsetSums.get(i - 1, sum)) {
+        if (this.allSubsetSums.get(sum, i)) {
             // Create a new vector to store path
             IVecInt b = new VecInt();
             p.copyTo(b);
@@ -151,10 +153,11 @@ public final class SubsetSum {
 
         // If given sum can be achieved after considering
         // current element.
-        if (sum >= elements[i]
-                && this.allSubsetSums.get(i - 1, sum - elements[i])) {
-            p.push(elements[i]);
-            computeAllSubset(i - 1, sum - elements[i], p);
+        if (sum >= elements[i]) {
+            if (this.allSubsetSums.get(sum - elements[i], i)) {
+                p.push(elements[i]);
+                computeAllSubset(i - 1, sum - elements[i], p);
+            }
         }
     }
 

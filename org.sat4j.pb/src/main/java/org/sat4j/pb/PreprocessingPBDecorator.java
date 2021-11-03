@@ -51,7 +51,6 @@ public class PreprocessingPBDecorator extends PBSolverDecorator {
         if (!(ctr instanceof PBConstr)) {
             return;
         }
-
         PBConstr pbCtr = (PBConstr) ctr;
 
         int[] coeffs = new int[ctr.size()];
@@ -64,8 +63,9 @@ public class PreprocessingPBDecorator extends PBSolverDecorator {
 
         // applySubsetSum(coeffs.length, pbCtr.getSumCoefs().intValue());
         subset.sumExists(pbCtr.getSumCoefs().intValue());
-        subset.computeAllSubset(coeffs.length - 1,
-                pbCtr.getSumCoefs().intValue(), new VecInt());
+        for (int i = pbCtr.getDegree().intValue(); i<=pbCtr.getSumCoefs().intValue(); i++) {
+            subset.computeAllSubset(coeffs.length - 1,i, new VecInt());
+        }
         addNotUsedCoeff(coeffs, pbCtr);
         addAlwaysUsedCoeff(coeffs, pbCtr);
         addBinaryUsedCoeff(coeffs, pbCtr);
@@ -87,10 +87,11 @@ public class PreprocessingPBDecorator extends PBSolverDecorator {
                 }
                 int a = coeffs[i];
                 int b = coeffs[j];
-                for (int k = 0; k < coeffs.length; k++) {
-                    System.out.print(coeffs[k] + " ");
-                }
-                System.out.println();
+               //for (int k = 0; k < coeffs.length; k++) {
+                //    System.out.print(coeffs[k] + " ");
+                //}
+                //System.out.println();
+                assert (!sets.isEmpty());
                 for (Set<Integer> s : sets) {
                     if (!s.contains(a) && !s.contains(b)) {
                         continue;
@@ -109,14 +110,16 @@ public class PreprocessingPBDecorator extends PBSolverDecorator {
                         break;
                     }
                 }
-                if (aNotB) {
-                    System.out.println("aNotB");
-                    this.addClause(VecInt.of(LiteralsUtils.neg(pbCtr.get(i)),
-                            pbCtr.get(j)));
-                } else if (bNotA) {
+                if (aNotB||bNotA) {
+                    System.out.println(pbCtr);
                     System.out.println("bNotA");
-                    this.addClause(VecInt.of(LiteralsUtils.neg(pbCtr.get(j)),
-                            pbCtr.get(i)));
+                    this.addClause(VecInt.of(-LiteralsUtils.toDimacs(pbCtr.get(j)),
+                            -LiteralsUtils.toDimacs(pbCtr.get(i))));
+                } else if (always) {
+                    System.out.println(pbCtr);
+                    System.out.println("always");
+                    this.addExactly(VecInt.of(LiteralsUtils.toDimacs(pbCtr.get(j)),
+                            LiteralsUtils.toDimacs(pbCtr.get(i))), VecInt.of(1, -1), 0);
                 } else {
                     System.out.println("other case " + aNotB + " " + bNotA + " "
                             + " " + always);
