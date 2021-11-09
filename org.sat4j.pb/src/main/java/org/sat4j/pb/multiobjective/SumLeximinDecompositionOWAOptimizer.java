@@ -722,4 +722,10 @@ public class SumLeximinDecompositionOWAOptimizer
     }
     // END DELEGATION
 
+    @Override
+    public void preprocessing() {
+        solver.preprocessing();
+
+    }
+
 }

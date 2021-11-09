@@ -571,4 +571,9 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
     public int[] decisions() {
         return this.solver.decisions();
     }
+
+    @Override
+    public void preprocessing() {
+        decorated().preprocessing();
+    }
 }

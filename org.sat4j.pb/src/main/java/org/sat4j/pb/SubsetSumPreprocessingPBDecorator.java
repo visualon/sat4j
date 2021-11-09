@@ -18,9 +18,9 @@ import org.sat4j.specs.IVecInt;
 
 /**
  * @author Thibault Falque
- *
+ * 
  */
-public class PreprocessingPBDecorator extends PBSolverDecorator {
+public class SubsetSumPreprocessingPBDecorator extends PBSolverDecorator {
 
     /**
      * 
@@ -33,7 +33,7 @@ public class PreprocessingPBDecorator extends PBSolverDecorator {
 
     private static final int MAX_SUM = 4000;
 
-    public PreprocessingPBDecorator(IPBSolver solver) {
+    public SubsetSumPreprocessingPBDecorator(IPBSolver solver) {
         super(solver);
         this.subset = new SubsetSum(MAX_SUM, MAX_ELEMENT);
     }

@@ -1323,9 +1323,14 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newPreprocessingSolver() {
-        IPBSolver solver = new PreprocessingPBDecorator(newEmptySolver());
+        IPBSolver solver = new SubsetSumPreprocessingPBDecorator(
+                newEmptySolver());
         // ((ICDCL<?>) solver).setOrder(new SubsetVarOrder(new int[0]));
         return solver;
+    }
+
+    public static IPBSolver newGaussPreprocessingSolver() {
+        return new GaussPreprocessingPBDecorator(newCuttingPlanesPOS2020WL());
     }
 
 }

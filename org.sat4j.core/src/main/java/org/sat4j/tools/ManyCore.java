@@ -47,6 +47,7 @@ import org.sat4j.specs.AssignmentOrigin;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
+import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVec;
@@ -651,6 +652,11 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     @Override
     public int[] decisions() {
         return this.solvers.get(this.getWinnerId()).decisions();
+    }
+
+    @Override
+    public void preprocessing() {
+        solvers.forEach(IProblem::preprocessing);
     }
 }
 
