@@ -238,7 +238,7 @@ public class ConflictMapDivideByPivot extends ConflictMap {
                             coeffImplied);
                     reducedCoefs[i] = tmp[0];
                     listener.weakenOnReason(tmp[1],
-                            LiteralsUtils.toDimacs(weightedLits.getLit(i)));
+                            LiteralsUtils.toDimacs(wpb.get(i)));
                     outputDegree = outputDegree.subtract(tmp[1]);
                 }
             }
