@@ -1330,7 +1330,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newGaussPreprocessingSolver() {
-        return new GaussPreprocessingPBDecorator(newCuttingPlanesPOS2020WL());
+        return new PreprocessibleSolver(newCuttingPlanesPOS2020WL());
     }
 
 }
