@@ -91,6 +91,7 @@ import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.Bumper;
 import org.sat4j.pb.orders.BumperEffective;
 import org.sat4j.pb.orders.VarOrderHeapObjective;
+import org.sat4j.pb.preprocessing.GaussPBPreprocessing;
 import org.sat4j.pb.restarts.GrowingCoefficientRestarts;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
 import org.sat4j.pb.tools.ManyCorePB;
@@ -1330,7 +1331,8 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newGaussPreprocessingSolver() {
-        return new PreprocessibleSolver(newCuttingPlanesPOS2020WL());
+        return new PreprocessibleSolver(newCuttingPlanesPOS2020WL(),
+                new GaussPBPreprocessing(null));
     }
 
 }

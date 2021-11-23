@@ -23,6 +23,11 @@ public class GaussPBPreprocessing extends AbstractPBPreprocessing {
         this.groups = new ArrayList<>();
     }
 
+    public GaussPBPreprocessing() {
+        super();
+        this.groups = new ArrayList<>();
+    }
+
     @Override
     protected List<PBPreprocessingConstraint> internalPreprocess(
             List<PBPreprocessingConstraint> constraints) {
