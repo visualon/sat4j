@@ -33,9 +33,20 @@ public class GaussPBPreprocessing extends AbstractPBPreprocessing {
                 groups.add(group);
             }
         }
+        List<PBPreprocessingConstraint> finalList = new ArrayList<>();
+        for (PBPreprocessingConstraintGroup group : groups) {
+            finalList.addAll(applyGauss(group.getLists()));
+        }
 
-        return null;
+        return finalList;
 
+    }
+
+    private List<PBPreprocessingConstraint> applyGauss(
+            List<PBPreprocessingConstraint> constraints) {
+
+        SystemPreprocessing system = new SystemPreprocessing(constraints);
+        return system.compute();
     }
 
 }

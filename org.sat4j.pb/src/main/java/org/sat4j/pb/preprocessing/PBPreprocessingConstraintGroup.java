@@ -21,4 +21,11 @@ public class PBPreprocessingConstraintGroup {
         lists.add(constraint);
     }
 
+    /**
+     * @return the lists
+     */
+    public List<PBPreprocessingConstraint> getLists() {
+        return lists;
+    }
+
 }
