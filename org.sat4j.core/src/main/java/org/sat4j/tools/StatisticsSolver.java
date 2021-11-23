@@ -479,4 +479,9 @@ public class StatisticsSolver implements ISolver {
     public int[] decisions() {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
+
+    @Override
+    public void preprocessing() {
+
+    }
 }

@@ -1718,7 +1718,8 @@ public class Solver<D extends DataStructureFactory>
     public final LearnedConstraintsDeletionStrategy activity_based_low_memory = new ActivityLCDS(
             this, this.memoryTimer);
 
-    private final ConflictTimer glucoseTimer = new GlucoseConflictTimer(this, 1000);
+    private final ConflictTimer glucoseTimer = new GlucoseConflictTimer(this,
+            1000);
 
     /**
      * @since 2.1
@@ -2619,5 +2620,9 @@ public class Solver<D extends DataStructureFactory>
         int[] outdecisions = new int[n];
         System.arraycopy(decisions.toArray(), 0, outdecisions, 0, n);
         return outdecisions;
+    }
+
+    @Override
+    public void preprocessing() {
     }
 }

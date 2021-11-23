@@ -213,6 +213,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
      */
     public SolverDecorator(T solver) {
         this.solver = solver;
+        System.out.println(getClass().getName() + " " + solver);
     }
 
     @Deprecated
@@ -569,5 +570,10 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
     @Override
     public int[] decisions() {
         return this.solver.decisions();
+    }
+
+    @Override
+    public void preprocessing() {
+        decorated().preprocessing();
     }
 }
