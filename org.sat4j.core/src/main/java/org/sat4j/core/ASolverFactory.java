@@ -92,21 +92,15 @@ public abstract class ASolverFactory<T extends ISolver>
                     paramtypes);
             return (T) m.invoke(null, (Object[]) null);
         } catch (SecurityException e) {
-            e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
             System.err.println(e.getLocalizedMessage());
-
         } catch (NoSuchMethodException e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
         } catch (IllegalAccessException e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
         } catch (InvocationTargetException e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
         }
         return null;
     }
