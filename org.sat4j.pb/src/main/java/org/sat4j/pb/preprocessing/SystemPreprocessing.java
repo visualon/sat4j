@@ -65,7 +65,7 @@ public class SystemPreprocessing {
             if (currentCoeff.equals(BigInteger.ZERO))
                 continue;
             if ((min.equals(BigInteger.ZERO))
-                    || (min.compareTo(currentCoeff) == 1)) {
+                    || (min.compareTo(currentCoeff) > 0)) {
                 bestEquation = i;
                 min = currentCoeff;
             }
