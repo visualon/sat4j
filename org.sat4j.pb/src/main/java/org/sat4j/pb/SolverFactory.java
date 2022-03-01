@@ -30,7 +30,6 @@
 package org.sat4j.pb;
 
 import org.sat4j.core.ASolverFactory;
-import org.sat4j.minisat.core.ICDCL;
 import org.sat4j.minisat.core.IOrder;
 import org.sat4j.minisat.core.IPhaseSelectionStrategy;
 import org.sat4j.minisat.core.LearnedConstraintsDeletionStrategy;
@@ -42,7 +41,6 @@ import org.sat4j.minisat.orders.PhaseInLastLearnedClauseSelectionStrategy;
 import org.sat4j.minisat.orders.RSATPhaseSelectionStrategy;
 import org.sat4j.minisat.orders.RandomLiteralSelectionStrategy;
 import org.sat4j.minisat.orders.RandomWalkDecorator;
-import org.sat4j.minisat.orders.SubsetVarOrder;
 import org.sat4j.minisat.orders.UserFixedPhaseSelectionStrategy;
 import org.sat4j.minisat.orders.VarOrderHeap;
 import org.sat4j.minisat.restarts.ArminRestarts;
@@ -91,7 +89,6 @@ import org.sat4j.pb.lcds.PBGlucoseLCDS;
 import org.sat4j.pb.orders.Bumper;
 import org.sat4j.pb.orders.BumperEffective;
 import org.sat4j.pb.orders.VarOrderHeapObjective;
-import org.sat4j.pb.preprocessing.GaussPBPreprocessing;
 import org.sat4j.pb.restarts.GrowingCoefficientRestarts;
 import org.sat4j.pb.tools.InprocCardConstrLearningSolver;
 import org.sat4j.pb.tools.ManyCorePB;
@@ -1315,24 +1312,6 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     public static IPBSolver newAllSAT2020() {
         return new ManyCorePB<IPBSolver>(newResolution(), newRoundingSat(),
                 newPartialRoundingSat(), newCuttingPlanes());
-    }
-
-    public static IPBSolver newEmptySolver() {
-        IPBSolver solver = newCuttingPlanesAggressiveCleanup();
-        ((ICDCL<?>) solver).setOrder(new SubsetVarOrder(new int[0]));
-        return solver;
-    }
-
-    public static IPBSolver newPreprocessingSolver() {
-        IPBSolver solver = new SubsetSumPreprocessingPBDecorator(
-                newEmptySolver());
-        // ((ICDCL<?>) solver).setOrder(new SubsetVarOrder(new int[0]));
-        return solver;
-    }
-
-    public static IPBSolver newGaussPreprocessingSolver() {
-        return new PreprocessibleSolver(newCuttingPlanesPOS2020WL(),
-                new GaussPBPreprocessing(null));
     }
 
 }
