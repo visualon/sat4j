@@ -43,7 +43,7 @@ public class BugSAT117ModelIterator {
         List<List<Integer>> solution = new ArrayList<List<Integer>>();
         solver.newVar(5);
 
-        // (x1 ? �x5 ? x4) ? (�x1 ? x5 ? x3 ? x4)
+        // (x1 v -x5 v x4) ^ (-x1 v x5 v x3 v x4)
         try {
             gateTranslator.not(6, 5);
             IVecInt disjuncts1 = new VecInt(new int[] { 1, 6, 4 });
