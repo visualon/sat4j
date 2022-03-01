@@ -116,9 +116,10 @@ public class PBAdapter extends SolverDecorator<ISolver> implements IPBSolver {
             negLitsSet.add(-it.next());
         int clausesDegree = literals.size() - degree + 1;
         ConstrGroup group = new ConstrGroup(false);
-        CombinationIterator combIt = new CombinationIterator(literals.size()
-                - degree, negLitsSet);
-        for (Set<Integer> comb : combIt) {
+        Iterator<Set<Integer>> combIt = new CombinationIterator(literals.size()
+                - degree, negLitsSet).IntSetIterator();
+        while (combIt.hasNext()) {
+            final Set<Integer> comb = combIt.next();
             for (IteratorInt it = literals.iterator(); it.hasNext();) {
                 int lit = it.next();
                 if (!comb.contains(-lit)) {
@@ -142,9 +143,10 @@ public class PBAdapter extends SolverDecorator<ISolver> implements IPBSolver {
             negLitsSet.add(-it.next());
         int clausesDegree = literals.size() - degree.intValue() + 1;
         ConstrGroup group = new ConstrGroup(false);
-        CombinationIterator combIt = new CombinationIterator(literals.size()
-                - degree.intValue(), negLitsSet);
-        for (Set<Integer> comb : combIt) {
+        Iterator<Set<Integer>> combIt = new CombinationIterator(literals.size()
+        - degree.intValue(), negLitsSet).IntSetIterator();
+        while (combIt.hasNext()) {
+            final Set<Integer> comb = combIt.next();
             for (IteratorInt it = literals.iterator(); it.hasNext();) {
                 int lit = it.next();
                 if (!comb.contains(-lit)) {

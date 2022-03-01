@@ -216,19 +216,13 @@ public class OrderedObjsOWAOptimizer extends AbstractLinMultiObjOptimizer {
         BigInteger weigthsSum = BigInteger.ZERO;
         for (BigInteger weight : weights)
             weigthsSum = weigthsSum.add(weight);
+        if(weigthsSum.equals(BigInteger.ZERO)) {
+            throw new IllegalStateException("null weight sum");
+        }
         BigInteger res = super.objectiveValue.divide(weigthsSum);
         res = res.add(BigInteger.ONE);
         res = res.multiply(BigInteger.valueOf(super.objs.size()));
         return res;
-    }
-
-    private BigInteger maxLexBound() {
-        BigInteger maxObjValue = super.objectiveValue
-                .divide(BigInteger.valueOf(super.objs.size()))
-                .add(BigInteger.ONE);
-        return maxObjValue.multiply(BigInteger
-                .valueOf(1 << objBoundVariables.get(0).getVars().size())
-                .multiply(BigInteger.valueOf(super.objs.size() - 1L)));
     }
 
     @Override

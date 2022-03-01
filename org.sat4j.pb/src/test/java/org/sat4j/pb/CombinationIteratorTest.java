@@ -4,7 +4,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +14,11 @@ import org.sat4j.pb.tools.CombinationIterator;
 
 public class CombinationIteratorTest {
 
-    private CombinationIterator iterator;
+    private Iterator<Set<Integer>> iterator;
 
     @Before
     public void setup() {
-        iterator = new CombinationIterator(2, 3);
+        iterator = new CombinationIterator(2, 3).IntSetIterator();
     }
 
     @Test

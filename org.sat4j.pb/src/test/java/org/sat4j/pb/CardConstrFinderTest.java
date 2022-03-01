@@ -79,7 +79,7 @@ public class CardConstrFinderTest {
     @Test
     public void testEmpty() {
         ccFinder.searchCards();
-        assertFalse(ccFinder.hasNext());
+        assertFalse(ccFinder.iterator().hasNext());
     }
 
     @Test

@@ -131,7 +131,7 @@ public class ConflictMapMinimizeWeakening extends ConflictMap {
                 }
             }
         }
-        IVecInt vec = map.entrySet().stream().findFirst().get().getValue();
+        IVecInt vec = map.entrySet().stream().findFirst().orElseThrow().getValue();
         int lit = vec.last();
         vec.pop();
         return lit;

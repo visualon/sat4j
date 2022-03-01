@@ -153,8 +153,7 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
     }
 
     private void doPreprocessing() {
-        for (Iterator<AtLeastCard> it = this.cardFinder; it.hasNext();) {
-            AtLeastCard card = it.next();
+        for (AtLeastCard card : this.cardFinder) {
             updateObjMinBound(card);
             ++this.preprocessingCardsFound;
             try {
@@ -364,8 +363,7 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
         out.println("c cardinality search time (preprocessing): "
                 + this.preprocessingTime + "ms");
         Map<Integer, Map<Integer, Integer>> cardsStats = new HashMap<Integer, Map<Integer, Integer>>();
-        for (Iterator<AtLeastCard> it = this.cardFinder; it.hasNext();) {
-            AtMostCard card = it.next().toAtMost();
+        for (AtLeastCard card : this.cardFinder) {
             int degree = card.getDegree();
             Map<Integer, Integer> sizeMap = cardsStats.get(degree);
             if (sizeMap == null) {

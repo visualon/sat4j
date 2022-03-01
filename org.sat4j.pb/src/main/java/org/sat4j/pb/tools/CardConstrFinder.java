@@ -16,6 +16,7 @@ import java.util.SortedSet;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ import org.sat4j.specs.SearchListenerAdapter;
 import org.sat4j.specs.TimeoutException;
 
 public class CardConstrFinder
-        implements Iterator<AtLeastCard>, Iterable<AtLeastCard> {
+        implements Iterable<AtLeastCard> {
 
     private final IPBSolver coSolver;
 
@@ -45,7 +46,7 @@ public class CardConstrFinder
 
     private final Map<BitSet, Integer> atLeastCardDegree = new HashMap<BitSet, Integer>();
 
-    private Iterator<BitSet> cardIt;
+    private Iterator<Entry<BitSet, Integer>> cardIt;
 
     private int initNumberOfConstraints;
 
@@ -139,7 +140,7 @@ public class CardConstrFinder
                 cardIt.remove();
             }
         }
-        this.cardIt = this.atLeastCardDegree.keySet().iterator();
+        this.cardIt = this.atLeastCardDegree.entrySet().iterator();
     }
 
     public void searchCards() {
@@ -178,7 +179,7 @@ public class CardConstrFinder
             }
         }
         timerStatus.cancel();
-        this.cardIt = this.atLeastCardDegree.keySet().iterator();
+        this.cardIt = this.atLeastCardDegree.entrySet().iterator();
     }
 
     public IVecInt searchCardFromClause(IVecInt clause) {
@@ -306,10 +307,10 @@ public class CardConstrFinder
             BitSet implied = impliedBy(newLit);
             candidates.and(implied);
         } else {
-            CombinationIterator combIt = new CombinationIterator(degree - 1,
-                    atMostLits);
+            Iterator<BitSet> combIt = new CombinationIterator(degree - 1,
+                    atMostLits).BitSetIterator();
             while (combIt.hasNext()) {
-                BitSet comb = combIt.nextBitSet();
+                BitSet comb = combIt.next();
                 comb.set(2 * this.coSolver.realNumberOfVariables()
                         - newLitInCard);
                 candidates.and(impliedBy(comb));
@@ -321,10 +322,10 @@ public class CardConstrFinder
 
     private BitSet computeInitialCandidates(BitSet atMostLits, int degree) {
         BitSet candidates = null;
-        CombinationIterator combIt = new CombinationIterator(degree,
-                atMostLits);
+        Iterator<BitSet> combIt = new CombinationIterator(degree - 1,
+                    atMostLits).BitSetIterator();
         while (combIt.hasNext()) {
-            BitSet nextBitSet = combIt.nextBitSet();
+            BitSet nextBitSet = combIt.next();
             BitSet implied = impliedBy(nextBitSet);
             if (candidates == null) {
                 candidates = implied;
@@ -403,25 +404,6 @@ public class CardConstrFinder
         }
     }
 
-    public boolean hasNext() {
-        if (cardIt == null)
-            return false;
-        boolean res = cardIt.hasNext();
-        if (!res)
-            this.cardIt = this.atLeastCardDegree.keySet().iterator();
-        return res;
-    }
-
-    public AtLeastCard next() {
-        BitSet next = cardIt.next();
-        return new AtLeastCard(next, this.atLeastCardDegree.get(next),
-                -this.coSolver.realNumberOfVariables());
-    }
-
-    public void remove() {
-        cardIt.remove();
-    }
-
     private static class AtLeastCardDegreeComparator
             implements Comparator<AtLeastCard>, Serializable {
 
@@ -447,8 +429,28 @@ public class CardConstrFinder
     }
 
     public Iterator<AtLeastCard> iterator() {
-        this.cardIt = this.atLeastCardDegree.keySet().iterator();
-        return this;
-    }
+        final Iterator<Entry<BitSet, Integer>> superCardIt = this.atLeastCardDegree.entrySet()
+                .iterator();
+        final int superCoSolverNVars = this.coSolver.realNumberOfVariables();
+        return new Iterator<AtLeastCard>() {
 
+            private final Iterator<Entry<BitSet, Integer>> cardIt = superCardIt;
+
+            private final int coSolverNVars = superCoSolverNVars;
+
+            @Override
+            public boolean hasNext() {
+                if (cardIt == null)
+                    return false;
+                return cardIt.hasNext();
+            }
+
+            @Override
+            public AtLeastCard next() {
+                Entry<BitSet, Integer> next = cardIt.next();
+                return new AtLeastCard(next.getKey(), next.getValue(),
+                        -this.coSolverNVars);
+            }
+        };
+    }
 }

@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -84,15 +85,11 @@ public class MinSumOWAOptimizer extends AbstractLinMultiObjOptimizer {
 
     @Override
     protected void setInitConstraints() {
-        try {
             objBoundVar = this.integerSolver.newIntegerVar(globalObjBound());
             for (List<Integer> permutation : new PermutationComputer(
                     super.objs.size())) {
                 addConstraint(objBoundVar, permutation);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void addConstraint(IntegerVariable boundVar,
@@ -153,85 +150,91 @@ public class MinSumOWAOptimizer extends AbstractLinMultiObjOptimizer {
         return getObjectiveValue();
     }
 
-    static class PermutationComputer
-            implements Iterator<List<Integer>>, Iterable<List<Integer>> {
+    static class PermutationComputer implements Iterable<List<Integer>> {
 
-        private int currentElement;
-
-        private final SortedSet<Integer> elements;
-
-        private PermutationComputer end = null;
-
-        private boolean soleIntegerReturned = false;
+        protected final SortedSet<Integer> elements;
 
         public PermutationComputer(int nbElem) {
-            this.elements = new TreeSet<Integer>();
+            this.elements = new TreeSet<>();
             for (int i = 0; i < nbElem; ++i) {
                 this.elements.add(i);
             }
         }
 
         public PermutationComputer(Set<Integer> elements) {
-            this.elements = new TreeSet<Integer>(elements);
+            this.elements = new TreeSet<>(elements);
         }
 
         public Iterator<List<Integer>> iterator() {
-            return this;
-        }
+            final SortedSet<Integer> superElements = this.elements;
+            return new Iterator<List<Integer>>() {
 
-        public boolean hasNext() {
-            return !soleIntegerReturned
-                    && (this.end == null || this.end.hasNext()
+                private int currentElement;
+
+                private final SortedSet<Integer> elements = superElements;
+
+                private boolean soleIntegerReturned = false;
+
+                private Iterator<List<Integer>> end = null;
+
+                @Override
+                public boolean hasNext() {
+                    return !this.soleIntegerReturned && (this.end == null
+                            || this.end.hasNext()
                             || this.currentElement != this.elements.last());
-        }
-
-        public List<Integer> next() {
-            List<Integer> res = new ArrayList<Integer>();
-            if (this.elements.size() == 1) {
-                return addSoleInteger(res);
-            }
-            if (this.end == null) {
-                createChildPermutation();
-            }
-            if (!this.end.hasNext()) {
-                changeCurrentAndChild();
-            }
-            return addCurrentAndNextInChild(res);
-        }
-
-        private void changeCurrentAndChild() {
-            this.currentElement = this.elements.tailSet(this.currentElement + 1)
-                    .first();
-            SortedSet<Integer> endElements = new TreeSet<Integer>();
-            for (Integer element : this.elements) {
-                if (!element.equals(currentElement)) {
-                    endElements.add(element);
                 }
-            }
-            this.end = new PermutationComputer(endElements);
-        }
 
-        private List<Integer> addCurrentAndNextInChild(List<Integer> res) {
-            res.add(this.currentElement);
-            res.addAll(this.end.next());
-            return res;
-        }
+                @Override
+                public List<Integer> next() {
+                    if (!this.hasNext()) {
+                        throw new NoSuchElementException();
+                    }
+                    List<Integer> res = new ArrayList<>();
+                    if (this.elements.size() == 1) {
+                        return addSoleInteger(res);
+                    }
+                    if (this.end == null) {
+                        createChildPermutation();
+                    }
+                    if (!this.end.hasNext()) {
+                        changeCurrentAndChild();
+                    }
+                    return addCurrentAndNextInChild(res);
+                }
 
-        private void createChildPermutation() {
-            this.currentElement = this.elements.first();
-            SortedSet<Integer> endElements = this.elements
-                    .tailSet(this.currentElement + 1);
-            this.end = new PermutationComputer(endElements);
-        }
+                private List<Integer> addSoleInteger(List<Integer> res) {
+                    this.soleIntegerReturned = true;
+                    res.add(this.elements.first());
+                    return res;
+                }
 
-        private List<Integer> addSoleInteger(List<Integer> res) {
-            this.soleIntegerReturned = true;
-            res.add(this.elements.first());
-            return res;
-        }
+                private void changeCurrentAndChild() {
+                    this.currentElement = this.elements
+                            .tailSet(this.currentElement + 1).first();
+                    SortedSet<Integer> endElements = new TreeSet<>();
+                    for (Integer element : this.elements) {
+                        if (!element.equals(currentElement)) {
+                            endElements.add(element);
+                        }
+                    }
+                    this.end = new PermutationComputer(endElements).iterator();
+                }
 
-        public void remove() {
-            throw new UnsupportedOperationException();
+                private List<Integer> addCurrentAndNextInChild(
+                        List<Integer> res) {
+                    res.add(this.currentElement);
+                    res.addAll(this.end.next());
+                    return res;
+                }
+
+                private void createChildPermutation() {
+                    this.currentElement = this.elements.first();
+                    SortedSet<Integer> endElements = this.elements
+                            .tailSet(this.currentElement + 1);
+                    this.end = new PermutationComputer(endElements).iterator();
+                }
+
+            };
         }
 
     }
