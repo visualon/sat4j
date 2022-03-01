@@ -189,6 +189,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
         }
         this.reader = createReader(originalProblem, problemname);
         IProblem aProblem = this.reader.parseInstance(problemname);
+        aProblem.preprocessing();
         if (this.reader.hasAMapping()) {
             SearchListener<?> listener = this.solver.getSearchListener();
             if (listener instanceof DotSearchTracing) {

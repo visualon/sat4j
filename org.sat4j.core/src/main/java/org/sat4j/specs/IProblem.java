@@ -218,4 +218,6 @@ public interface IProblem extends RandomAccessModel {
      * @since 3.0.0
      */
     int[] decisions();
+
+    void preprocessing();
 }

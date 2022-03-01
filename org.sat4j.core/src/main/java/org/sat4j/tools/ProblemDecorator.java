@@ -108,4 +108,9 @@ public class ProblemDecorator<T extends IProblem> implements IProblem {
         return decorated.decisions();
     }
 
+    @Override
+    public void preprocessing() {
+        decorated().preprocessing();
+    }
+
 }

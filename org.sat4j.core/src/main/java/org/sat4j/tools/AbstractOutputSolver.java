@@ -57,8 +57,8 @@ public abstract class AbstractOutputSolver implements ISolver {
     private boolean verbose;
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public boolean removeConstr(IConstr c) {
@@ -271,5 +271,9 @@ public abstract class AbstractOutputSolver implements ISolver {
 
     public IConstr addConstr(Constr constr) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void preprocessing() {
     }
 }

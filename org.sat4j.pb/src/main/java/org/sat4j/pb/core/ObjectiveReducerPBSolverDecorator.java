@@ -457,4 +457,10 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
     public int[] decisions() {
         return decorated.decisions();
     }
+
+    @Override
+    public void preprocessing() {
+        decorated.preprocessing();
+
+    }
 }

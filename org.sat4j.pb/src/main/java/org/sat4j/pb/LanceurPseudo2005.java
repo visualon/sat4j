@@ -116,6 +116,7 @@ public class LanceurPseudo2005 extends AbstractLauncher implements ILogAble {
         } else {
             theSolver = this.factory.defaultSolver();
         }
+        System.out.println(theSolver);
         if (System.getProperty("OBJREDUCER") != null) {
             if (lower) {
                 theSolver = new ConstraintRelaxingPseudoOptDecorator(
