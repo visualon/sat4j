@@ -14,7 +14,7 @@ maven38-java11-sonar:
       - master
     script: 
       - mvn $MAVEN_CLI_OPTS clean org.jacoco:jacoco-maven-plugin:prepare-agent --settings settings.xml deploy 
-      - mvn $MAVEN_CLI_OPTS sonar:sonar
+      - mvn $MAVEN_CLI_OPTS jacoco:report sonar:sonar
     cache:
        paths:
         - .m2/repository 
