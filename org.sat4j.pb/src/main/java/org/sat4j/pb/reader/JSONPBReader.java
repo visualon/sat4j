@@ -60,7 +60,7 @@ import org.sat4j.specs.IVecInt;
 public class JSONPBReader extends JSONReader<IPBSolver> {
 	public static final String WLITERAL = "\\[(-?\\d+),(-?\\d+)\\]";
 	public static final String WCLAUSE = "(\\[(" + WLITERAL + "(," + WLITERAL
-			+ ")*)?\\])";
+			+ ")*+)?\\])";
 	public static final String PB = "(\\[" + WCLAUSE + ",'[=<>]=?',-?\\d+\\])";
 
 	public static final String OBJECTIVE_FUNCTION = "(\\[('min'|'max'),"

@@ -119,6 +119,10 @@ public class CardConstrFinder
             if (verbose)
                 System.out
                         .println("c riss process exited with status " + status);
+        } catch (InterruptedException ie) {
+            Logger.getLogger("org.sat4j.pb").log(Level.INFO,
+                    "Interrupted when waiting for riss subprocess", ie);
+            Thread.currentThread().interrupt();
         } catch (Exception e) {
             Logger.getLogger("org.sat4j.pb").log(Level.INFO,
                     "Issue when riss subprocess", e);
@@ -236,9 +240,8 @@ public class CardConstrFinder
                 // L>=d dominates L'>=d' iff |L\L'| <= d-d'
                 BitSet intersection = ((BitSet) storedCard.clone());
                 intersection.andNot(atLeastLits);
-                if (intersection
-                        .cardinality() <= this.atLeastCardDegree.get(storedCard)
-                                - threshold) {
+                if (intersection.cardinality() <= this.atLeastCardDegree
+                        .get(storedCard) - threshold) {
                     return true;
                 }
             }

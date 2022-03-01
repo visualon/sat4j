@@ -66,7 +66,7 @@ public class JSONReader<S extends ISolver> extends Reader {
 
     protected final S solver;
 
-    public static final String CLAUSE = "(\\[(-?(\\d+)(,-?(\\d+))*)?\\])";
+    public static final String CLAUSE = "(\\[(-?(\\d+)(,-?(\\d+))*+)?\\])";
 
     public static final String CARD = "(\\[" + CLAUSE + ",'[=<>]=?',-?\\d+\\])";
 
