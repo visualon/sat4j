@@ -74,10 +74,11 @@ public class LightFactory extends ASolverFactory<ISolver> {
 
     @Override
     public ISolver defaultSolver() {
-        MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<DataStructureFactory>();
-        Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
-                learning, new MixedDataStructureDanielWL(), new VarOrderHeap(
-                        new RSATPhaseSelectionStrategy()), new ArminRestarts());
+        MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<>();
+        Solver<DataStructureFactory> solver = new Solver<>(learning,
+                new MixedDataStructureDanielWL(),
+                new VarOrderHeap(new RSATPhaseSelectionStrategy()),
+                new ArminRestarts());
         learning.setSolver(solver);
         solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
         solver.setSearchParams(new SearchParams(1.1, 100));

@@ -89,12 +89,12 @@ public class MUSLauncher extends AbstractLauncher {
         }
         ISolver solver;
         if (this.highLevel) {
-            HighLevelXplain<ISolver> hlxp = new HighLevelXplain<ISolver>(
+            HighLevelXplain<ISolver> hlxp = new HighLevelXplain<>(
                     SolverFactory.newDefault());
             this.xplain = hlxp;
             solver = hlxp;
         } else {
-            Xplain<ISolver> xp = new Xplain<ISolver>(SolverFactory.newDefault(),
+            Xplain<ISolver> xp = new Xplain<>(SolverFactory.newDefault(),
                     false);
             this.xplain = xp;
             solver = xp;

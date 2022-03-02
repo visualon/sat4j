@@ -159,13 +159,9 @@ public final class DecisionMode implements ILauncherMode {
 
         try {
             if (problem.isSatisfiable()) {
-                if (this.exitCode == ExitCode.UNKNOWN) {
-                    this.exitCode = ExitCode.SATISFIABLE;
-                }
+                this.exitCode = ExitCode.SATISFIABLE;
             } else {
-                if (this.exitCode == ExitCode.UNKNOWN) {
-                    this.exitCode = ExitCode.UNSATISFIABLE;
-                }
+                this.exitCode = ExitCode.UNSATISFIABLE;
             }
         } catch (TimeoutException e) {
             logger.log("timeout");
