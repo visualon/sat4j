@@ -146,7 +146,7 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
             String framework = cmd.getOptionValue("l"); //$NON-NLS-1$
             if (this.isModeOptimization) {
                 framework = "pb";
-            } else if (framework == null) { //$NON-NLS-1$
+            } else if (framework == null) { // $NON-NLS-1$
                 framework = "minisat";
             }
 
@@ -206,44 +206,33 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                             new ConflictLevelTracing(
                                     new FileBasedVisualizationTool(
                                             this.filename + "-conflict-level"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-level-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-level-clean")),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-level-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-level-clean")),
                             new DecisionTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-pos"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-neg"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-clean")),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-pos"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-neg"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-clean")),
                             new LearnedClausesSizeTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-learned-clauses-size"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-learned-clauses-size-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-learned-clauses-size-clean")),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-learned-clauses-size"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-learned-clauses-size-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-learned-clauses-size-clean")),
                             new ConflictDepthTracing(
                                     new FileBasedVisualizationTool(
                                             this.filename + "-conflict-depth"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-depth-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-depth-clean"))));
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-depth-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-depth-clean"))));
                 }
             }
 
@@ -261,7 +250,8 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 others++;
             }
 
-            getLogWriter().println(asolver.toString(OutputPrefix.COMMENT_PREFIX.toString())); //$NON-NLS-1$
+            getLogWriter().println(
+                    asolver.toString(OutputPrefix.COMMENT_PREFIX.toString())); // $NON-NLS-1$
             return asolver;
         } catch (ParseException e1) {
             HelpFormatter helpf = new HelpFormatter();
@@ -307,47 +297,50 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
     }
 
     @Override
-    protected void solve(IProblem problem) throws TimeoutException {
-        if (this.isModeOptimization) {
-            boolean isSatisfiable = false;
+    protected void solve(IProblem problem) {
+        try {
+            if (this.isModeOptimization) {
+                boolean isSatisfiable = false;
 
-            IOptimizationProblem optproblem = (IOptimizationProblem) problem;
+                IOptimizationProblem optproblem = (IOptimizationProblem) problem;
 
-            try {
-                while (optproblem.admitABetterSolution()) {
-                    if (!isSatisfiable) {
-                        if (optproblem.nonOptimalMeansSatisfiable()) {
-                            setExitCode(ExitCode.SATISFIABLE);
-                            if (optproblem.hasNoObjectiveFunction()) {
-                                return;
+                try {
+                    while (optproblem.admitABetterSolution()) {
+                        if (!isSatisfiable) {
+                            if (optproblem.nonOptimalMeansSatisfiable()) {
+                                setExitCode(ExitCode.SATISFIABLE);
+                                if (optproblem.hasNoObjectiveFunction()) {
+                                    return;
+                                }
+                                log("SATISFIABLE"); //$NON-NLS-1$
+                            } else if (this.incomplete) {
+                                setExitCode(ExitCode.UPPER_BOUND);
                             }
-                            log("SATISFIABLE"); //$NON-NLS-1$
-                        } else if (this.incomplete) {
-                            setExitCode(ExitCode.UPPER_BOUND);
+                            isSatisfiable = true;
+                            log("OPTIMIZING..."); //$NON-NLS-1$
                         }
-                        isSatisfiable = true;
-                        log("OPTIMIZING..."); //$NON-NLS-1$
+                        log("Got one! Elapsed wall clock time (in seconds):" //$NON-NLS-1$
+                                + (System.currentTimeMillis() - getBeginTime())
+                                        / 1000.0);
+                        getLogWriter().println(CURRENT_OPTIMUM_VALUE_PREFIX
+                                + optproblem.getObjectiveValue());
+                        optproblem.discardCurrentSolution();
                     }
-                    log("Got one! Elapsed wall clock time (in seconds):" //$NON-NLS-1$
-                            + (System.currentTimeMillis() - getBeginTime())
-                            / 1000.0);
-                    getLogWriter().println(
-                            CURRENT_OPTIMUM_VALUE_PREFIX
-                                    + optproblem.getObjectiveValue());
-                    optproblem.discardCurrentSolution();
-                }
-                if (isSatisfiable) {
+                    if (isSatisfiable) {
+                        setExitCode(ExitCode.OPTIMUM_FOUND);
+                    } else {
+                        setExitCode(ExitCode.UNSATISFIABLE);
+                    }
+                } catch (ContradictionException ex) {
+                    assert isSatisfiable;
                     setExitCode(ExitCode.OPTIMUM_FOUND);
-                } else {
-                    setExitCode(ExitCode.UNSATISFIABLE);
                 }
-            } catch (ContradictionException ex) {
-                assert isSatisfiable;
-                setExitCode(ExitCode.OPTIMUM_FOUND);
+            } else {
+                this.setExitCode(problem.isSatisfiable() ? ExitCode.SATISFIABLE
+                        : ExitCode.UNSATISFIABLE);
             }
-        } else {
-            this.setExitCode(problem.isSatisfiable() ? ExitCode.SATISFIABLE
-                    : ExitCode.UNSATISFIABLE);
+        } catch (TimeoutException te) {
+            log("timeout");
         }
     }
 
@@ -373,10 +366,10 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
         this.solver.printStat(out, OutputPrefix.COMMENT_PREFIX.toString());
         this.solver.printInfos(out, OutputPrefix.COMMENT_PREFIX.toString());
         ExitCode exitCode = getExitCode();
-        out.printf("%s%s%n",OutputPrefix.ANSWER_PREFIX,exitCode);
+        out.printf("%s%s%n", OutputPrefix.ANSWER_PREFIX, exitCode);
         if (exitCode == ExitCode.SATISFIABLE
-                || exitCode == ExitCode.OPTIMUM_FOUND || this.incomplete
-                && exitCode == ExitCode.UPPER_BOUND) {
+                || exitCode == ExitCode.OPTIMUM_FOUND
+                || this.incomplete && exitCode == ExitCode.UPPER_BOUND) {
             out.print(OutputPrefix.SOLUTION_PREFIX);
             getReader().decode(this.problem.model(), out);
             out.println();
@@ -420,8 +413,8 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 }
                 System.exit(lanceur.getExitCode().value());
             } else {
-                RemoteControlFrame frame = new RemoteControlFrame(
-                        this.filename, "", args);
+                RemoteControlFrame frame = new RemoteControlFrame(this.filename,
+                        "", args);
                 frame.activateTracing(this.modeTracing);
                 frame.setOptimisationMode(this.isModeOptimization);
             }
