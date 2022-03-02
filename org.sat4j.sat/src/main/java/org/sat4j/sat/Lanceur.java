@@ -402,14 +402,10 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
             this.beginTime = System.currentTimeMillis();
             if (!this.launchRemoteControl) {
                 readProblem(instanceName);
-                try {
-                    if (this.problem != null) {
-                        solve(this.problem);
-                    } else {
-                        solve(this.solver);
-                    }
-                } catch (TimeoutException e) {
-                    log("timeout"); //$NON-NLS-1$
+                if (this.problem != null) {
+                    solve(this.problem);
+                } else {
+                    solve(this.solver);
                 }
                 System.exit(lanceur.getExitCode().value());
             } else {
