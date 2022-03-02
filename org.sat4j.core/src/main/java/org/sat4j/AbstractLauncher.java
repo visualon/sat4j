@@ -217,7 +217,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
         }
         if (System.getProperty("forceorder") != null) {
             String orderFile = problemname + ".order";
-            ICDCL solverService = (ICDCL) solver;
+            ICDCL<?> solverService = (ICDCL<?>) solver;
             IOrder order = new OrientedOrder(orderFile,
                     solverService.getOrder());
             solverService.setOrder(order);
