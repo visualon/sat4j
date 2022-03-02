@@ -119,7 +119,8 @@ public class Launcher extends AbstractLauncher implements ILogAble {
         switch (typeProbleme) {
         case CNF_MAXSAT:
         case WCNF_MAXSAT:
-            instance = new MSInstanceReader((WeightedMaxSatDecorator) theSolver);
+            instance = new MSInstanceReader(
+                    (WeightedMaxSatDecorator) theSolver);
             break;
         case PB_OPT:
         case PB_SAT:
@@ -205,44 +206,33 @@ public class Launcher extends AbstractLauncher implements ILogAble {
                             new ConflictLevelTracing(
                                     new FileBasedVisualizationTool(
                                             this.filename + "-conflict-level"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-level-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-level-clean")),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-level-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-level-clean")),
                             new DecisionTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-pos"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-neg"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-decision-indexes-clean")),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-pos"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-neg"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-decision-indexes-clean")),
                             new LearnedClausesSizeTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-learned-clauses-size"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-learned-clauses-size-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-learned-clauses-size-clean")),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-learned-clauses-size"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-learned-clauses-size-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-learned-clauses-size-clean")),
                             new ConflictDepthTracing(
                                     new FileBasedVisualizationTool(
                                             this.filename + "-conflict-depth"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-depth-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.filename
-                                                    + "-conflict-depth-clean"))));
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-depth-restart"),
+                                    new FileBasedVisualizationTool(this.filename
+                                            + "-conflict-depth-clean"))));
                 }
             }
 
@@ -266,8 +256,7 @@ public class Launcher extends AbstractLauncher implements ILogAble {
                             (WeightedMaxSatDecorator) asolver);
                 } else {
                     this.problem = new PseudoOptDecorator(
-                            (WeightedMaxSatDecorator) asolver, false,
-                            false);
+                            (WeightedMaxSatDecorator) asolver, false, false);
                 }
                 break;
             default:
@@ -295,7 +284,8 @@ public class Launcher extends AbstractLauncher implements ILogAble {
             }
 
             if (asolver != null) {
-                getLogWriter().println(asolver.toString(OutputPrefix.COMMENT_PREFIX.toString())); //$NON-NLS-1$
+                getLogWriter().println(asolver
+                        .toString(OutputPrefix.COMMENT_PREFIX.toString())); // $NON-NLS-1$
             }
             return asolver;
         } catch (ParseException e1) {
@@ -327,19 +317,15 @@ public class Launcher extends AbstractLauncher implements ILogAble {
             this.beginTime = System.currentTimeMillis();
             if (!this.launchRemoteControl) {
                 readProblem(instanceName);
-                try {
-                    if (this.problem != null) {
-                        solve(this.problem);
-                    } else {
-                        solve(this.solver);
-                    }
-                } catch (TimeoutException e) {
-                    log("timeout"); //$NON-NLS-1$
+                if (this.problem != null) {
+                    solve(this.problem);
+                } else {
+                    solve(this.solver);
                 }
                 System.exit(launcher.getExitCode().value());
             } else {
-                RemoteControlFrame frame = new RemoteControlFrame(
-                        this.filename, "", args);
+                RemoteControlFrame frame = new RemoteControlFrame(this.filename,
+                        "", args);
                 frame.activateTracing(this.modeTracing);
                 frame.setOptimisationMode(this.isModeOptimization);
             }

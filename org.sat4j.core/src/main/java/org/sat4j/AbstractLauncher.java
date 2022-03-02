@@ -50,7 +50,6 @@ import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.SearchListener;
-import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.DotSearchTracing;
 import org.sat4j.tools.ModelIteratorToSATAdapter;
 import org.sat4j.tools.RupSearchListener;
@@ -256,8 +255,6 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
             this.beginTime = System.currentTimeMillis();
             this.problem = readProblem(instanceName);
             solve(this.problem);
-        } catch (TimeoutException e) {
-            log("timeout"); //$NON-NLS-1$
         } catch (ContradictionException e) {
             this.launcherMode.setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
@@ -311,7 +308,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
         }
     }
 
-    protected void solve(IProblem problem) throws TimeoutException {
+    protected void solve(IProblem problem) {
         launcherMode.solve(problem, reader, this, out, beginTime);
     }
 
