@@ -30,7 +30,6 @@
 package org.sat4j.core;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +60,7 @@ public abstract class ASolverFactory<T extends ISolver>
      * @see #createSolverByName(String)
      */
     public String[] solverNames() {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
         Method[] solvers = this.getClass().getDeclaredMethods();
         for (Method solver : solvers) {
             if (solver.getParameterTypes().length == 0
@@ -91,15 +90,8 @@ public abstract class ASolverFactory<T extends ISolver>
             Method m = this.getClass().getMethod("new" + solvername, //$NON-NLS-1$
                     paramtypes);
             return (T) m.invoke(null, (Object[]) null);
-        } catch (SecurityException e) {
-            System.err.println(e.getLocalizedMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getLocalizedMessage());
-        } catch (NoSuchMethodException e) {
-            System.err.println(e.getLocalizedMessage());
-        } catch (IllegalAccessException e) {
-            System.err.println(e.getLocalizedMessage());
-        } catch (InvocationTargetException e) {
+        } catch (SecurityException | IllegalArgumentException
+                | ReflectiveOperationException e) {
             System.err.println(e.getLocalizedMessage());
         }
         return null;
