@@ -128,7 +128,7 @@ public final class DecisionMode implements ILauncherMode {
             reader.decode(model, out);
             out.println();
         } else {
-            int[] stats = new int[AssignmentOrigin.values().length];
+            var stats = new int[AssignmentOrigin.values().length];
             AssignmentOrigin origin;
             for (int p : model) {
                 origin = solver.getOriginInModel(p);

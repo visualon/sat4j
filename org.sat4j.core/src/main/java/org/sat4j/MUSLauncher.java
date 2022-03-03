@@ -111,7 +111,7 @@ public class MUSLauncher extends AbstractLauncher {
                 try {
                     this.xplain.setMinimizationStrategy(
                             (MinimizationStrategy) Class.forName(className)
-                                    .newInstance());
+                                    .getDeclaredConstructor().newInstance());
                 } catch (Exception e) {
                     log(e.getMessage());
                 }
@@ -160,6 +160,10 @@ public class MUSLauncher extends AbstractLauncher {
                 double beginmus = System.currentTimeMillis();
                 if (allMuses != null) {
                     SolutionFoundListener mssListener = new SolutionFoundListener() {
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = 1L;
                         private int msscount = 0;
 
                         public void onUnsatTermination() {
@@ -178,6 +182,11 @@ public class MUSLauncher extends AbstractLauncher {
                         }
                     };
                     SolutionFoundListener musListener = new SolutionFoundListener() {
+                        /**
+                         * 
+                         */
+                        private static final long serialVersionUID = 1L;
+
                         public void onSolutionFound(int[] solution) {
                         }
 

@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -48,7 +49,12 @@ import org.sat4j.specs.TimeoutException;
  * @author sroussel
  * @since 2.3.3
  */
-public class AllMUSes {
+public class AllMUSes implements Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     private final AbstractClauseSelectorSolver<? extends ISolver> css;
     private final List<IVecInt> mssList;

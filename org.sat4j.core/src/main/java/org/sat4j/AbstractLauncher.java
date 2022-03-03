@@ -35,8 +35,6 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.URL;
-import java.util.Properties;
 
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.minisat.core.ICDCL;
@@ -129,18 +127,18 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
 
     protected final void displayHeader() {
         displayLicense();
-        URL url = AbstractLauncher.class.getResource("/sat4j.version"); //$NON-NLS-1$
+        var url = AbstractLauncher.class.getResource("/sat4j.version"); //$NON-NLS-1$
         if (url == null) {
             log("no version file found!!!"); //$NON-NLS-1$
         } else {
-            try (BufferedReader in = new BufferedReader(
+            try (var in = new BufferedReader(
                     new InputStreamReader(url.openStream()))) {
                 log("version " + in.readLine()); //$NON-NLS-1$
             } catch (IOException e) {
                 log("c ERROR: " + e.getMessage());
             }
         }
-        Properties prop = System.getProperties();
+        var prop = System.getProperties();
         String[] infoskeys = { "java.runtime.name", "java.vm.name", //$NON-NLS-1$//$NON-NLS-2$
                 "java.vm.version", "java.vm.vendor", "sun.arch.data.model", //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
                 "java.version", "os.name", "os.version", "os.arch" };
@@ -148,7 +146,7 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
             log(key + (key.length() < 14 ? "\t\t" : "\t") //$NON-NLS-1$
                     + prop.getProperty(key));
         }
-        Runtime runtime = Runtime.getRuntime();
+        var runtime = Runtime.getRuntime();
         log("Free memory \t\t" + runtime.freeMemory()); //$NON-NLS-1$
         log("Max memory \t\t" + runtime.maxMemory()); //$NON-NLS-1$
         log("Total memory \t\t" + runtime.totalMemory()); //$NON-NLS-1$
@@ -273,16 +271,14 @@ public abstract class AbstractLauncher implements Serializable, ILogAble {
                 System.out.println(this.solver.getLogPrefix()
                         + "model enumeration using the external way");
             } else {
-                SearchEnumeratorListener enumerator = new SearchEnumeratorListener(
-                        launcherMode);
+                var enumerator = new SearchEnumeratorListener(launcherMode);
                 this.solver.setSearchListener(enumerator);
                 System.out.println(this.solver.getLogPrefix()
                         + "model enumeration using the internal way");
             }
         }
         if (System.getProperty("minone") != null) {
-            SearchMinOneListener minone = new SearchMinOneListener(
-                    launcherMode);
+            var minone = new SearchMinOneListener(launcherMode);
             this.solver.setSearchListener(minone);
         }
     }

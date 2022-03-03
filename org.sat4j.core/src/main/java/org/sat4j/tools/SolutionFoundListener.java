@@ -48,6 +48,11 @@ public interface SolutionFoundListener extends Serializable {
 
     SolutionFoundListener VOID = new SolutionFoundListener() {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         public void onSolutionFound(int[] model) {
             // do nothing
         }
