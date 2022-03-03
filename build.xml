@@ -7,7 +7,8 @@
         <property name="testreport.dir" value="tests"/>
 	<property name="build" value="bin" />
 	<property name="doc" value="api" />
-	<property name="target" value="1.8"/>
+    <property name="sourceCompatibility" value="11"/>
+	<property name="target" value="11"/>
         <property name="dist" value="dist"/>
         <property name="release" value="CUSTOM"/>
         <property name="tag" value="HEAD"/>
@@ -327,7 +328,7 @@
 		<echo>Generating Javodoc</echo>
 		<javadoc destdir="${doc}/${module}" 
 				 access="public" 
-				 source="1.8" 
+				 source="${sourceCompatibility}" 
 				 use="true" 
 				 notree="false" 
 				 nonavbar="false" 
@@ -353,7 +354,7 @@
 		<javac
 		srcdir="${src}"
 		destdir="${build}"
-		source="1.8"
+		source="${sourceCompatibility}"
 		target="${target}"
 		debug="true"
 	        includeantruntime="false">
@@ -460,7 +461,7 @@
         <target name="tests" 
           description="Launch JUnit tests and generate a report">
 		<echo>Compiling test files</echo>
-		<javac srcdir="${test}" destdir="${build}" source="1.8" target="1.8" debug="true">
+		<javac srcdir="${test}" destdir="${build}" source="${sourceCompatibility}" target="{target}" debug="true">
 			<classpath refid="somePath"/>
 		</javac>
 		<echo>Running JUNIT tests</echo>
