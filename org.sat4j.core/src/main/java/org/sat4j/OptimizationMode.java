@@ -175,6 +175,7 @@ public final class OptimizationMode implements ILauncherMode {
         return exitCode;
     }
 
+    @Override
     public void onSolutionFound(int[] solution) {
         this.nbSolutions++;
         this.out.printf("c Found solution #%d  (%.2f)s%n", nbSolutions,
@@ -187,6 +188,7 @@ public final class OptimizationMode implements ILauncherMode {
         }
     }
 
+    @Override
     public void onSolutionFound(IVecInt solution) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }

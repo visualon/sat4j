@@ -182,6 +182,7 @@ public final class DecisionMode implements ILauncherMode {
         return this.exitCode;
     }
 
+    @Override
     public void onSolutionFound(int[] solution) {
         this.nbSolutionFound++;
         this.exitCode = ExitCode.SATISFIABLE;
@@ -192,10 +193,12 @@ public final class DecisionMode implements ILauncherMode {
         }
     }
 
+    @Override
     public void onSolutionFound(IVecInt solution) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
+    @Override
     public void onUnsatTermination() {
         if (this.exitCode == ExitCode.SATISFIABLE) {
             this.exitCode = ExitCode.OPTIMUM_FOUND;

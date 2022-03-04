@@ -340,8 +340,8 @@ public final class VecInt implements IVecInt {
      */
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < this.nbelem - 1; i++) {
+        var stb = new StringBuilder();
+        for (var i = 0; i < this.nbelem - 1; i++) {
             stb.append(this.myarray[i]);
             stb.append(","); //$NON-NLS-1$
         }
@@ -668,7 +668,7 @@ public final class VecInt implements IVecInt {
      * @since 2.3.6
      */
     public static VecInt of(Collection<Integer> values) {
-        VecInt v = new VecInt(values.size());
+        var v = new VecInt(values.size());
         for (Integer i : values) {
             v.push(i);
         }

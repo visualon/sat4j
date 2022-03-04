@@ -166,6 +166,7 @@ public class MUSLauncher extends AbstractLauncher {
                         private static final long serialVersionUID = 1L;
                         private int msscount = 0;
 
+                        @Override
                         public void onSolutionFound(IVecInt solution) {
                             System.out.print("\r" + solver.getLogPrefix()
                                     + "found mss number " + ++msscount);
@@ -177,6 +178,7 @@ public class MUSLauncher extends AbstractLauncher {
                          */
                         private static final long serialVersionUID = 1L;
 
+                        @Override
                         public void onSolutionFound(IVecInt solution) {
                             System.out.println(solver.getLogPrefix()
                                     + "found mus number " + ++muscount);
