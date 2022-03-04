@@ -42,9 +42,13 @@ import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.SolutionFoundListener;
 
-public class LinMultiObjHelper<T, C> extends DependencyHelper<T, C> implements
-        SolutionFoundListener {
+public class LinMultiObjHelper<T, C> extends DependencyHelper<T, C>
+        implements SolutionFoundListener {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private IMultiObjOptimizationProblem solver;
     private boolean hasASolution;
     private boolean isOptimal = false;

@@ -43,6 +43,10 @@ import org.sat4j.tools.SolutionFoundListener;
 public abstract class AbstractLexicoHelper<T, C> extends DependencyHelper<T, C>
         implements SolutionFoundListener {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final LexicoDecoratorPB lexico;
 
     public AbstractLexicoHelper(LexicoDecoratorPB lexico) {
@@ -155,9 +159,4 @@ public abstract class AbstractLexicoHelper<T, C> extends DependencyHelper<T, C>
         this.hasASolution = true;
 
     }
-
-    public void onUnsatTermination() {
-        // nothing to do here
-    }
-
 }

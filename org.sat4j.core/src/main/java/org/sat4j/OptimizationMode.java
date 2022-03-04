@@ -192,10 +192,6 @@ public final class OptimizationMode implements ILauncherMode {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    public void onUnsatTermination() {
-        // do nothing
-    }
-
     public void setExitCode(ExitCode exitCode) {
         this.exitCode = exitCode;
     }

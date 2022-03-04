@@ -52,18 +52,6 @@ public interface SolutionFoundListener extends Serializable {
          * 
          */
         private static final long serialVersionUID = 1L;
-
-        public void onSolutionFound(int[] model) {
-            // do nothing
-        }
-
-        public void onSolutionFound(IVecInt solution) {
-            // do nothing
-        }
-
-        public void onUnsatTermination() {
-            // do nothing
-        }
     };
 
     /**
@@ -74,7 +62,9 @@ public interface SolutionFoundListener extends Serializable {
      * @param solution
      *            a set of Dimacs literals.
      */
-    void onSolutionFound(int[] solution);
+    default void onSolutionFound(int[] solution) {
+
+    }
 
     /**
      * Callback method called when a new solution is found. While a solution
@@ -84,11 +74,15 @@ public interface SolutionFoundListener extends Serializable {
      * @param solution
      *            a set of Dimacs literals.
      */
-    void onSolutionFound(IVecInt solution);
+    default void onSolutionFound(IVecInt solution) {
+
+    }
 
     /**
      * Callback method called when the search is finished (either unsat problem
      * or no more solutions found)
      */
-    void onUnsatTermination();
+    default void onUnsatTermination() {
+
+    }
 }

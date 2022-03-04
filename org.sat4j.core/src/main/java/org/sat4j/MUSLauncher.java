@@ -166,19 +166,9 @@ public class MUSLauncher extends AbstractLauncher {
                         private static final long serialVersionUID = 1L;
                         private int msscount = 0;
 
-                        public void onUnsatTermination() {
-                            throw new UnsupportedOperationException(
-                                    "Not implemented yet!");
-                        }
-
                         public void onSolutionFound(IVecInt solution) {
                             System.out.print("\r" + solver.getLogPrefix()
                                     + "found mss number " + ++msscount);
-                        }
-
-                        public void onSolutionFound(int[] solution) {
-                            throw new UnsupportedOperationException(
-                                    "Not implemented yet!");
                         }
                     };
                     SolutionFoundListener musListener = new SolutionFoundListener() {
@@ -186,9 +176,6 @@ public class MUSLauncher extends AbstractLauncher {
                          * 
                          */
                         private static final long serialVersionUID = 1L;
-
-                        public void onSolutionFound(int[] solution) {
-                        }
 
                         public void onSolutionFound(IVecInt solution) {
                             System.out.println(solver.getLogPrefix()
@@ -198,9 +185,6 @@ public class MUSLauncher extends AbstractLauncher {
                             solution.copyTo(localMus);
                             reader.decode(localMus, out);
                             out.println();
-                        }
-
-                        public void onUnsatTermination() {
                         }
                     };
                     allMuses.computeAllMSS(mssListener);

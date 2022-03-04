@@ -46,6 +46,11 @@ import org.sat4j.specs.TimeoutException;
 @Feature("solutionlistener")
 public class CheckMUSSolutionListener implements SolutionFoundListener {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private List<IVecInt> clauses;
 
     private String explain;
@@ -128,19 +133,11 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
 
     }
 
-    public void onSolutionFound(int[] solution) {
-
-    }
-
     public void onSolutionFound(IVecInt solution) {
         if (checkThatItIsAMUS(solution)) {
             System.out.println(solution + " is a MUS");
         } else {
             System.out.println(solution + " is not a MUS \n" + explain);
         }
-    }
-
-    public void onUnsatTermination() {
-        // do nothing
     }
 }

@@ -54,10 +54,10 @@ public class OptimalModelIteratorTest {
 
         SolutionFoundListener slf = new SolutionFoundListener() {
 
-            public void onUnsatTermination() {
-                // TODO Auto-generated method stub
-
-            }
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
 
             public void onSolutionFound(IVecInt solution) {
                 nbSolutions.inc();

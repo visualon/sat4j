@@ -92,19 +92,14 @@ public class ModelIteratorTest {
             ISolver solver = SolverFactory.newDefault();
             SolutionFoundListener sfl = new SolutionFoundListener() {
 
+                /**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
                 public void onSolutionFound(int[] solution) {
                     System.out.println(new VecInt(solution));
                 }
-
-                public void onSolutionFound(IVecInt solution) {
-                    throw new UnsupportedOperationException(
-                            "Not implemented yet!");
-                }
-
-                public void onUnsatTermination() {
-                    // do nothing
-                }
-
             };
             SearchEnumeratorListener enumerator = new SearchEnumeratorListener(
                     sfl);
@@ -135,19 +130,14 @@ public class ModelIteratorTest {
             ISolver solver = SolverFactory.newDefault();
             SolutionFoundListener sfl = new SolutionFoundListener() {
 
+                /**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
                 public void onSolutionFound(int[] solution) {
                     System.out.println(new VecInt(solution));
                 }
-
-                public void onSolutionFound(IVecInt solution) {
-                    throw new UnsupportedOperationException(
-                            "Not implemented yet!");
-                }
-
-                public void onUnsatTermination() {
-                    // do nothing
-                }
-
             };
             SearchEnumeratorListener enumerator = new SearchEnumeratorListener(
                     sfl);
@@ -404,24 +394,8 @@ public class ModelIteratorTest {
     public void testInternalEnumerationOnExampleFromRomain() {
         try {
             ISolver solver = SolverFactory.newDefault();
-            SolutionFoundListener sfl = new SolutionFoundListener() {
-
-                public void onSolutionFound(int[] solution) {
-                    // do nothing
-                }
-
-                public void onSolutionFound(IVecInt solution) {
-                    throw new UnsupportedOperationException(
-                            "Not implemented yet!");
-                }
-
-                public void onUnsatTermination() {
-                    // do nothing
-                }
-
-            };
             SearchEnumeratorListener enumerator = new SearchEnumeratorListener(
-                    sfl);
+                    SolutionFoundListener.VOID);
             solver.setSearchListener(enumerator);
             solver.newVar(6);
             IVecInt clause = new VecInt();
