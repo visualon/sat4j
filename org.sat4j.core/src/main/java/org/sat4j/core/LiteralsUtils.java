@@ -82,25 +82,25 @@ public final class LiteralsUtils {
     /**
      * Returns the positive literal associated with a variable.
      * 
-     * @param var
+     * @param variable
      *            a variable in Dimacs format
      * @return the positive literal associated with this variable in internal
      *         representation
      */
-    public static int posLit(int var) {
-        return var << 1;
+    public static int posLit(int variable) {
+        return variable << 1;
     }
 
     /**
      * Returns the negative literal associated with a variable.
      * 
-     * @param var
+     * @param variable
      *            a variable in Dimacs format
      * @return the negative literal associated with this variable in internal
      *         representation
      */
-    public static int negLit(int var) {
-        return var << 1 ^ 1;
+    public static int negLit(int variable) {
+        return variable << 1 ^ 1;
     }
 
     /**

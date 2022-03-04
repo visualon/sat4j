@@ -108,7 +108,7 @@ public final class VecInt implements IVecInt {
      */
     public VecInt(int size, int pad) {
         this.myarray = new int[size];
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             this.myarray[i] = pad;
         }
         this.nbelem = size;
@@ -125,14 +125,10 @@ public final class VecInt implements IVecInt {
      *            the number of elements to remove
      */
     public void shrink(int nofelems) {
-        // assert nofelems >= 0;
-        // assert nofelems <= size();
         this.nbelem -= nofelems;
     }
 
     public void shrinkTo(int newsize) {
-        // assert newsize >= 0;
-        // assert newsize < nbelem;
         this.nbelem = newsize;
     }
 
@@ -141,13 +137,11 @@ public final class VecInt implements IVecInt {
      * rien.
      */
     public IVecInt pop() {
-        // assert size() != 0;
         --this.nbelem;
         return this;
     }
 
     public void growTo(int newsize, final int pad) {
-        // assert newsize > size();
         ensure(newsize);
         while (--newsize >= 0) {
             this.myarray[this.nbelem++] = pad;
@@ -156,7 +150,7 @@ public final class VecInt implements IVecInt {
 
     public void ensure(int nsize) {
         if (nsize >= this.myarray.length) {
-            int[] narray = new int[Math.max(nsize, this.nbelem * 2)];
+            var narray = new int[Math.max(nsize, this.nbelem * 2)];
             System.arraycopy(this.myarray, 0, narray, 0, this.nbelem);
             this.myarray = narray;
         }
@@ -177,12 +171,10 @@ public final class VecInt implements IVecInt {
     }
 
     public int last() {
-        // assert nbelem > 0;
         return this.myarray[this.nbelem - 1];
     }
 
     public int get(int i) {
-        // assert i >= 0 && i < nbelem;
         return this.myarray[i];
     }
 
@@ -197,7 +189,7 @@ public final class VecInt implements IVecInt {
 
     public boolean contains(int e) {
         final int[] workArray = this.myarray; // dvh, faster access
-        for (int i = 0; i < this.nbelem; i++) {
+        for (var i = 0; i < this.nbelem; i++) {
             if (workArray[i] == e) {
                 return true;
             }
@@ -210,7 +202,7 @@ public final class VecInt implements IVecInt {
      */
     public int indexOf(int e) {
         final int[] workArray = this.myarray; // dvh, faster access
-        for (int i = 0; i < this.nbelem; i++) {
+        for (var i = 0; i < this.nbelem; i++) {
             if (workArray[i] == e) {
                 return i;
             }
@@ -256,7 +248,6 @@ public final class VecInt implements IVecInt {
      *            the target array.
      */
     public void copyTo(int[] is) {
-        // assert is.length >= nbelem;
         System.arraycopy(this.myarray, 0, is, 0, this.nbelem);
     }
 
@@ -267,7 +258,7 @@ public final class VecInt implements IVecInt {
 
     public void moveTo2(IVecInt dest) {
         VecInt ndest = (VecInt) dest;
-        int tmp[] = ndest.myarray;
+        int[] tmp = ndest.myarray;
         ndest.myarray = this.myarray;
         ndest.nbelem = this.nbelem;
         this.myarray = tmp;
@@ -314,8 +305,7 @@ public final class VecInt implements IVecInt {
      *            an element from that VecInt
      */
     public void remove(int elem) {
-        // assert size() > 0;
-        int j = 0;
+        var j = 0;
         for (; this.myarray[j] != elem; j++) {
             if (j == size())
                 throw new NoSuchElementException();
@@ -334,7 +324,6 @@ public final class VecInt implements IVecInt {
      *         vector
      */
     public int delete(int i) {
-        // assert i >= 0 && i < nbelem;
         int ith = this.myarray[i];
         this.myarray[i] = this.myarray[--this.nbelem];
         return ith;
@@ -457,7 +446,7 @@ public final class VecInt implements IVecInt {
             if (v.size() != this.nbelem) {
                 return false;
             }
-            for (int i = 0; i < this.nbelem; i++) {
+            for (var i = 0; i < this.nbelem; i++) {
                 if (v.get(i) != this.myarray[i]) {
                     return false;
                 }
@@ -475,7 +464,7 @@ public final class VecInt implements IVecInt {
     @Override
     public int hashCode() {
         long sum = 0;
-        for (int i = 0; i < this.nbelem; i++) {
+        for (var i = 0; i < this.nbelem; i++) {
             sum += this.myarray[i];
         }
         return (int) sum / this.nbelem;
@@ -504,8 +493,8 @@ public final class VecInt implements IVecInt {
      * @return true iff the current vector is a subset of vec
      */
     public boolean isSubsetOf(VecInt vec) {
-        int i = 0;
-        int j = 0;
+        var i = 0;
+        var j = 0;
         while (i < this.nbelem && j < vec.nbelem) {
             while (j < vec.nbelem && vec.myarray[j] < this.myarray[i]) {
                 j++;
@@ -551,13 +540,13 @@ public final class VecInt implements IVecInt {
      * @author sroussel
      */
     public IVecInt[] subset(int cardinal) {
-        List<IVecInt> liste = new ArrayList<IVecInt>();
+        List<IVecInt> liste = new ArrayList<>();
 
         IVecInt[] result;
 
         if (cardinal == 1) {
             result = new VecInt[this.size()];
-            for (int i = 0; i < this.size(); i++) {
+            for (var i = 0; i < this.size(); i++) {
                 result[i] = new VecInt(new int[] { this.get(i) });
             }
             return result;
@@ -568,7 +557,7 @@ public final class VecInt implements IVecInt {
             return result;
         }
 
-        VecInt subVec = new VecInt();
+        var subVec = new VecInt();
         VecInt newVec;
         this.copyTo(subVec);
         subVec.remove(this.get(0));
@@ -585,7 +574,7 @@ public final class VecInt implements IVecInt {
         }
 
         result = new VecInt[liste.size()];
-        for (int i = 0; i < liste.size(); i++) {
+        for (var i = 0; i < liste.size(); i++) {
             result[i] = liste.get(i);
         }
         return result;

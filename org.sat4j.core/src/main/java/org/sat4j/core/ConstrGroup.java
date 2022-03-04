@@ -46,7 +46,7 @@ import org.sat4j.specs.VarMapper;
 @Feature("constraint")
 public class ConstrGroup implements IConstr {
 
-    private final IVec<IConstr> constrs = new Vec<IConstr>();
+    private final IVec<IConstr> constrs = new Vec<>();
     private final boolean disallowNullConstraints;
 
     /**
@@ -123,8 +123,8 @@ public class ConstrGroup implements IConstr {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < constrs.size(); i++) {
+        var stb = new StringBuilder();
+        for (var i = 0; i < constrs.size(); i++) {
             stb.append(constrs.get(i).dump());
             if (i < constrs.size() - 1) {
                 stb.append(System.lineSeparator());

@@ -105,9 +105,9 @@ public final class OptimizationMode implements ILauncherMode {
             if (!optproblem.hasNoObjectiveFunction()) {
                 String objvalue;
                 if (optproblem instanceof LexicoDecorator<?>) {
-                    IVec<Number> values = new Vec<Number>();
+                    IVec<Number> values = new Vec<>();
                     LexicoDecorator<?> lexico = (LexicoDecorator<?>) optproblem;
-                    for (int i = 0; i < lexico.numberOfCriteria(); i++) {
+                    for (var i = 0; i < lexico.numberOfCriteria(); i++) {
                         values.push(lexico.getObjectiveValue(i));
                     }
                     objvalue = values.toString();
@@ -126,7 +126,7 @@ public final class OptimizationMode implements ILauncherMode {
 
     public void solve(IProblem problem, Reader reader, ILogAble logger,
             PrintWriter out, long beginTime) {
-        boolean isSatisfiable = false;
+        var isSatisfiable = false;
         this.nbSolutions = 0;
         IOptimizationProblem optproblem = (IOptimizationProblem) problem;
         exitCode = ExitCode.UNKNOWN;
@@ -177,7 +177,6 @@ public final class OptimizationMode implements ILauncherMode {
 
     public void onSolutionFound(int[] solution) {
         this.nbSolutions++;
-        // this.exitCode = ExitCode.SATISFIABLE;
         this.out.printf("c Found solution #%d  (%.2f)s%n", nbSolutions,
                 (System.currentTimeMillis() - beginTime) / 1000.0);
         this.out.println("c Value of objective function : "

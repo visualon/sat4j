@@ -69,7 +69,7 @@ public abstract class ASolverFactory<T extends ISolver>
             }
         }
         Collections.sort(l);
-        String[] names = new String[l.size()];
+        var names = new String[l.size()];
         l.toArray(names);
         return names;
     }
@@ -87,7 +87,7 @@ public abstract class ASolverFactory<T extends ISolver>
     public T createSolverByName(String solvername) {
         try {
             Class<?>[] paramtypes = {};
-            Method m = this.getClass().getMethod("new" + solvername, //$NON-NLS-1$
+            var m = this.getClass().getMethod("new" + solvername, //$NON-NLS-1$
                     paramtypes);
             return (T) m.invoke(null, (Object[]) null);
         } catch (SecurityException | IllegalArgumentException

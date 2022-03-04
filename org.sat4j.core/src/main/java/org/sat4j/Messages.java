@@ -33,7 +33,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * That class is intented to manage internationalisation within the application.
+ * That class is intended to manage internationalization within the application.
  * 
  * @author leberre
  * 
@@ -54,7 +54,6 @@ public final class Messages {
     }
 
     public static String getString(String key) {
-        // TODO Auto-generated method stub
         try {
             return RESOURCE_BUNDLE.getString(key);
         } catch (MissingResourceException e) {

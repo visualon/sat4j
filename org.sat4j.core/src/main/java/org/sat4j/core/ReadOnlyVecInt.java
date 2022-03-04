@@ -43,8 +43,8 @@ import org.sat4j.specs.IteratorInt;
 public final class ReadOnlyVecInt implements IVecInt {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private final IVecInt vec;
@@ -173,7 +173,7 @@ public final class ReadOnlyVecInt implements IVecInt {
      * @since 2.1
      */
     public int[] toArray() {
-        int[] copy = new int[this.vec.size()];
+        var copy = new int[this.vec.size()];
         this.vec.copyTo(copy);
         return copy;
     }
@@ -200,7 +200,7 @@ public final class ReadOnlyVecInt implements IVecInt {
      * @since 2.3.1
      */
     public VecInt[] subset(int cardinal) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

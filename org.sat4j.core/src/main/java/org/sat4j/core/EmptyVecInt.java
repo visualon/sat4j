@@ -36,8 +36,8 @@ import org.sat4j.specs.IteratorInt;
 
 final class EmptyVecInt implements IVecInt {
     /**
-    	 * 
-    	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     public int size() {
@@ -45,9 +45,11 @@ final class EmptyVecInt implements IVecInt {
     }
 
     public void shrink(int nofelems) {
+        // do nothing when IVecInt is empty
     }
 
     public void shrinkTo(int newsize) {
+        // do nothing when IVecInt is empty
     }
 
     public IVecInt pop() {
@@ -55,9 +57,11 @@ final class EmptyVecInt implements IVecInt {
     }
 
     public void growTo(int newsize, int pad) {
+        // do nothing when IVecInt is empty
     }
 
     public void ensure(int nsize) {
+        // do nothing when IVecInt is empty
     }
 
     public IVecInt push(int elem) {
@@ -69,6 +73,7 @@ final class EmptyVecInt implements IVecInt {
     }
 
     public void clear() {
+        // do nothing when IVecInt is empty
     }
 
     public int last() {
@@ -88,18 +93,23 @@ final class EmptyVecInt implements IVecInt {
     }
 
     public void copyTo(IVecInt copy) {
+        // do nothing when IVecInt is empty
     }
 
     public void copyTo(int[] is) {
+        // do nothing when IVecInt is empty
     }
 
     public void moveTo(IVecInt dest) {
+        // do nothing when IVecInt is empty
     }
 
     public void moveTo2(IVecInt dest) {
+        // do nothing when IVecInt is empty
     }
 
     public void moveTo(int[] dest) {
+        // do nothing when IVecInt is empty
     }
 
     public void insertFirst(int elem) {
@@ -115,9 +125,11 @@ final class EmptyVecInt implements IVecInt {
     }
 
     public void sort() {
+        // do nothing when IVecInt is empty
     }
 
     public void sortUnique() {
+        // do nothing when IVecInt is empty
     }
 
     public int unsafeGet(int eleem) {
@@ -188,6 +200,7 @@ final class EmptyVecInt implements IVecInt {
     }
 
     public void sort(Comparator<Integer> comparator) {
+        // do nothing when IVecInt is empty
     }
 
     @Override

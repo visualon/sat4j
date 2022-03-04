@@ -194,8 +194,8 @@ public final class ReadOnlyVec<T> implements IVec<T> {
 
     @Override
     public IVec<T> clone() {
-        IVec<T> cloned = new Vec<T>(this.size());
+        IVec<T> cloned = new Vec<>(this.size());
         this.copyTo(cloned);
-        return new ReadOnlyVec<T>(cloned);
+        return new ReadOnlyVec<>(cloned);
     }
 }

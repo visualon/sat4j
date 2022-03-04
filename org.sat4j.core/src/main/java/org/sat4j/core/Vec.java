@@ -113,7 +113,7 @@ public final class Vec<T> implements IVec<T> {
     @SuppressWarnings("unchecked")
     public Vec(int size, T pad) {
         this.myarray = (T[]) new Object[size];
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             this.myarray[i] = pad;
         }
         this.nbelem = size;
@@ -132,7 +132,6 @@ public final class Vec<T> implements IVec<T> {
      *            the number of elements to remove.
      */
     public void shrink(int nofelems) {
-        // assert nofelems <= nbelem;
         while (nofelems-- > 0) {
             this.myarray[--this.nbelem] = null;
         }
@@ -145,12 +144,10 @@ public final class Vec<T> implements IVec<T> {
      *            the new size of the vector.
      */
     public void shrinkTo(final int newsize) {
-        // assert newsize <= size();
         for (int i = this.nbelem; i > newsize; i--) {
             this.myarray[i - 1] = null;
         }
         this.nbelem = newsize;
-        // assert size() == newsize;
     }
 
     /**
@@ -158,12 +155,10 @@ public final class Vec<T> implements IVec<T> {
      * empty!
      */
     public void pop() {
-        // assert size() > 0;
         this.myarray[--this.nbelem] = null;
     }
 
     public void growTo(final int newsize, final T pad) {
-        // assert newsize >= size();
         ensure(newsize);
         for (int i = this.nbelem; i < newsize; i++) {
             this.myarray[i] = pad;
@@ -232,7 +227,6 @@ public final class Vec<T> implements IVec<T> {
      * @return the last element on the stack (the one on the top)
      */
     public T last() {
-        // assert size() != 0;
         return this.myarray[this.nbelem - 1];
     }
 
@@ -251,8 +245,7 @@ public final class Vec<T> implements IVec<T> {
      *            an element from the vector.
      */
     public void remove(T elem) {
-        // assert size() > 0;
-        int j = 0;
+        var j = 0;
         for (; this.myarray[j] != elem; j++) {
             if (j == size())
                 throw new NoSuchElementException();
@@ -292,8 +285,7 @@ public final class Vec<T> implements IVec<T> {
      *         vector
      */
     public T delete(int index) {
-        // assert index >= 0 && index < nbelem;
-        T ith = this.myarray[index];
+        var ith = this.myarray[index];
         this.myarray[index] = this.myarray[--this.nbelem];
         this.myarray[this.nbelem] = null;
         return ith;
@@ -327,7 +319,6 @@ public final class Vec<T> implements IVec<T> {
      *            <code>dest.length &gt;= this.size()</code>.
      */
     public <E> void copyTo(E[] dest) {
-        // assert dest.length >= nbelem;
         System.arraycopy(this.myarray, 0, dest, 0, this.nbelem);
     }
 
@@ -362,8 +353,8 @@ public final class Vec<T> implements IVec<T> {
      */
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < this.nbelem - 1; i++) {
+        var stb = new StringBuilder();
+        for (var i = 0; i < this.nbelem - 1; i++) {
             stb.append(this.myarray[i]);
             stb.append(","); //$NON-NLS-1$
         }
@@ -395,7 +386,7 @@ public final class Vec<T> implements IVec<T> {
         if (width <= 15) {
             selectionSort(from, to, cmp);
         } else {
-            T pivot = this.myarray[width / 2 + from];
+            var pivot = this.myarray[width / 2 + from];
             T tmp;
             int i = from - 1;
             int j = to;
@@ -466,7 +457,7 @@ public final class Vec<T> implements IVec<T> {
             if (v.size() != size()) {
                 return false;
             }
-            for (int i = 0; i < size(); i++) {
+            for (var i = 0; i < size(); i++) {
                 if (!v.get(i).equals(get(i))) {
                     return false;
                 }
@@ -483,8 +474,8 @@ public final class Vec<T> implements IVec<T> {
      */
     @Override
     public int hashCode() {
-        int sum = 0;
-        for (int i = 0; i < this.nbelem; i++) {
+        var sum = 0;
+        for (var i = 0; i < this.nbelem; i++) {
             sum += this.myarray[i].hashCode() / this.nbelem;
         }
         return sum;
@@ -504,10 +495,6 @@ public final class Vec<T> implements IVec<T> {
                 }
                 return Vec.this.myarray[this.i++];
             }
-
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
         };
     }
 
@@ -519,7 +506,7 @@ public final class Vec<T> implements IVec<T> {
      * @since 2.1
      */
     public boolean contains(T e) {
-        for (int i = 0; i < this.nbelem; i++) {
+        for (var i = 0; i < this.nbelem; i++) {
             if (this.myarray[i].equals(e)) {
                 return true;
             }
@@ -531,7 +518,7 @@ public final class Vec<T> implements IVec<T> {
      * @since 2.2
      */
     public int indexOf(T element) {
-        for (int i = 0; i < this.nbelem; i++) {
+        for (var i = 0; i < this.nbelem; i++) {
             if (this.myarray[i].equals(element)) {
                 return i;
             }
@@ -541,7 +528,7 @@ public final class Vec<T> implements IVec<T> {
 
     @Override
     public IVec<T> clone() {
-        IVec<T> cloned = new Vec<T>(this.size());
+        IVec<T> cloned = new Vec<>(this.size());
         this.copyTo(cloned);
         return cloned;
     }
