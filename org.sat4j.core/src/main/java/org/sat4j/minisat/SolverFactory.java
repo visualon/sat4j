@@ -405,7 +405,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      *      instance of ASolverFactory.
      */
     public static ISolver newDefault() {
-        return newGlucose21(); // newMiniLearningHeapRsatExpSimpBiere();
+        return newGlucose21();
     }
 
     @Override

@@ -90,8 +90,6 @@ public class MixedDataStructureDanielWLConciseBinary
             return new UnitClause(v.last());
         }
         if (v.size() == 2) {
-            // return OriginalBinaryClause.brandNewClause(this.solver,
-            // getVocabulary(), v);
             return createConciseBinaryClause(v);
         }
         return OriginalWLClause.brandNewClause(this.solver, getVocabulary(), v);
@@ -102,8 +100,8 @@ public class MixedDataStructureDanielWLConciseBinary
         if (binaryClauses == null) {
             binaryClauses = new BinaryClauses[getVocabulary().nVars() * 2 + 2];
         } else if (binaryClauses.length < getVocabulary().nVars() * 2) {
-            BinaryClauses[] newBinaryClauses = new BinaryClauses[getVocabulary()
-                    .nVars() * 2 + 2];
+            var newBinaryClauses = new BinaryClauses[getVocabulary().nVars() * 2
+                    + 2];
             System.arraycopy(binaryClauses, 0, newBinaryClauses, 0,
                     binaryClauses.length);
             binaryClauses = newBinaryClauses;

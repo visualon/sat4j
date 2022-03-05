@@ -183,7 +183,6 @@ public final class VecInt implements IVecInt {
     }
 
     public void set(int i, int o) {
-        assert i >= 0 && i < this.nbelem;
         this.myarray[i] = o;
     }
 

@@ -40,8 +40,8 @@ import org.sat4j.specs.IVecInt;
  * @author leberre To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class CardinalityDataStructureYanMax extends
-        AbstractCardinalityDataStructure {
+public class CardinalityDataStructureYanMax
+        extends AbstractCardinalityDataStructure {
 
     private static final long serialVersionUID = 1L;
 
@@ -75,10 +75,11 @@ public class CardinalityDataStructureYanMax extends
                 literals, MinWatchCard.ATLEAST, degree);
     }
 
+    @Override
     public Constr createUnregisteredCardinalityConstraint(IVecInt literals,
             int degree) {
-        return new MaxWatchCard(getVocabulary(), literals,
-                MinWatchCard.ATLEAST, degree);
+        return new MaxWatchCard(getVocabulary(), literals, MinWatchCard.ATLEAST,
+                degree);
     }
 
 }

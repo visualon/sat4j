@@ -100,12 +100,12 @@ public final class MaxWatchCard
         this.moreThan = moreThan;
 
         // Simply ps
-        int[] index = new int[voc.nVars() * 2 + 2];
-        for (int i = 0; i < index.length; i++) {
+        var index = new int[voc.nVars() * 2 + 2];
+        for (var i = 0; i < index.length; i++) {
             index[i] = 0;
         }
         // Look for opposite literals
-        for (int i = 0; i < ps.size(); i++) {
+        for (var i = 0; i < ps.size(); i++) {
             if (index[ps.get(i) ^ 1] == 0) {
                 index[ps.get(i)]++;
             } else {
@@ -113,7 +113,7 @@ public final class MaxWatchCard
             }
         }
         // Update degree according to removed literals
-        int ind = 0;
+        var ind = 0;
         while (ind < ps.size()) {
             if (index[ps.get(ind)] > 0) {
                 index[ps.get(ind)]--;
@@ -137,7 +137,7 @@ public final class MaxWatchCard
         // Watch all non falsified literals
         this.watchCumul = 0;
 
-        for (int i = 0; i < this.lits.length; i++) {
+        for (var i = 0; i < this.lits.length; i++) {
             // Note: those falsified literals will never be unset
             if (!voc.isFalsified(this.lits[i])) {
                 this.watchCumul++;
@@ -170,7 +170,6 @@ public final class MaxWatchCard
      * @see Constr#getActivity()
      */
     public double getActivity() {
-        // TODO getActivity
         return 0;
     }
 
@@ -182,7 +181,6 @@ public final class MaxWatchCard
      * @see Constr#incActivity(double claInc)
      */
     public void incActivity(double claInc) {
-        // TODO incActivity
     }
 
     public void setActivity(double d) {
@@ -206,7 +204,6 @@ public final class MaxWatchCard
      * @see Constr#locked()
      */
     public boolean locked() {
-        // TODO locked
         return true;
     }
 
@@ -237,7 +234,7 @@ public final class MaxWatchCard
             throw new ContradictionException(
                     "Creating trivially inconsistent constraint"); //$NON-NLS-1$
         } else if (ps.size() == degree) {
-            for (int i = 0; i < ps.size(); i++) {
+            for (var i = 0; i < ps.size(); i++) {
                 if (!s.enqueue(ps.get(i))) {
                     throw new ContradictionException(
                             "Contradiction with implied literal"); //$NON-NLS-1$
@@ -261,7 +258,7 @@ public final class MaxWatchCard
 
         // Si les litt?raux observ?s sont impliqu?s
         if (outclause.watchCumul == outclause.degree) {
-            for (int i = 0; i < outclause.lits.length; i++) {
+            for (var i = 0; i < outclause.lits.length; i++) {
                 if (!s.enqueue(outclause.lits[i])) {
                     throw new ContradictionException(
                             "Contradiction with implied literal"); //$NON-NLS-1$
@@ -282,7 +279,7 @@ public final class MaxWatchCard
             // On multiplie le degr? par -1
             this.degree = 0 - this.degree;
             // On r?vise chaque litt?ral
-            for (int indLit = 0; indLit < this.lits.length; indLit++) {
+            for (var indLit = 0; indLit < this.lits.length; indLit++) {
                 this.lits[indLit] = this.lits[indLit] ^ 1;
                 this.degree++;
             }
@@ -316,7 +313,7 @@ public final class MaxWatchCard
 
         // Si les litt?raux restant sont impliqu?s
         if (this.watchCumul == this.degree) {
-            for (int q : this.lits) {
+            for (var q : this.lits) {
                 if (this.voc.isUnassigned(q) && !s.enqueue(q, this)) {
                     return false;
                 }
@@ -350,10 +347,10 @@ public final class MaxWatchCard
      */
     public boolean simplify() {
 
-        int i = 0;
+        var i = 0;
 
         // On esp?re le maximum de la somme
-        int curr = this.watchCumul;
+        var curr = this.watchCumul;
 
         // Pour chaque litt?ral
         while (i < this.lits.length) {
@@ -376,14 +373,14 @@ public final class MaxWatchCard
      */
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
 
         if (this.lits.length > 0) {
             if (this.voc.isUnassigned(this.lits[0])) {
                 stb.append(Lits.toString(this.lits[0]));
                 stb.append(" "); //$NON-NLS-1$
             }
-            for (int i = 1; i < this.lits.length; i++) {
+            for (var i = 1; i < this.lits.length; i++) {
                 if (this.voc.isUnassigned(this.lits[i])) {
                     stb.append(" + "); //$NON-NLS-1$
                     stb.append(Lits.toString(this.lits[i]));
@@ -423,13 +420,13 @@ public final class MaxWatchCard
     }
 
     public void assertConstraint(UnitPropagationListener s) {
-        boolean ret = true;
-        for (Integer lit : this.lits) {
+        var ret = true;
+        for (var lit : this.lits) {
             if (this.voc.isUnassigned(lit)) {
                 ret &= s.enqueue(lit, this);
             }
         }
-        assert ret == true;
+        assert ret;
     }
 
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
@@ -462,8 +459,6 @@ public final class MaxWatchCard
      * @since 2.1
      */
     public void forwardActivity(double claInc) {
-        // TODO Auto-generated method stub
-
     }
 
     public boolean canBePropagatedMultipleTimes() {
@@ -496,11 +491,11 @@ public final class MaxWatchCard
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        int nUnsat = 0;
-        Set<Integer> litsSet = new HashSet<Integer>();
-        for (Integer i : this.lits)
+        var nUnsat = 0;
+        Set<Integer> litsSet = new HashSet<>();
+        for (var i : this.lits)
             litsSet.add(i);
-        for (int i = 0; i < trail.size(); ++i) {
+        for (var i = 0; i < trail.size(); ++i) {
             if (litsSet.contains(trail.get(i) ^ 1)) {
                 ++nUnsat;
                 if (nUnsat == this.lits.length - this.degree)
@@ -511,14 +506,14 @@ public final class MaxWatchCard
     }
 
     public String toString(VarMapper mapper) {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
 
         if (this.lits.length > 0) {
             if (this.voc.isUnassigned(this.lits[0])) {
                 stb.append(mapper.map(LiteralsUtils.toDimacs(this.lits[0])));
                 stb.append(" "); //$NON-NLS-1$
             }
-            for (int i = 1; i < this.lits.length; i++) {
+            for (var i = 1; i < this.lits.length; i++) {
                 if (this.voc.isUnassigned(this.lits[i])) {
                     stb.append(" + "); //$NON-NLS-1$
                     stb.append(
@@ -534,9 +529,9 @@ public final class MaxWatchCard
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(LiteralsUtils.toOPB(this.lits[0]));
-        int i = 1;
+        var i = 1;
         while (i < this.lits.length) {
             stb.append(" + "); //$NON-NLS-1$
             stb.append(LiteralsUtils.toOPB(lits[i++]));

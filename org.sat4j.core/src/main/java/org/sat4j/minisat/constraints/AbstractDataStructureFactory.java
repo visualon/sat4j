@@ -46,12 +46,12 @@ import org.sat4j.specs.UnitPropagationListener;
  * @author leberre To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public abstract class AbstractDataStructureFactory implements
-        DataStructureFactory, Serializable {
+public abstract class AbstractDataStructureFactory
+        implements DataStructureFactory, Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /*
@@ -86,7 +86,7 @@ public abstract class AbstractDataStructureFactory implements
 
     protected abstract ILits createLits();
 
-    private final IVec<Propagatable> tmp = new Vec<Propagatable>();
+    private final IVec<Propagatable> tmp = new Vec<>();
 
     /*
      * (non-Javadoc)

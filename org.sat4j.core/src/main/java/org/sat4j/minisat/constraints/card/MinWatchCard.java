@@ -108,11 +108,11 @@ public class MinWatchCard
         this.moreThan = moreThan;
 
         // On simplifie ps
-        int[] index = new int[voc.nVars() * 2 + 2];
+        var index = new int[voc.nVars() * 2 + 2];
         // Fresh array should have all elements set to 0
 
         // On repertorie les litt?raux utiles
-        for (int i = 0; i < ps.size(); i++) {
+        for (var i = 0; i < ps.size(); i++) {
             int p = ps.get(i);
             if (index[p ^ 1] == 0) {
                 index[p]++;
@@ -121,7 +121,7 @@ public class MinWatchCard
             }
         }
         // On supprime les litt?raux inutiles
-        int ind = 0;
+        var ind = 0;
         while (ind < ps.size()) {
             if (index[ps.get(ind)] > 0) {
                 index[ps.get(ind)]--;
@@ -180,8 +180,8 @@ public class MinWatchCard
      * @see Constr#calcReason(int p, IVecInt outReason)
      */
     public void calcReason(int p, IVecInt outReason) {
-        int c = p == ILits.UNDEFINED ? -1 : 0;
-        for (int q : this.lits) {
+        var c = p == ILits.UNDEFINED ? -1 : 0;
+        for (var q : this.lits) {
             if (this.voc.isFalsified(q)) {
                 outReason.push(q ^ 1);
                 if (++c >= this.maxUnsatisfied) {
@@ -236,9 +236,9 @@ public class MinWatchCard
      */
     protected static int linearisation(ILits voc, IVecInt ps) {
         // Stockage de l'influence des modifications
-        int modif = 0;
+        var modif = 0;
 
-        for (int i = 0; i < ps.size();) {
+        for (var i = 0; i < ps.size();) {
             // on verifie si le litteral est affecte
             if (voc.isUnassigned(ps.get(i))) {
                 i++;
@@ -292,12 +292,12 @@ public class MinWatchCard
             IVecInt ps, boolean moreThan, int degree)
             throws ContradictionException {
 
-        int mydegree = degree + linearisation(voc, ps);
+        var mydegree = degree + linearisation(voc, ps);
 
         if (ps.size() < mydegree) {
             throw new ContradictionException();
         } else if (ps.size() == mydegree) {
-            for (int i = 0; i < ps.size(); i++) {
+            for (var i = 0; i < ps.size(); i++) {
                 if (!s.enqueue(ps.get(i))) {
                     throw new ContradictionException();
                 }
@@ -306,7 +306,7 @@ public class MinWatchCard
         }
 
         // La contrainte est maintenant cr??e
-        MinWatchCard retour = new MinWatchCard(voc, ps, moreThan, mydegree);
+        var retour = new MinWatchCard(voc, ps, moreThan, mydegree);
 
         if (retour.degree <= 0) {
             return null;
@@ -328,7 +328,7 @@ public class MinWatchCard
             // On multiplie le degr? par -1
             this.degree = 0 - this.degree;
             // On r?vise chaque litt?ral
-            for (int indLit = 0; indLit < this.lits.length; indLit++) {
+            for (var indLit = 0; indLit < this.lits.length; indLit++) {
                 this.lits[indLit] = this.lits[indLit] ^ 1;
                 this.degree++;
             }
@@ -354,14 +354,14 @@ public class MinWatchCard
         }
 
         // Recherche du litt?ral falsifi?
-        int indFalsified = 0;
+        var indFalsified = 0;
         while ((this.lits[indFalsified] ^ 1) != p) {
             indFalsified++;
         }
         assert this.watchCumul > this.degree;
 
         // Recherche du litt?ral swap
-        int indSwap = this.degree + 1;
+        var indSwap = this.degree + 1;
         while (indSwap < this.lits.length
                 && this.voc.isFalsified(this.lits[indSwap])) {
             indSwap++;
@@ -377,7 +377,7 @@ public class MinWatchCard
             this.voc.undos(p).push(this);
 
             // On met en queue les litt?raux impliqu?s
-            for (int i = 0; i <= this.degree; i++) {
+            for (var i = 0; i <= this.degree; i++) {
                 if (p != (this.lits[i] ^ 1) && !s.enqueue(this.lits[i], this)) {
                     return false;
                 }
@@ -386,7 +386,7 @@ public class MinWatchCard
             return true;
         }
         // Si un litt?ral a ?t? trouv? on les ?change
-        int tmpInt = this.lits[indSwap];
+        var tmpInt = this.lits[indSwap];
         this.lits[indSwap] = this.lits[indFalsified];
         this.lits[indFalsified] = tmpInt;
 
@@ -402,7 +402,7 @@ public class MinWatchCard
      * @since 2.1
      */
     public void remove(UnitPropagationListener upl) {
-        for (int i = 0; i < Math.min(this.degree + 1, this.lits.length); i++) {
+        for (var i = 0; i < Math.min(this.degree + 1, this.lits.length); i++) {
             this.voc.watches(this.lits[i] ^ 1).remove(this);
         }
     }
@@ -414,7 +414,6 @@ public class MinWatchCard
      *            rescale factor
      */
     public void rescaleBy(double d) {
-        // TODO rescaleBy
     }
 
     /**
@@ -424,7 +423,7 @@ public class MinWatchCard
      */
     public boolean simplify() {
         // Calcul de la valeur actuelle
-        for (int i = 0, count = 0; i < this.lits.length; i++) {
+        for (var i = 0, count = 0; i < this.lits.length; i++) {
             if (this.voc.isSatisfied(this.lits[i]) && ++count == this.degree) {
                 return true;
             }
@@ -440,29 +439,19 @@ public class MinWatchCard
      */
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
-        // stb.append("Card (" + this.lits.length + ") : ");
+        var stb = new StringBuilder();
         if (this.lits.length > 0) {
-            // if (voc.isUnassigned(lits[0])) {
             stb.append(Lits.toStringX(this.lits[0]));
             stb.append("[");
             stb.append(this.voc.valueToString(this.lits[0]));
-            // stb.append("@");
-            // stb.append(this.voc.getLevel(this.lits[0]));
             stb.append("]");
             stb.append(" "); //$NON-NLS-1$
-            // }
             for (int i = 1; i < this.lits.length; i++) {
-                // if (voc.isUnassigned(lits[i])) {
-                // stb.append(" + "); //$NON-NLS-1$
                 stb.append(Lits.toStringX(this.lits[i]));
                 stb.append("[");
                 stb.append(this.voc.valueToString(this.lits[i]));
-                // stb.append("@");
-                // stb.append(this.voc.getLevel(this.lits[i]));
                 stb.append("]");
                 stb.append(" "); //$NON-NLS-1$
-                // }
             }
             stb.append(">= "); //$NON-NLS-1$
             stb.append(this.degree);
@@ -498,27 +487,27 @@ public class MinWatchCard
     }
 
     public void assertConstraint(UnitPropagationListener s) {
-        boolean ret = true;
-        for (Integer lit : this.lits) {
+        var ret = true;
+        for (var lit : this.lits) {
             if (this.voc.isUnassigned(lit)) {
                 ret &= s.enqueue(lit, this);
             }
         }
-        assert ret == true;
+        assert ret;
     }
 
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
         if (this.watchCumul == this.degree) {
-            for (int i = 0; i < this.watchCumul; i++) {
+            for (var i = 0; i < this.watchCumul; i++) {
                 s.enqueue(this.lits[i]);
             }
         }
     }
 
     protected void computeWatches() {
-        int indSwap = this.lits.length;
+        var indSwap = this.lits.length;
         int tmpInt;
-        for (int i = 0; i <= this.degree && i < indSwap; i++) {
+        for (var i = 0; i <= this.degree && i < indSwap; i++) {
             while (this.voc.isFalsified(this.lits[i]) && --indSwap > i) {
                 tmpInt = this.lits[i];
                 this.lits[i] = this.lits[indSwap];
@@ -534,15 +523,16 @@ public class MinWatchCard
         if (this.watchCumul <= this.degree) {
             // chercher tous les litteraux a regarder
             // par ordre de niveau decroissant
-            int free = 1;
+            var free = 1;
             while (this.watchCumul <= this.degree && free > 0) {
                 free = 0;
                 // regarder le litteral falsifie au plus bas niveau
-                int maxlevel = -1, maxi = -1;
-                for (int i = this.watchCumul; i < this.lits.length; i++) {
+                var maxlevel = -1;
+                var maxi = -1;
+                for (var i = this.watchCumul; i < this.lits.length; i++) {
                     if (this.voc.isFalsified(this.lits[i])) {
                         free++;
-                        int level = this.voc.getLevel(this.lits[i]);
+                        var level = this.voc.getLevel(this.lits[i]);
                         if (level > maxlevel) {
                             maxi = i;
                             maxlevel = level;
@@ -570,7 +560,7 @@ public class MinWatchCard
 
         // Si on a des litteraux impliques
         if (this.watchCumul == this.degree) {
-            for (int i = 0; i < this.lits.length; i++) {
+            for (var i = 0; i < this.lits.length; i++) {
                 if (!s.enqueue(this.lits[i])) {
                     throw new ContradictionException();
                 }
@@ -586,7 +576,7 @@ public class MinWatchCard
     }
 
     public int[] getLits() {
-        int[] tmp = new int[size()];
+        var tmp = new int[size()];
         System.arraycopy(this.lits, 0, tmp, 0, size());
         return tmp;
     }
@@ -604,7 +594,7 @@ public class MinWatchCard
             return false;
         }
         try {
-            MinWatchCard mcard = (MinWatchCard) card;
+            var mcard = (MinWatchCard) card;
             if (mcard.degree != this.degree) {
                 return false;
             }
@@ -612,9 +602,9 @@ public class MinWatchCard
                 return false;
             }
             boolean ok;
-            for (int lit : this.lits) {
+            for (var lit : this.lits) {
                 ok = false;
-                for (int lit2 : mcard.lits) {
+                for (var lit2 : mcard.lits) {
                     if (lit == lit2) {
                         ok = true;
                         break;
@@ -633,7 +623,7 @@ public class MinWatchCard
     @Override
     public int hashCode() {
         long sum = 0;
-        for (int p : this.lits) {
+        for (var p : this.lits) {
             sum += p;
         }
         sum += this.degree;
@@ -656,10 +646,10 @@ public class MinWatchCard
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        int bound = p == ILits.UNDEFINED ? this.watchCumul
+        var bound = p == ILits.UNDEFINED ? this.watchCumul
                 : this.watchCumul - 1;
-        for (int i = 0; i < bound; i++) {
-            int q = lits[i];
+        for (var i = 0; i < bound; i++) {
+            var q = lits[i];
             assert voc.isFalsified(q);
             outReason.push(q ^ 1);
         }
@@ -669,14 +659,14 @@ public class MinWatchCard
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
         // Recherche du litt?ral falsifi?
-        int indFalsified = 0;
+        var indFalsified = 0;
         while ((this.lits[indFalsified] ^ 1) != p) {
             indFalsified++;
         }
         assert this.watchCumul >= this.degree;
 
         // Recherche du litt?ral swap
-        int indSwap = this.savedindex;
+        var indSwap = this.savedindex;
         while (indSwap < this.lits.length
                 && this.voc.isFalsified(this.lits[indSwap])) {
             indSwap++;
@@ -688,7 +678,7 @@ public class MinWatchCard
             this.voc.watch(p, this);
 
             // On met en queue les litt?raux impliqu?s
-            for (int i = 0; i <= this.degree; i++) {
+            for (var i = 0; i <= this.degree; i++) {
                 if (p != (this.lits[i] ^ 1)) {
                     l.isMandatory(this.lits[i]);
                 }
@@ -718,11 +708,11 @@ public class MinWatchCard
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        int nUnsat = 0;
-        Set<Integer> litsSet = new HashSet<Integer>();
-        for (Integer i : this.lits)
+        var nUnsat = 0;
+        Set<Integer> litsSet = new HashSet<>();
+        for (var i : this.lits)
             litsSet.add(i);
-        for (int i = 0; i < trail.size(); ++i) {
+        for (var i = 0; i < trail.size(); ++i) {
             if (litsSet.contains(trail.get(i) ^ 1)) {
                 ++nUnsat;
                 if (nUnsat == this.maxUnsatisfied)
@@ -736,29 +726,19 @@ public class MinWatchCard
         if (mapper == null) {
             return toString();
         }
-        StringBuilder stb = new StringBuilder();
-        // stb.append("Card (" + this.lits.length + ") : ");
+        var stb = new StringBuilder();
         if (this.lits.length > 0) {
-            // if (voc.isUnassigned(lits[0])) {
             stb.append(mapper.map(LiteralsUtils.toDimacs(this.lits[0])));
             stb.append("[");
             stb.append(this.voc.valueToString(this.lits[0]));
-            // stb.append("@");
-            // stb.append(this.voc.getLevel(this.lits[0]));
             stb.append("]");
             stb.append(" "); //$NON-NLS-1$
-            // }
-            for (int i = 1; i < this.lits.length; i++) {
-                // if (voc.isUnassigned(lits[i])) {
-                // stb.append(" + "); //$NON-NLS-1$
+            for (var i = 1; i < this.lits.length; i++) {
                 stb.append(mapper.map(LiteralsUtils.toDimacs(this.lits[i])));
                 stb.append("[");
                 stb.append(this.voc.valueToString(this.lits[i]));
-                // stb.append("@");
-                // stb.append(this.voc.getLevel(this.lits[i]));
                 stb.append("]");
                 stb.append(" "); //$NON-NLS-1$
-                // }
             }
             stb.append(">= "); //$NON-NLS-1$
             stb.append(this.degree);
@@ -768,9 +748,9 @@ public class MinWatchCard
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(LiteralsUtils.toOPB(this.lits[0]));
-        int i = 1;
+        var i = 1;
         while (i < this.lits.length) {
             stb.append(" + "); //$NON-NLS-1$
             stb.append(LiteralsUtils.toOPB(lits[i++]));

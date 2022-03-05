@@ -96,7 +96,7 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
             throw new ContradictionException();
         }
         int degree = deg;
-        for (int i = 0; i < ps.size();) {
+        for (var i = 0; i < ps.size();) {
             // on verifie si le litteral est affecte
             if (voc.isUnassigned(ps.get(i))) {
                 // go to next literal
@@ -120,7 +120,7 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
         // clause
 
         if (ps.size() == degree) {
-            for (int i = 0; i < ps.size(); i++) {
+            for (var i = 0; i < ps.size(); i++) {
                 if (!s.enqueue(ps.get(i))) {
                     throw new ContradictionException();
                 }
@@ -291,13 +291,13 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
     }
 
     public void assertConstraint(UnitPropagationListener s) {
-        boolean ret = true;
+        var ret = true;
         for (Integer lit : this.lits) {
             if (this.voc.isUnassigned(lit)) {
                 ret &= s.enqueue(lit, this);
             }
         }
-        assert ret == true;
+        assert ret;
     }
 
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
@@ -311,10 +311,9 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append("Card (" + this.lits.length + ") : ");
-        for (int lit : this.lits) {
-            // if (voc.isUnassigned(lits[i])) {
+        for (var lit : this.lits) {
             stb.append(" + "); //$NON-NLS-1$
             stb.append(Lits.toString(lit));
             stb.append("[");
@@ -333,8 +332,6 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
      * @since 2.1
      */
     public void forwardActivity(double claInc) {
-        // TODO Auto-generated method stub
-
     }
 
     public boolean canBePropagatedMultipleTimes() {
@@ -399,11 +396,11 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        int nUnsat = 0;
-        Set<Integer> litsSet = new HashSet<Integer>();
+        var nUnsat = 0;
+        Set<Integer> litsSet = new HashSet<>();
         for (Integer i : this.lits)
             litsSet.add(i);
-        for (int i = 0; i < trail.size(); ++i) {
+        for (var i = 0; i < trail.size(); ++i) {
             if (litsSet.contains(trail.get(i) ^ 1)) {
                 ++nUnsat;
                 if (nUnsat == this.maxUnsatisfied)
@@ -414,7 +411,7 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
     }
 
     public String toString(VarMapper mapper) {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int lit : this.lits) {
             stb.append(" + "); //$NON-NLS-1$
             stb.append(mapper.map(LiteralsUtils.toDimacs(lit)));
@@ -430,9 +427,9 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(LiteralsUtils.toOPB(this.lits[0]));
-        int i = 1;
+        var i = 1;
         while (i < this.lits.length) {
             stb.append(" + "); //$NON-NLS-1$
             stb.append(LiteralsUtils.toOPB(lits[i++]));
