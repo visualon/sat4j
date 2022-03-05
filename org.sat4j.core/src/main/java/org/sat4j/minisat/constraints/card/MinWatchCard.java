@@ -423,7 +423,7 @@ public class MinWatchCard
      */
     public boolean simplify() {
         // Calcul de la valeur actuelle
-        for (var i = 0, count = 0; i < this.lits.length; i++) {
+        for (int i = 0, count = 0; i < this.lits.length; i++) {
             if (this.voc.isSatisfied(this.lits[i]) && ++count == this.degree) {
                 return true;
             }
