@@ -20,7 +20,7 @@ maven38-java11-sonar:
         - .m2/repository 
 
 maven38-java11:
-    image: maven:3.8.1-jdk-11-slim
+    image: maven:3.8.4-jdk-11-slim
     stage: build
     except: 
       - master
@@ -30,8 +30,8 @@ maven38-java11:
        paths:
         - .m2/repository 
 
-maven38-java16:
-    image: maven:3.8.1-openjdk-16-slim
+maven38-java17:
+    image: maven:3.8.4-openjdk-17-slim
     stage: test
     script:
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
