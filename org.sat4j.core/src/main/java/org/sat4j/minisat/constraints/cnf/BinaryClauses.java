@@ -89,9 +89,8 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * UnitPropagationListener , int)
      */
     public boolean propagate(UnitPropagationListener s, int p) {
-        // assert voc.isFalsified(this.reason);
         voc.watch(p, this);
-        for (int i = 0; i < clauses.size(); i++) {
+        for (var i = 0; i < clauses.size(); i++) {
             int q = clauses.get(i);
             if (!s.enqueue(q, this)) {
                 conflictindex = i;
@@ -147,7 +146,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#incActivity(double)
      */
     public void incActivity(double claInc) {
-        // TODO Auto-generated method stub
     }
 
     /*
@@ -156,7 +154,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#getActivity()
      */
     public double getActivity() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -175,7 +172,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#setLearnt()
      */
     public void setLearnt() {
-        // TODO Auto-generated method stub
     }
 
     /*
@@ -184,7 +180,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#register()
      */
     public void register() {
-        // TODO Auto-generated method stub
     }
 
     /*
@@ -193,7 +188,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#rescaleBy(double)
      */
     public void rescaleBy(double d) {
-        // TODO Auto-generated method stub
     }
 
     /*
@@ -211,7 +205,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#get(int)
      */
     public int get(int i) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException();
     }
 
@@ -224,12 +217,11 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
     }
 
     public String toString(VarMapper mapper) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        for (int i = 0; i < clauses.size(); i++) {
+        for (var i = 0; i < clauses.size(); i++) {
             l.isMandatory(clauses.get(i));
         }
     }
@@ -241,48 +233,37 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
     public void remove(UnitPropagationListener upl) {
         throw new UnsupportedOperationException(
                 "Cannot remove all the binary clauses at once!");
-        // if (voc.watches(reason).contains(this)) {
-        // voc.watches(reason).remove(this);
-        // }
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void forwardActivity(double claInc) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void setActivity(double d) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public boolean canBeSatisfiedByCountingLiterals() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public int requiredNumberOfSatisfiedLiterals() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public boolean isSatisfied() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 

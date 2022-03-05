@@ -58,9 +58,8 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
 
     private double activity;
 
-    public static CBClause brandNewClause(UnitPropagationListener s, ILits voc,
-            IVecInt literals) {
-        CBClause c = new CBClause(literals, voc);
+    public static CBClause brandNewClause(ILits voc, IVecInt literals) {
+        var c = new CBClause(literals, voc);
         c.register();
         return c;
     }
@@ -85,7 +84,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      * @see org.sat4j.minisat.core.Constr#remove()
      */
     public void remove() {
-        for (int i = 0; i < lits.length; i++) {
+        for (var i = 0; i < lits.length; i++) {
             voc.watches(lits[i] ^ 1).remove(this);
         }
     }
@@ -102,7 +101,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
         assert falsified != lits.length;
         if (falsified == lits.length - 1) {
             // find unassigned literal
-            for (int i = 0; i < lits.length; i++) {
+            for (var i = 0; i < lits.length; i++) {
                 if (!voc.isFalsified(lits[i])) {
                     return s.enqueue(lits[i], this);
                 }
@@ -121,7 +120,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      * @see org.sat4j.minisat.core.Constr#simplify()
      */
     public boolean simplify() {
-        for (int p : lits) {
+        for (var p : lits) {
             if (voc.isSatisfied(p)) {
                 return true;
             }
@@ -146,7 +145,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      */
     public void calcReason(int p, IVecInt outReason) {
         assert outReason.size() == 0;
-        for (int q : lits) {
+        for (var q : lits) {
             assert voc.isFalsified(q) || q == p;
             if (voc.isFalsified(q)) {
                 outReason.push(q ^ 1);
@@ -206,11 +205,11 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      * @see org.sat4j.minisat.core.Constr#register()
      */
     public void register() {
-        for (int p : lits) {
+        for (var p : lits) {
             voc.watch(p ^ 1, this);
         }
         if (learnt) {
-            for (int p : lits) {
+            for (var p : lits) {
                 if (voc.isFalsified(p)) {
                     voc.undos(p ^ 1).push(this);
                     falsified++;
@@ -262,7 +261,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int i = 0; i < lits.length; i++) {
             stb.append(lits[i]);
             stb.append("["); //$NON-NLS-1$
@@ -274,62 +273,50 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
     }
 
     public boolean canBePropagatedMultipleTimes() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public String toString(VarMapper mapper) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void remove(UnitPropagationListener upl) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void forwardActivity(double claInc) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void setActivity(double d) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public boolean canBeSatisfiedByCountingLiterals() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public int requiredNumberOfSatisfiedLiterals() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public boolean isSatisfied() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
@@ -339,8 +326,8 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
-        for (int p : lits) {
+        var stb = new StringBuilder();
+        for (var p : lits) {
             stb.append(LiteralsUtils.toDimacs(p));
             stb.append(' ');
         }

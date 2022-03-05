@@ -92,7 +92,7 @@ public class MixedDataStructureDanielWLConciseBinary
         if (v.size() == 2) {
             return createConciseBinaryClause(v);
         }
-        return OriginalWLClause.brandNewClause(this.solver, getVocabulary(), v);
+        return OriginalWLClause.brandNewClause(getVocabulary(), v);
     }
 
     private Constr createConciseBinaryClause(IVecInt literals) {

@@ -72,7 +72,7 @@ public abstract class BinaryClause
      * @param ps
      *            A VecInt that WILL BE EMPTY after calling that method.
      */
-    public BinaryClause(IVecInt ps, ILits voc) {
+    protected BinaryClause(IVecInt ps, ILits voc) {
         assert ps.size() == 2;
         this.head = ps.get(0);
         this.tail = ps.get(1);
@@ -110,11 +110,8 @@ public abstract class BinaryClause
      * @see Constr#simplify(Solver)
      */
     public boolean simplify() {
-        if (this.voc.isSatisfied(this.head)
-                || this.voc.isSatisfied(this.tail)) {
-            return true;
-        }
-        return false;
+        return this.voc.isSatisfied(this.head)
+                || this.voc.isSatisfied(this.tail);
     }
 
     public boolean propagate(UnitPropagationListener s, int p) {
@@ -153,7 +150,7 @@ public abstract class BinaryClause
 
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(Lits.toString(this.head));
         stb.append("["); //$NON-NLS-1$
         stb.append(this.voc.valueToString(this.head));
@@ -198,7 +195,6 @@ public abstract class BinaryClause
     }
 
     public void assertConstraint(UnitPropagationListener s) {
-        // assert this.voc.isUnassigned(this.head);
         boolean ret = s.enqueue(this.head, this);
         assert ret;
     }
@@ -215,7 +211,7 @@ public abstract class BinaryClause
     }
 
     public int[] getLits() {
-        int[] tmp = new int[2];
+        var tmp = new int[2];
         tmp[0] = this.head;
         tmp[1] = this.tail;
         return tmp;
@@ -231,10 +227,7 @@ public abstract class BinaryClause
         }
         try {
             BinaryClause wcl = (BinaryClause) obj;
-            if (wcl.head != this.head || wcl.tail != this.tail) {
-                return false;
-            }
-            return true;
+            return wcl.head == this.head && wcl.tail == this.tail;
         } catch (ClassCastException e) {
             return false;
         }
@@ -274,9 +267,7 @@ public abstract class BinaryClause
     public boolean isSatisfied() {
         if (voc.isSatisfied(this.head))
             return true;
-        if (voc.isSatisfied(this.tail))
-            return true;
-        return false;
+        return voc.isSatisfied(this.tail);
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
@@ -292,7 +283,7 @@ public abstract class BinaryClause
         if (mapper == null) {
             return toString();
         }
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(mapper.map(LiteralsUtils.toDimacs(this.head)));
         stb.append("["); //$NON-NLS-1$
         stb.append(this.voc.valueToString(this.head));
@@ -307,7 +298,7 @@ public abstract class BinaryClause
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(LiteralsUtils.toDimacs(head));
         stb.append(' ');
         stb.append(LiteralsUtils.toDimacs(tail));

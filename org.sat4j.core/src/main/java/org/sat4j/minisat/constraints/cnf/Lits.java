@@ -50,7 +50,7 @@ public final class Lits implements Serializable, ILits {
 
     private static final long serialVersionUID = 1L;
 
-    private boolean pool[] = new boolean[1];
+    private boolean[] pool = new boolean[1];
 
     private int realnVars = 0;
 
@@ -82,59 +82,60 @@ public final class Lits implements Serializable, ILits {
         assert nvar >= 0;
         // let some space for unused 0 indexer.
         int nvars = nvar + 1;
-        boolean[] npool = new boolean[nvars];
+        var npool = new boolean[nvars];
         System.arraycopy(this.pool, 0, npool, 0, this.pool.length);
         this.pool = npool;
 
-        int[] nlevel = new int[nvars];
+        var nlevel = new int[nvars];
         System.arraycopy(this.level, 0, nlevel, 0, this.level.length);
         this.level = nlevel;
 
-        int[] ntrailPosition = new int[nvars];
+        var ntrailPosition = new int[nvars];
         System.arraycopy(this.trailPosition, 0, ntrailPosition, 0,
                 this.trailPosition.length);
         this.trailPosition = ntrailPosition;
 
-        IVec<Propagatable>[] nwatches = new IVec[2 * nvars];
+        var nwatches = new IVec[2 * nvars];
         System.arraycopy(this.watches, 0, nwatches, 0, this.watches.length);
         this.watches = nwatches;
 
-        IVec<Undoable>[] nundos = new IVec[nvars];
+        var nundos = new IVec[nvars];
         System.arraycopy(this.undos, 0, nundos, 0, this.undos.length);
         this.undos = nundos;
 
-        Constr[] nreason = new Constr[nvars];
+        var nreason = new Constr[nvars];
         System.arraycopy(this.reason, 0, nreason, 0, this.reason.length);
         this.reason = nreason;
 
-        boolean[] newFalsified = new boolean[2 * nvars];
+        var newFalsified = new boolean[2 * nvars];
         System.arraycopy(this.falsified, 0, newFalsified, 0,
                 this.falsified.length);
         this.falsified = newFalsified;
     }
 
     public int getFromPool(int x) {
-        int var = Math.abs(x);
-        if (var >= this.pool.length) {
-            init(Math.max(var, this.pool.length << 1));
+        var variable = Math.abs(x);
+        if (variable >= this.pool.length) {
+            init(Math.max(variable, this.pool.length << 1));
         }
-        assert var < this.pool.length;
-        if (var > this.maxvarid) {
-            this.maxvarid = var;
+        assert variable < this.pool.length;
+        if (variable > this.maxvarid) {
+            this.maxvarid = variable;
         }
-        int lit = LiteralsUtils.toInternal(x);
+        var lit = LiteralsUtils.toInternal(x);
         assert lit > 1;
-        if (!this.pool[var]) {
+        if (!this.pool[variable]) {
             this.realnVars++;
-            this.pool[var] = true;
-            this.watches[var << 1] = new Vec<Propagatable>();
-            this.watches[var << 1 | 1] = new Vec<Propagatable>();
-            this.undos[var] = new Vec<Undoable>();
-            this.level[var] = -1;
-            this.trailPosition[var] = -1;
-            this.falsified[var << 1] = false; // because truthValue[var] is
+            this.pool[variable] = true;
+            this.watches[variable << 1] = new Vec<>();
+            this.watches[variable << 1 | 1] = new Vec<>();
+            this.undos[variable] = new Vec<>();
+            this.level[variable] = -1;
+            this.trailPosition[variable] = -1;
+            this.falsified[variable << 1] = false; // because truthValue[var] is
             // UNDEFINED
-            this.falsified[var << 1 | 1] = false; // because truthValue[var] is
+            this.falsified[variable << 1 | 1] = false; // because
+                                                       // truthValue[var] is
             // UNDEFINED
         }
         return lit;
@@ -149,7 +150,7 @@ public final class Lits implements Serializable, ILits {
     }
 
     public void resetPool() {
-        for (int i = 0; i < this.pool.length; i++) {
+        for (var i = 0; i < this.pool.length; i++) {
             if (this.pool[i]) {
                 reset(i << 1);
             }
@@ -179,9 +180,9 @@ public final class Lits implements Serializable, ILits {
         this.falsified[lit ^ 1] = true;
     }
 
-    public void forgets(int var) {
-        this.falsified[var << 1] = true;
-        this.falsified[var << 1 ^ 1] = true;
+    public void forgets(int variable) {
+        this.falsified[variable << 1] = true;
+        this.falsified[variable << 1 ^ 1] = true;
     }
 
     public boolean isSatisfied(int lit) {
@@ -207,7 +208,6 @@ public final class Lits implements Serializable, ILits {
     }
 
     public int nVars() {
-        // return pool.length - 1;
         return this.maxvarid;
     }
 
@@ -264,13 +264,13 @@ public final class Lits implements Serializable, ILits {
     }
 
     public boolean isImplied(int lit) {
-        int var = lit >> 1;
-        assert this.reason[var] == null || this.falsified[lit]
+        int variable = lit >> 1;
+        assert this.reason[variable] == null || this.falsified[lit]
                 || this.falsified[lit ^ 1];
         // a literal is implied if it is a unit clause, ie
         // propagated without reason at decision level 0.
-        return this.pool[var]
-                && (this.reason[var] != null || this.level[var] == 0);
+        return this.pool[variable]
+                && (this.reason[variable] != null || this.level[variable] == 0);
     }
 
     public int realnVars() {

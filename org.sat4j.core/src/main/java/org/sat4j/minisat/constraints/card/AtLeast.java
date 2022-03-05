@@ -145,7 +145,7 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
             return new UnitClauses(ps);
         }
         if (degree == 1) {
-            return OriginalWLClause.brandNewClause(s, voc, ps);
+            return OriginalWLClause.brandNewClause(voc, ps);
         }
         Constr constr = new AtLeast(voc, ps, degree);
         constr.register();
@@ -258,8 +258,6 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
      * For learnt clauses only @author leberre
      */
     public boolean locked() {
-        // FIXME need to be adapted to AtLeast
-        // return lits[0].getReason() == this;
         return true;
     }
 
@@ -269,7 +267,7 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
 
     public void register() {
         this.counter = 0;
-        for (int q : this.lits) {
+        for (var q : this.lits) {
             voc.watch(q ^ 1, this);
             if (voc.isFalsified(q)) {
                 this.counter++;
@@ -382,8 +380,8 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
     }
 
     public boolean isSatisfied() {
-        int nbSatisfied = 0;
-        int degree = size() - this.maxUnsatisfied;
+        var nbSatisfied = 0;
+        var degree = size() - this.maxUnsatisfied;
         for (int p : this.lits) {
             if (voc.isSatisfied(p)) {
                 nbSatisfied++;

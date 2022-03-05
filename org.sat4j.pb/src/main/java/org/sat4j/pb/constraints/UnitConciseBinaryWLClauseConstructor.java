@@ -57,7 +57,7 @@ public class UnitConciseBinaryWLClauseConstructor
             // return OriginalBinaryClause.brandNewClause(solver, voc, v);
             return createConciseBinaryClause(v, voc);
         }
-        return OriginalWLClause.brandNewClause(solver, voc, v);
+        return OriginalWLClause.brandNewClause(voc, v);
     }
 
     private Constr createConciseBinaryClause(IVecInt literals, ILits voc) {

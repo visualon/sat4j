@@ -69,18 +69,16 @@ public final class OriginalWLClause extends WLClause {
     /**
      * Creates a brand new clause, presumably from external data.
      * 
-     * @param s
-     *            the object responsible for unit propagation
      * @param voc
      *            the vocabulary
      * @param literals
      *            the literals to store in the clause
+     * 
      * @return the created clause or null if the clause should be ignored
      *         (tautology for example)
      */
-    public static OriginalWLClause brandNewClause(UnitPropagationListener s,
-            ILits voc, IVecInt literals) {
-        OriginalWLClause c = new OriginalWLClause(literals, voc);
+    public static OriginalWLClause brandNewClause(ILits voc, IVecInt literals) {
+        var c = new OriginalWLClause(literals, voc);
         c.register();
         return c;
     }
@@ -108,7 +106,6 @@ public final class OriginalWLClause extends WLClause {
             mylits[0] = mylits[1];
             mylits[1] = p ^ 1;
         }
-        // assert mylits[1] == (p ^ 1);
         int previous = p ^ 1;
         // look for a new satisfied literal to watch
         for (int i = savedindex; i < mylits.length; i++) {

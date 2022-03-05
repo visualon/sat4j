@@ -56,9 +56,9 @@ public final class LearntWLClause extends WLClause {
             return;
         assert this.lits.length > 1;
         // prendre un deuxieme litt???ral ??? surveiller
-        int maxi = 1;
+        var maxi = 1;
         int maxlevel = this.voc.getLevel(this.lits[1]);
-        for (int i = 2; i < this.lits.length; i++) {
+        for (var i = 2; i < this.lits.length; i++) {
             int level = this.voc.getLevel(this.lits[i]);
             if (level > maxlevel) {
                 maxi = i;

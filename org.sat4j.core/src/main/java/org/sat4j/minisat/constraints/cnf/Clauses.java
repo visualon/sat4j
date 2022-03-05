@@ -39,7 +39,12 @@ import org.sat4j.specs.UnitPropagationListener;
  * @author daniel
  * @since 2.1
  */
-public abstract class Clauses {
+public class Clauses {
+
+    private Clauses() {
+        // prevents instantiation of the class.
+    }
+
     /**
      * Perform some sanity check before constructing a clause a) if a literal is
      * assigned true, return null (the clause is satisfied) b) if a literal is
@@ -63,7 +68,7 @@ public abstract class Clauses {
             UnitPropagationListener s) throws ContradictionException {
         // si un litt???ral de ps est vrai, retourner vrai
         // enlever les litt???raux falsifi???s de ps
-        for (int i = 0; i < ps.size();) {
+        for (var i = 0; i < ps.size();) {
             // on verifie si le litteral est affecte
             if (voc.isUnassigned(ps.get(i))) {
                 // on passe au literal suivant
@@ -87,7 +92,7 @@ public abstract class Clauses {
         // ???limine les clauses tautologiques
         // deux litt???raux de signe oppos???s apparaissent dans la m???me
         // clause
-        for (int i = 0; i < ps.size() - 1; i++) {
+        for (var i = 0; i < ps.size() - 1; i++) {
             if (ps.get(i) == (ps.get(i + 1) ^ 1)) {
                 // la clause est tautologique
                 return null;

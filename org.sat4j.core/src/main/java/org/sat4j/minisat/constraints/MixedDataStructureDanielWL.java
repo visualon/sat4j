@@ -87,10 +87,10 @@ public class MixedDataStructureDanielWL extends AbstractDataStructureFactory {
             return new UnitClause(v.last());
         }
         if (v.size() == 2) {
-            return OriginalBinaryClause.brandNewClause(this.solver,
-                    getVocabulary(), v);
+            return OriginalBinaryClause.brandNewClause(getVocabulary(),
+                    v);
         }
-        return OriginalWLClause.brandNewClause(this.solver, getVocabulary(), v);
+        return OriginalWLClause.brandNewClause(getVocabulary(), v);
     }
 
     public Constr createUnregisteredClause(IVecInt literals) {

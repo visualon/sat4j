@@ -32,7 +32,6 @@ package org.sat4j.minisat.constraints.cnf;
 import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.ILits;
 import org.sat4j.specs.IVecInt;
-import org.sat4j.specs.UnitPropagationListener;
 
 /**
  * @since 2.1
@@ -60,18 +59,17 @@ public class OriginalBinaryClause extends BinaryClause {
     /**
      * Creates a brand new clause, presumably from external data.
      * 
-     * @param s
-     *            the object responsible for unit propagation
      * @param voc
      *            the vocabulary
      * @param literals
      *            the literals to store in the clause
+     * 
      * @return the created clause or null if the clause should be ignored
      *         (tautology for example)
      */
-    public static OriginalBinaryClause brandNewClause(UnitPropagationListener s,
-            ILits voc, IVecInt literals) {
-        OriginalBinaryClause c = new OriginalBinaryClause(literals, voc);
+    public static OriginalBinaryClause brandNewClause(ILits voc,
+            IVecInt literals) {
+        var c = new OriginalBinaryClause(literals, voc);
         c.register();
         return c;
     }

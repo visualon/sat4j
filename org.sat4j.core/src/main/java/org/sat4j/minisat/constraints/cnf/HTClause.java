@@ -80,7 +80,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
      * @param ps
      *            A VecInt that WILL BE EMPTY after calling that method.
      */
-    public HTClause(IVecInt ps, ILits voc) {
+    protected HTClause(IVecInt ps, ILits voc) {
         assert ps.size() > 1;
         this.head = ps.get(0);
         this.tail = ps.last();
@@ -146,7 +146,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
 
         if (this.head == neg(p)) {
             final int[] mylits = this.middleLits;
-            int temphead = 0;
+            var temphead = 0;
             // moving head on the right
             while (temphead < mylits.length
                     && this.voc.isFalsified(mylits[temphead])) {
@@ -197,7 +197,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(Lits.toString(this.head));
         stb.append("["); //$NON-NLS-1$
         stb.append(this.voc.valueToString(this.head));
@@ -264,7 +264,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
     }
 
     public int[] getLits() {
-        int[] tmp = new int[size()];
+        var tmp = new int[size()];
         System.arraycopy(this.middleLits, 0, tmp, 1, this.middleLits.length);
         tmp[0] = this.head;
         tmp[tmp.length - 1] = this.tail;
@@ -356,7 +356,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
     }
 
     public String toString(VarMapper mapper) {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(mapper.map(LiteralsUtils.toDimacs(this.head)));
         stb.append("["); //$NON-NLS-1$
         stb.append(this.voc.valueToString(this.head));
@@ -378,7 +378,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(LiteralsUtils.toDimacs(this.head));
         stb.append(' ');
         for (int p : middleLits) {

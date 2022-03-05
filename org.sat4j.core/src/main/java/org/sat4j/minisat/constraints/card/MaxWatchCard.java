@@ -193,7 +193,6 @@ public final class MaxWatchCard
      * @see Constr#learnt()
      */
     public boolean learnt() {
-        // TODO learnt
         return false;
     }
 

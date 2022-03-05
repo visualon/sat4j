@@ -60,9 +60,9 @@ public class LearntHTClause extends HTClause {
     public void register() {
         // looking for the literal to put in tail
         if (this.middleLits.length > 0) {
-            int maxi = 0;
+            var maxi = 0;
             int maxlevel = this.voc.getLevel(this.middleLits[0]);
-            for (int i = 1; i < this.middleLits.length; i++) {
+            for (var i = 1; i < this.middleLits.length; i++) {
                 int level = this.voc.getLevel(this.middleLits[i]);
                 if (level > maxlevel) {
                     maxi = i;

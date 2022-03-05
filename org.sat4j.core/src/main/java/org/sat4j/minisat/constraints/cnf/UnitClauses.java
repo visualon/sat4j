@@ -161,8 +161,8 @@ public class UnitClauses implements Constr {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < literals.length; i++) {
+        var stb = new StringBuilder();
+        for (var i = 0; i < literals.length; i++) {
             stb.append(literals[i]);
             stb.append(" 0");
             if (i < literals.length - 1) {

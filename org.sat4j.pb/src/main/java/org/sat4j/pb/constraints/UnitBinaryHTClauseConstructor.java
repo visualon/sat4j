@@ -51,9 +51,9 @@ public class UnitBinaryHTClauseConstructor implements IClauseConstructor {
             return new UnitClause(v.last());
         }
         if (v.size() == 2) {
-            return OriginalBinaryClause.brandNewClause(solver, voc, v);
+            return OriginalBinaryClause.brandNewClause(voc, v);
         }
-        return OriginalHTClause.brandNewClause(solver, voc, v);
+        return OriginalHTClause.brandNewClause(voc, v);
     }
 
     public Constr constructLearntClause(ILits voc, IVecInt literals) {

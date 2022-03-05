@@ -73,18 +73,16 @@ public class OriginalHTClause extends HTClause {
     /**
      * Creates a brand new clause, presumably from external data.
      * 
-     * @param s
-     *            the object responsible for unit propagation
      * @param voc
      *            the vocabulary
      * @param literals
      *            the literals to store in the clause
+     * 
      * @return the created clause or null if the clause should be ignored
      *         (tautology for example)
      */
-    public static OriginalHTClause brandNewClause(UnitPropagationListener s,
-            ILits voc, IVecInt literals) {
-        OriginalHTClause c = new OriginalHTClause(literals, voc);
+    public static OriginalHTClause brandNewClause(ILits voc, IVecInt literals) {
+        var c = new OriginalHTClause(literals, voc);
         c.register();
         return c;
     }

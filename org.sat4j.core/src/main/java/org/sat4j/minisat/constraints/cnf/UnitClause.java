@@ -180,7 +180,7 @@ public class UnitClause implements Constr {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(literal);
         stb.append(" 0");
         return stb.toString();

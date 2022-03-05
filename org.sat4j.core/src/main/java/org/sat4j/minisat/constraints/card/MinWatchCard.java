@@ -446,7 +446,7 @@ public class MinWatchCard
             stb.append(this.voc.valueToString(this.lits[0]));
             stb.append("]");
             stb.append(" "); //$NON-NLS-1$
-            for (int i = 1; i < this.lits.length; i++) {
+            for (var i = 1; i < this.lits.length; i++) {
                 stb.append(Lits.toStringX(this.lits[i]));
                 stb.append("[");
                 stb.append(this.voc.valueToString(this.lits[i]));
@@ -687,7 +687,7 @@ public class MinWatchCard
         }
         this.savedindex = indSwap + 1;
         // Si un litt?ral a ?t? trouv? on les ?change
-        int tmpInt = this.lits[indSwap];
+        var tmpInt = this.lits[indSwap];
         this.lits[indSwap] = this.lits[indFalsified];
         this.lits[indFalsified] = tmpInt;
 
