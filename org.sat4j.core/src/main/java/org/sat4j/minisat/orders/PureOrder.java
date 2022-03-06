@@ -77,7 +77,7 @@ public final class PureOrder extends VarOrderHeap {
             // try to find a pure literal
             this.cpt = 0;
             int nblits = 2 * this.lits.nVars();
-            for (int i = 2; i <= nblits; i++) {
+            for (var i = 2; i <= nblits; i++) {
                 if (this.lits.isUnassigned(i) && this.lits.watches(i).size() > 0
                         && this.lits.watches(i ^ 1).size() == 0) {
                     return i;

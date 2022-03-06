@@ -125,8 +125,8 @@ public class Product extends EncodingStrategyAdapter {
             hashTupleSetTable[d] = new ArrayList<>();
             ady[d] = new HashMap<>();
             adxd[d] = new VecInt();
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < k; j++) {
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < k; j++) {
                     if (j < d) {
                         aWithoutD[i][d][j] = a[i][j];
                     } else {

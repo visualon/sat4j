@@ -46,12 +46,12 @@ import org.sat4j.specs.Constr;
  * @author daniel
  * 
  */
-abstract class AbstractLearning<D extends DataStructureFactory> implements
-        LearningStrategy<D> {
+abstract class AbstractLearning<D extends DataStructureFactory>
+        implements LearningStrategy<D> {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private VarActivityListener val;
@@ -65,7 +65,7 @@ abstract class AbstractLearning<D extends DataStructureFactory> implements
     }
 
     public final void claBumpActivity(Constr reason) {
-        for (int i = 0; i < reason.size(); i++) {
+        for (var i = 0; i < reason.size(); i++) {
             int q = reason.get(i);
             assert q > 1;
             this.val.varBumpActivity(q);

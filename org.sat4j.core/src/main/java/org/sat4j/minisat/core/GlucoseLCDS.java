@@ -101,6 +101,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
                 + timer;
     }
 
+    @Override
     public void init() {
         final int howmany = solver.voc.nVars();
         if (this.flags.length <= howmany) {
