@@ -74,7 +74,7 @@ public final class Backbone {
         public IVecInt compute(ISolver solver, int[] implicant,
                 IVecInt assumptions) throws TimeoutException {
             nbSatTests = 0;
-            BitSet assumptionsSet = new BitSet(solver.nVars());
+            var assumptionsSet = new BitSet(solver.nVars());
             for (IteratorInt it = assumptions.iterator(); it.hasNext();) {
                 assumptionsSet.set(Math.abs(it.next()));
             }
@@ -98,11 +98,11 @@ public final class Backbone {
         public IVecInt compute(ISolver solver, int[] implicant,
                 IVecInt assumptions, IVecInt filter) throws TimeoutException {
             nbSatTests = 0;
-            BitSet assumptionsSet = new BitSet(solver.nVars());
+            var assumptionsSet = new BitSet(solver.nVars());
             for (IteratorInt it = assumptions.iterator(); it.hasNext();) {
                 assumptionsSet.set(Math.abs(it.next()));
             }
-            BitSet filterSet = new BitSet();
+            var filterSet = new BitSet();
             for (IteratorInt it = filter.iterator(); it.hasNext();) {
                 filterSet.set(Math.abs(it.next()));
             }
@@ -121,12 +121,12 @@ public final class Backbone {
 
         static void removeVarNotPresentAndSatisfiedLits(int[] implicant,
                 IVecInt litsToTest, int n) {
-            int[] marks = new int[n + 1];
+            var marks = new int[n + 1];
             for (int p : implicant) {
                 marks[p > 0 ? p : -p] = p;
             }
             int q, mark;
-            for (int i = 0; i < litsToTest.size();) {
+            for (var i = 0; i < litsToTest.size();) {
                 q = litsToTest.get(i);
                 mark = marks[q > 0 ? q : -q];
                 if (mark == 0 || mark == q) {
@@ -227,12 +227,12 @@ public final class Backbone {
         }
     };
 
-    private final Backboner bb;
+    private final Backboner backboner;
 
-    private final static Backbone instance = bb();
+    private static final Backbone instance = bb();
 
     private Backbone(Backboner bb) {
-        this.bb = bb;
+        this.backboner = bb;
     }
 
     public static Backbone instance() {
@@ -241,8 +241,8 @@ public final class Backbone {
 
     public static Backbone instance(IBackboneProgressListener listener,
             boolean primeImplicantSimplification) {
-        instance.bb.setBackboneProgressListener(listener);
-        instance.bb.setImplicantSimplification(primeImplicantSimplification);
+        instance.backboner.setBackboneProgressListener(listener);
+        instance.backboner.setImplicantSimplification(primeImplicantSimplification);
         return instance;
     }
 
@@ -278,7 +278,7 @@ public final class Backbone {
         if (!result) {
             throw new IllegalArgumentException("Formula is UNSAT!");
         }
-        return bb.compute(solver, solver.primeImplicant(), assumptions);
+        return backboner.compute(solver, solver.primeImplicant(), assumptions);
 
     }
 
@@ -305,7 +305,7 @@ public final class Backbone {
         if (!result) {
             throw new IllegalArgumentException("Formula is UNSAT!");
         }
-        return bb.compute(solver, solver.primeImplicant(), assumptions, filter);
+        return backboner.compute(solver, solver.primeImplicant(), assumptions, filter);
 
     }
 
@@ -323,7 +323,7 @@ public final class Backbone {
      */
     public IVecInt compute(ISolver solver, int[] implicant)
             throws TimeoutException {
-        return bb.compute(solver, implicant, VecInt.EMPTY);
+        return backboner.compute(solver, implicant, VecInt.EMPTY);
     }
 
     /**
@@ -342,7 +342,7 @@ public final class Backbone {
      */
     public IVecInt compute(ISolver solver, int[] implicant, IVecInt assumptions)
             throws TimeoutException {
-        return bb.compute(solver, implicant, assumptions);
+        return backboner.compute(solver, implicant, assumptions);
     }
 
     /**
@@ -352,6 +352,6 @@ public final class Backbone {
      * @return the number of underlying calls to the SAT solver.
      */
     public int getNumberOfSatCalls() {
-        return bb.nbSatTests();
+        return backboner.nbSatTests();
     }
 }

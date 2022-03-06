@@ -49,11 +49,11 @@ public final class NegativeLiteralSelectionStrategy
     public void init(int nlength) {
     }
 
-    public void init(int var, int p) {
+    public void init(int variable, int p) {
     }
 
-    public int select(int var) {
-        return negLit(var);
+    public int select(int variable) {
+        return negLit(variable);
     }
 
     public void updateVar(int p) {

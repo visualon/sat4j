@@ -29,8 +29,6 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
-import java.io.Serializable;
-
 import org.sat4j.core.Vec;
 import org.sat4j.specs.IVec;
 
@@ -40,14 +38,14 @@ import org.sat4j.specs.IVec;
  * @author daniel
  * 
  */
-public class ConflictTimerContainer implements Serializable, ConflictTimer {
+public class ConflictTimerContainer implements ConflictTimer {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
-    private final IVec<ConflictTimer> timers = new Vec<ConflictTimer>();
+    private final IVec<ConflictTimer> timers = new Vec<>();
 
     ConflictTimerContainer add(ConflictTimer timer) {
         this.timers.push(timer);
@@ -60,13 +58,13 @@ public class ConflictTimerContainer implements Serializable, ConflictTimer {
     }
 
     public void reset() {
-        for (int i = 0; i < this.timers.size(); i++) {
+        for (var i = 0; i < this.timers.size(); i++) {
             this.timers.get(i).reset();
         }
     }
 
     public void newConflict() {
-        for (int i = 0; i < this.timers.size(); i++) {
+        for (var i = 0; i < this.timers.size(); i++) {
             this.timers.get(i).newConflict();
         }
     }

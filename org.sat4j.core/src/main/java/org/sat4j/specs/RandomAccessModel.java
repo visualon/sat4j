@@ -45,10 +45,10 @@ public interface RandomAccessModel extends Serializable {
      * That method should be called deciding that the problem is satisfiable.
      * Else an exception UnsupportedOperationException is launched.
      * 
-     * @param var
+     * @param variable
      *            the variable id in Dimacs format
      * @return the truth value of that variable in the model
      * @since 1.6
      */
-    boolean model(int var);
+    boolean model(int variable);
 }

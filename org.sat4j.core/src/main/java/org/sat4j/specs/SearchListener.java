@@ -75,8 +75,9 @@ public interface SearchListener<S extends ISolverService>
      * conflict is found.
      * 
      * @param p
+     *            a literal
      * @param reason
-     *            TODO
+     *            it's reason
      */
     void enqueueing(int p, IConstr reason);
 
@@ -108,11 +109,11 @@ public interface SearchListener<S extends ISolverService>
      * a conflict has been found.
      * 
      * @param confl
-     *            TODO
+     *            a conflict
      * @param dlevel
-     *            TODO
+     *            the decision level
      * @param trailLevel
-     *            TODO
+     *            the trail level
      * 
      */
     void conflictFound(IConstr confl, int dlevel, int trailLevel);
@@ -131,7 +132,7 @@ public interface SearchListener<S extends ISolverService>
      * @param model
      *            the model found
      * @param lazyModel
-     *            TODO
+     *            a way to access the model lazily
      * 
      */
     void solutionFound(int[] model, RandomAccessModel lazyModel);

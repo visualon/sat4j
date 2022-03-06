@@ -41,11 +41,7 @@ import org.sat4j.annotations.Feature;
 @Feature(value = "unitclauseprovider", parent = "expert")
 public interface UnitClauseProvider {
 
-    UnitClauseProvider VOID = new UnitClauseProvider() {
-
-        public void provideUnitClauses(UnitPropagationListener upl) {
-            // do nothing
-        }
+    UnitClauseProvider VOID = upl -> {
     };
 
     void provideUnitClauses(UnitPropagationListener upl);

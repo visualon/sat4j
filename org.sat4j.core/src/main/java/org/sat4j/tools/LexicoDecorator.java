@@ -46,7 +46,7 @@ import org.sat4j.specs.TimeoutException;
 public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
         implements IOptimizationProblem {
 
-    protected final List<IVecInt> criteria = new ArrayList<IVecInt>();
+    protected final List<IVecInt> criteria = new ArrayList<>();
 
     protected int currentCriterion = 0;
 
@@ -84,7 +84,7 @@ public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
         this.isSolutionOptimal = false;
         if (decorated().isSatisfiable(assumps, true)) {
             this.prevboolmodel = new boolean[nVars()];
-            for (int i = 0; i < nVars(); i++) {
+            for (var i = 0; i < nVars(); i++) {
                 this.prevboolmodel[i] = decorated().model(i + 1);
             }
             this.prevfullmodel = decorated().model();
@@ -149,8 +149,8 @@ public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
     }
 
     @Override
-    public boolean model(int var) {
-        return this.prevboolmodel[var - 1];
+    public boolean model(int variable) {
+        return this.prevboolmodel[variable - 1];
     }
 
     @Override
@@ -215,7 +215,7 @@ public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
     }
 
     protected Number evaluate(int criterion) {
-        int value = 0;
+        var value = 0;
         int lit;
         for (IteratorInt it = this.criteria.get(this.currentCriterion)
                 .iterator(); it.hasNext();) {
@@ -233,7 +233,6 @@ public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
     }
 
     public void setTimeoutForFindingBetterSolution(int seconds) {
-        // TODO
         throw new UnsupportedOperationException("No implemented yet");
     }
 

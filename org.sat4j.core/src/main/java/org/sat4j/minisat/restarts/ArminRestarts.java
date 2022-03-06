@@ -50,7 +50,8 @@ public final class ArminRestarts implements RestartStrategy {
      */
     private static final long serialVersionUID = 1L;
 
-    private double inner, outer;
+    private double inner;
+    private double outer;
     private long conflicts;
     private SearchParams params;
 

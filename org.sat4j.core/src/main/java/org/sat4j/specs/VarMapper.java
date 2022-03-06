@@ -33,12 +33,12 @@ public interface VarMapper {
 
     /**
      * Map a Dimacs boolean variable to a specific textual representation. If
-     * none is found, the value of var will be returned as text.
+     * none is found, the value of variable will be returned as text.
      * 
-     * @param var
+     * @param variable
      *            a Dimacs variable
-     * @return a textual representation of that var
+     * @return a textual representation of that variable
      * @since 2.3.6
      */
-    String map(int var);
+    String map(int variable);
 }

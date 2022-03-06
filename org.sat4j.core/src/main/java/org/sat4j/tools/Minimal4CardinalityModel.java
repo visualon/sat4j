@@ -91,7 +91,7 @@ public class Minimal4CardinalityModel extends AbstractMinimalModel {
             do {
                 prevfullmodel = super.modelWithInternalVariables();
                 prevmodel = super.model();
-                int counter = 0;
+                var counter = 0;
                 for (int q : prevfullmodel) {
                     if (pLiterals.contains(q)) {
                         counter++;

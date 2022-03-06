@@ -153,13 +153,13 @@ public class DimacsReader extends Reader implements Serializable {
      */
     protected void readConstrs()
             throws IOException, ParseFormatException, ContradictionException {
-        int realNbOfConstr = 0;
+        var realNbOfConstr = 0;
 
         this.literals.clear();
-        boolean needToContinue = true;
+        var needToContinue = true;
 
         while (needToContinue) {
-            boolean added = false;
+            var added = false;
             if (this.scanner.eof()) {
                 // end of file
                 if (this.literals.size() > 0) {
@@ -216,7 +216,7 @@ public class DimacsReader extends Reader implements Serializable {
     protected boolean handleLine()
             throws ContradictionException, IOException, ParseFormatException {
         int lit;
-        boolean added = false;
+        var added = false;
         while (!this.scanner.eof()) {
             lit = this.scanner.nextInt();
             if (lit == 0) {
@@ -265,7 +265,7 @@ public class DimacsReader extends Reader implements Serializable {
 
     @Override
     public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int element : model) {
             stb.append(element);
             stb.append(" ");

@@ -85,14 +85,14 @@ public class DimacsArrayReader implements Serializable {
         this.solver.reset();
         this.solver.newVar(maxVar);
         this.solver.setExpectedNumberOfClauses(outputs.length);
-        for (int i = 0; i < outputs.length; ++i) {
+        for (var i = 0; i < outputs.length; ++i) {
             handleConstr(gateType[i], outputs[i], inputs[i]);
         }
         return this.solver;
     }
 
     public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder(4 * model.length);
+        var stb = new StringBuilder(4 * model.length);
         for (int element : model) {
             stb.append(element);
             stb.append(" ");

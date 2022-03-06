@@ -56,8 +56,8 @@ package org.sat4j.specs;
  *         }
  *         log(&quot;Got one! Elapsed wall clock time (in seconds):&quot; //$NON-NLS-1$
  *                 + (System.currentTimeMillis() - getBeginTime()) / 1000.0);
- *         getLogWriter().println(
- *                 CURRENT_OPTIMUM_VALUE_PREFIX + optproblem.getObjectiveValue());
+ *         getLogWriter().println(CURRENT_OPTIMUM_VALUE_PREFIX
+ *                 + optproblem.getObjectiveValue());
  *         optproblem.discardCurrentSolution();
  *     }
  *     if (isSatisfiable) {
@@ -131,6 +131,7 @@ public interface IOptimizationProblem extends IProblem {
      * 
      * @return the value of the objective function.
      * @see #getObjectiveValue()
+     * @deprecated use {@link #getObjectiveValue()} instead
      */
     @Deprecated
     Number calculateObjective();
@@ -164,6 +165,7 @@ public interface IOptimizationProblem extends IProblem {
      * @throws ContradictionException
      *             if a trivial inconsistency is detected.
      * @see #discardCurrentSolution()
+     * @deprecated use {@link #discardCurrentSolution()} instead
      */
     @Deprecated
     void discard() throws ContradictionException;

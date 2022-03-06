@@ -118,7 +118,7 @@ public final class MinOneDecorator extends SolverDecorator<ISolver>
      */
     public void discardCurrentSolution() throws ContradictionException {
         if (this.literals.isEmpty()) {
-            for (int i = 1; i <= nVars(); i++) {
+            for (var i = 1; i <= nVars(); i++) {
                 this.literals.push(i);
             }
         }
@@ -176,7 +176,6 @@ public final class MinOneDecorator extends SolverDecorator<ISolver>
     }
 
     public void setTimeoutForFindingBetterSolution(int seconds) {
-        // TODO
         throw new UnsupportedOperationException("No implemented yet");
     }
 }

@@ -48,8 +48,8 @@ public class GroupClauseSelectorSolver<T extends ISolver>
 
     private static final long serialVersionUID = 1L;
 
-    private final Map<Integer, Integer> varToHighLevel = new HashMap<Integer, Integer>();
-    private final Map<Integer, Integer> highLevelToVar = new HashMap<Integer, Integer>();
+    private final Map<Integer, Integer> varToHighLevel = new HashMap<>();
+    private final Map<Integer, Integer> highLevelToVar = new HashMap<>();
 
     public GroupClauseSelectorSolver(T solver) {
         super(solver);
@@ -96,8 +96,8 @@ public class GroupClauseSelectorSolver<T extends ISolver>
         if (fullmodel == null) {
             return null;
         }
-        int[] model = new int[fullmodel.length - this.varToHighLevel.size()];
-        int j = 0;
+        var model = new int[fullmodel.length - this.varToHighLevel.size()];
+        var j = 0;
         for (int element : fullmodel) {
             if (this.varToHighLevel.get(Math.abs(element)) == null) {
                 model[j++] = element;

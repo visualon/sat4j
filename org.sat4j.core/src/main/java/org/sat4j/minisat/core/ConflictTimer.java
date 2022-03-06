@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import java.io.Serializable;
+
 /**
  * Conflict based timer.
  * 
@@ -37,7 +39,7 @@ package org.sat4j.minisat.core;
  * @author daniel
  * 
  */
-public interface ConflictTimer {
+public interface ConflictTimer extends Serializable {
 
     void reset();
 

@@ -65,8 +65,8 @@ public class AAGReader extends Reader {
 
     @Override
     public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < this.nbinputs; i++) {
+        var stb = new StringBuilder();
+        for (var i = 0; i < this.nbinputs; i++) {
             stb.append(model[i] > 0 ? 1 : 0);
         }
         return stb.toString();
@@ -74,7 +74,7 @@ public class AAGReader extends Reader {
 
     @Override
     public void decode(int[] model, PrintWriter out) {
-        for (int i = 0; i < this.nbinputs; i++) {
+        for (var i = 0; i < this.nbinputs; i++) {
             out.print(model[i] > 0 ? 1 : 0);
         }
     }
@@ -82,20 +82,20 @@ public class AAGReader extends Reader {
     @Override
     public IProblem parseInstance(java.io.InputStream in)
             throws ParseFormatException, ContradictionException, IOException {
-        EfficientScanner scanner = new EfficientScanner(in);
+        var scanner = new EfficientScanner(in);
         String prefix = scanner.next();
         if (!"aag".equals(prefix)) {
             throw new ParseFormatException("AAG format only!");
         }
         this.maxvarid = scanner.nextInt();
         this.nbinputs = scanner.nextInt();
-        int nblatches = scanner.nextInt();
-        int nboutputs = scanner.nextInt();
+        var nblatches = scanner.nextInt();
+        var nboutputs = scanner.nextInt();
         if (nboutputs > 1) {
             throw new ParseFormatException(
                     "CNF conversion allowed for single output circuit only!");
         }
-        int nbands = scanner.nextInt();
+        var nbands = scanner.nextInt();
         this.solver.newVar(this.maxvarid + 1);
         this.solver.setExpectedNumberOfClauses(3 * nbands + 2);
         readInput(this.nbinputs, scanner);
@@ -110,10 +110,10 @@ public class AAGReader extends Reader {
     private void readAnd(int nbands, int output0, EfficientScanner scanner)
             throws ContradictionException, IOException, ParseFormatException {
 
-        for (int i = 0; i < nbands; i++) {
-            int lhs = scanner.nextInt();
-            int rhs0 = scanner.nextInt();
-            int rhs1 = scanner.nextInt();
+        for (var i = 0; i < nbands; i++) {
+            var lhs = scanner.nextInt();
+            var rhs0 = scanner.nextInt();
+            var rhs1 = scanner.nextInt();
             this.solver.and(toDimacs(lhs), toDimacs(rhs0), toDimacs(rhs1));
         }
         this.solver.gateTrue(this.maxvarid + 1);
@@ -127,17 +127,17 @@ public class AAGReader extends Reader {
         if (v == TRUE) {
             return this.maxvarid + 1;
         }
-        int var = v >> 1;
+        int variable = v >> 1;
         if ((v & 1) == 0) {
-            return var;
+            return variable;
         }
-        return -var;
+        return -variable;
     }
 
     private int readOutput(int nboutputs, EfficientScanner scanner)
             throws IOException, ParseFormatException {
         IVecInt outputs = new VecInt(nboutputs);
-        for (int i = 0; i < nboutputs; i++) {
+        for (var i = 0; i < nboutputs; i++) {
             outputs.push(scanner.nextInt());
         }
         return outputs.get(0);
@@ -146,7 +146,7 @@ public class AAGReader extends Reader {
     private IVecInt readInput(int numberOfInputs, EfficientScanner scanner)
             throws IOException, ParseFormatException {
         IVecInt inputs = new VecInt(numberOfInputs);
-        for (int i = 0; i < numberOfInputs; i++) {
+        for (var i = 0; i < numberOfInputs; i++) {
             inputs.push(scanner.nextInt());
         }
         return inputs;

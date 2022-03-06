@@ -54,6 +54,7 @@ public interface ISolver extends IProblem, Serializable {
      * 
      * @return the number of variables available in the vocabulary, which is the
      *         identifier of the new variable.
+     * @deprecated use {@link #newVar(int)} instead
      */
     @Deprecated
     int newVar();

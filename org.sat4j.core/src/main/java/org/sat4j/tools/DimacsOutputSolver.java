@@ -117,7 +117,7 @@ public class DimacsOutputSolver extends AbstractOutputSolver
             }
             this.firstConstr = false;
         }
-        for (int i = 0; i <= literals.size(); i++) {
+        for (var i = 0; i <= literals.size(); i++) {
             for (int j = i + 1; j < literals.size(); j++) {
                 this.out.println(
                         "" + -literals.get(i) + " " + -literals.get(j) + " 0");

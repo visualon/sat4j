@@ -75,8 +75,6 @@ public class LecteurDimacs extends Reader implements Serializable {
 
     private static final char EOF = (char) -1;
 
-    private final boolean pminimal = false;
-
     /*
      * nomFichier repr?sente le nom du fichier ? lire
      */
@@ -185,8 +183,8 @@ public class LecteurDimacs extends Reader implements Serializable {
     private void ajouterClauses(char car)
             throws IOException, ContradictionException, ParseFormatException {
         final IVecInt lit = new VecInt();
-        int val = 0;
-        boolean neg = false;
+        var val = 0;
+        var neg = false;
         for (;;) {
             /* on lit le signe du literal */
             if (car == 'c') {
@@ -215,7 +213,6 @@ public class LecteurDimacs extends Reader implements Serializable {
                 lit.clear();
             } else {
                 /* on ajoute le literal au vecteur */
-                // s.newVar(val-1);
                 lit.push(neg ? -val : val);
                 neg = false;
                 val = 0; /* on reinitialise les variables */
@@ -256,7 +253,7 @@ public class LecteurDimacs extends Reader implements Serializable {
 
     protected char manageCommentLine() throws IOException {
         char car;
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         do {
             car = (char) this.in.read();
             stb.append(car);
@@ -265,7 +262,7 @@ public class LecteurDimacs extends Reader implements Serializable {
         if (str.startsWith("pmin")) {
             String[] tokens = str.split(" ");
             IVecInt p = new VecInt(tokens.length - 2);
-            for (int i = 1; i < tokens.length - 1; i++) {
+            for (var i = 1; i < tokens.length - 1; i++) {
                 p.push(Integer.parseInt(tokens[i]));
             }
             s = new Minimal4InclusionModel(s, p);
@@ -292,7 +289,7 @@ public class LecteurDimacs extends Reader implements Serializable {
 
     @Override
     public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int element : model) {
             stb.append(element);
             stb.append(" ");
@@ -342,7 +339,7 @@ public class LecteurDimacs extends Reader implements Serializable {
 
     protected void startsMapping() {
         if (mapping == null) {
-            mapping = new HashMap<Integer, String>();
+            mapping = new HashMap<>();
         }
     }
 }

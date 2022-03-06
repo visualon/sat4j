@@ -79,9 +79,9 @@ public class AllMUSes implements Serializable {
             ASolverFactory<? extends ISolver> factory) {
         this.css = css;
         this.factory = factory;
-        this.mssList = new ArrayList<IVecInt>();
-        this.musList = new ArrayList<IVecInt>();
-        this.secondPhaseClauses = new ArrayList<IVecInt>();
+        this.mssList = new ArrayList<>();
+        this.musList = new ArrayList<>();
+        this.secondPhaseClauses = new ArrayList<>();
     }
 
     /**
@@ -136,7 +136,7 @@ public class AllMUSes implements Serializable {
             }
         }
         AbstractMinimalModel minSolver = new Minimal4InclusionModel(solver,
-                Minimal4InclusionModel.positiveLiterals(solver));
+                AbstractMinimalModel.positiveLiterals(solver));
         return computeAllMUSes(assumptions, listener, minSolver);
     }
 
@@ -159,7 +159,7 @@ public class AllMUSes implements Serializable {
             }
         }
         AbstractMinimalModel minSolver = new Minimal4CardinalityModel(solver,
-                Minimal4InclusionModel.positiveLiterals(solver));
+                AbstractMinimalModel.positiveLiterals(solver));
         return computeAllMUSes(assumptions, listener, minSolver);
     }
 
@@ -182,7 +182,7 @@ public class AllMUSes implements Serializable {
 
                 int[] model = minSolver.model();
 
-                for (int i = 0; i < model.length; i++) {
+                for (var i = 0; i < model.length; i++) {
                     if (model[i] > 0) {
                         blockingClause.push(-model[i]);
                         mus.push(model[i]);
@@ -258,7 +258,7 @@ public class AllMUSes implements Serializable {
 
         int clause;
 
-        for (int i = 0; i < css.getAddedVars().size(); i++) {
+        for (var i = 0; i < css.getAddedVars().size(); i++) {
             fullMSS.push(i + 1);
         }
 
@@ -273,7 +273,7 @@ public class AllMUSes implements Serializable {
 
                 blockingClause = new VecInt();
                 secondPhaseClause = new VecInt();
-                for (int i = 0; i < pLits.size(); i++) {
+                for (var i = 0; i < pLits.size(); i++) {
                     clause = Math.abs(pLits.get(i));
                     if (fullmodel[clause - 1] > 0) {
                         blockingClause.push(-clause);

@@ -48,7 +48,7 @@ public class FullClauseSelectorSolver<T extends ISolver>
      * 
      */
     private static final long serialVersionUID = 1L;
-    private final Map<Integer, IConstr> constrs = new HashMap<Integer, IConstr>();
+    private final Map<Integer, IConstr> constrs = new HashMap<>();
     private final IVecInt lastClause = new VecInt();
     private IConstr lastConstr;
     private final boolean skipDuplicatedEntries;
@@ -94,8 +94,8 @@ public class FullClauseSelectorSolver<T extends ISolver>
         if (fullmodel == null) {
             return null;
         }
-        int[] model = new int[fullmodel.length - this.constrs.size()];
-        int j = 0;
+        var model = new int[fullmodel.length - this.constrs.size()];
+        var j = 0;
         for (int element : fullmodel) {
             if (this.constrs.get(Math.abs(element)) == null) {
                 model[j++] = element;

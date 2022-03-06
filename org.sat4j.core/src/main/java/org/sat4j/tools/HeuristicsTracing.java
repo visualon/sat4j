@@ -63,7 +63,7 @@ public class HeuristicsTracing extends SearchListenerAdapter<ISolverService> {
 
         int n = this.solverService.nVars();
         double[] heuristics = this.solverService.getVariableHeuristics();
-        for (int i = 1; i <= n; i++) {
+        for (var i = 1; i <= n; i++) {
             this.visuTool.addPoint(heuristics[i], i);
         }
         this.visuTool.end();

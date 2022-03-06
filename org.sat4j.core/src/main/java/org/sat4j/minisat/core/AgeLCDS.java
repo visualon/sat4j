@@ -70,7 +70,6 @@ final class AgeLCDS implements LearnedConstraintsDeletionStrategy {
             solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
                     + (solver.learnts.size() - j) + " clauses out of " //$NON-NLS-1$
                     + solver.learnts.size());
-            // out.flush();
         }
         solver.learnts.shrinkTo(j);
     }

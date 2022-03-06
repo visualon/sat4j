@@ -55,7 +55,7 @@ public class LevelBasedVarOrderHeap extends VarOrderHeap {
 
     private int[] level;
 
-    private final List<IVecInt> varsByLevel = new ArrayList<IVecInt>();
+    private final List<IVecInt> varsByLevel = new ArrayList<>();
 
     public LevelBasedVarOrderHeap() {
     }
@@ -89,14 +89,14 @@ public class LevelBasedVarOrderHeap extends VarOrderHeap {
         int nlength = this.lits.nVars() + 1;
         if (level == null || level.length < nlength) {
             this.level = new int[nlength];
-            for (int i = 0; i < nlength; i++) {
+            for (var i = 0; i < nlength; i++) {
                 level[i] = Integer.MAX_VALUE;
             }
         }
         IVecInt currentLevel;
-        for (int i = 1; i <= varsByLevel.size(); i++) {
+        for (var i = 1; i <= varsByLevel.size(); i++) {
             currentLevel = varsByLevel.get(i - 1);
-            for (int j = 0; j < currentLevel.size(); j++) {
+            for (var j = 0; j < currentLevel.size(); j++) {
                 level[currentLevel.get(j)] = i;
             }
         }

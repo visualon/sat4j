@@ -60,8 +60,6 @@ public abstract class EmptySolver implements ISolver {
      */
     private static final long serialVersionUID = 1L;
 
-    private final IConstr FAKECONSTR = FakeConstr.instance();
-
     private int nbVars;
 
     private int nbClauses;
@@ -125,7 +123,7 @@ public abstract class EmptySolver implements ISolver {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    public boolean model(int var) {
+    public boolean model(int variable) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
@@ -147,20 +145,19 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public IConstr addClause(IVecInt literals) throws ContradictionException {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public IConstr addBlockingClause(IVecInt literals)
             throws ContradictionException {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public IConstr discardCurrentModel() throws ContradictionException {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public IVecInt createBlockingClauseForCurrentModel() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
@@ -174,27 +171,26 @@ public abstract class EmptySolver implements ISolver {
 
     public void addAllClauses(IVec<IVecInt> clauses)
             throws ContradictionException {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public IConstr addAtMost(IVecInt literals, int degree)
             throws ContradictionException {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public IConstr addAtLeast(IVecInt literals, int degree)
             throws ContradictionException {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public IConstr addExactly(IVecInt literals, int n)
             throws ContradictionException {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public IConstr addConstr(Constr constr) {
-        return FAKECONSTR;
+        return FakeConstr.instance();
     }
 
     public void setTimeout(int t) {
@@ -210,17 +206,14 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public int getTimeout() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public long getTimeoutMs() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void expireTimeout() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
@@ -229,22 +222,18 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public void printStat(PrintStream out, String prefix) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void printStat(PrintWriter out, String prefix) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public void printStat(PrintWriter out) {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public Map<String, Number> getStat() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 

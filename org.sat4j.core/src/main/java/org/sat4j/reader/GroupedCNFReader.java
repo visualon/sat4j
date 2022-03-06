@@ -94,7 +94,7 @@ public class GroupedCNFReader extends DimacsReader {
     protected boolean handleLine()
             throws ContradictionException, IOException, ParseFormatException {
         int lit;
-        boolean added = false;
+        var added = false;
         String component = this.scanner.next();
         if (!component.startsWith("{") || !component.endsWith("}")) {
             throw new ParseFormatException(

@@ -48,12 +48,12 @@ import org.sat4j.tools.SolverDecorator;
  * @author daniel
  * 
  */
-public abstract class AbstractSelectorVariablesDecorator extends
-        SolverDecorator<ISolver> implements IOptimizationProblem {
+public abstract class AbstractSelectorVariablesDecorator
+        extends SolverDecorator<ISolver> implements IOptimizationProblem {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private int nbexpectedclauses;
@@ -76,7 +76,7 @@ public abstract class AbstractSelectorVariablesDecorator extends
      */
     private IVecInt prevBlockingClause;
 
-    public AbstractSelectorVariablesDecorator(ISolver solver) {
+    protected AbstractSelectorVariablesDecorator(ISolver solver) {
         super(solver);
     }
 
@@ -102,13 +102,12 @@ public abstract class AbstractSelectorVariablesDecorator extends
         boolean result = super.isSatisfiable(assumps, true);
         if (result) {
             this.prevboolmodel = new boolean[nVars()];
-            for (int i = 0; i < nVars(); i++) {
+            for (var i = 0; i < nVars(); i++) {
                 this.prevboolmodel[i] = decorated().model(i + 1);
             }
             this.prevfullmodel = super.modelWithInternalVariables();
             this.prevmodel = super.model();
-            this.prevBlockingClause = super
-                    .createBlockingClauseForCurrentModel();
+            this.prevBlockingClause = super.createBlockingClauseForCurrentModel();
             calculateObjectiveValue();
         } else {
             this.isSolutionOptimal = true;
@@ -124,8 +123,8 @@ public abstract class AbstractSelectorVariablesDecorator extends
     }
 
     @Override
-    public boolean model(int var) {
-        return this.prevboolmodel[var - 1];
+    public boolean model(int variable) {
+        return this.prevboolmodel[variable - 1];
     }
 
     @Override

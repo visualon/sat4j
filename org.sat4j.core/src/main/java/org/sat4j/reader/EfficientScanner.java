@@ -98,9 +98,9 @@ public class EfficientScanner implements Serializable {
      * @throws ParseFormatException
      */
     public int nextInt() throws IOException, ParseFormatException {
-        int val = 0;
-        boolean neg = false;
-        char currentChar = skipSpaces();
+        var val = 0;
+        var neg = false;
+        var currentChar = skipSpaces();
         if (currentChar == '-') {
             neg = true;
             currentChar = (char) this.in.read();
@@ -123,16 +123,14 @@ public class EfficientScanner implements Serializable {
         return neg ? -val : val;
     }
 
-    public BigInteger nextBigInteger() throws IOException, ParseFormatException {
-        StringBuilder stb = new StringBuilder();
-        char currentChar = skipSpaces();
-        if (currentChar == '-') {
+    public BigInteger nextBigInteger()
+            throws IOException, ParseFormatException {
+        var stb = new StringBuilder();
+        var currentChar = skipSpaces();
+        if (currentChar == '-' || (currentChar >= '0' && currentChar <= '9')) {
             stb.append(currentChar);
             currentChar = (char) this.in.read();
         } else if (currentChar == '+') {
-            currentChar = (char) this.in.read();
-        } else if (currentChar >= '0' && currentChar <= '9') {
-            stb.append(currentChar);
             currentChar = (char) this.in.read();
         } else {
             throw new ParseFormatException("Unknown character " + currentChar);
@@ -149,8 +147,8 @@ public class EfficientScanner implements Serializable {
      *             never used in that method.
      */
     public String next() throws IOException, ParseFormatException {
-        StringBuilder stb = new StringBuilder();
-        char currentChar = skipSpaces();
+        var stb = new StringBuilder();
+        var currentChar = skipSpaces();
         while (currentChar != ' ' && currentChar != '\n') {
             stb.append(currentChar);
             currentChar = (char) this.in.read();
@@ -169,7 +167,7 @@ public class EfficientScanner implements Serializable {
     }
 
     public String nextLine() throws IOException {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         char car;
         do {
             car = (char) this.in.read();

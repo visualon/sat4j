@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 import org.sat4j.annotations.Feature;
 
 /**
@@ -38,7 +40,7 @@ import org.sat4j.annotations.Feature;
  * 
  */
 @Feature("constraint")
-public interface IConstr {
+public interface IConstr extends Serializable {
 
     /**
      * @return true iff the clause was learnt during the search

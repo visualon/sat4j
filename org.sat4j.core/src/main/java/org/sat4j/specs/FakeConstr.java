@@ -39,6 +39,11 @@ import org.sat4j.annotations.Feature;
  */
 @Feature("constraint")
 public final class FakeConstr implements IConstr {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private static final String FAKE_I_CONSTR_MSG = "Fake IConstr";
 
     private static final IConstr instance = new FakeConstr();

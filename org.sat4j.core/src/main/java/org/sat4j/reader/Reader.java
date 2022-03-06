@@ -107,7 +107,7 @@ public abstract class Reader implements Serializable {
      *             if a provided URL is incorrect
      */
     public static InputStream getInputStreamFromFilename(final String filename)
-            throws IOException, MalformedURLException {
+            throws IOException {
         InputStream in;
         if (filename.startsWith("http://")) {
             in = new URL(filename).openStream();
@@ -163,6 +163,7 @@ public abstract class Reader implements Serializable {
      * @throws ContradictionException
      *             if the problem is found trivially inconsistent.
      * @see #parseInstance(InputStream)
+     * @deprecated use {@link #parseInstance(InputStream)} instead
      */
     @Deprecated
     public IProblem parseInstance(java.io.Reader in)
@@ -184,6 +185,7 @@ public abstract class Reader implements Serializable {
      *            a model using the Dimacs format.
      * @return a human readable view of the model.
      * @see #decode(int[], PrintWriter)
+     * @deprecated use {@link #decode(int[], PrintWriter)} instead
      */
     @Deprecated
     public abstract String decode(int[] model);

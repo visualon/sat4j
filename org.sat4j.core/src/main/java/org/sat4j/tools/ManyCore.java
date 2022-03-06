@@ -83,7 +83,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
      */
     private static final long serialVersionUID = 1L;
 
-    private final String[] availableSolvers; // = { };
+    private final String[] availableSolvers;
 
     protected final List<S> solvers;
     protected final int numberOfSolvers;
@@ -94,7 +94,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     private volatile boolean solved;
     private final IVecInt sharedUnitClauses = new VecInt();
 
-    private final IVec<Counter> solversStats = new Vec<Counter>();
+    private final IVec<Counter> solversStats = new Vec<>();
 
     public ManyCore(ASolverFactory<S> factory, String... solverNames) {
         this(factory, false, solverNames);
@@ -104,9 +104,9 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
             String... solverNames) {
         this.availableSolvers = solverNames;
         this.numberOfSolvers = solverNames.length;
-        this.solvers = new ArrayList<S>(this.numberOfSolvers);
+        this.solvers = new ArrayList<>(this.numberOfSolvers);
         S solver;
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             solver = factory.createSolverByName(this.availableSolvers[i]);
             solver.setUnitClauseConsumer(this);
             if (shareLearnedUnitClauses) {
@@ -132,7 +132,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     public ManyCore(boolean shareLearnedUnitClauses, String[] names,
             S... solverObjects) {
         this(shareLearnedUnitClauses, solverObjects);
-        for (int i = 0; i < names.length; i++) {
+        for (var i = 0; i < names.length; i++) {
             this.availableSolvers[i] = names[i];
         }
     }
@@ -143,12 +143,12 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     public ManyCore(boolean shareLearnedUnitClauses, S... solverObjects) {
         this.availableSolvers = new String[solverObjects.length];
-        for (int i = 0; i < solverObjects.length; i++) {
+        for (var i = 0; i < solverObjects.length; i++) {
             this.availableSolvers[i] = "solver" + i;
         }
         this.numberOfSolvers = solverObjects.length;
-        this.solvers = new ArrayList<S>(this.numberOfSolvers);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        this.solvers = new ArrayList<>(this.numberOfSolvers);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.add(solverObjects[i]);
             solverObjects[i].setUnitClauseConsumer(this);
             if (shareLearnedUnitClauses) {
@@ -160,15 +160,15 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     public void addAllClauses(IVec<IVecInt> clauses)
             throws ContradictionException {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).addAllClauses(clauses);
         }
     }
 
     public IConstr addAtLeast(IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var group = new ConstrGroup(false);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addAtLeast(literals, degree));
         }
         return group;
@@ -176,8 +176,8 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     public IConstr addAtMost(IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var group = new ConstrGroup(false);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addAtMost(literals, degree));
         }
         return group;
@@ -185,30 +185,30 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     public IConstr addExactly(IVecInt literals, int n)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var group = new ConstrGroup(false);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addExactly(literals, n));
         }
         return group;
     }
 
     public IConstr addClause(IVecInt literals) throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var group = new ConstrGroup(false);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addClause(literals));
         }
         return group;
     }
 
     public void clearLearntClauses() {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).clearLearntClauses();
         }
         sharedUnitClauses.clear();
     }
 
     public void expireTimeout() {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).expireTimeout();
         }
         this.sleepTime = FAST_SLEEP;
@@ -231,8 +231,8 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public int newVar(int howmany) {
-        int result = 0;
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var result = 0;
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             result = this.solvers.get(i).newVar(howmany);
         }
         return result;
@@ -240,7 +240,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     @Deprecated
     public void printStat(PrintStream out, String prefix) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             out.printf(
                     "%s>>>>>>>>>> Solver number %d (%d answers) <<<<<<<<<<<<<<<<<<%n",
                     prefix, i, this.solversStats.get(i).getValue());
@@ -250,7 +250,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     @Deprecated
     public void printStat(PrintWriter out, String prefix) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             out.printf(
                     "%s>>>>>>>>>> Solver number %d (%d answers) <<<<<<<<<<<<<<<<<<%n",
                     prefix, i, this.solversStats.get(i).getValue());
@@ -261,9 +261,9 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     public boolean removeConstr(IConstr c) {
         if (c instanceof ConstrGroup) {
             ConstrGroup group = (ConstrGroup) c;
-            boolean removed = true;
+            var removed = true;
             IConstr toRemove;
-            for (int i = 0; i < this.numberOfSolvers; i++) {
+            for (var i = 0; i < this.numberOfSolvers; i++) {
                 toRemove = group.getConstr(i);
                 if (toRemove != null) {
                     removed = removed
@@ -278,44 +278,44 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public void reset() {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).reset();
         }
         sharedUnitClauses.clear();
     }
 
     public void setExpectedNumberOfClauses(int nb) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setExpectedNumberOfClauses(nb);
         }
     }
 
     public void setTimeout(int t) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setTimeout(t);
         }
     }
 
     public void setTimeoutMs(long t) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setTimeoutMs(t);
         }
     }
 
     public void setTimeoutOnConflicts(int count) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setTimeoutOnConflicts(count);
         }
     }
 
     public String toString(String prefix) {
-        StringBuilder res = new StringBuilder();
+        var res = new StringBuilder();
         res.append(prefix);
         res.append("ManyCore solver with ");
         res.append(this.numberOfSolvers);
         res.append(" solvers running in parallel");
         res.append("\n");
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             res.append(prefix);
             res.append(">>>>>>>>>> Solver number ");
             res.append(i);
@@ -352,7 +352,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
             boolean globalTimeout) throws TimeoutException {
         this.remainingSolvers = new AtomicInteger(this.numberOfSolvers);
         this.solved = false;
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             new Thread(new RunnableSolver(i, this.solvers.get(i), assumps,
                     globalTimeout, this)).start();
         }
@@ -385,8 +385,8 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
         return this.solvers.get(this.getWinnerId()).model();
     }
 
-    public boolean model(int var) {
-        return this.solvers.get(this.getWinnerId()).model(var);
+    public boolean model(int variable) {
+        return this.solvers.get(this.getWinnerId()).model(variable);
     }
 
     public int nConstraints() {
@@ -398,7 +398,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public void printInfos(PrintWriter out, String prefix) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             out.printf("%s>>>>>>>>>> Solver number %d <<<<<<<<<<<<<<<<<<%n",
                     prefix, i);
             this.solvers.get(i).printInfos(out, prefix);
@@ -412,7 +412,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
             this.solversStats.get(index).inc();
             this.solved = true;
             this.resultFound = result;
-            for (int i = 0; i < this.numberOfSolvers; i++) {
+            for (var i = 0; i < this.numberOfSolvers; i++) {
                 if (i != this.getWinnerId()) {
                     this.solvers.get(i).expireTimeout();
                 }
@@ -431,14 +431,14 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public void setDBSimplificationAllowed(boolean status) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setDBSimplificationAllowed(status);
         }
     }
 
     public <I extends ISolverService> void setSearchListener(
             SearchListener<I> sl) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setSearchListener(sl);
         }
     }
@@ -452,7 +452,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     public int nextFreeVarId(boolean reserve) {
         int res = -1;
-        for (int i = 0; i < this.numberOfSolvers; ++i) {
+        for (var i = 0; i < this.numberOfSolvers; ++i) {
             res = this.solvers.get(i).nextFreeVarId(reserve);
         }
         return res;
@@ -460,8 +460,8 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
 
     public IConstr addBlockingClause(IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var group = new ConstrGroup(false);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addBlockingClause(literals));
         }
         return group;
@@ -479,9 +479,9 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public IConstr discardCurrentModel() throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
         IVecInt blockingClause = createBlockingClauseForCurrentModel();
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addBlockingClause(blockingClause));
         }
         return group;
@@ -490,9 +490,9 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     public boolean removeSubsumedConstr(IConstr c) {
         if (c instanceof ConstrGroup) {
             ConstrGroup group = (ConstrGroup) c;
-            boolean removed = true;
+            var removed = true;
             IConstr toRemove;
-            for (int i = 0; i < this.numberOfSolvers; i++) {
+            for (var i = 0; i < this.numberOfSolvers; i++) {
                 toRemove = group.getConstr(i);
                 if (toRemove != null) {
                     removed = removed & this.solvers.get(i)
@@ -510,13 +510,13 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public void setVerbose(boolean value) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setVerbose(value);
         }
     }
 
     public void setLogPrefix(String prefix) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setLogPrefix(prefix);
         }
 
@@ -542,7 +542,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public List<S> getSolvers() {
-        return new ArrayList<S>(this.solvers);
+        return new ArrayList<>(this.solvers);
     }
 
     public int[] modelWithInternalVariables() {
@@ -555,7 +555,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public void registerLiteral(int p) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).registerLiteral(p);
         }
 
@@ -566,7 +566,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public void setKeepSolverHot(boolean value) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             this.solvers.get(i).setKeepSolverHot(value);
         }
 
@@ -581,7 +581,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
      * @since 2.3.3
      */
     public void printStat(PrintWriter out) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             out.printf(
                     "%s>>>>>>>>>> Solver number %d (%d answers) <<<<<<<<<<<<<<<<<<%n",
                     this.solvers.get(i).getLogPrefix(), i,
@@ -594,7 +594,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
      * @since 2.3.3
      */
     public void printInfos(PrintWriter out) {
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             out.printf("%s>>>>>>>>>> Solver number %d <<<<<<<<<<<<<<<<<<%n",
                     getLogPrefix(), i);
             this.solvers.get(i).printInfos(out);
@@ -610,7 +610,7 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     @Override
     @Feature(value = "unitclauseprovider", parent = "expert")
     public synchronized void provideUnitClauses(UnitPropagationListener upl) {
-        for (int i = 0; i < sharedUnitClauses.size(); i++) {
+        for (var i = 0; i < sharedUnitClauses.size(); i++) {
             upl.enqueue(sharedUnitClauses.get(i));
         }
     }
@@ -627,8 +627,8 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
     }
 
     public IConstr addParity(IVecInt literals, boolean even) {
-        ConstrGroup group = new ConstrGroup(false);
-        for (int i = 0; i < this.numberOfSolvers; i++) {
+        var group = new ConstrGroup(false);
+        for (var i = 0; i < this.numberOfSolvers; i++) {
             group.add(this.solvers.get(i).addParity(literals, even));
         }
         return group;

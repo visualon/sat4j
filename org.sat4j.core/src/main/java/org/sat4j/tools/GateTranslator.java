@@ -100,7 +100,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
      */
     public IConstr[] ite(int y, int x1, int x2, int x3)
             throws ContradictionException {
-        IConstr[] constrs = new IConstr[6];
+        var constrs = new IConstr[6];
         IVecInt clause = new VecInt(5);
         // y &lt;=&gt; (x1 -> x2) and (not x1 -> x3)
         // y -> (x1 -> x2) and (not x1 -> x3)
@@ -146,7 +146,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
      * @since 2.3.6
      */
     public IConstr[] it(int y, int x1, int x2) throws ContradictionException {
-        IConstr[] constrs = new IConstr[3];
+        var constrs = new IConstr[3];
         IVecInt clause = new VecInt(5);
         // y &lt;=&gt; (x1 -> x2)
         // y -> (x1 -> x2)
@@ -178,16 +178,16 @@ public class GateTranslator extends SolverDecorator<ISolver> {
     public IConstr[] and(int y, IVecInt literals)
             throws ContradictionException {
         // y &lt;=&gt; AND x1 ... xn
-        IConstr[] constrs = new IConstr[literals.size() + 1];
+        var constrs = new IConstr[literals.size() + 1];
         // y <= x1 .. xn
         IVecInt clause = new VecInt(literals.size() + 2);
         clause.push(y);
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             clause.push(-literals.get(i));
         }
         constrs[0] = processClause(clause);
         clause.clear();
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             // y => xi
             clause.clear();
             clause.push(-y);
@@ -208,7 +208,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
      */
     public IConstr[] and(int y, int x1, int x2) throws ContradictionException {
         IVecInt clause = new VecInt(4);
-        IConstr[] constrs = new IConstr[3];
+        var constrs = new IConstr[3];
         clause.push(-y);
         clause.push(x1);
         constrs[0] = addClause(clause);
@@ -235,13 +235,13 @@ public class GateTranslator extends SolverDecorator<ISolver> {
     public IConstr[] or(int y, IVecInt literals) throws ContradictionException {
         // y &lt;=&gt; OR x1 x2 ...xn
         // y => x1 x2 ... xn
-        IConstr[] constrs = new IConstr[literals.size() + 1];
+        var constrs = new IConstr[literals.size() + 1];
         IVecInt clause = new VecInt(literals.size() + 2);
         literals.copyTo(clause);
         clause.push(-y);
         constrs[0] = processClause(clause);
         clause.clear();
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             // xi => y
             clause.clear();
             clause.push(y);
@@ -261,9 +261,9 @@ public class GateTranslator extends SolverDecorator<ISolver> {
      */
     public IConstr[] halfOr(int y, IVecInt literals)
             throws ContradictionException {
-        IConstr[] constrs = new IConstr[literals.size()];
+        var constrs = new IConstr[literals.size()];
         IVecInt clause = new VecInt(literals.size() + 2);
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             // xi => y
             clause.clear();
             clause.push(y);
@@ -287,7 +287,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
      * @since 2.1
      */
     public IConstr[] not(int y, int x) throws ContradictionException {
-        IConstr[] constrs = new IConstr[2];
+        var constrs = new IConstr[2];
         IVecInt clause = new VecInt(3);
         // y &lt;=&gt; not x
         // y => not x = not y or not x
@@ -311,11 +311,11 @@ public class GateTranslator extends SolverDecorator<ISolver> {
     public IConstr[] xor(int y, IVecInt literals)
             throws ContradictionException {
         literals.push(-y);
-        int[] f = new int[literals.size()];
+        var f = new int[literals.size()];
         literals.copyTo(f);
-        IVec<IConstr> vconstrs = new Vec<IConstr>();
+        IVec<IConstr> vconstrs = new Vec<>();
         xor2Clause(f, 0, false, vconstrs);
-        IConstr[] constrs = new IConstr[vconstrs.size()];
+        var constrs = new IConstr[vconstrs.size()];
         vconstrs.copyTo(constrs);
         return constrs;
     }
@@ -348,11 +348,11 @@ public class GateTranslator extends SolverDecorator<ISolver> {
     public IConstr[] iff(int y, IVecInt literals)
             throws ContradictionException {
         literals.push(y);
-        int[] f = new int[literals.size()];
+        var f = new int[literals.size()];
         literals.copyTo(f);
-        IVec<IConstr> vconstrs = new Vec<IConstr>();
+        IVec<IConstr> vconstrs = new Vec<>();
         iff2Clause(f, 0, false, vconstrs);
-        IConstr[] constrs = new IConstr[vconstrs.size()];
+        var constrs = new IConstr[vconstrs.size()];
         vconstrs.copyTo(constrs);
         return constrs;
     }
@@ -380,7 +380,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
             IVec<IConstr> constrs) throws ContradictionException {
         if (prefix == f.length - 1) {
             IVecInt clause = new VecInt(f.length + 1);
-            for (int i = 0; i < f.length - 1; ++i) {
+            for (var i = 0; i < f.length - 1; ++i) {
                 clause.push(f[i]);
             }
             clause.push(f[f.length - 1] * (negation ? -1 : 1));
@@ -407,7 +407,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
             IVec<IConstr> constrs) throws ContradictionException {
         if (prefix == f.length - 1) {
             IVecInt clause = new VecInt(f.length + 1);
-            for (int i = 0; i < f.length - 1; ++i) {
+            for (var i = 0; i < f.length - 1; ++i) {
                 clause.push(f[i]);
             }
             clause.push(f[f.length - 1] * (negation ? -1 : 1));
@@ -535,13 +535,13 @@ public class GateTranslator extends SolverDecorator<ISolver> {
      */
     public void optimisationFunction(IVecInt literals, IVec<BigInteger> coefs,
             IVecInt result) throws ContradictionException {
-        IVec<IVecInt> buckets = new Vec<IVecInt>();
+        IVec<IVecInt> buckets = new Vec<>();
         IVecInt bucket;
         // filling the buckets
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             int p = literals.get(i);
             BigInteger a = coefs.get(i);
-            for (int j = 0; j < a.bitLength(); j++) {
+            for (var j = 0; j < a.bitLength(); j++) {
                 bucket = createIfNull(buckets, j);
                 if (a.testBit(j)) {
                     bucket.push(p);
@@ -551,7 +551,7 @@ public class GateTranslator extends SolverDecorator<ISolver> {
         // creating the adder
         int x, y, z;
         int sum, carry;
-        for (int i = 0; i < buckets.size(); i++) {
+        for (var i = 0; i < buckets.size(); i++) {
             bucket = buckets.get(i);
             while (bucket.size() >= 3) {
                 x = bucket.get(0);

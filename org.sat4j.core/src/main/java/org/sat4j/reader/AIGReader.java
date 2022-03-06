@@ -48,6 +48,11 @@ import org.sat4j.tools.GateTranslator;
 @Feature(value = "reader", parent = "expert")
 public class AIGReader extends Reader {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private static final int FALSE = 0;
 
     private static final int TRUE = 1;
@@ -64,8 +69,8 @@ public class AIGReader extends Reader {
 
     @Override
     public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < this.nbinputs; i++) {
+        var stb = new StringBuilder();
+        for (var i = 0; i < this.nbinputs; i++) {
             stb.append(model[i] > 0 ? 1 : 0);
         }
         return stb.toString();
@@ -73,7 +78,7 @@ public class AIGReader extends Reader {
 
     @Override
     public void decode(int[] model, PrintWriter out) {
-        for (int i = 0; i < this.nbinputs; i++) {
+        for (var i = 0; i < this.nbinputs; i++) {
             out.print(model[i] > 0 ? 1 : 0);
         }
     }
@@ -113,22 +118,22 @@ public class AIGReader extends Reader {
         }
         this.maxvarid = parseInt(in, ' ');
         this.nbinputs = parseInt(in, ' ');
-        int nblatches = parseInt(in, ' ');
+        var nblatches = parseInt(in, ' ');
         if (nblatches > 0) {
             throw new ParseFormatException(
                     "CNF conversion cannot handle latches!");
         }
-        int nboutputs = parseInt(in, ' ');
+        var nboutputs = parseInt(in, ' ');
         if (nboutputs > 1) {
             throw new ParseFormatException(
                     "CNF conversion allowed for single output circuit only!");
         }
-        int nbands = parseInt(in, '\n');
+        var nbands = parseInt(in, '\n');
         this.solver.newVar(this.maxvarid + 1);
         this.solver.setExpectedNumberOfClauses(3 * nbands + 2);
         if (nboutputs > 0) {
             assert nboutputs == 1;
-            int output0 = parseInt(in, '\n');
+            var output0 = parseInt(in, '\n');
             readAnd(nbands, output0, in, 2 * (this.nbinputs + 1));
         }
         return this.solver;
@@ -157,7 +162,7 @@ public class AIGReader extends Reader {
     private void readAnd(int nbands, int output0, InputStream in, int startid)
             throws ContradictionException, IOException, ParseFormatException {
         int lhs = startid;
-        for (int i = 0; i < nbands; i++) {
+        for (var i = 0; i < nbands; i++) {
             int delta0 = decode(in);
             int delta1 = decode(in);
             int rhs0 = lhs - delta0;
@@ -176,10 +181,10 @@ public class AIGReader extends Reader {
         if (v == TRUE) {
             return this.maxvarid + 1;
         }
-        int var = v >> 1;
+        int variable = v >> 1;
         if ((v & 1) == 0) {
-            return var;
+            return variable;
         }
-        return -var;
+        return -variable;
     }
 }

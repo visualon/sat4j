@@ -139,7 +139,7 @@ public class DimacsStringSolver extends AbstractOutputSolver
             this.firstConstr = false;
         }
 
-        for (int i = 0; i <= literals.size(); i++) {
+        for (var i = 0; i <= literals.size(); i++) {
             for (int j = i + 1; j < literals.size(); j++) {
                 if (!this.fixedNbClauses) {
                     this.nbclauses++;

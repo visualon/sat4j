@@ -35,7 +35,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.sat4j.annotations.Feature;
@@ -63,6 +62,11 @@ import org.sat4j.specs.IVecInt;
  */
 @Feature(value = "reader", parent = "expert")
 public class JSONReader<S extends ISolver> extends Reader {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     protected final S solver;
 
@@ -107,13 +111,11 @@ public class JSONReader<S extends ISolver> extends Reader {
         throw new ParseFormatException("Unknown constraint: " + constraint);
     }
 
-    private void handleClause(String constraint)
-            throws ParseFormatException, ContradictionException {
+    private void handleClause(String constraint) throws ContradictionException {
         solver.addClause(getLiterals(constraint));
     }
 
-    protected IVecInt getLiterals(String constraint)
-            throws ParseFormatException {
+    protected IVecInt getLiterals(String constraint) {
         String trimmed = constraint.trim();
         trimmed = trimmed.substring(1, trimmed.length() - 1);
         String[] literals = trimmed.split(",");
@@ -125,18 +127,17 @@ public class JSONReader<S extends ISolver> extends Reader {
         return clause;
     }
 
-    protected void handleCard(String constraint)
-            throws ParseFormatException, ContradictionException {
+    protected void handleCard(String constraint) throws ContradictionException {
         String trimmed = constraint.trim();
         trimmed = trimmed.substring(1, trimmed.length() - 1);
-        Matcher matcher = CLAUSE_PATTERN.matcher(trimmed);
+        var matcher = CLAUSE_PATTERN.matcher(trimmed);
         if (matcher.find()) {
             IVecInt clause = getLiterals(matcher.group());
             trimmed = matcher.replaceFirst("");
             String[] str = trimmed.split(",");
 
-            int degree = Integer.valueOf(str[2]);
-            String comparator = str[1].substring(1, str[1].length() - 1);
+            var degree = Integer.valueOf(str[2]);
+            var comparator = str[1].substring(1, str[1].length() - 1);
             if ("=".equals(comparator) || ("==".equals(comparator))) {
                 solver.addExactly(clause, degree);
             } else if ("<=".equals(comparator)) {
@@ -154,8 +155,8 @@ public class JSONReader<S extends ISolver> extends Reader {
     @Override
     public IProblem parseInstance(InputStream in)
             throws ParseFormatException, ContradictionException, IOException {
-        StringWriter out = new StringWriter();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        var out = new StringWriter();
+        var reader = new BufferedReader(new InputStreamReader(in));
         String line;
         while ((line = reader.readLine()) != null) {
             out.append(line);
@@ -169,13 +170,16 @@ public class JSONReader<S extends ISolver> extends Reader {
         if (!trimmed.matches(formula)) {
             throw new ParseFormatException("Wrong input " + json);
         }
-        Matcher matcher = constraintPattern.matcher(trimmed);
+        var matcher = constraintPattern.matcher(trimmed);
         while (matcher.find()) {
             handleConstraint(matcher.group());
         }
         return solver;
     }
 
+    /**
+     * @deprecated use {@link #decode(int[], PrintWriter)} instead
+     */
     @Override
     @Deprecated
     public String decode(int[] model) {

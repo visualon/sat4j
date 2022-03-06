@@ -66,7 +66,7 @@ public class LearnedTracing extends SearchListenerAdapter<ISolverService> {
         IVec<? extends IConstr> constrs = this.solverService
                 .getLearnedConstraints();
         int n = constrs.size();
-        for (int i = 0; i < n; i++) {
+        for (var i = 0; i < n; i++) {
             this.visuTool.addPoint(i, constrs.get(i).getActivity());
         }
         this.visuTool.end();

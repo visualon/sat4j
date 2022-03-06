@@ -71,12 +71,10 @@ public abstract class AbstractOutputSolver implements ISolver {
     }
 
     public void setTimeout(int t) {
-        // TODO Auto-generated method stub
 
     }
 
     public void setTimeoutMs(long t) {
-        // TODO Auto-generated method stub
     }
 
     public int getTimeout() {
@@ -91,7 +89,6 @@ public abstract class AbstractOutputSolver implements ISolver {
     }
 
     public void expireTimeout() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -120,21 +117,17 @@ public abstract class AbstractOutputSolver implements ISolver {
     }
 
     public void printStat(PrintStream output, String prefix) {
-        // TODO Auto-generated method stub
     }
 
     public void printStat(PrintWriter output, String prefix) {
-        // TODO Auto-generated method stub
 
     }
 
     public Map<String, Number> getStat() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public void clearLearntClauses() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -142,7 +135,7 @@ public abstract class AbstractOutputSolver implements ISolver {
         throw new UnsupportedOperationException();
     }
 
-    public boolean model(int var) {
+    public boolean model(int variable) {
         throw new UnsupportedOperationException();
     }
 
@@ -240,17 +233,14 @@ public abstract class AbstractOutputSolver implements ISolver {
     }
 
     public int nConstraints() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public int newVar(int howmany) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public int nVars() {
-        // TODO Auto-generated method stub
         return 0;
     }
 

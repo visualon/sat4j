@@ -46,7 +46,7 @@ public class OrientedOrder implements IOrder {
     @Override
     public int select() {
         int p;
-        for (int i = 0; i < orderedLits.size(); i++) {
+        for (var i = 0; i < orderedLits.size(); i++) {
             p = orderedLits.get(i);
             if (voc.isUnassigned(p)) {
                 return p;
@@ -78,7 +78,7 @@ public class OrientedOrder implements IOrder {
     public void init() {
         order.init();
         managed = new boolean[voc.nVars() + 1];
-        try (Scanner in = new Scanner(
+        try (var in = new Scanner(
                 new BufferedReader(new FileReader(fileName)))) {
             while (in.hasNext()) {
                 append(in.nextInt());
@@ -89,7 +89,7 @@ public class OrientedOrder implements IOrder {
     }
 
     private void append(int l) {
-        int p = LiteralsUtils.toInternal(l);
+        var p = LiteralsUtils.toInternal(l);
         orderedLits.push(p);
         managed[p >> 1] = true;
     }

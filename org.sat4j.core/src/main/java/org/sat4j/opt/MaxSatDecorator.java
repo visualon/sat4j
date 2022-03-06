@@ -75,11 +75,11 @@ public final class MaxSatDecorator extends AbstractSelectorVariablesDecorator {
         this.lits.push(newvar);
         literals.push(newvar);
         if (this.equivalence) {
-            ConstrGroup constrs = new ConstrGroup();
+            var constrs = new ConstrGroup();
             constrs.add(super.addClause(literals));
             IVecInt clause = new VecInt(2);
             clause.push(-newvar);
-            for (int i = 0; i < literals.size() - 1; i++) {
+            for (var i = 0; i < literals.size() - 1; i++) {
                 clause.push(-literals.get(i));
                 constrs.add(super.addClause(clause));
             }
@@ -172,7 +172,6 @@ public final class MaxSatDecorator extends AbstractSelectorVariablesDecorator {
     }
 
     public void setTimeoutForFindingBetterSolution(int seconds) {
-        // TODO
         throw new UnsupportedOperationException("No implemented yet");
     }
 }

@@ -58,14 +58,14 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
     private final ASolverFactory<? extends ISolver> factory;
 
     public CheckMUSSolutionListener(ASolverFactory<? extends ISolver> factory) {
-        this.clauses = new ArrayList<IVecInt>();
+        this.clauses = new ArrayList<>();
         this.factory = factory;
     }
 
     public void addOriginalClause(IVecInt clause) {
         IVecInt newClause = new VecInt(clause.size());
         if (clauses == null) {
-            this.clauses = new ArrayList<IVecInt>();
+            this.clauses = new ArrayList<>();
         }
         clause.copyTo(newClause);
         clauses.add(newClause);
@@ -78,12 +78,12 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
      * @return true if mus is really minimal unsatisfiable.
      */
     public boolean checkThatItIsAMUS(IVecInt mus) {
-        boolean result = false;
+        var result = false;
 
         ISolver solver = factory.defaultSolver();
 
         try {
-            for (int i = 0; i < mus.size(); i++) {
+            for (var i = 0; i < mus.size(); i++) {
                 solver.addClause(clauses.get(mus.get(i) - 1));
             }
 
@@ -105,9 +105,9 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
         }
 
         try {
-            for (int i = 0; i < mus.size(); i++) {
+            for (var i = 0; i < mus.size(); i++) {
                 solver = factory.defaultSolver();
-                for (int j = 0; j < mus.size(); j++) {
+                for (var j = 0; j < mus.size(); j++) {
                     if (j != i) {
                         solver.addClause(clauses.get(mus.get(j) - 1));
                     }
@@ -133,6 +133,7 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
 
     }
 
+    @Override
     public void onSolutionFound(IVecInt solution) {
         if (checkThatItIsAMUS(solution)) {
             System.out.println(solution + " is a MUS");

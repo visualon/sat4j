@@ -53,7 +53,8 @@ public class EMARestarts implements RestartStrategy {
      */
     private static final long serialVersionUID = 1L;
 
-    private long fast, slow;
+    private long fast;
+    private long slow;
 
     private SolverStats stats;
 

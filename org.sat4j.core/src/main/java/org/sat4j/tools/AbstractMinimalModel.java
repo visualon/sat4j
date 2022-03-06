@@ -19,7 +19,7 @@ public class AbstractMinimalModel extends SolverDecorator<ISolver> {
 
     public static IVecInt positiveLiterals(ISolver solver) {
         IVecInt literals = new VecInt(solver.nVars());
-        for (int i = 1; i <= solver.nVars(); i++) {
+        for (var i = 1; i <= solver.nVars(); i++) {
             literals.push(i);
         }
         return literals;
@@ -27,7 +27,7 @@ public class AbstractMinimalModel extends SolverDecorator<ISolver> {
 
     public static IVecInt negativeLiterals(ISolver solver) {
         IVecInt literals = new VecInt(solver.nVars());
-        for (int i = 1; i <= solver.nVars(); i++) {
+        for (var i = 1; i <= solver.nVars(); i++) {
             literals.push(-i);
         }
         return literals;
@@ -49,7 +49,7 @@ public class AbstractMinimalModel extends SolverDecorator<ISolver> {
     public AbstractMinimalModel(ISolver solver, IVecInt p,
             SolutionFoundListener modelListener) {
         super(solver);
-        this.pLiterals = new TreeSet<Integer>();
+        this.pLiterals = new TreeSet<>();
         for (IteratorInt it = p.iterator(); it.hasNext();) {
             this.pLiterals.add(it.next());
         }

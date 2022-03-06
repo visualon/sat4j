@@ -29,20 +29,17 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
-import java.io.Serializable;
-
 /**
  * Perform a task when a given number of conflicts is reached.
  * 
  * @author daniel
  * 
  */
-public abstract class ConflictTimerAdapter implements Serializable,
-        ConflictTimer {
+public abstract class ConflictTimerAdapter implements ConflictTimer {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private int counter;
@@ -51,8 +48,9 @@ public abstract class ConflictTimerAdapter implements Serializable,
 
     private final Solver<? extends DataStructureFactory> solver;
 
-    public ConflictTimerAdapter(
-            final Solver<? extends DataStructureFactory> solver, final int bound) {
+    protected ConflictTimerAdapter(
+            final Solver<? extends DataStructureFactory> solver,
+            final int bound) {
         this.bound = bound;
         this.counter = 0;
         this.solver = solver;

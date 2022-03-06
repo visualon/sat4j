@@ -67,22 +67,19 @@ public class InstanceReader extends Reader {
     }
 
     public InstanceReader(ISolver solver) {
-        // dimacs = new DimacsReader(solver);
         this.solver = solver;
     }
 
     private Reader getDefaultSATReader() {
         if (this.dimacs == null) {
-            this.dimacs = new LecteurDimacs(this.solver);// new
-                                                         // LecteurDimacs(solver);
+            this.dimacs = new LecteurDimacs(this.solver);
         }
         return this.dimacs;
     }
 
     private Reader getEZSATReader() {
         if (this.ezdimacs == null) {
-            this.ezdimacs = new DimacsReader(this.solver);// new
-                                                          // LecteurDimacs(solver);
+            this.ezdimacs = new DimacsReader(this.solver);
         }
         return this.ezdimacs;
     }
@@ -111,7 +108,7 @@ public class InstanceReader extends Reader {
     public IProblem parseInstance(String filename)
             throws ParseFormatException, IOException, ContradictionException {
         String fname;
-        String prefix = "";
+        var prefix = "";
 
         if (filename.startsWith("http://")) {
             filename = filename.substring(filename.lastIndexOf('/') + 1);
