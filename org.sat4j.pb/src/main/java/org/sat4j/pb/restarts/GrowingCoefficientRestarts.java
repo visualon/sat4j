@@ -50,11 +50,6 @@ public class GrowingCoefficientRestarts implements RestartStrategy {
     }
 
     @Override
-    public long nextRestartNumberOfConflict() {
-        return 0;
-    }
-
-    @Override
     public boolean shouldRestart() {
         return bufferDegrees.isFull() && bufferDegrees.average()
                 .multiply(BigInteger.valueOf(stats.getConflicts()).shiftLeft(2))
@@ -64,10 +59,6 @@ public class GrowingCoefficientRestarts implements RestartStrategy {
     @Override
     public void onRestart() {
         bufferDegrees.clear();
-    }
-
-    @Override
-    public void onBackjumpToRootLevel() {
     }
 
     @Override

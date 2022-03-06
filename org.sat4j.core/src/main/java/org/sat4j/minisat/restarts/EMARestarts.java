@@ -74,21 +74,16 @@ public class EMARestarts implements RestartStrategy {
         reset();
     }
 
-    public long nextRestartNumberOfConflict() {
-        return 0;
-    }
-
     public boolean shouldRestart() {
         return this.stats.getConflicts() > limit && fast / 125 > slow / 100;
     }
 
+    @Override
     public void onRestart() {
         limit = this.stats.getConflicts() + 50;
     }
 
-    public void onBackjumpToRootLevel() {
-    }
-
+    @Override
     public void newLearnedClause(Constr learned, int trailLevel) {
         int lbd = (int) learned.getActivity();
         fast -= fast >> 5;

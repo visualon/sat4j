@@ -33,7 +33,6 @@ import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
-import org.sat4j.specs.Constr;
 
 /**
  * Minisat original restart strategy.
@@ -55,16 +54,20 @@ public final class MiniSATRestarts implements RestartStrategy {
 
     private int conflictcount;
 
+    @Override
     public void init(SearchParams theParams, SolverStats stats) {
         this.params = theParams;
         this.nofConflicts = theParams.getInitConflictBound();
         this.conflictcount = 0;
     }
 
+    @Override
+    @Deprecated
     public long nextRestartNumberOfConflict() {
         return Math.round(this.nofConflicts);
     }
 
+    @Override
     public void onRestart() {
         this.nofConflicts *= this.params.getConflictBoundIncFactor();
     }
@@ -78,6 +81,7 @@ public final class MiniSATRestarts implements RestartStrategy {
         return this.conflictcount >= this.nofConflicts;
     }
 
+    @Override
     public void onBackjumpToRootLevel() {
         this.conflictcount = 0;
     }
@@ -88,8 +92,5 @@ public final class MiniSATRestarts implements RestartStrategy {
 
     public void newConflict() {
         this.conflictcount++;
-    }
-
-    public void newLearnedClause(Constr learned, int trailLevel) {
     }
 }

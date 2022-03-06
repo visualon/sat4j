@@ -70,6 +70,7 @@ public class Glucose21Restarts implements RestartStrategy {
 
     }
 
+    @Override
     public void newLearnedClause(Constr learned, int trailLevel) {
         // on conflict
         int lbd = (int) learned.getActivity();
@@ -90,10 +91,6 @@ public class Glucose21Restarts implements RestartStrategy {
         reset();
     }
 
-    public long nextRestartNumberOfConflict() {
-        return 0;
-    }
-
     public boolean shouldRestart() {
         // was
         // ... && bufferLBD.average() * 0.8 > sumOfAllLBD / stats.conflicts
@@ -102,11 +99,9 @@ public class Glucose21Restarts implements RestartStrategy {
                 * 4L > sumOfAllLBD * 5L;
     }
 
+    @Override
     public void onRestart() {
         bufferLBD.clear();
-    }
-
-    public void onBackjumpToRootLevel() {
     }
 
     @Override

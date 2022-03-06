@@ -33,7 +33,6 @@ import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
-import org.sat4j.specs.Constr;
 
 /**
  * Luby series
@@ -109,16 +108,20 @@ public final class LubyRestarts implements RestartStrategy {
         return this.factor;
     }
 
+    @Override
     public void init(SearchParams params, SolverStats stats) {
         this.un = 1;
         this.vn = 1;
         this.bound = luby() * this.factor;
     }
 
+    @Override
+    @Deprecated
     public long nextRestartNumberOfConflict() {
         return this.bound;
     }
 
+    @Override
     public void onRestart() {
         this.bound = nextLuby() * this.factor;
         this.conflictcount = 0;
@@ -134,6 +137,7 @@ public final class LubyRestarts implements RestartStrategy {
         return this.conflictcount >= this.bound;
     }
 
+    @Override
     public void onBackjumpToRootLevel() {
         this.conflictcount = 0;
     }
@@ -144,8 +148,5 @@ public final class LubyRestarts implements RestartStrategy {
 
     public void newConflict() {
         this.conflictcount++;
-    }
-
-    public void newLearnedClause(Constr learned, int trailLevel) {
     }
 }

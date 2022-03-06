@@ -60,11 +60,6 @@ public class MixedRestartsStrategy implements RestartStrategy {
     }
 
     @Override
-    public long nextRestartNumberOfConflict() {
-        return 0;
-    }
-
-    @Override
     public boolean shouldRestart() {
         for (RestartStrategy strategy : strategies) {
             if (strategy.shouldRestart()) {

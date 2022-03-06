@@ -33,7 +33,6 @@ import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
-import org.sat4j.specs.Constr;
 
 @Feature(value = "restarts", parent = "expert")
 public class FixedPeriodRestarts implements RestartStrategy {
@@ -55,11 +54,13 @@ public class FixedPeriodRestarts implements RestartStrategy {
         conflictCount++;
     }
 
+    @Override
     public void init(SearchParams params, SolverStats stats) {
         this.conflictCount = 0;
     }
 
     @Deprecated
+    @Override
     public long nextRestartNumberOfConflict() {
         return period;
     }
@@ -68,14 +69,9 @@ public class FixedPeriodRestarts implements RestartStrategy {
         return conflictCount >= period;
     }
 
+    @Override
     public void onRestart() {
         this.conflictCount = 0;
-    }
-
-    public void onBackjumpToRootLevel() {
-    }
-
-    public void newLearnedClause(Constr learned, int trailLevel) {
     }
 
     public long getPeriod() {

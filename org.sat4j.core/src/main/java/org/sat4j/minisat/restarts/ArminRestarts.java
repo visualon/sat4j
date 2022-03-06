@@ -33,7 +33,6 @@ import org.sat4j.annotations.Feature;
 import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
-import org.sat4j.specs.Constr;
 
 /**
  * Rapid restart strategy presented by Armin Biere during it's SAT 07 invited
@@ -57,6 +56,7 @@ public final class ArminRestarts implements RestartStrategy {
 
     private long conflictcount = 0;
 
+    @Override
     public void init(SearchParams theParams, SolverStats stats) {
         this.params = theParams;
         this.inner = theParams.getInitConflictBound();
@@ -64,10 +64,12 @@ public final class ArminRestarts implements RestartStrategy {
         this.conflicts = Math.round(this.inner);
     }
 
+    @Override
     public long nextRestartNumberOfConflict() {
         return this.conflicts;
     }
 
+    @Override
     public void onRestart() {
         if (this.inner >= this.outer) {
             this.outer *= this.params.getConflictBoundIncFactor();
@@ -88,6 +90,7 @@ public final class ArminRestarts implements RestartStrategy {
         return this.conflictcount >= this.conflicts;
     }
 
+    @Override
     public void onBackjumpToRootLevel() {
         this.conflictcount = 0;
     }
@@ -98,8 +101,5 @@ public final class ArminRestarts implements RestartStrategy {
 
     public void newConflict() {
         this.conflictcount++;
-    }
-
-    public void newLearnedClause(Constr learned, int trailLevel) {
     }
 }

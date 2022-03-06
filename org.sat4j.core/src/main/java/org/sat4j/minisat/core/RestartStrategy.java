@@ -53,7 +53,9 @@ public interface RestartStrategy extends Serializable, ConflictTimer {
      *            restarts, etc).
      * 
      */
-    void init(SearchParams params, SolverStats stats);
+    default void init(SearchParams params, SolverStats stats) {
+
+    }
 
     /**
      * Ask for the next restart in number of conflicts.
@@ -62,7 +64,9 @@ public interface RestartStrategy extends Serializable, ConflictTimer {
      * @return the delay in conflicts before the next restart.
      */
     @Deprecated(since = "2.3.2")
-    long nextRestartNumberOfConflict();
+    default long nextRestartNumberOfConflict() {
+        throw new UnsupportedOperationException("Deprecated");
+    }
 
     /**
      * Ask the strategy if the solver should restart.
@@ -76,14 +80,18 @@ public interface RestartStrategy extends Serializable, ConflictTimer {
      * to top decision level).
      * 
      */
-    void onRestart();
+    default void onRestart() {
+
+    }
 
     /**
      * Called when the solver backjumps to the root level.
      * 
      * @since 2.3.2
      */
-    void onBackjumpToRootLevel();
+    default void onBackjumpToRootLevel() {
+
+    }
 
     /**
      * Callback method called when a new clause is learned by the solver, after
@@ -95,5 +103,7 @@ public interface RestartStrategy extends Serializable, ConflictTimer {
      *            the number of literals assigned when the conflict occurred.
      * @since 2.3.3
      */
-    void newLearnedClause(Constr learned, int trailLevel);
+    default void newLearnedClause(Constr learned, int trailLevel) {
+
+    }
 }
