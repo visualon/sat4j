@@ -108,7 +108,8 @@ public class Policy extends EncodingStrategyAdapter {
         return this.atMostOneEncoding;
     }
 
-    public void setAtMostOneEncoding(EncodingStrategyAdapter atMostOneEncoding) {
+    public void setAtMostOneEncoding(
+            EncodingStrategyAdapter atMostOneEncoding) {
         this.atMostOneEncoding = atMostOneEncoding;
     }
 
@@ -132,12 +133,14 @@ public class Policy extends EncodingStrategyAdapter {
         return this.exactlyOneEncoding;
     }
 
-    public void setExactlyOneEncoding(EncodingStrategyAdapter exactlyOneEncoding) {
+    public void setExactlyOneEncoding(
+            EncodingStrategyAdapter exactlyOneEncoding) {
         this.exactlyOneEncoding = exactlyOneEncoding;
     }
 
     public void setExactlyOneEncoding(EncodingStrategy exactlyOneEncoding) {
-        this.exactlyOneEncoding = getAdapterFromEncodingName(exactlyOneEncoding);
+        this.exactlyOneEncoding = getAdapterFromEncodingName(
+                exactlyOneEncoding);
     }
 
     public EncodingStrategyAdapter getExactlyKEncoding() {
@@ -156,12 +159,14 @@ public class Policy extends EncodingStrategyAdapter {
         return this.atLeastOneEncoding;
     }
 
-    public void setAtLeastOneEncoding(EncodingStrategyAdapter atLeastOneEncoding) {
+    public void setAtLeastOneEncoding(
+            EncodingStrategyAdapter atLeastOneEncoding) {
         this.atLeastOneEncoding = atLeastOneEncoding;
     }
 
     public void setAtLeastOneEncoding(EncodingStrategy atLeastOneEncoding) {
-        this.atLeastOneEncoding = getAdapterFromEncodingName(atLeastOneEncoding);
+        this.atLeastOneEncoding = getAdapterFromEncodingName(
+                atLeastOneEncoding);
     }
 
     public EncodingStrategyAdapter getAtLeastKEncoding() {
@@ -234,17 +239,19 @@ public class Policy extends EncodingStrategyAdapter {
 
     @Override
     public String toString() {
-        String s = "";
-        s += "Policy = [At most K: "
-                + getEncodingTypeFromAdapter(getAtMostKEncoding())
-                + ", at most 1: "
-                + getEncodingTypeFromAdapter(getAtMostOneEncoding())
-                + ", exactly K: "
-                + getEncodingTypeFromAdapter(getExactlyKEncoding())
-                + ", exactly 1: "
-                + getEncodingTypeFromAdapter(getExactlyOneEncoding()) + "]";
+        var stb = new StringBuilder();
 
-        return s;
+        stb.append("Policy = [At most K: ");
+        stb.append(getEncodingTypeFromAdapter(getAtMostKEncoding()));
+        stb.append(", at most 1: ");
+        stb.append(getEncodingTypeFromAdapter(getAtMostOneEncoding()));
+        stb.append(", exactly K: ");
+        stb.append(getEncodingTypeFromAdapter(getExactlyKEncoding()));
+        stb.append(", exactly 1: ");
+        stb.append(getEncodingTypeFromAdapter(getExactlyOneEncoding()));
+        stb.append("]");
+
+        return stb.toString();
     }
 
 }

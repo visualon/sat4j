@@ -48,8 +48,8 @@ import org.sat4j.specs.TimeoutException;
 public class DeletionStrategy implements MinimizationStrategy {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private boolean computationCanceled;
@@ -61,8 +61,8 @@ public class DeletionStrategy implements MinimizationStrategy {
     public IVecInt explain(ISolver solver, Map<Integer, ?> constrs,
             IVecInt assumps) throws TimeoutException {
         this.computationCanceled = false;
-        IVecInt encodingAssumptions = new VecInt(constrs.size()
-                + assumps.size());
+        IVecInt encodingAssumptions = new VecInt(
+                constrs.size() + assumps.size());
         assumps.copyTo(encodingAssumptions);
         IVecInt firstExplanation = solver.unsatExplanation();
         IVecInt results = new VecInt(firstExplanation.size());
@@ -80,7 +80,7 @@ public class DeletionStrategy implements MinimizationStrategy {
             System.out.println();
             solver.printStat(new PrintWriter(System.out, true), "c ");
         }
-        for (int i = 0; i < firstExplanation.size();) {
+        for (var i = 0; i < firstExplanation.size();) {
             if (assumps.contains(firstExplanation.get(i))) {
                 firstExplanation.delete(i);
             } else {

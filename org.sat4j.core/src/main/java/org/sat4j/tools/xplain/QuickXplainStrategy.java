@@ -95,7 +95,7 @@ public class QuickXplainStrategy implements MinimizationStrategy {
             }
             System.out.println();
         }
-        for (int i = 0; i < firstExplanation.size();) {
+        for (var i = 0; i < firstExplanation.size();) {
             if (assumps.contains(firstExplanation.get(i))) {
                 firstExplanation.delete(i);
             } else {

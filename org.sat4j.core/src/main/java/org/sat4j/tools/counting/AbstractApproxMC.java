@@ -31,7 +31,6 @@
 package org.sat4j.tools.counting;
 
 import java.math.BigInteger;
-import java.util.Comparator;
 
 import org.sat4j.core.Vec;
 import org.sat4j.specs.ISolver;
@@ -165,8 +164,8 @@ public abstract class AbstractApproxMC implements IModelCounter {
 
         // Computing the number of models for t random formulas.
         int iterCount = computeIterCount();
-        IVec<BigInteger> counts = new Vec<BigInteger>(iterCount);
-        for (int i = 0; i < iterCount; i++) {
+        IVec<BigInteger> counts = new Vec<>(iterCount);
+        for (var i = 0; i < iterCount; i++) {
             BigInteger count = internalCountModels(threshold);
             if (count != null) {
                 counts.push(count);
@@ -253,12 +252,7 @@ public abstract class AbstractApproxMC implements IModelCounter {
         }
 
         // The values need to be sorted to find the median...
-        values.sort(new Comparator<BigInteger>() {
-            @Override
-            public int compare(BigInteger o1, BigInteger o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        values.sort(BigInteger::compareTo);
 
         // ... which is at the middle-th position of the vector.
         return values.get(values.size() >> 1);

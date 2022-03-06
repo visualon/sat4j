@@ -126,10 +126,10 @@ public class Xplain<T extends ISolver> extends FullClauseSelectorSolver<T>
     public int[] minimalExplanation() throws TimeoutException {
         IVecInt keys = explanationKeys();
         keys.sort();
-        List<Integer> allKeys = new ArrayList<Integer>(getConstrs().keySet());
+        List<Integer> allKeys = new ArrayList<>(getConstrs().keySet());
         Collections.sort(allKeys);
-        int[] model = new int[keys.size()];
-        int i = 0;
+        var model = new int[keys.size()];
+        var i = 0;
         for (IteratorInt it = keys.iterator(); it.hasNext();) {
             model[i++] = allKeys.indexOf(it.next()) + 1;
         }
@@ -148,7 +148,7 @@ public class Xplain<T extends ISolver> extends FullClauseSelectorSolver<T>
      */
     public Collection<IConstr> explain() throws TimeoutException {
         IVecInt keys = explanationKeys();
-        Collection<IConstr> explanation = new ArrayList<IConstr>(keys.size());
+        Collection<IConstr> explanation = new ArrayList<>(keys.size());
         for (IteratorInt it = keys.iterator(); it.hasNext();) {
             explanation.add(getConstrs().get(it.next()));
         }

@@ -40,9 +40,9 @@ import org.sat4j.specs.IVecInt;
 /**
  * Commander encoding for "at most one" and "at most k" cases.
  * 
- * The case "at most one" is introduced in W. Klieber and G. Kwon
- * "Efficient CNF encoding for selecting 1 from N objects" in Fourth Workshop on
- * Constraints in Formal Verification, 2007.
+ * The case "at most one" is introduced in W. Klieber and G. Kwon "Efficient CNF
+ * encoding for selecting 1 from N objects" in Fourth Workshop on Constraints in
+ * Formal Verification, 2007.
  * 
  * The generalization to the "at most k" case is described in A. M. Frisch and P
  * . A. Giannaros, "SAT Encodings of the At-Most-k Constraint", in International
@@ -71,21 +71,21 @@ public class Commander extends EncodingStrategyAdapter {
         return addAtMostOne(solver, literals, 3);
     }
 
-    private IConstr addAtMostOne(ISolver solver, IVecInt literals, int groupSize)
-            throws ContradictionException {
+    private IConstr addAtMostOne(ISolver solver, IVecInt literals,
+            int groupSize) throws ContradictionException {
 
-        ConstrGroup constrGroup = new ConstrGroup(false);
+        var constrGroup = new ConstrGroup(false);
 
         IVecInt clause = new VecInt();
         IVecInt clause1 = new VecInt();
 
         final int n = literals.size();
 
-        int nbGroup = (int) Math.ceil((double) literals.size()
-                / (double) groupSize);
+        int nbGroup = (int) Math
+                .ceil((double) literals.size() / (double) groupSize);
 
         if (nbGroup == 1) {
-            for (int i = 0; i < literals.size() - 1; i++) {
+            for (var i = 0; i < literals.size() - 1; i++) {
                 for (int j = i + 1; j < literals.size(); j++) {
                     clause.push(-literals.get(i));
                     clause.push(-literals.get(j));
@@ -96,24 +96,24 @@ public class Commander extends EncodingStrategyAdapter {
             return constrGroup;
         }
 
-        int[] c = new int[nbGroup];
+        var c = new int[nbGroup];
 
-        for (int i = 0; i < nbGroup; i++) {
+        for (var i = 0; i < nbGroup; i++) {
             c[i] = solver.nextFreeVarId(true);
         }
 
         int nbVarLastGroup = n - (nbGroup - 1) * groupSize;
 
         // Encoding <=1 for each group of groupLitterals
-        for (int i = 0; i < nbGroup; i++) {
-            int size = 0;
+        for (var i = 0; i < nbGroup; i++) {
+            var size = 0;
             if (i == nbGroup - 1) {
                 size = nbVarLastGroup;
             } else {
                 size = groupSize;
             }
             // Encoding <=1 for each group of groupLitterals
-            for (int j = 0; j < size - 1; j++) {
+            for (var j = 0; j < size - 1; j++) {
                 for (int k = j + 1; k < size; k++) {
                     clause.push(-literals.get(i * groupSize + j));
                     clause.push(-literals.get(i * groupSize + k));
@@ -127,7 +127,7 @@ public class Commander extends EncodingStrategyAdapter {
             // If a commander variable is false then no variable in its group
             // can be true (clause)
             clause1.push(-c[i]);
-            for (int j = 0; j < size; j++) {
+            for (var j = 0; j < size; j++) {
                 clause1.push(literals.get(i * groupSize + j));
                 clause.push(c[i]);
                 clause.push(-literals.get(i * groupSize + j));
@@ -147,7 +147,7 @@ public class Commander extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactlyOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeastOne(solver, literals));
         group.add(addAtMostOne(solver, literals));
@@ -158,7 +158,7 @@ public class Commander extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactly(ISolver solver, IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeast(solver, literals, degree));
         group.add(addAtMost(solver, literals, degree));

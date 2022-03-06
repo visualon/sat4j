@@ -41,10 +41,9 @@ import org.sat4j.specs.IVecInt;
  * Implementation of the sequential encoding for the at most k constraint.
  * 
  * For the cases "at most k", we can use the sequential encoding described in:
- * C. Sinz,
- * "Towards an Optimal CNF Encoding of Boolean Cardinality Constraints", in
- * International Conference on Principles and Practices of Constraint
- * Programming , 2005
+ * C. Sinz, "Towards an Optimal CNF Encoding of Boolean Cardinality
+ * Constraints", in International Conference on Principles and Practices of
+ * Constraint Programming , 2005
  * 
  * @author sroussel
  * @since 2.3.1
@@ -65,16 +64,16 @@ public class Sequential extends EncodingStrategyAdapter {
     @Override
     public IConstr addAtMost(ISolver solver, IVecInt literals, int k)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
         final int n = literals.size();
 
         if (n == 1) {
             return group;
         }
 
-        int s[][] = new int[n - 1][k];
-        for (int j = 0; j < k; j++) {
-            for (int i = 0; i < n - 1; i++) {
+        var s = new int[n - 1][k];
+        for (var j = 0; j < k; j++) {
+            for (var i = 0; i < n - 1; i++) {
                 s[i][j] = solver.nextFreeVarId(true);
             }
         }
@@ -83,7 +82,7 @@ public class Sequential extends EncodingStrategyAdapter {
         clause.push(s[0][0]);
         group.add(solver.addClause(clause));
         clause.clear();
-        for (int j = 1; j < k; j++) {
+        for (var j = 1; j < k; j++) {
             clause.push(-s[0][j]);
             group.add(solver.addClause(clause));
             clause.clear();
@@ -92,7 +91,7 @@ public class Sequential extends EncodingStrategyAdapter {
         clause.push(-s[n - 2][k - 1]);
         group.add(solver.addClause(clause));
         clause.clear();
-        for (int i = 1; i < n - 1; i++) {
+        for (var i = 1; i < n - 1; i++) {
             clause.push(-literals.get(i));
             clause.push(s[i][0]);
             group.add(solver.addClause(clause));
@@ -101,7 +100,7 @@ public class Sequential extends EncodingStrategyAdapter {
             clause.push(s[i][0]);
             group.add(solver.addClause(clause));
             clause.clear();
-            for (int j = 1; j < k; j++) {
+            for (var j = 1; j < k; j++) {
                 clause.push(-literals.get(i));
                 clause.push(-s[i - 1][j - 1]);
                 clause.push(s[i][j]);
@@ -129,7 +128,7 @@ public class Sequential extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactlyOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeastOne(solver, literals));
         group.add(addAtMostOne(solver, literals));
@@ -140,7 +139,7 @@ public class Sequential extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactly(ISolver solver, IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeast(solver, literals, degree));
         group.add(addAtMost(solver, literals, degree));

@@ -153,7 +153,7 @@ public class ApproxMC2 extends AbstractApproxMC {
 
         // Computing the number of models with the optimal set of constraints.
         int nConstr = logSatSearch(thresh, nConstrPrev);
-        BigInteger nSols = BigInteger.valueOf(boundedSAT(nConstr, thresh));
+        var nSols = BigInteger.valueOf(boundedSAT(nConstr, thresh));
 
         // Forgetting all parity constraints used in this run.
         generator.clear();
@@ -174,10 +174,10 @@ public class ApproxMC2 extends AbstractApproxMC {
      * @return The best number of parity constraints to add.
      */
     private int logSatSearch(int thresh, int nConstrPrev) {
-        int loIndex = 0;
+        var loIndex = 0;
         int hiIndex = samplingSet.nVars() - 1;
         int nConstr = nConstrPrev;
-        int[] cells = new int[samplingSet.nVars()];
+        var cells = new int[samplingSet.nVars()];
         Arrays.fill(cells, -1);
         cells[0] = 1;
         cells[samplingSet.nVars() - 1] = 0;

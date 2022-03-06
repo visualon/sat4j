@@ -69,31 +69,31 @@ public class Binary extends EncodingStrategyAdapter {
     @Override
     public IConstr addAtMostOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         final int n = literals.size();
         final int p = (int) Math.ceil(Math.log(n) / Math.log(2));
         final int k = (int) Math.pow(2, p) - n;
 
         IVecInt clause = new VecInt();
-        String binary = "";
+        var binary = "";
 
         if (p == 0) {
             return group;
         }
 
-        int y[] = new int[p];
-        for (int i = 0; i < p; i++) {
+        var y = new int[p];
+        for (var i = 0; i < p; i++) {
             y[i] = solver.nextFreeVarId(true);
         }
 
-        for (int i = 0; i < k; i++) {
+        for (var i = 0; i < k; i++) {
             binary = Integer.toBinaryString(i);
             while (binary.length() != p - 1) {
                 binary = "0" + binary;
             }
 
-            for (int j = 0; j < p - 1; j++) {
+            for (var j = 0; j < p - 1; j++) {
                 clause.push(-literals.get(i));
                 if (binary.charAt(j) == '0') {
                     clause.push(-y[j]);
@@ -106,12 +106,12 @@ public class Binary extends EncodingStrategyAdapter {
             }
         }
 
-        for (int i = k; i < n; i++) {
+        for (var i = k; i < n; i++) {
             binary = Integer.toBinaryString(2 * k + i - k);
             while (binary.length() != p) {
                 binary = "0" + binary;
             }
-            for (int j = 0; j < p; j++) {
+            for (var j = 0; j < p; j++) {
                 clause.push(-literals.get(i));
                 if (binary.charAt(j) == '0') {
                     clause.push(-y[j]);
@@ -134,20 +134,20 @@ public class Binary extends EncodingStrategyAdapter {
         final int n = literals.size();
         final int p = (int) Math.ceil(Math.log(n) / Math.log(2));
 
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
-        int[][] b = new int[k][p];
+        var b = new int[k][p];
 
-        for (int i = 0; i < k; i++) {
-            for (int j = 0; j < p; j++) {
+        for (var i = 0; i < k; i++) {
+            for (var j = 0; j < p; j++) {
                 b[i][j] = solver.nextFreeVarId(true);
             }
         }
 
-        int[][] t = new int[k][n];
+        var t = new int[k][n];
 
-        for (int i = 0; i < k; i++) {
-            for (int j = 0; j < n; j++) {
+        for (var i = 0; i < k; i++) {
+            for (var j = 0; j < n; j++) {
                 t[i][j] = solver.nextFreeVarId(true);
             }
         }
@@ -155,8 +155,8 @@ public class Binary extends EncodingStrategyAdapter {
         int max, min;
         IVecInt clause1 = new VecInt();
         IVecInt clause2 = new VecInt();
-        String binary = "";
-        for (int i = 0; i < n; i++) {
+        var binary = "";
+        for (var i = 0; i < n; i++) {
             max = Math.max(1, k - n + i + 1);
             min = Math.min(i + 1, k);
             clause1.push(-literals.get(i));
@@ -168,7 +168,7 @@ public class Binary extends EncodingStrategyAdapter {
 
             for (int g = max - 1; g < min; g++) {
                 clause1.push(t[g][i]);
-                for (int j = 0; j < p; j++) {
+                for (var j = 0; j < p; j++) {
                     clause2.push(-t[g][i]);
                     if (binary.charAt(j) == '0') {
                         clause2.push(-b[g][j]);
@@ -189,7 +189,7 @@ public class Binary extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactlyOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeastOne(solver, literals));
         group.add(addAtMostOne(solver, literals));
@@ -200,7 +200,7 @@ public class Binary extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactly(ISolver solver, IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeast(solver, literals, degree));
         group.add(addAtMost(solver, literals, degree));

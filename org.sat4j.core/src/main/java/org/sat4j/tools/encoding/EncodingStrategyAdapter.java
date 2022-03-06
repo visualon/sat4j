@@ -56,7 +56,7 @@ public abstract class EncodingStrategyAdapter implements Serializable {
             throws ContradictionException {
         final int n = literals.size();
         IVecInt newLiterals = new VecInt(n);
-        for (int i = 0; i < n; i++) {
+        for (var i = 0; i < n; i++) {
             newLiterals.push(-literals.get(i));
         }
         return this.addAtMost(solver, newLiterals, n - degree);

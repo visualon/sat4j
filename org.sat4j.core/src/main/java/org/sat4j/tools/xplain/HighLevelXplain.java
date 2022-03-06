@@ -53,8 +53,8 @@ import org.sat4j.tools.SolverDecorator;
  *            a subinterface to ISolver.
  * @since 2.1
  */
-public class HighLevelXplain<T extends ISolver> extends
-        GroupClauseSelectorSolver<T> implements Explainer {
+public class HighLevelXplain<T extends ISolver>
+        extends GroupClauseSelectorSolver<T> implements Explainer {
 
     private IVecInt assump;
 
@@ -77,8 +77,8 @@ public class HighLevelXplain<T extends ISolver> extends
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -98,8 +98,8 @@ public class HighLevelXplain<T extends ISolver> extends
 
     public int[] minimalExplanation() throws TimeoutException {
         Collection<Integer> components = explain();
-        int[] model = new int[components.size()];
-        int i = 0;
+        var model = new int[components.size()];
+        var i = 0;
         for (int c : components) {
             model[i++] = c;
         }
@@ -114,7 +114,7 @@ public class HighLevelXplain<T extends ISolver> extends
      */
     public Collection<Integer> explain() throws TimeoutException {
         IVecInt keys = explanationKeys();
-        Collection<Integer> explanation = new HashSet<Integer>(keys.size());
+        Collection<Integer> explanation = new HashSet<>(keys.size());
         for (IteratorInt it = keys.iterator(); it.hasNext();) {
             explanation.add(getVarToHighLevel().get(it.next()));
         }
@@ -167,8 +167,8 @@ public class HighLevelXplain<T extends ISolver> extends
 
     @Override
     public String toString(String prefix) {
-        System.out.println(prefix
-                + "High Level Explanation (MUS) enabled solver");
+        System.out.println(
+                prefix + "High Level Explanation (MUS) enabled solver");
         System.out.println(prefix + this.xplainStrategy);
         return super.toString(prefix);
     }

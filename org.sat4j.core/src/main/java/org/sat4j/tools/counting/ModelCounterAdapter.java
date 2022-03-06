@@ -88,7 +88,7 @@ public final class ModelCounterAdapter implements IModelCounter {
      * @return The created model counter.
      */
     public static ModelCounterAdapter newInstance(ISolver solver, long bound) {
-        ModelCounterAdapter counter = new ModelCounterAdapter(solver);
+        var counter = new ModelCounterAdapter(solver);
         counter.setBound(bound);
         return counter;
     }

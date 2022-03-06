@@ -41,9 +41,9 @@ import org.sat4j.specs.IVecInt;
  * 
  * Ladder encoding for the "at most one" and "exactly one" cases.
  * 
- * The ladder encoding described in: I. P. Gent and P. Nightingale,
- * "A new encoding for AllDifferent into SAT", in International Workshop on
- * Modeling and Reformulating Constraint Satisfaction Problems, 2004
+ * The ladder encoding described in: I. P. Gent and P. Nightingale, "A new
+ * encoding for AllDifferent into SAT", in International Workshop on Modeling
+ * and Reformulating Constraint Satisfaction Problems, 2004
  * 
  * @author sroussel
  * @since 2.3.1
@@ -57,26 +57,25 @@ public class Ladder extends EncodingStrategyAdapter {
 
     @Override
     /**
-     * If n is the number of variables in the constraint, 
-     * this encoding adds n variables and 4n clauses 
-     * (3n+1 size 2 clauses and n-1 size 3 clauses)
+     * If n is the number of variables in the constraint, this encoding adds n
+     * variables and 4n clauses (3n+1 size 2 clauses and n-1 size 3 clauses)
      */
     public IConstr addAtMostOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
         final int n = literals.size() + 1;
 
         int xN = solver.nextFreeVarId(true);
-        int y[] = new int[n - 1];
+        var y = new int[n - 1];
 
-        for (int i = 0; i < n - 1; i++) {
+        for (var i = 0; i < n - 1; i++) {
             y[i] = solver.nextFreeVarId(true);
         }
 
         IVecInt clause = new VecInt();
 
         // Constraint \bigwedge_{i=1}{n-2} (\neg y_{i+1} \vee y_i)
-        for (int i = 1; i <= n - 2; i++) {
+        for (var i = 1; i <= n - 2; i++) {
             clause.push(-y[i]);
             clause.push(y[i - 1]);
             group.add(solver.addClause(clause));
@@ -84,7 +83,7 @@ public class Ladder extends EncodingStrategyAdapter {
         }
 
         // Constraint \bigwedge_{i=2}{n-1} (\neg y_{i-1} \vee y_i \vee x_i)
-        for (int i = 2; i <= n - 1; i++) {
+        for (var i = 2; i <= n - 1; i++) {
             clause.push(-y[i - 2]);
             clause.push(y[i - 1]);
             clause.push(literals.get(i - 1));
@@ -93,7 +92,7 @@ public class Ladder extends EncodingStrategyAdapter {
         }
 
         // Constraint \bigwedge_{i=2}{n-1} (\neg x_i \vee y_{i-1)})
-        for (int i = 2; i <= n - 1; i++) {
+        for (var i = 2; i <= n - 1; i++) {
             clause.push(-literals.get(i - 1));
             clause.push(y[i - 2]);
             group.add(solver.addClause(clause));
@@ -101,7 +100,7 @@ public class Ladder extends EncodingStrategyAdapter {
         }
 
         // Constraint \bigwedge_{i=2}{n-1} (\neg x_i \vee \neg y_i)
-        for (int i = 2; i <= n - 1; i++) {
+        for (var i = 2; i <= n - 1; i++) {
             clause.push(-literals.get(i - 1));
             clause.push(-y[i - 1]);
             group.add(solver.addClause(clause));
@@ -137,13 +136,12 @@ public class Ladder extends EncodingStrategyAdapter {
 
     @Override
     /**
-     * If n is the number of variables in the constraint, 
-     * this encoding adds n-1 variables and 4(n-1) clauses 
-     * (3n-2 size 2 clauses and n-2 size 3 clauses)
+     * If n is the number of variables in the constraint, this encoding adds n-1
+     * variables and 4(n-1) clauses (3n-2 size 2 clauses and n-2 size 3 clauses)
      */
     public IConstr addExactlyOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
         final int n = literals.size();
 
         IVecInt clause = new VecInt();
@@ -154,14 +152,14 @@ public class Ladder extends EncodingStrategyAdapter {
             return group;
         }
 
-        int y[] = new int[n - 1];
+        var y = new int[n - 1];
 
-        for (int i = 0; i < n - 1; i++) {
+        for (var i = 0; i < n - 1; i++) {
             y[i] = solver.nextFreeVarId(true);
         }
 
         // Constraint \bigwedge_{i=1}{n-2} (\neg y_{i+1} \vee y_i)
-        for (int i = 1; i <= n - 2; i++) {
+        for (var i = 1; i <= n - 2; i++) {
             clause.push(-y[i]);
             clause.push(y[i - 1]);
             group.add(solver.addClause(clause));
@@ -169,7 +167,7 @@ public class Ladder extends EncodingStrategyAdapter {
         }
 
         // Constraint \bigwedge_{i=2}{n-1} (\neg y_{i-1} \vee y_i \vee x_i)
-        for (int i = 2; i <= n - 1; i++) {
+        for (var i = 2; i <= n - 1; i++) {
             clause.push(-y[i - 2]);
             clause.push(y[i - 1]);
             clause.push(literals.get(i - 1));
@@ -178,7 +176,7 @@ public class Ladder extends EncodingStrategyAdapter {
         }
 
         // Constraint \bigwedge_{i=2}{n-1} (\neg x_i \vee y_{i-1)})
-        for (int i = 2; i <= n - 1; i++) {
+        for (var i = 2; i <= n - 1; i++) {
             clause.push(-literals.get(i - 1));
             clause.push(y[i - 2]);
             group.add(solver.addClause(clause));
@@ -186,7 +184,7 @@ public class Ladder extends EncodingStrategyAdapter {
         }
 
         // Constraint \bigwedge_{i=2}{n-1} (\neg x_i \vee \neg y_i)
-        for (int i = 2; i <= n - 1; i++) {
+        for (var i = 2; i <= n - 1; i++) {
             clause.push(-literals.get(i - 1));
             clause.push(-y[i - 1]);
             group.add(solver.addClause(clause));

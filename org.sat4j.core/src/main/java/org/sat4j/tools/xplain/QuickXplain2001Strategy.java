@@ -92,8 +92,9 @@ public class QuickXplain2001Strategy implements MinimizationStrategy {
         }
         Set<Integer> constraintsVariables = constrs.keySet();
         int p;
-        for (int i = 0; i < firstExplanation.size(); i++) {
-            if (constraintsVariables.contains(p = -firstExplanation.get(i))) {
+        for (var i = 0; i < firstExplanation.size(); i++) {
+            p = -firstExplanation.get(i);
+            if (constraintsVariables.contains(p)) {
                 encodingAssumptions.push(p);
             }
         }

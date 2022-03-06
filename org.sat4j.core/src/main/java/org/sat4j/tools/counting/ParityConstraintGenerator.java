@@ -108,13 +108,13 @@ public class ParityConstraintGenerator {
      *            The number of constraints to generate.
      */
     public void generate(int nb) {
-        for (int i = 0; i < nb; i++) {
+        for (var i = 0; i < nb; i++) {
             // Looking for the variables to put in the constraint.
             IVecInt lits = new VecInt();
             for (IteratorInt it = samplingSet.variables(); it.hasNext();) {
-                int var = it.next();
+                var variable = it.next();
                 if (RANDOM.nextBoolean()) {
-                    lits.push(var);
+                    lits.push(variable);
                 }
             }
 
@@ -158,7 +158,7 @@ public class ParityConstraintGenerator {
      */
     public void deactivate(int nb) {
         // Deactivating the constraints.
-        for (int i = 0; i < nb; i++) {
+        for (var i = 0; i < nb; i++) {
             getConstraint(i).deactivate();
         }
         activated = false;
@@ -181,7 +181,7 @@ public class ParityConstraintGenerator {
      *            The number of constraints to activate
      */
     public void activate(int nb) {
-        for (int i = 0; i < nb; i++) {
+        for (var i = 0; i < nb; i++) {
             getConstraint(i).activate();
         }
         activated = true;

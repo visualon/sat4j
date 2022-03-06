@@ -43,13 +43,13 @@ import org.sat4j.specs.IVecInt;
 /**
  * Implementation of product encoding for at most one and at most k constraints.
  * 
- * The encoding for "at most one" constraints was introduced by J. Chen in
- * "A New SAT Encoding for the At-Most-One Constraint" in Proceedings of the
- * Tenth International Workshop of Constraint Modeling and Reformulation, 2010
- * For the generalization to "at most k" constraint, we use the encoding
- * introduced in A. M. Frisch and P . A. Giannaros,
- * "SAT Encodings of the At-Most-k Constraint", in International Workshop on
- * Modelling and Reformulating Constraint Satisfaction Problems, 2010
+ * The encoding for "at most one" constraints was introduced by J. Chen in "A
+ * New SAT Encoding for the At-Most-One Constraint" in Proceedings of the Tenth
+ * International Workshop of Constraint Modeling and Reformulation, 2010 For the
+ * generalization to "at most k" constraint, we use the encoding introduced in
+ * A. M. Frisch and P . A. Giannaros, "SAT Encodings of the At-Most-k
+ * Constraint", in International Workshop on Modelling and Reformulating
+ * Constraint Satisfaction Problems, 2010
  * 
  * @author sroussel
  * @since 2.3.1
@@ -65,7 +65,7 @@ public class Product extends EncodingStrategyAdapter {
     public IConstr addAtMostNonOpt(ISolver solver, IVecInt literals, int k)
             throws ContradictionException {
 
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         IVecInt clause = new VecInt();
 
@@ -75,7 +75,7 @@ public class Product extends EncodingStrategyAdapter {
             return group;
         }
         if (n == k + 1) {
-            for (int i = 0; i < n; i++) {
+            for (var i = 0; i < n; i++) {
                 clause.push(-literals.get(i));
             }
             group.add(solver.addClause(clause));
@@ -83,22 +83,22 @@ public class Product extends EncodingStrategyAdapter {
             return group;
         }
         if (n < 7) {
-            Binomial binomial = new Binomial();
+            var binomial = new Binomial();
 
             return binomial.addAtMost(solver, literals, k);
         }
 
         final int p = (int) Math.ceil(Math.pow(n, 1 / (double) (k + 1)));
 
-        int[][] a = new int[n][k + 1];
+        var a = new int[n][k + 1];
         int[] result;
 
         result = decompositionBase10VersBaseP(0, p, k + 1);
         a[0] = result;
-        ArrayList<Integer> dejaPris = new ArrayList<Integer>();
+        ArrayList<Integer> dejaPris = new ArrayList<>();
         dejaPris.add(0);
-        int tmp = 1;
-        for (int i = 1; i <= k + 1; i++) {
+        var tmp = 1;
+        for (var i = 1; i <= k + 1; i++) {
             a[i] = decompositionBase10VersBaseP(tmp, p, k + 1);
             dejaPris.add(tmp);
             tmp = tmp * p;
@@ -114,16 +114,16 @@ public class Product extends EncodingStrategyAdapter {
 
         ArrayList<Integer>[] hashTupleSetTable = new ArrayList[k + 1];
 
-        int[][][] aWithoutD = new int[n][k + 1][k];
+        var aWithoutD = new int[n][k + 1][k];
 
         int hash;
         HashMap<Integer, Integer>[] ady = new HashMap[k + 1];
-        VecInt[] adxd = new VecInt[k + 1];
+        var adxd = new VecInt[k + 1];
         int varId;
 
-        for (int d = 0; d < k + 1; d++) {
-            hashTupleSetTable[d] = new ArrayList<Integer>();
-            ady[d] = new HashMap<Integer, Integer>();
+        for (var d = 0; d < k + 1; d++) {
+            hashTupleSetTable[d] = new ArrayList<>();
+            ady[d] = new HashMap<>();
             adxd[d] = new VecInt();
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < k; j++) {
@@ -143,11 +143,11 @@ public class Product extends EncodingStrategyAdapter {
             }
         }
 
-        for (int d = 0; d < k + 1; d++) {
-            for (int i = 0; i < n; i++) {
+        for (var d = 0; d < k + 1; d++) {
+            for (var i = 0; i < n; i++) {
                 clause.push(-literals.get(i));
-                clause.push(ady[d].get(recompositionBase10DepuisBaseP(
-                        aWithoutD[i][d], p)));
+                clause.push(ady[d].get(
+                        recompositionBase10DepuisBaseP(aWithoutD[i][d], p)));
                 group.add(solver.addClause(clause));
                 clause.clear();
             }
@@ -161,33 +161,33 @@ public class Product extends EncodingStrategyAdapter {
     public IConstr addAtMostOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
 
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         IVecInt clause = new VecInt();
 
         final int n = literals.size();
 
         if (n < 7) {
-            Binomial binomial = new Binomial();
+            var binomial = new Binomial();
             return binomial.addAtMostOne(solver, literals);
         }
 
         final int p = (int) Math.ceil(Math.sqrt(n));
         final int q = (int) Math.ceil((double) n / (double) p);
 
-        int[] u = new int[p];
-        int[] v = new int[q];
+        var u = new int[p];
+        var v = new int[q];
 
-        for (int i = 0; i < p; i++) {
+        for (var i = 0; i < p; i++) {
             u[i] = solver.nextFreeVarId(true);
         }
-        for (int i = 0; i < q; i++) {
+        for (var i = 0; i < q; i++) {
             v[i] = solver.nextFreeVarId(true);
         }
 
-        int cpt = 0;
-        for (int i = 0; i < p; i++) {
-            for (int j = 0; j < q; j++) {
+        var cpt = 0;
+        for (var i = 0; i < p; i++) {
+            for (var j = 0; j < q; j++) {
                 if (cpt < n) {
                     clause.push(-literals.get(cpt));
                     clause.push(u[i]);
@@ -208,13 +208,13 @@ public class Product extends EncodingStrategyAdapter {
     }
 
     private int[] decompositionBase10VersBaseP(int n, int p, int nbBits) {
-        int[] result = new int[nbBits];
+        var result = new int[nbBits];
 
         int reste;
         int pow;
         int quotient;
         reste = n;
-        for (int j = 0; j < nbBits - 1; j++) {
+        for (var j = 0; j < nbBits - 1; j++) {
             pow = (int) Math.pow(p, nbBits - j - 1);
             quotient = reste / pow;
             result[j] = quotient + 1;
@@ -225,8 +225,8 @@ public class Product extends EncodingStrategyAdapter {
     }
 
     private int recompositionBase10DepuisBaseP(int[] tab, int p) {
-        int result = 0;
-        for (int i = 0; i < tab.length - 1; i++) {
+        var result = 0;
+        for (var i = 0; i < tab.length - 1; i++) {
             result = (result + tab[i] - 1) * p;
         }
         result += tab[tab.length - 1] - 1;
@@ -236,7 +236,7 @@ public class Product extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactlyOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeastOne(solver, literals));
         group.add(addAtMostOne(solver, literals));
@@ -247,7 +247,7 @@ public class Product extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactly(ISolver solver, IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeast(solver, literals, degree));
         group.add(addAtMost(solver, literals, degree));

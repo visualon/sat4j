@@ -60,7 +60,7 @@ public class Binomial extends EncodingStrategyAdapter {
     @Override
     public IConstr addAtMost(ISolver solver, IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         IVecInt clause = new VecInt();
 
@@ -69,7 +69,7 @@ public class Binomial extends EncodingStrategyAdapter {
         }
 
         for (IVecInt vec : literals.subset(degree + 1)) {
-            for (int i = 0; i < vec.size(); i++) {
+            for (var i = 0; i < vec.size(); i++) {
                 clause.push(-vec.get(i));
             }
             group.add(solver.addClause(clause));
@@ -82,11 +82,11 @@ public class Binomial extends EncodingStrategyAdapter {
     @Override
     public IConstr addAtMostOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         IVecInt clause = new VecInt();
 
-        for (int i = 0; i < literals.size() - 1; i++) {
+        for (var i = 0; i < literals.size() - 1; i++) {
             for (int j = i + 1; j < literals.size(); j++) {
                 clause.push(-literals.get(i));
                 clause.push(-literals.get(j));
@@ -100,7 +100,7 @@ public class Binomial extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactlyOne(ISolver solver, IVecInt literals)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeastOne(solver, literals));
         group.add(addAtMostOne(solver, literals));
@@ -111,7 +111,7 @@ public class Binomial extends EncodingStrategyAdapter {
     @Override
     public IConstr addExactly(ISolver solver, IVecInt literals, int degree)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
 
         group.add(addAtLeast(solver, literals, degree));
         group.add(addAtMost(solver, literals, degree));

@@ -103,7 +103,7 @@ public class InsertionStrategy implements MinimizationStrategy {
             }
             System.out.println();
         }
-        for (int i = 0; i < firstExplanation.size();) {
+        for (var i = 0; i < firstExplanation.size();) {
             if (assumps.contains(firstExplanation.get(i))) {
                 firstExplanation.delete(i);
             } else {
@@ -126,10 +126,10 @@ public class InsertionStrategy implements MinimizationStrategy {
         }
         remainingVariables.copyTo(encodingAssumptions);
         boolean shouldContinue;
-        int startingPoint = assumps.size();
+        var startingPoint = assumps.size();
         do {
             shouldContinue = false;
-            int i = startingPoint;
+            var i = startingPoint;
             encodingAssumptions.set(i, -encodingAssumptions.get(i));
             assert encodingAssumptions.get(i) < 0;
             while (!this.computationCanceled
