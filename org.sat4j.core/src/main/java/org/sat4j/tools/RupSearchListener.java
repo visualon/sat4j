@@ -102,7 +102,7 @@ public class RupSearchListener<S extends ISolverService>
     }
 
     private void printConstr(IConstr c) {
-        for (int i = 0; i < c.size(); i++) {
+        for (var i = 0; i < c.size(); i++) {
             out.print(LiteralsUtils.toDimacs(c.get(i)));
             out.print(" ");
         }

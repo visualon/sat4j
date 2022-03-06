@@ -32,8 +32,7 @@ package org.sat4j.minisat.orders;
 import org.sat4j.annotations.Feature;
 
 /**
- * @author leberre TODO To change the template for this generated type comment
- *         go to Window - Preferences - Java - Code Style - Code Templates
+ * @author leberre
  */
 @Feature(value = "varheuristics", parent = "expert")
 public final class PureOrder extends VarOrderHeap {

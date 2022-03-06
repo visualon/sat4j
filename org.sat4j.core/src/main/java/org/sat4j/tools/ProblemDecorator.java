@@ -16,6 +16,10 @@ import org.sat4j.specs.TimeoutException;
  */
 public class ProblemDecorator<T extends IProblem> implements IProblem {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final T decorated;
 
     public ProblemDecorator(T decorated) {
@@ -23,8 +27,8 @@ public class ProblemDecorator<T extends IProblem> implements IProblem {
     }
 
     @Override
-    public boolean model(int var) {
-        return decorated.model(var);
+    public boolean model(int variable) {
+        return decorated.model(variable);
     }
 
     @Override
@@ -90,6 +94,7 @@ public class ProblemDecorator<T extends IProblem> implements IProblem {
     }
 
     @Override
+    @Deprecated
     public void printInfos(PrintWriter out, String prefix) {
         decorated.printInfos(out, prefix);
     }

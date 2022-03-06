@@ -43,8 +43,8 @@ public final class PositiveLiteralSelectionStrategy
      */
     private static final long serialVersionUID = 1L;
 
-    public int select(int var) {
-        return posLit(var);
+    public int select(int variable) {
+        return posLit(variable);
     }
 
     @Override

@@ -47,7 +47,8 @@ public class ModelIteratorToSATAdapter extends ModelIterator {
     private int[] lastModel = null;
     private final SolutionFoundListener sfl;
 
-    public ModelIteratorToSATAdapter(ISolver solver, SolutionFoundListener sfl) {
+    public ModelIteratorToSATAdapter(ISolver solver,
+            SolutionFoundListener sfl) {
         this(solver, Long.MAX_VALUE, sfl);
     }
 
@@ -59,7 +60,7 @@ public class ModelIteratorToSATAdapter extends ModelIterator {
 
     @Override
     public boolean isSatisfiable() throws TimeoutException {
-        boolean isSat = false;
+        var isSat = false;
         while (super.isSatisfiable()) {
             isSat = true;
             lastModel = super.model();
@@ -71,7 +72,7 @@ public class ModelIteratorToSATAdapter extends ModelIterator {
 
     @Override
     public boolean isSatisfiable(IVecInt assumps) throws TimeoutException {
-        boolean isSat = false;
+        var isSat = false;
         while (super.isSatisfiable(assumps)) {
             isSat = true;
             lastModel = super.model();

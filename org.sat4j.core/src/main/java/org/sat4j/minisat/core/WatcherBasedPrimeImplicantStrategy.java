@@ -83,11 +83,11 @@ public class WatcherBasedPrimeImplicantStrategy
         }
         this.prime = new int[solver.voc.nVars() + 1];
         int p;
-        for (int i = 0; i < this.prime.length; i++) {
+        for (var i = 0; i < this.prime.length; i++) {
             this.prime[i] = 0;
         }
         // unit clauses need to be handled specifically
-        for (int i = 0; i < solver.trail.size(); i++) {
+        for (var i = 0; i < solver.trail.size(); i++) {
             isMandatory(solver.trail.get(i));
         }
         for (int d : solver.fullmodel) {
@@ -100,9 +100,9 @@ public class WatcherBasedPrimeImplicantStrategy
             reduceClausesContainingTheNegationOfPI(solver, toInternal(d));
         }
 
-        int removed = 0;
-        int posremoved = 0;
-        int propagated = 0;
+        var removed = 0;
+        var posremoved = 0;
+        var propagated = 0;
         for (int d : fullModel(solver)) {
             if (this.prime[Math.abs(d)] != 0) {
                 // d has been propagated
@@ -118,8 +118,8 @@ public class WatcherBasedPrimeImplicantStrategy
             }
         }
         solver.cancelUntil(0);
-        int[] implicant = new int[propagated];
-        int index = 0;
+        var implicant = new int[propagated];
+        var index = 0;
         for (int i : this.prime) {
             if (i != 0) {
                 implicant[index++] = i;
@@ -146,7 +146,7 @@ public class WatcherBasedPrimeImplicantStrategy
         lwatched.clear();
         solver.voc.watches(p).moveTo(lwatched);
         final int size = lwatched.size();
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             solver.stats.incInspects();
             lwatched.get(i).propagatePI(this, p);
         }

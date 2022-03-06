@@ -110,10 +110,10 @@ public class VarOrderHeap implements IOrder, Serializable {
      */
     public int select() {
         while (!this.heap.empty()) {
-            int var = this.heap.getmin();
-            int next = this.phaseStrategy.select(var);
+            int variable = this.heap.getmin();
+            int next = this.phaseStrategy.select(variable);
             if (this.lits.isUnassigned(next)) {
-                if (this.activity[var] < 0.0001) {
+                if (this.activity[variable] < 0.0001) {
                     this.nullchoice++;
                 }
                 return next;
@@ -155,16 +155,16 @@ public class VarOrderHeap implements IOrder, Serializable {
 
     @Override
     public void updateVar(int p, double value) {
-        int var = var(p);
-        updateActivity(var, value);
+        int variable = var(p);
+        updateActivity(variable, value);
         this.phaseStrategy.updateVar(p);
-        if (this.heap.inHeap(var)) {
-            this.heap.increase(var);
+        if (this.heap.inHeap(variable)) {
+            this.heap.increase(variable);
         }
     }
 
-    protected void updateActivity(final int var, double inc) {
-        if ((this.activity[var] += (inc * varInc)) > VAR_RESCALE_BOUND) {
+    protected void updateActivity(final int variable, double inc) {
+        if ((this.activity[variable] += (inc * varInc)) > VAR_RESCALE_BOUND) {
             varRescaleActivity();
         }
     }
@@ -180,7 +180,7 @@ public class VarOrderHeap implements IOrder, Serializable {
      * 
      */
     private void varRescaleActivity() {
-        for (int i = 1; i < this.activity.length; i++) {
+        for (var i = 1; i < this.activity.length; i++) {
             this.activity[i] *= VAR_RESCALE_FACTOR;
         }
         this.varInc *= VAR_RESCALE_FACTOR;
@@ -194,8 +194,8 @@ public class VarOrderHeap implements IOrder, Serializable {
      * 
      */
     public int numberOfInterestingVariables() {
-        int cpt = 0;
-        for (int i = 1; i < this.activity.length; i++) {
+        var cpt = 0;
+        for (var i = 1; i < this.activity.length; i++) {
             if (this.activity[i] > 1.0) {
                 cpt++;
             }
@@ -220,7 +220,7 @@ public class VarOrderHeap implements IOrder, Serializable {
         this.activity[0] = -1;
         this.heap = createHeap(this.activity);
         this.heap.setBounds(nlength);
-        for (int i = 1; i < nlength; i++) {
+        for (var i = 1; i < nlength; i++) {
             assert i > 0;
             assert i <= this.lits.nVars() : "" + this.lits.nVars() + "/" + i; //$NON-NLS-1$ //$NON-NLS-2$
             this.activity[i] = 0.0;

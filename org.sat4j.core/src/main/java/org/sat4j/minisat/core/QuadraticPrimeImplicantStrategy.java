@@ -146,7 +146,7 @@ public class QuadraticPrimeImplicantStrategy implements PrimeImplicantStrategy {
         }
         solver.cancelUntil(0);
         var implicant = new int[prime.length - removed - 1];
-        int index = 0;
+        var index = 0;
         for (int i : prime) {
             if (i != 0) {
                 implicant[index++] = i;

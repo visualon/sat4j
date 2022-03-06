@@ -130,7 +130,7 @@ public class SolverStats implements Serializable {
     }
 
     public Map<String, Number> toMap() {
-        Map<String, Number> map = new HashMap<String, Number>();
+        Map<String, Number> map = new HashMap<>();
         Class<?> clazz = this.getClass();
         do {
             for (Field f : clazz.getDeclaredFields()) {
@@ -141,9 +141,7 @@ public class SolverStats implements Serializable {
                             && value instanceof Number) {
                         map.put(f.getName(), (Number) value);
                     }
-                } catch (IllegalArgumentException e) {
-                    // ignores silently
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     // ignores silently
                 }
             }

@@ -87,8 +87,8 @@ public final class ActiveLearning<D extends DataStructureFactory>
      */
     @Override
     protected boolean learningCondition(Constr clause) {
-        int nbactivevars = 0;
-        for (int i = 0; i < clause.size(); i++) {
+        var nbactivevars = 0;
+        for (var i = 0; i < clause.size(); i++) {
             if (this.order.varActivity(clause.get(i)) > 1) {
                 nbactivevars++;
             }

@@ -43,7 +43,8 @@ public class SpeedTracing extends SearchListenerAdapter<ISolverService> {
     private final IVisualizationTool cleanVisuTool;
     private final IVisualizationTool restartVisuTool;
 
-    private long begin, end;
+    private long begin;
+    private long end;
     private int counter;
     private long index;
 

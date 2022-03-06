@@ -52,7 +52,7 @@ public class TabuListDecorator implements IOrder {
     private ILits voc;
     private int lastVar = -1;
 
-    private final LinkedList<Integer> tabuList = new LinkedList<Integer>();
+    private final LinkedList<Integer> tabuList = new LinkedList<>();
 
     public TabuListDecorator(VarOrderHeap order) {
         this(order, 10);
@@ -84,14 +84,14 @@ public class TabuListDecorator implements IOrder {
     public int select() {
         int lit = this.decorated.select();
         if (lit == ILits.UNDEFINED) {
-            int var;
+            int variable;
             do {
                 if (this.tabuList.isEmpty()) {
                     return ILits.UNDEFINED;
                 }
-                var = this.tabuList.removeFirst();
-            } while (!this.voc.isUnassigned(var << 1));
-            return getPhaseSelectionStrategy().select(var);
+                variable = this.tabuList.removeFirst();
+            } while (!this.voc.isUnassigned(variable << 1));
+            return getPhaseSelectionStrategy().select(variable);
         }
         this.lastVar = lit >> 1;
         return lit;
@@ -112,8 +112,8 @@ public class TabuListDecorator implements IOrder {
 
     public void undo(int x) {
         if (this.tabuList.size() == this.tabuSize) {
-            int var = this.tabuList.removeFirst();
-            this.decorated.undo(var);
+            int variable = this.tabuList.removeFirst();
+            this.decorated.undo(variable);
         }
         if (x == this.lastVar) {
             this.tabuList.add(x);

@@ -57,7 +57,7 @@ public final class RemiUtils {
     public static IVecInt backbone(ISolver s) throws TimeoutException {
         IVecInt backbone = new VecInt();
         int nvars = s.nVars();
-        for (int i = 1; i <= nvars; i++) {
+        for (var i = 1; i <= nvars; i++) {
             backbone.push(i);
             if (s.isSatisfiable(backbone)) {
                 backbone.pop().push(-i);

@@ -61,8 +61,8 @@ public class TextOutputTracing<T> implements SearchListener<ISolverService> {
     private String node(int dimacs) {
 
         if (this.mapping != null) {
-            int var = Math.abs(dimacs);
-            T t = this.mapping.get(var);
+            int variable = Math.abs(dimacs);
+            var t = this.mapping.get(variable);
             if (t != null) {
                 if (dimacs > 0) {
                     return t.toString();

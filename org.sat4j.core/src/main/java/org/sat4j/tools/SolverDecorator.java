@@ -83,6 +83,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
      * @see org.sat4j.specs.IProblem#printInfos(java.io.PrintWriter,
      * java.lang.String)
      */
+    @Deprecated
     public void printInfos(PrintWriter out, String prefix) {
         this.solver.printInfos(out, prefix);
     }
@@ -149,8 +150,8 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
      * 
      * @see org.sat4j.specs.IProblem#model(int)
      */
-    public boolean model(int var) {
-        return this.solver.model(var);
+    public boolean model(int variable) {
+        return this.solver.model(variable);
     }
 
     public void setExpectedNumberOfClauses(int nb) {
@@ -198,6 +199,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
         this.solver.printStat(out, prefix);
     }
 
+    @Deprecated
     public void printStat(PrintWriter out, String prefix) {
         this.solver.printStat(out, prefix);
     }
@@ -211,9 +213,8 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
     /**
      * 
      */
-    public SolverDecorator(T solver) {
+    protected SolverDecorator(T solver) {
         this.solver = solver;
-        System.out.println(getClass().getName() + " " + solver);
     }
 
     @Deprecated
@@ -382,7 +383,7 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
      * @return the decorated solver.
      */
     public T clearDecorated() {
-        T decorated = this.solver;
+        var decorated = this.solver;
         this.solver = null;
         return decorated;
     }

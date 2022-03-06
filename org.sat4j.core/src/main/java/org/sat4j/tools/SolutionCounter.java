@@ -96,7 +96,7 @@ public class SolutionCounter extends SolverDecorator<ISolver> {
      */
     public long countSolutions() throws TimeoutException {
         this.lowerBound = 0;
-        boolean trivialfalsity = false;
+        var trivialfalsity = false;
 
         while (!trivialfalsity && isSatisfiable(true)) {
             this.lowerBound++;

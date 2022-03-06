@@ -95,14 +95,14 @@ public class StatisticsSolver implements ISolver {
     /**
      * Distribution of clauses size
      */
-    private final Map<Integer, Counter> sizes = new HashMap<Integer, Counter>();
+    private final Map<Integer, Counter> sizes = new HashMap<>();
 
     public int[] model() {
         throw new UnsupportedOperationException(
                 THAT_SOLVER_ONLY_COMPUTE_STATISTICS);
     }
 
-    public boolean model(int var) {
+    public boolean model(int variable) {
         throw new UnsupportedOperationException(
                 THAT_SOLVER_ONLY_COMPUTE_STATISTICS);
     }
@@ -184,11 +184,7 @@ public class StatisticsSolver implements ISolver {
 
     public IConstr addClause(IVecInt literals) throws ContradictionException {
         int size = literals.size();
-        Counter counter = sizes.get(size);
-        if (counter == null) {
-            counter = new Counter(0);
-            sizes.put(size, counter);
-        }
+        var counter = sizes.computeIfAbsent(size, k -> new Counter(0));
         counter.inc();
         IVecInt list;
         int x, p;
@@ -304,26 +300,26 @@ public class StatisticsSolver implements ISolver {
     }
 
     public void printStat(PrintWriter out) {
-        int realNumberOfVariables = 0;
-        int realNumberOfLiterals = 0;
-        int pureLiterals = 0;
+        var realNumberOfVariables = 0;
+        var realNumberOfLiterals = 0;
+        var pureLiterals = 0;
         int minOccV = Integer.MAX_VALUE;
         int maxOccV = Integer.MIN_VALUE;
-        int sumV = 0;
+        var sumV = 0;
         int sizeL, sizeV;
         int minOccL = Integer.MAX_VALUE;
         int maxOccL = Integer.MIN_VALUE;
-        int sumL = 0;
+        var sumL = 0;
         IVecInt list;
         boolean oneNull;
         if (sizeoccurrences == null) {
             return;
         }
         int max = sizeoccurrences.length - 1;
-        for (int i = 2; i < max; i += 2) {
+        for (var i = 2; i < max; i += 2) {
             sizeV = 0;
             oneNull = false;
-            for (int k = 0; k < 2; k++) {
+            for (var k = 0; k < 2; k++) {
                 list = sizeoccurrences[i + k];
                 if (list == null) {
                     oneNull = true;
@@ -358,20 +354,20 @@ public class StatisticsSolver implements ISolver {
         }
         if (realNumberOfVariables > 0 && realNumberOfLiterals > 0) {
             System.out.println("c Distribution of constraints size:");
-            int nbclauses = 0;
+            var nbclauses = 0;
             for (Map.Entry<Integer, Counter> entry : sizes.entrySet()) {
                 System.out.printf("c %d => %d%n", entry.getKey(),
                         entry.getValue().getValue());
                 nbclauses += entry.getValue().getValue();
             }
 
-            System.out.printf(
+            System.out.print(
                     "c Real number of variables, literals, number of clauses, size (#literals), #pureliterals, ");
-            System.out.printf("variable occurrences (min/max/avg) ");
-            System.out.printf("literals occurrences (min/max/avg) ");
+            System.out.print("variable occurrences (min/max/avg) ");
+            System.out.print("literals occurrences (min/max/avg) ");
             System.out.println(
                     "Specific clauses: #positive  #negative #horn  #dualhorn #binary #binarynegative #binarypositive #binaryhorn #remaining");
-            Counter binaryCounter = sizes.get(2);
+            var binaryCounter = sizes.get(2);
             int nbBinary = binaryCounter == null ? 0 : binaryCounter.getValue();
             System.out.printf(Locale.US,
                     "%d %d %d %d %d %d %d %.2f %d %d %.2f ",

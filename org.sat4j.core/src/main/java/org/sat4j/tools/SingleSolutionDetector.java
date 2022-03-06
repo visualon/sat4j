@@ -111,7 +111,7 @@ public class SingleSolutionDetector extends SolverDecorator<ISolver> {
         for (int q : firstmodel) {
             clause.push(-q);
         }
-        boolean result = false;
+        var result = false;
         try {
             IConstr added = addClause(clause);
             result = !isSatisfiable(assumptions);

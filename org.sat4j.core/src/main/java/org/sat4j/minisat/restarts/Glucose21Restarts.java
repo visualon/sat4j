@@ -86,6 +86,7 @@ public class Glucose21Restarts implements RestartStrategy {
         }
     }
 
+    @Override
     public void init(SearchParams params, SolverStats stats) {
         this.stats = stats;
         reset();

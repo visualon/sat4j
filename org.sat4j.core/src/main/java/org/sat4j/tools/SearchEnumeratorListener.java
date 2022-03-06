@@ -71,7 +71,7 @@ public class SearchEnumeratorListener
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
         IVecInt clauseToAdd = this.solverService
                 .createBlockingClauseForCurrentModel();
-        int[] vecint = new int[clauseToAdd.size()];
+        var vecint = new int[clauseToAdd.size()];
         clauseToAdd.copyTo(vecint);
         this.solverService.addClauseOnTheFly(vecint);
         this.nbsolutions++;

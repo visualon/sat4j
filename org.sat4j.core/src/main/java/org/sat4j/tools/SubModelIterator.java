@@ -59,7 +59,8 @@ import org.sat4j.specs.IteratorInt;
  * It is also possible to limit the number of models returned:
  * 
  * <pre>
- * ISolver solver = new OneModelIterator(SolverFactory.OneSolver(), subsetVars, 10);
+ * ISolver solver = new OneModelIterator(SolverFactory.OneSolver(), subsetVars,
+ *         10);
  * </pre>
  * 
  * will return at most 10 submodels.
@@ -109,7 +110,7 @@ public class SubModelIterator extends ModelIterator {
      */
     public SubModelIterator(ISolver solver, IVecInt subsetVars, long bound) {
         super(solver, bound);
-        this.subsetVars = new TreeSet<Integer>();
+        this.subsetVars = new TreeSet<>();
         for (IteratorInt it = subsetVars.iterator(); it.hasNext();) {
             this.subsetVars.add(it.next());
         }
@@ -124,13 +125,13 @@ public class SubModelIterator extends ModelIterator {
     public int[] model() {
         int[] last = super.model();
         this.nbModelFound++;
-        int[] sub = new int[subsetVars.size()];
+        var sub = new int[subsetVars.size()];
         IVecInt clause = new VecInt(sub.length);
-        int var;
-        int i = 0;
+        int variable;
+        var i = 0;
         for (int q : last) {
-            var = Math.abs(q);
-            if (subsetVars.contains(var)) {
+            variable = Math.abs(q);
+            if (subsetVars.contains(variable)) {
                 clause.push(-q);
                 sub[i++] = q;
             }

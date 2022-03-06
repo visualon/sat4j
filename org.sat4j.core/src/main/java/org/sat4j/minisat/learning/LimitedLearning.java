@@ -56,9 +56,9 @@ public abstract class LimitedLearning<D extends DataStructureFactory>
 
     private SolverStats stats;
 
-    public LimitedLearning() {
-        this.none = new NoLearningButHeuristics<D>();
-        this.all = new MiniSATLearning<D>();
+    protected LimitedLearning() {
+        this.none = new NoLearningButHeuristics<>();
+        this.all = new MiniSATLearning<>();
     }
 
     public void setSolver(Solver<D> s) {

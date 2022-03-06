@@ -56,7 +56,7 @@ public class MultiTracing<T extends ISolverService>
      */
     private static final long serialVersionUID = 1L;
 
-    private final Collection<SearchListener<T>> listeners = new ArrayList<SearchListener<T>>();
+    private final Collection<SearchListener<T>> listeners = new ArrayList<>();
 
     public MultiTracing(SearchListener<T>... listeners) {
         this.listeners.addAll(Arrays.asList(listeners));

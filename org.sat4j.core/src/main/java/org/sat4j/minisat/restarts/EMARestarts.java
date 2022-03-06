@@ -69,6 +69,7 @@ public class EMARestarts implements RestartStrategy {
     public void newConflict() {
     }
 
+    @Override
     public void init(SearchParams params, SolverStats stats) {
         this.stats = stats;
         reset();

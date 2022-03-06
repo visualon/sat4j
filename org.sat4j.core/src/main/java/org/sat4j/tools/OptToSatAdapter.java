@@ -49,8 +49,6 @@ public class OptToSatAdapter extends SolverDecorator<ISolver> {
 
     private final IVecInt assumps = new VecInt();
 
-    private long begin;
-
     private final SolutionFoundListener sfl;
 
     public OptToSatAdapter(IOptimizationProblem problem) {
@@ -84,7 +82,7 @@ public class OptToSatAdapter extends SolverDecorator<ISolver> {
     public boolean isSatisfiable(IVecInt myAssumps) throws TimeoutException {
         this.assumps.clear();
         myAssumps.copyTo(this.assumps);
-        this.begin = System.currentTimeMillis();
+        long begin = System.currentTimeMillis();
         if (this.problem.hasNoObjectiveFunction()) {
             return this.problem.isSatisfiable(myAssumps);
         }
@@ -99,7 +97,7 @@ public class OptToSatAdapter extends SolverDecorator<ISolver> {
                     System.out.println(getLogPrefix()
                             + "Current objective function value: "
                             + this.problem.getObjectiveValue() + "("
-                            + (System.currentTimeMillis() - this.begin) / 1000.0
+                            + (System.currentTimeMillis() - begin) / 1000.0
                             + "s)");
                 }
             } while (this.problem.admitABetterSolution(myAssumps));
@@ -108,8 +106,7 @@ public class OptToSatAdapter extends SolverDecorator<ISolver> {
         } catch (TimeoutException e) {
             if (isVerbose()) {
                 System.out.println(getLogPrefix() + "Solver timed out after "
-                        + (System.currentTimeMillis() - this.begin) / 1000.0
-                        + "s)");
+                        + (System.currentTimeMillis() - begin) / 1000.0 + "s)");
             }
         } catch (ContradictionException ce) {
             expireTimeout();
@@ -124,8 +121,8 @@ public class OptToSatAdapter extends SolverDecorator<ISolver> {
     }
 
     @Override
-    public boolean model(int var) {
-        return this.problem.model(var);
+    public boolean model(int variable) {
+        return this.problem.model(variable);
     }
 
     @Override

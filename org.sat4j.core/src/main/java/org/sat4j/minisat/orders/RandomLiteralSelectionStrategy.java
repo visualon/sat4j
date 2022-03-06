@@ -60,11 +60,11 @@ public final class RandomLiteralSelectionStrategy
             .getProperty("NONDETERMINISTIC") == null ? new Random(123456789)
                     : new Random();
 
-    public int select(int var) {
+    public int select(int variable) {
         if (RAND.nextBoolean()) {
-            return posLit(var);
+            return posLit(variable);
         }
-        return negLit(var);
+        return negLit(variable);
     }
 
     @Override

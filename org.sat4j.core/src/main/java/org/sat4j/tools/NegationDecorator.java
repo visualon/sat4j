@@ -58,7 +58,7 @@ public class NegationDecorator<T extends ISolver>
      */
     private static final long serialVersionUID = 1L;
 
-    private final Collection<Integer> addedVars = new ArrayList<Integer>();
+    private final Collection<Integer> addedVars = new ArrayList<>();
 
     public NegationDecorator(T decorated) {
         super(decorated);
@@ -70,7 +70,7 @@ public class NegationDecorator<T extends ISolver>
         int newVar = createNewVar(literals);
         IVecInt clause = new VecInt(2);
         clause.push(newVar);
-        ConstrGroup group = new ConstrGroup();
+        var group = new ConstrGroup();
         for (IteratorInt it = literals.iterator(); it.hasNext();) {
             clause.push(-it.next());
             group.add(super.addClause(clause));
@@ -102,8 +102,8 @@ public class NegationDecorator<T extends ISolver>
     public boolean isSatisfiable(IVecInt assumps, boolean global)
             throws TimeoutException {
         IVecInt vars = new VecInt();
-        for (int var : getAddedVars()) {
-            vars.push(var);
+        for (int variable : getAddedVars()) {
+            vars.push(variable);
         }
         try {
             IConstr constr = super.addClause(vars);

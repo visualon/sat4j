@@ -66,9 +66,9 @@ public class SearchMinOneListener
 
     @Override
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
-        int degree = 0;
-        int[] variables = new int[model.length];
-        for (int i = 0; i < model.length; i++) {
+        var degree = 0;
+        var variables = new int[model.length];
+        for (var i = 0; i < model.length; i++) {
             if (model[i] > 0) {
                 degree++;
                 variables[i] = model[i];

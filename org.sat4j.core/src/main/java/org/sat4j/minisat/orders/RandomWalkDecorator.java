@@ -95,12 +95,12 @@ public class RandomWalkDecorator implements IOrder, Serializable {
 
     public int select() {
         if (RAND.nextDouble() < this.p) {
-            int var, lit, max;
+            int variable, lit, max;
 
             while (!this.decorated.heap.empty()) {
                 max = this.decorated.heap.size();
-                var = this.decorated.heap.get(RAND.nextInt(max) + 1);
-                lit = getPhaseSelectionStrategy().select(var);
+                variable = this.decorated.heap.get(RAND.nextInt(max) + 1);
+                lit = getPhaseSelectionStrategy().select(variable);
                 if (this.voc.isUnassigned(lit)) {
                     this.nbRandomWalks++;
                     return lit;

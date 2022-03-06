@@ -45,10 +45,12 @@ public final class PhaseCachingAutoEraseStrategy
      */
     private static final long serialVersionUID = 1L;
 
+    @Override
     public void assignLiteral(int p) {
         this.phase[var(p)] = p;
     }
 
+    @Override
     public void updateVar(int p) {
         this.phase[var(p)] = p;
     }
@@ -56,8 +58,5 @@ public final class PhaseCachingAutoEraseStrategy
     @Override
     public String toString() {
         return "Phase caching with auto forget feature";
-    }
-
-    public void updateVarAtDecisionLevel(int q) {
     }
 }
