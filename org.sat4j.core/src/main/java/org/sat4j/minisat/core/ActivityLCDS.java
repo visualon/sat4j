@@ -79,23 +79,11 @@ public class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
                 + timer;
     }
 
-    public void init() {
-        // do nothing
-    }
-
-    public void onClauseLearning(Constr constr) {
-        // do nothing
-
-    }
-
+    @Override
     public void onConflictAnalysis(Constr reason) {
         if (reason.learnt()) {
             solver.claBumpActivity(reason);
         }
-    }
-
-    public void onPropagation(Constr from, int propagated) {
-        // do nothing
     }
 
     protected void onRemove(Constr c) {

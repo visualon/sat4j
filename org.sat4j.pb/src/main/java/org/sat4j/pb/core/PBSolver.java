@@ -290,6 +290,7 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory>
             return "Objective function driven learned constraints deletion strategy";
         }
 
+        @Override
         public void init() {
             this.inObjectiveFunction = new boolean[nVars() + 1];
             if (PBSolver.this.objf == null) {
@@ -303,6 +304,7 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory>
             this.clauseManagement.reset();
         }
 
+        @Override
         public void onClauseLearning(Constr constr) {
             boolean fullObj = true;
 
@@ -317,12 +319,5 @@ public abstract class PBSolver extends Solver<PBDataStructureFactory>
             }
         }
 
-        public void onConflictAnalysis(Constr reason) {
-            // do nothing
-        }
-
-        public void onPropagation(Constr from, int propagated) {
-            // do nothing
-        }
     };
 }

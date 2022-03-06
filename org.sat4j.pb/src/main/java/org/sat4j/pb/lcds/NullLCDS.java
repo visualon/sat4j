@@ -14,6 +14,10 @@ import org.sat4j.specs.IVec;
  */
 public class NullLCDS implements LearnedConstraintsDeletionStrategy {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final LearnedConstraintsDeletionStrategy decorated;
 
     public NullLCDS(LearnedConstraintsDeletionStrategy decorated) {
@@ -33,7 +37,6 @@ public class NullLCDS implements LearnedConstraintsDeletionStrategy {
 
     @Override
     public void reduce(IVec<Constr> learnedConstrs) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -51,5 +54,4 @@ public class NullLCDS implements LearnedConstraintsDeletionStrategy {
     public void onPropagation(Constr from, int propagated) {
         decorated.onPropagation(from, propagated);
     }
-
 }

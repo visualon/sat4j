@@ -83,21 +83,4 @@ final class AgeLCDS implements LearnedConstraintsDeletionStrategy {
         return "Age based learned constraints deletion strategy with timer "
                 + timer;
     }
-
-    public void init() {
-        // do nothing
-    }
-
-    public void onClauseLearning(Constr constr) {
-        // do nothing
-
-    }
-
-    public void onConflictAnalysis(Constr reason) {
-        // do nothing
-    }
-
-    public void onPropagation(Constr from, int propagated) {
-        // do nothing
-    }
 }

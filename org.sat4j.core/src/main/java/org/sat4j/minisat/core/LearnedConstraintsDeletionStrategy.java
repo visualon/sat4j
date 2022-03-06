@@ -47,7 +47,9 @@ public interface LearnedConstraintsDeletionStrategy extends Serializable {
     /**
      * 
      */
-    void init();
+    default void init() {
+
+    }
 
     ConflictTimer getTimer();
 
@@ -65,19 +67,25 @@ public interface LearnedConstraintsDeletionStrategy extends Serializable {
      * 
      * @param outLearnt
      */
-    void onClauseLearning(Constr outLearnt);
+    default void onClauseLearning(Constr outLearnt) {
+
+    }
 
     /**
      * Hook method called on constraints participating to the conflict analysis.
      * 
      * @param reason
      */
-    void onConflictAnalysis(Constr reason);
+    default void onConflictAnalysis(Constr reason) {
+
+    }
 
     /**
      * Hook method called when a unit clause is propagated thanks to from.
      * 
      * @param from
      */
-    void onPropagation(Constr from, int propagated);
+    default void onPropagation(Constr from, int propagated) {
+
+    }
 }

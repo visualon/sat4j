@@ -1666,26 +1666,14 @@ public class Solver<D extends DataStructureFactory>
                 Solver.this.learnts.shrinkTo(j);
             }
 
-            public void onConflictAnalysis(Constr reason) {
-            }
-
-            public void onClauseLearning(Constr outLearnt) {
-            }
-
             @Override
             public String toString() {
                 return "Fixed size (" + maxsize
                         + ") learned constraints deletion strategy";
             }
 
-            public void init() {
-            }
-
             public ConflictTimer getTimer() {
                 return this.aTimer;
-            }
-
-            public void onPropagation(Constr from, int propagated) {
             }
         };
     }

@@ -110,6 +110,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
         this.timer.reset();
     }
 
+    @Override
     public void onClauseLearning(Constr constr) {
         int nblevel = computeLBD(constr, -1);
         constr.setActivity(nblevel);
@@ -127,14 +128,6 @@ class GlucoseLCDS<D extends DataStructureFactory>
             }
         }
         return nblevel;
-    }
-
-    public void onConflictAnalysis(Constr reason) {
-
-    }
-
-    public void onPropagation(Constr from, int propagated) {
-
     }
 
     protected Solver<D> getSolver() {
