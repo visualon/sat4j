@@ -43,6 +43,7 @@ abstract class AbstractPhaserecordingSelectionStrategy
 
     protected int[] phase;
 
+    @Override
     public void init(int nlength) {
         if (this.phase == null || this.phase.length < nlength) {
             this.phase = new int[nlength];
@@ -52,6 +53,7 @@ abstract class AbstractPhaserecordingSelectionStrategy
         }
     }
 
+    @Override
     public void init(int variable, int p) {
         this.phase[variable] = p;
     }

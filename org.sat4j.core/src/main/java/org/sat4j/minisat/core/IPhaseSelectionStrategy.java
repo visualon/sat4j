@@ -49,7 +49,9 @@ public interface IPhaseSelectionStrategy extends Serializable {
      * @param p
      *            a literal. The associated variable will be updated.
      */
-    void updateVar(int p);
+    default void updateVar(int p) {
+
+    }
 
     /**
      * that method has the responsibility to initialize all arrays in the
@@ -58,7 +60,9 @@ public interface IPhaseSelectionStrategy extends Serializable {
      * @param nlength
      *            the number of variables managed by the heuristics.
      */
-    void init(int nlength);
+    default void init(int nlength) {
+
+    }
 
     /**
      * initialize the phase of a given variable to the given value. That method
@@ -69,14 +73,18 @@ public interface IPhaseSelectionStrategy extends Serializable {
      * @param p
      *            it's initial phase
      */
-    void init(int variable, int p);
+    default void init(int variable, int p) {
+
+    }
 
     /**
      * indicate that a literal has been satisfied.
      * 
      * @param p
      */
-    void assignLiteral(int p);
+    default void assignLiteral(int p) {
+
+    }
 
     /**
      * selects the phase of the variable according to a phase selection
@@ -97,5 +105,7 @@ public interface IPhaseSelectionStrategy extends Serializable {
      * @param q
      *            a literal
      */
-    void updateVarAtDecisionLevel(int q);
+    default void updateVarAtDecisionLevel(int q) {
+
+    }
 }

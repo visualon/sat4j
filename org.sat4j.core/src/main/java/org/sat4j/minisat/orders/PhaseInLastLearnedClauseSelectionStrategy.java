@@ -48,6 +48,7 @@ public final class PhaseInLastLearnedClauseSelectionStrategy
      */
     private static final long serialVersionUID = 1L;
 
+    @Override
     public void updateVar(int p) {
         this.phase[var(p)] = p;
     }
@@ -55,11 +56,5 @@ public final class PhaseInLastLearnedClauseSelectionStrategy
     @Override
     public String toString() {
         return "phase appearing in latest learned clause";
-    }
-
-    public void assignLiteral(int p) {
-    }
-
-    public void updateVarAtDecisionLevel(int q) {
     }
 }

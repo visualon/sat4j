@@ -43,27 +43,12 @@ public final class NegativeLiteralSelectionStrategy
      */
     private static final long serialVersionUID = 1L;
 
-    public void assignLiteral(int p) {
-    }
-
-    public void init(int nlength) {
-    }
-
-    public void init(int variable, int p) {
-    }
-
     public int select(int variable) {
         return negLit(variable);
-    }
-
-    public void updateVar(int p) {
     }
 
     @Override
     public String toString() {
         return "negative phase selection";
-    }
-
-    public void updateVarAtDecisionLevel(int q) {
     }
 }

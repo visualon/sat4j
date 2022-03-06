@@ -48,6 +48,7 @@ public final class RSATLastLearnedClausesPhaseSelectionStrategy
      */
     private static final long serialVersionUID = 1L;
 
+    @Override
     public void assignLiteral(int p) {
         this.phase[var(p)] = p;
     }
@@ -57,9 +58,7 @@ public final class RSATLastLearnedClausesPhaseSelectionStrategy
         return "lightweight component caching from RSAT inverting phase for variables at conflict decision level";
     }
 
-    public void updateVar(int p) {
-    }
-
+    @Override
     public void updateVarAtDecisionLevel(int p) {
         this.phase[var(p)] = p;
     }

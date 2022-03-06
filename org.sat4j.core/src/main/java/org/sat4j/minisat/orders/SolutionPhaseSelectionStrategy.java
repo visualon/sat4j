@@ -62,6 +62,7 @@ public final class SolutionPhaseSelectionStrategy
         }
     }
 
+    @Override
     public void assignLiteral(int p) {
         this.phase[var(p)] = p;
     }
@@ -69,12 +70,6 @@ public final class SolutionPhaseSelectionStrategy
     @Override
     public String toString() {
         return "lightweight component caching from RSAT plus solution phase";
-    }
-
-    public void updateVar(int p) {
-    }
-
-    public void updateVarAtDecisionLevel(int p) {
     }
 
     public void onModelFound(int[] model) {

@@ -48,6 +48,7 @@ public final class RSATPhaseSelectionStrategy
      */
     private static final long serialVersionUID = 1L;
 
+    @Override
     public void assignLiteral(int p) {
         this.phase[var(p)] = p;
     }
@@ -55,11 +56,5 @@ public final class RSATPhaseSelectionStrategy
     @Override
     public String toString() {
         return "lightweight component caching from RSAT";
-    }
-
-    public void updateVar(int p) {
-    }
-
-    public void updateVarAtDecisionLevel(int p) {
     }
 }

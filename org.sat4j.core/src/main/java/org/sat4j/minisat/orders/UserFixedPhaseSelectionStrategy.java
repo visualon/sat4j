@@ -47,17 +47,8 @@ public final class UserFixedPhaseSelectionStrategy
      */
     private static final long serialVersionUID = 1L;
 
-    public void assignLiteral(int p) {
-    }
-
-    public void updateVar(int p) {
-    }
-
     @Override
     public String toString() {
         return "Fixed selection strategy.";
-    }
-
-    public void updateVarAtDecisionLevel(int q) {
     }
 }
