@@ -32,10 +32,10 @@ package org.sat4j.maxsat;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.sat4j.AbstractLauncher;
 import org.sat4j.DecisionMode;
 import org.sat4j.OptimizationMode;
@@ -75,7 +75,7 @@ public class GenericOptLauncher extends AbstractLauncher {
 
     @SuppressWarnings("nls")
     private Options createCLIOptions() {
-        Options options = new Options();
+        var options = new Options();
         options.addOption("s", "solver", true,
                 "specifies the name of a PB solver");
         options.addOption("t", "timeout", true,
@@ -143,14 +143,14 @@ public class GenericOptLauncher extends AbstractLauncher {
     @Override
     protected ISolver configureSolver(String[] args) {
         ISolver asolver = null;
-        Options options = createCLIOptions();
+        var options = createCLIOptions();
         if (args.length == 0) {
-            HelpFormatter helpf = new HelpFormatter();
+            var helpf = new HelpFormatter();
             helpf.printHelp("java -jar sat4j-maxsat.jar", options, true);
             System.exit(0);
         } else {
             try {
-                CommandLine cmd = new PosixParser().parse(options, args);
+                CommandLine cmd = new DefaultParser().parse(options, args);
                 int problemindex = args.length - 1;
                 setDisplaySolutionLine(!cmd.hasOption("n"));
                 boolean equivalence = cmd.hasOption("e");
@@ -196,7 +196,7 @@ public class GenericOptLauncher extends AbstractLauncher {
                         internal.setSearchListener(new SearchOptimizerListener(DecisionMode.instance()));
                         IPBSolver external = org.sat4j.pb.SolverFactory.newDefault();
                         external = new OptToPBSATAdapter(new PseudoOptDecorator(external),DecisionMode.instance());
-                        ManyCorePB mc = new ManyCorePB(external, internal);
+                        ManyCorePB<IPBSolver> mc = new ManyCorePB<>(external, internal);
                         this.wmsd = new WeightedMaxSatDecorator(mc, equivalence);
                         setLauncherMode(DecisionMode.instance());
                         asolver = this.wmsd;
@@ -225,7 +225,7 @@ public class GenericOptLauncher extends AbstractLauncher {
                 }
                 getLogWriter().println(asolver.toString(OutputPrefix.COMMENT_PREFIX.toString()));
             } catch (ParseException e1) {
-                HelpFormatter helpf = new HelpFormatter();
+                var helpf = new HelpFormatter();
                 helpf.printHelp("java -jar sat4jopt.jar", options, true);
             }
         }

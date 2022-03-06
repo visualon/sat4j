@@ -53,8 +53,8 @@ public class SolverFactory extends ASolverFactory<IPBSolver> {
      * @return a
      */
     public static Solver<DataStructureFactory> newMiniMaxSAT() {
-        MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<DataStructureFactory>();
-        Solver<DataStructureFactory> solver = new Solver<DataStructureFactory>(
+        MiniSATLearning<DataStructureFactory> learning = new MiniSATLearning<>();
+        Solver<DataStructureFactory> solver = new Solver<>(
                 learning, new MixedDataStructureDanielWL(), new SearchParams(
                         1.2, 100000), new VarOrderHeap(), new MiniSATRestarts());
         learning.setDataStructureFactory(solver.getDSFactory());

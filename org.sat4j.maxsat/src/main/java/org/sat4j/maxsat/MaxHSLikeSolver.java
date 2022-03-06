@@ -68,12 +68,12 @@ public class MaxHSLikeSolver extends SolverDecorator<ISolver>
 
     private final IVecInt lits = new VecInt();
 
-    private final IVec<BigInteger> coefs = new Vec<BigInteger>();
+    private final IVec<BigInteger> coefs = new Vec<>();
 
     private final ObjectiveFunction obj = new ObjectiveFunction(this.lits,
             this.coefs);
 
-    private final Set<Integer> unitClauses = new HashSet<Integer>();
+    private final Set<Integer> unitClauses = new HashSet<>();
 
     private BigInteger falsifiedWeight = BigInteger.ZERO;
 

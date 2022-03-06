@@ -115,7 +115,7 @@ public class WDimacsReader extends DimacsReader {
             if (tokens.length == 5) {
                 this.top = new BigInteger(tokens[4]);
             } else {
-                this.top = WeightedMaxSatDecorator.SAT4J_MAX_BIG_INTEGER;
+                this.top = WeightedPartialMaxsat.SAT4J_MAX_BIG_INTEGER;
             }
             this.decorator.setTopWeight(this.top);
         }

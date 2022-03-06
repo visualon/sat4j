@@ -67,12 +67,12 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
 
     private final IVecInt lits = new VecInt();
 
-    private final IVec<BigInteger> coefs = new Vec<BigInteger>();
+    private final IVec<BigInteger> coefs = new Vec<>();
 
     private final ObjectiveFunction obj = new ObjectiveFunction(this.lits,
             this.coefs);
 
-    private final Set<Integer> unitClauses = new HashSet<Integer>();
+    private final Set<Integer> unitClauses = new HashSet<>();
 
     private boolean noNewVarForUnitSoftClauses = true;
 
@@ -217,7 +217,7 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
             literals.push(newvar);
             this.lits.push(newvar);
             if (this.equivalence) {
-                ConstrGroup constrs = new ConstrGroup();
+                var constrs = new ConstrGroup();
                 IConstr constr = super.addClause(literals);
                 if (constr==null&&isVerbose()) {
                     System.out.println(getLogPrefix()+" solft constraint "+literals+"("+weight+") is ignored");
@@ -226,7 +226,7 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
                     constrs.add(constr);
                     IVecInt clause = new VecInt(2);
                     clause.push(-newvar);
-                    for (int i = 0; i < literals.size() - 1; i++) {
+                    for (var i = 0; i < literals.size() - 1; i++) {
                         clause.push(-literals.get(i));
                         constrs.add(super.addClause(clause));
                         clause.pop();
@@ -299,11 +299,11 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
             this.coefs.push(weight);
             int newvar = nextFreeVarId(true);
             this.lits.push(newvar);
-            IVec<BigInteger> cardcoeffs = new Vec<BigInteger>(
+            IVec<BigInteger> cardcoeffs = new Vec<>(
                     literals.size() + 1);
             cardcoeffs.growTo(literals.size(), BigInteger.ONE);
             literals.push(newvar);
-            BigInteger bigDegree = BigInteger.valueOf(degree);
+            var bigDegree = BigInteger.valueOf(degree);
             cardcoeffs.push(bigDegree);
             return addPseudoBoolean(literals, cardcoeffs, true, bigDegree);
         } else {
@@ -368,11 +368,11 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
             this.coefs.push(weight);
             int newvar = nextFreeVarId(true);
             this.lits.push(newvar);
-            IVec<BigInteger> cardcoeffs = new Vec<BigInteger>(
+            IVec<BigInteger> cardcoeffs = new Vec<>(
                     literals.size() + 1);
             cardcoeffs.growTo(literals.size(), BigInteger.ONE);
             literals.push(newvar);
-            BigInteger bigDegree = BigInteger.valueOf(degree);
+            var bigDegree = BigInteger.valueOf(degree);
             cardcoeffs.push(bigDegree.negate());
             return addPseudoBoolean(literals, cardcoeffs, true, bigDegree);
         } else {
@@ -406,7 +406,7 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
         if (literals.size() != this.coefs.size()) {
             throw new IllegalArgumentException();
         }
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             this.lits.push(literals.get(i));
             this.coefs.push(coefficients.get(i));
         }
@@ -425,7 +425,7 @@ public class WeightedMaxSatDecorator extends PBSolverDecorator implements Weight
         if (literals.size() != coefficients.size()) {
             throw new IllegalArgumentException();
         }
-        for (int i = 0; i < literals.size(); i++) {
+        for (var i = 0; i < literals.size(); i++) {
             this.lits.push(literals.get(i));
             this.coefs.push(BigInteger.valueOf(coefficients.get(i)));
         }

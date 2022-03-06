@@ -65,7 +65,7 @@ public class MinCostDecorator extends PBSolverDecorator implements
 
     private final IVecInt vars = new VecInt();
 
-    private final IVec<BigInteger> coeffs = new Vec<BigInteger>();
+    private final IVec<BigInteger> coeffs = new Vec<>();
 
     private long objectivevalue;
 
@@ -99,10 +99,9 @@ public class MinCostDecorator extends PBSolverDecorator implements
     @Override
     public int newVar(int howmany) {
         this.costs = new int[howmany + 1];
-        // Arrays.fill(costs, 1);
         this.vars.clear();
         this.coeffs.clear();
-        for (int i = 1; i <= howmany; i++) {
+        for (var i = 1; i <= howmany; i++) {
             this.vars.push(i);
             this.coeffs.push(BigInteger.ZERO);
         }
@@ -112,27 +111,27 @@ public class MinCostDecorator extends PBSolverDecorator implements
     }
 
     /**
-     * to know the cost of a given var.
+     * to know the cost of a given variable.
      * 
-     * @param var
+     * @param variable
      *            a variable in dimacs format
      * @return the cost of that variable when assigned to true
      */
-    public int costOf(int var) {
-        return this.costs[var];
+    public int costOf(int variable) {
+        return this.costs[variable];
     }
 
     /**
-     * to set the cost of a given var.
-     * 
-     * @param var
+     * to set the cost of a given variable.
+     *
+     * @param variable
      *            a variable in dimacs format
      * @param cost
-     *            the cost of var when assigned to true
+     *            the cost of the variable when assigned to true
      */
-    public void setCost(int var, int cost) {
-        this.costs[var] = cost;
-        this.coeffs.set(var - 1, BigInteger.valueOf(cost));
+    public void setCost(int variable, int cost) {
+        this.costs[variable] = cost;
+        this.coeffs.set(variable - 1, BigInteger.valueOf(cost));
     }
 
     public boolean admitABetterSolution() throws TimeoutException {
@@ -166,8 +165,8 @@ public class MinCostDecorator extends PBSolverDecorator implements
     }
 
     private int calculateDegree(int[] prevmodel2) {
-        int tmpcost = 0;
-        for (int i = 1; i < this.costs.length; i++) {
+        var tmpcost = 0;
+        for (var i = 1; i < this.costs.length; i++) {
             if (prevmodel2[i - 1] > 0) {
                 tmpcost += this.costs[i];
             }
@@ -219,7 +218,6 @@ public class MinCostDecorator extends PBSolverDecorator implements
     }
 
     public void setTimeoutForFindingBetterSolution(int seconds) {
-        // TODO
         throw new UnsupportedOperationException("No implemented yet");
     }
 }
