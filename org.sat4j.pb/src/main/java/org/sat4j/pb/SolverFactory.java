@@ -79,7 +79,6 @@ import org.sat4j.pb.core.PBSolverCPLongReduceToCard;
 import org.sat4j.pb.core.PBSolverCPLongRounding;
 import org.sat4j.pb.core.PBSolverCPReduceByGCD;
 import org.sat4j.pb.core.PBSolverCPReduceByPowersOf2;
-//import org.sat4j.pb.core.PBSolverCard;
 import org.sat4j.pb.core.PBSolverCautious;
 import org.sat4j.pb.core.PBSolverClause;
 import org.sat4j.pb.core.PBSolverResCP;
@@ -191,15 +190,13 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static PBSolverCP newCompetPBCPMixedConstraintsLongMaxObjective() {
-        PBSolverCP s = newPBCP(new PBLongMaxClauseCardConstrDataStructure(),
+        return newPBCP(new PBLongMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective());
-        return s;
     }
 
     public static PBSolverCP newCompetPBCPRemoveSatisfiedMixedConstraintsLongMaxObjective() {
-        PBSolverCP s = newPBCP(new PBLongMaxClauseCardConstrDataStructure(),
+        return newPBCP(new PBLongMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), false, SkipStrategy.NO_SKIP);
-        return s;
     }
 
     public static PBSolverCP newCompetPBCPMixedConstraintsLongMinObjective() {
@@ -216,27 +213,24 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      *         recorded.
      */
     public static PBSolverCP newPBCPMixedConstraintsObjectiveLearnJustClauses() {
-        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<PBDataStructureFactory>();
-        PBSolverCP solver = new PBSolverCP(learning,
+        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<>();
+        return new PBSolverCP(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective());
-        return solver;
     }
 
     public static PBSolverCP newCompetPBCPMixedConstraintsObjectiveLearnJustClauses() {
-        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<PBDataStructureFactory>();
-        PBSolverCP solver = new PBSolverCP(learning,
+        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<>();
+        return new PBSolverCP(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective());
-        return solver;
     }
 
     private static PBSolverCP newPBKiller(IPhaseSelectionStrategy phase) {
-        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<PBDataStructureFactory>();
-        PBSolverCP solver = new PBSolverCP(learning,
+        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<>();
+        return new PBSolverCP(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(phase));
-        return solver;
     }
 
     public static PBSolverCP newPBKillerRSAT() {
@@ -252,11 +246,10 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     private static PBSolverCP newCompetPBKiller(IPhaseSelectionStrategy phase) {
-        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<PBDataStructureFactory>();
-        PBSolverCP solver = new PBSolverCP(learning,
+        ClauseOnlyLearning<PBDataStructureFactory> learning = new ClauseOnlyLearning<>();
+        return new PBSolverCP(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(phase));
-        return solver;
     }
 
     public static PBSolverCP newCompetPBKillerRSAT() {
@@ -277,34 +270,10 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      *         constraint learning. Clauses and cardinalities with watched
      *         literals are also handled (and learnt). A specific heuristics
      *         taking into account the objective value is used. Conflict
-     *         analysis reduces to cardinalities to avoid computations
-     */
-    // public static PBSolverCP
-    // newCardLearningOPBLongClauseCardConstrMaxSpecificOrderIncrementalReductionToCardinality()
-    // {
-    // // LimitedLearning learning = new LimitedLearning(10);
-    // MiniSATLearning<PBDataStructureFactory> learning = new
-    // MiniSATLearning<PBDataStructureFactory>();
-    // // LearningStrategy learning = new NoLearningButHeuristics();
-    // PBSolverCP solver = new PBSolverCard(learning,
-    // new PBLongMaxClauseCardConstrDataStructure(),
-    // new VarOrderHeapObjective());
-    // learning.setDataStructureFactory(solver.getDSFactory());
-    // learning.setVarActivityListener(solver);
-    // return solver;
-    // }
-
-    /**
-     * @return MiniLearning with Counter-based pseudo boolean constraints and
-     *         constraint learning. Clauses and cardinalities with watched
-     *         literals are also handled (and learnt). A specific heuristics
-     *         taking into account the objective value is used. Conflict
      *         analysis reduces to clauses to avoid computations
      */
     public static PBSolverCP newMiniLearningOPBClauseCardConstrMaxSpecificOrderIncrementalReductionToClause() {
-        // LimitedLearning learning = new LimitedLearning(10);
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
-        // LearningStrategy learning = new NoLearningButHeuristics();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverClause(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective());
@@ -321,8 +290,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      *         constraints are not learnt (watched), just used for backjumping.
      */
     public static PBSolverCP newPBCPMixedConstraintsObjectiveNoLearning() {
-        NoLearningButHeuristics<PBDataStructureFactory> learning = new NoLearningButHeuristics<PBDataStructureFactory>();
-        // SearchParams params = new SearchParams(1.1,100);
+        NoLearningButHeuristics<PBDataStructureFactory> learning = new NoLearningButHeuristics<>();
         PBSolverCP solver = new PBSolverCP(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective());
@@ -331,7 +299,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static PBSolverResolution newPBResMixedConstraintsObjective() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverResolution solver = new PBSolverResolution(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), new MiniSATRestarts());
@@ -367,18 +335,18 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     public static PBSolverResolution newCompetPBResMixedConstraintsObjectiveExpSimp(
             PBDataStructureFactory dsf) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverResolution solver = new PBSolverResolution(learning, dsf,
                 new VarOrderHeapObjective(new RSATPhaseSelectionStrategy()),
                 new ArminRestarts());
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
     public static PBSolverResolution newPBResHTMixedConstraintsObjective() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         AbstractPBDataStructureFactory ds = new CompetResolutionPBMixedHTClauseCardConstrDataStructure();
         ds.setNormalizer(AbstractPBDataStructureFactory.NO_COMPETITION);
         PBSolverResolution solver = new PBSolverResolution(learning, ds,
@@ -389,7 +357,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static PBSolverResolution newCompetPBResMinHTMixedConstraintsObjective() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverResolution solver = new PBSolverResolution(learning,
                 new CompetMinHTmixedClauseCardConstrDataStructureFactory(),
                 new VarOrderHeapObjective(), new MiniSATRestarts());
@@ -399,7 +367,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static PBSolverResolution newPBResMinHTMixedConstraintsObjective() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         AbstractPBDataStructureFactory ds = new CompetMinHTmixedClauseCardConstrDataStructureFactory();
         ds.setNormalizer(AbstractPBDataStructureFactory.NO_COMPETITION);
         PBSolverResolution solver = new PBSolverResolution(learning, ds,
@@ -411,19 +379,19 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     public static PBSolverResolution newCompetPBResMixedConstraintsObjectiveExpSimp() {
         PBSolverResolution solver = newPBResMixedConstraintsObjective();
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
     public static PBSolverResolution newPBResHTMixedConstraintsObjectiveExpSimp() {
         PBSolverResolution solver = newPBResHTMixedConstraintsObjective();
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
     public static PBSolverResolution newCompetPBResMinHTMixedConstraintsObjectiveExpSimp() {
         PBSolverResolution solver = newCompetPBResMinHTMixedConstraintsObjective();
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -435,7 +403,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      *         planes.
      */
     public static PBSolverClause newPBCPMixedConstraintsReduceToClause() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverClause solver = new PBSolverClause(learning,
                 new PBMaxClauseCardConstrDataStructure(), new VarOrderHeap());
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -447,30 +415,11 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      * @return MiniSAT with Counter-based pseudo boolean constraints and
      *         constraint learning. Clauses and cardinalities with watched
      *         literals are also handled (and learnt). A reduction of
-     *         PB-constraints to cardinalities is made in order to simplify
-     *         cutting planes.
-     */
-    // public static PBSolverCard
-    // newPBCPMixedLongConstraintsReduceToCardinality() {
-    // MiniSATLearning<PBDataStructureFactory> learning = new
-    // MiniSATLearning<PBDataStructureFactory>();
-    // PBSolverCard solver = new PBSolverCard(learning,
-    // new PBLongMaxClauseCardConstrDataStructure(),
-    // new VarOrderHeap());
-    // learning.setDataStructureFactory(solver.getDSFactory());
-    // learning.setVarActivityListener(solver);
-    // return solver;
-    // }
-
-    /**
-     * @return MiniSAT with Counter-based pseudo boolean constraints and
-     *         constraint learning. Clauses and cardinalities with watched
-     *         literals are also handled (and learnt). A reduction of
      *         PB-constraints to clauses is made in order to simplify cutting
      *         planes (if coefficients are larger than bound).
      */
     public static PBSolverCautious newPBCPMixedConstraintsCautious(int bound) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCautious solver = new PBSolverCautious(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), bound);
@@ -491,13 +440,13 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      *         planes (if coefficients are larger than bound).
      */
     public static PBSolverResCP newPBCPMixedConstraintsResCP(long bound) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverResCP solver = new PBSolverResCP(learning,
                 new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(), bound);
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -512,7 +461,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      *         applied which adds implied clauses from PB-constraints.
      */
     public static PBSolverWithImpliedClause newPBCPMixedConstrainsImplied() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverWithImpliedClause solver = new PBSolverWithImpliedClause(
                 learning, new PBMaxClauseCardConstrDataStructure(),
                 new VarOrderHeap());
@@ -557,7 +506,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     private static PBSolverResolution newPBRes(PBDataStructureFactory dsf) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverResolution solver = new PBSolverResolution(learning, dsf,
                 new VarOrderHeap(), new MiniSATRestarts());
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -599,7 +548,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     private static PBSolverCP newPBCP(PBDataStructureFactory dsf, IOrder order,
             boolean noRemove, SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCP(learning, dsf, order, noRemove,
                 skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -612,7 +561,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     private static PBSolverCP newPBCPReduceByPowersOf2(
             PBDataStructureFactory dsf, IOrder order, boolean noRemove,
             SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPReduceByPowersOf2(learning, dsf,
                 order, noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -624,7 +573,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     private static PBSolverCP newPBCPReduceByGCD(PBDataStructureFactory dsf,
             IOrder order, boolean noRemove, SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPReduceByGCD(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -636,11 +585,9 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     private static PBSolverCP newPBCPStar(PBDataStructureFactory dsf,
             IOrder order, boolean noRemove, SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPLong(learning, dsf, order, noRemove,
                 skipAllow);
-        // PBSolverCP solver = new PBSolverCautious(learning, dsf, order,
-        // PBSolverCautious.BOUND);
         learning.setDataStructureFactory(solver.getDSFactory());
         learning.setVarActivityListener(solver);
         solver.setRestartStrategy(new ArminRestarts());
@@ -651,7 +598,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     private static PBSolverCP newPBCPStarClauseLearning(
             PBDataStructureFactory dsf, IOrder order, boolean noRemove,
             SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPClauseLearning(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -664,7 +611,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     private static PBSolverCP newPBCPStarCardLearning(
             PBDataStructureFactory dsf, IOrder order, boolean noRemove,
             SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPCardLearning(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -676,7 +623,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     private static PBSolverCP newPBCPStarDivideBy2(PBDataStructureFactory dsf,
             IOrder order, boolean noRemove, SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPLongDivideBy2(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -688,7 +635,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     private static PBSolverCP newPBCPStarDivideByGCD(PBDataStructureFactory dsf,
             IOrder order, boolean noRemove, SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPLongDivideByGCD(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -700,7 +647,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
 
     private static PBSolverCP newPBCPStarRounding(PBDataStructureFactory dsf,
             IOrder order, boolean noRemove, SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPLongRounding(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -713,7 +660,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     private static PBSolverCP newPBCPStarReduceToCard(
             PBDataStructureFactory dsf, IOrder order, boolean noRemove,
             SkipStrategy skipAllow) {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverCP solver = new PBSolverCPLongReduceToCard(learning, dsf, order,
                 noRemove, skipAllow);
         learning.setDataStructureFactory(solver.getDSFactory());
@@ -879,7 +826,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
         solver.setSimplifier(Solver.NO_SIMPLIFICATION);
         solver.setRestartStrategy(new Glucose21Restarts());
         solver.setLearnedConstraintsDeletionStrategy(solver.lbdBased);
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -951,7 +898,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     public static PBSolverResolution newUNSAT() {
         PBSolverResolution solver = newResolutionGlucose();
         solver.setRestartStrategy(new NoRestarts());
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
@@ -995,7 +942,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      */
     public static PBSolverResolution newResolutionGlucoseSimpleSimp() {
         PBSolverResolution solver = newResolutionGlucose();
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
@@ -1010,7 +957,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      */
     public static PBSolverResolution newResolutionGlucoseExpSimp() {
         PBSolverResolution solver = newResolutionGlucose();
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -1024,7 +971,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     public static IPBSolver newSimpleSimplification() {
         PBSolverResolution solver = newCompetPBResWLMixedConstraintsObjectiveExpSimp();
         solver.setLearnedConstraintsDeletionStrategy(solver.lbdBased);
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
@@ -1126,7 +1073,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newEclipseP2() {
-        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<PBDataStructureFactory>();
+        MiniSATLearning<PBDataStructureFactory> learning = new MiniSATLearning<>();
         PBSolverResolution solver = new PBSolverResolution(learning,
                 new CompetResolutionPBMixedHTClauseCardConstrDataStructure(),
                 new VarOrderHeapObjective(new RSATPhaseSelectionStrategy()),
@@ -1141,13 +1088,13 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static PreprocCardConstrLearningSolver<IPBSolver> newDetectCards() {
-        return new PreprocCardConstrLearningSolver<IPBSolver>(
+        return new PreprocCardConstrLearningSolver<>(
                 SolverFactory.newCuttingPlanes());
     }
 
     public static PreprocCardConstrLearningSolver<IPBSolver> newDetectCardsAndExit() {
-        return new PreprocCardConstrLearningSolver<IPBSolver>(
-                SolverFactory.newDefault(), true);
+        return new PreprocCardConstrLearningSolver<>(SolverFactory.newDefault(),
+                true);
     }
 
     public static IPBSolver newInprocDetectCards() {
@@ -1165,15 +1112,13 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     }
 
     public static IPBSolver newLazyInprocDetectCards() {
-        return new InprocCardConstrLearningSolver(
-                new MiniSATLearning<PBDataStructureFactory>(),
+        return new InprocCardConstrLearningSolver(new MiniSATLearning<>(),
                 new PBMaxClauseCardConstrDataStructure(), new VarOrderHeap(),
                 true, SkipStrategy.NO_SKIP);
     }
 
     public static IPBSolver newLazyInprocDetectCardsSkip() {
-        return new InprocCardConstrLearningSolver(
-                new MiniSATLearning<PBDataStructureFactory>(),
+        return new InprocCardConstrLearningSolver(new MiniSATLearning<>(),
                 new PBMaxClauseCardConstrDataStructure(), new VarOrderHeap(),
                 true, SkipStrategy.SKIP);
     }

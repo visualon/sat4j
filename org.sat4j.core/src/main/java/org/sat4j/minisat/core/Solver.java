@@ -770,14 +770,66 @@ public class Solver<D extends DataStructureFactory>
     };
 
     @Feature(value = "simplifications", parent = "expert")
-    public final ISimplifier SIMPLE_SIMPLIFICATION = new ISimplifier() {
+    public final ISimplifier simpleSimplification = new ISimplifier() {
         /**
          * 
          */
         private static final long serialVersionUID = 1L;
 
         public void simplify(IVecInt conflictToReduce) {
-            simpleSimplification(conflictToReduce);
+            // MiniSat -- Copyright (c) 2003-2005, Niklas Een, Niklas Sorensson
+            //
+            // Permission is hereby granted, free of charge, to any person
+            // obtaining a
+            // copy of this software and associated documentation files (the
+            // "Software"), to deal in the Software without restriction,
+            // including
+            // without limitation the rights to use, copy, modify, merge,
+            // publish,
+            // distribute, sublicense, and/or sell copies of the Software, and
+            // to
+            // permit persons to whom the Software is furnished to do so,
+            // subject to
+            // the following conditions:
+            //
+            // The above copyright notice and this permission notice shall be
+            // included
+            // in all copies or substantial portions of the Software.
+            //
+            // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+            // EXPRESS
+            // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+            // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+            // NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+            // HOLDERS BE
+            // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+            // ACTION
+            // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+            // CONNECTION
+            // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+            // Taken from MiniSAT 1.14: Simplify conflict clause (a little):
+
+            int i, j, p;
+            final boolean[] seen = mseen;
+            IConstr r;
+            for (i = j = 1; i < conflictToReduce.size(); i++) {
+                r = voc.getReason(conflictToReduce.get(i));
+                if (r == null || r.canBePropagatedMultipleTimes()) {
+                    conflictToReduce.moveTo(j++, i);
+                } else {
+                    for (var k = 0; k < r.size(); k++) {
+                        p = r.get(k);
+                        if (!seen[p >> 1] && voc.isFalsified(p)
+                                && voc.getLevel(p) != 0) {
+                            conflictToReduce.moveTo(j++, i);
+                            break;
+                        }
+                    }
+                }
+            }
+            conflictToReduce.shrink(i - j);
+            stats.incReducedliterals(i - j);
         }
 
         @Override
@@ -787,7 +839,7 @@ public class Solver<D extends DataStructureFactory>
     };
 
     @Feature(value = "simplifications", parent = "expert")
-    public final ISimplifier EXPENSIVE_SIMPLIFICATION = new ISimplifier() {
+    public final ISimplifier expensiveSimplification = new ISimplifier() {
 
         /**
          * 
@@ -795,7 +847,69 @@ public class Solver<D extends DataStructureFactory>
         private static final long serialVersionUID = 1L;
 
         public void simplify(IVecInt conflictToReduce) {
-            expensiveSimplification(conflictToReduce);
+            // Taken from MiniSAT 1.14
+
+            // Simplify conflict clause (a lot):
+            //
+            int i, j;
+            // (maintain an abstraction of levels involved in conflict)
+            analyzetoclear.clear();
+            conflictToReduce.copyTo(analyzetoclear);
+            for (i = 1, j = 1; i < conflictToReduce.size(); i++) {
+                if (voc.getReason(conflictToReduce.get(i)) == null
+                        || !analyzeRemovable(conflictToReduce.get(i))) {
+                    conflictToReduce.moveTo(j++, i);
+                }
+            }
+            conflictToReduce.shrink(i - j);
+            stats.incReducedliterals(i - j);
+        }
+
+        // Check if 'p' can be removed.' min_level' is used to abort early if
+        // visiting literals at a level that cannot be removed.
+        //
+        private boolean analyzeRemovable(int p) {
+            assert voc.getReason(p) != null;
+            ILits lvoc = voc;
+            IVecInt lanalyzestack = analyzestack;
+            IVecInt lanalyzetoclear = analyzetoclear;
+            lanalyzestack.clear();
+            lanalyzestack.push(p);
+            final boolean[] seen = mseen;
+            int top = lanalyzetoclear.size();
+            while (lanalyzestack.size() > 0) {
+                int q = lanalyzestack.last();
+                assert lvoc.getReason(q) != null;
+                Constr c = lvoc.getReason(q);
+                lanalyzestack.pop();
+                if (c.canBePropagatedMultipleTimes()) {
+                    for (int j = top; j < lanalyzetoclear.size(); j++) {
+                        seen[lanalyzetoclear.get(j) >> 1] = false;
+                    }
+                    lanalyzetoclear.shrink(lanalyzetoclear.size() - top);
+                    return false;
+                }
+                for (var i = 0; i < c.size(); i++) {
+                    int l = c.get(i);
+                    if (!seen[var(l)] && lvoc.isFalsified(l)
+                            && lvoc.getLevel(l) != 0) {
+                        if (lvoc.getReason(l) == null) {
+                            for (int j = top; j < lanalyzetoclear.size(); j++) {
+                                seen[lanalyzetoclear.get(j) >> 1] = false;
+                            }
+                            lanalyzetoclear
+                                    .shrink(lanalyzetoclear.size() - top);
+                            return false;
+                        }
+                        seen[l >> 1] = true;
+                        lanalyzestack.push(l);
+                        lanalyzetoclear.push(l);
+                    }
+                }
+
+            }
+
+            return true;
         }
 
         @Override
@@ -805,7 +919,7 @@ public class Solver<D extends DataStructureFactory>
     };
 
     @Feature(value = "simplifications", parent = "expert")
-    public final ISimplifier EXPENSIVE_SIMPLIFICATION_WLONLY = new ISimplifier() {
+    public final ISimplifier expensiveSimplificationWLOnly = new ISimplifier() {
 
         /**
          * 
@@ -813,8 +927,59 @@ public class Solver<D extends DataStructureFactory>
         private static final long serialVersionUID = 1L;
 
         public void simplify(IVecInt conflictToReduce) {
-            expensiveSimplificationWLOnly(conflictToReduce);
+            // Taken from MiniSAT 1.14
+
+            // Simplify conflict clause (a lot):
+            //
+            int i, j;
+            // (maintain an abstraction of levels involved in conflict)
+            analyzetoclear.clear();
+            conflictToReduce.copyTo(analyzetoclear);
+            for (i = 1, j = 1; i < conflictToReduce.size(); i++) {
+                if (voc.getReason(conflictToReduce.get(i)) == null
+                        || !analyzeRemovableWLOnly(conflictToReduce.get(i))) {
+                    conflictToReduce.moveTo(j++, i);
+                }
+            }
+            conflictToReduce.shrink(i - j);
+            stats.incReducedliterals(i - j);
         }
+
+        // Check if 'p' can be removed.' min_level' is used to abort early if
+        // visiting literals at a level that cannot be removed.
+        //
+        private boolean analyzeRemovableWLOnly(int p) {
+            assert voc.getReason(p) != null;
+            analyzestack.clear();
+            analyzestack.push(p);
+            final boolean[] seen = mseen;
+            int top = analyzetoclear.size();
+            while (analyzestack.size() > 0) {
+                int q = analyzestack.last();
+                assert voc.getReason(q) != null;
+                Constr c = voc.getReason(q);
+                analyzestack.pop();
+                for (var i = 1; i < c.size(); i++) {
+                    int l = c.get(i);
+                    if (!seen[var(l)] && voc.getLevel(l) != 0) {
+                        if (voc.getReason(l) == null) {
+                            for (int j = top; j < analyzetoclear.size(); j++) {
+                                seen[analyzetoclear.get(j) >> 1] = false;
+                            }
+                            analyzetoclear.shrink(analyzetoclear.size() - top);
+                            return false;
+                        }
+                        seen[l >> 1] = true;
+                        analyzestack.push(l);
+                        analyzetoclear.push(l);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // END Minisat 1.14 cut and paste
 
         @Override
         public String toString() {
@@ -862,173 +1027,9 @@ public class Solver<D extends DataStructureFactory>
         return this.simplifier;
     }
 
-    // MiniSat -- Copyright (c) 2003-2005, Niklas Een, Niklas Sorensson
-    //
-    // Permission is hereby granted, free of charge, to any person obtaining a
-    // copy of this software and associated documentation files (the
-    // "Software"), to deal in the Software without restriction, including
-    // without limitation the rights to use, copy, modify, merge, publish,
-    // distribute, sublicense, and/or sell copies of the Software, and to
-    // permit persons to whom the Software is furnished to do so, subject to
-    // the following conditions:
-    //
-    // The above copyright notice and this permission notice shall be included
-    // in all copies or substantial portions of the Software.
-    //
-    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-    // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    // NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-    // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-    // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-    // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-    // Taken from MiniSAT 1.14: Simplify conflict clause (a little):
-    private void simpleSimplification(IVecInt conflictToReduce) {
-        int i, j, p;
-        final boolean[] seen = this.mseen;
-        IConstr r;
-        for (i = j = 1; i < conflictToReduce.size(); i++) {
-            r = this.voc.getReason(conflictToReduce.get(i));
-            if (r == null || r.canBePropagatedMultipleTimes()) {
-                conflictToReduce.moveTo(j++, i);
-            } else {
-                for (int k = 0; k < r.size(); k++) {
-                    p = r.get(k);
-                    if (!seen[p >> 1] && this.voc.isFalsified(p)
-                            && this.voc.getLevel(p) != 0) {
-                        conflictToReduce.moveTo(j++, i);
-                        break;
-                    }
-                }
-            }
-        }
-        conflictToReduce.shrink(i - j);
-        this.stats.incReducedliterals(i - j);
-    }
-
     private final IVecInt analyzetoclear = new VecInt();
 
     private final IVecInt analyzestack = new VecInt();
-
-    // Taken from MiniSAT 1.14
-    private void expensiveSimplification(IVecInt conflictToReduce) {
-        // Simplify conflict clause (a lot):
-        //
-        int i, j;
-        // (maintain an abstraction of levels involved in conflict)
-        this.analyzetoclear.clear();
-        conflictToReduce.copyTo(this.analyzetoclear);
-        for (i = 1, j = 1; i < conflictToReduce.size(); i++) {
-            if (this.voc.getReason(conflictToReduce.get(i)) == null
-                    || !analyzeRemovable(conflictToReduce.get(i))) {
-                conflictToReduce.moveTo(j++, i);
-            }
-        }
-        conflictToReduce.shrink(i - j);
-        this.stats.incReducedliterals(i - j);
-    }
-
-    // Check if 'p' can be removed.' min_level' is used to abort early if
-    // visiting literals at a level that cannot be removed.
-    //
-    private boolean analyzeRemovable(int p) {
-        assert this.voc.getReason(p) != null;
-        ILits lvoc = this.voc;
-        IVecInt lanalyzestack = this.analyzestack;
-        IVecInt lanalyzetoclear = this.analyzetoclear;
-        lanalyzestack.clear();
-        lanalyzestack.push(p);
-        final boolean[] seen = this.mseen;
-        int top = lanalyzetoclear.size();
-        while (lanalyzestack.size() > 0) {
-            int q = lanalyzestack.last();
-            assert lvoc.getReason(q) != null;
-            Constr c = lvoc.getReason(q);
-            lanalyzestack.pop();
-            if (c.canBePropagatedMultipleTimes()) {
-                for (int j = top; j < lanalyzetoclear.size(); j++) {
-                    seen[lanalyzetoclear.get(j) >> 1] = false;
-                }
-                lanalyzetoclear.shrink(lanalyzetoclear.size() - top);
-                return false;
-            }
-            for (int i = 0; i < c.size(); i++) {
-                int l = c.get(i);
-                if (!seen[var(l)] && lvoc.isFalsified(l)
-                        && lvoc.getLevel(l) != 0) {
-                    if (lvoc.getReason(l) == null) {
-                        for (int j = top; j < lanalyzetoclear.size(); j++) {
-                            seen[lanalyzetoclear.get(j) >> 1] = false;
-                        }
-                        lanalyzetoclear.shrink(lanalyzetoclear.size() - top);
-                        return false;
-                    }
-                    seen[l >> 1] = true;
-                    lanalyzestack.push(l);
-                    lanalyzetoclear.push(l);
-                }
-            }
-
-        }
-
-        return true;
-    }
-
-    // Taken from MiniSAT 1.14
-    private void expensiveSimplificationWLOnly(IVecInt conflictToReduce) {
-        // Simplify conflict clause (a lot):
-        //
-        int i, j;
-        // (maintain an abstraction of levels involved in conflict)
-        this.analyzetoclear.clear();
-        conflictToReduce.copyTo(this.analyzetoclear);
-        for (i = 1, j = 1; i < conflictToReduce.size(); i++) {
-            if (this.voc.getReason(conflictToReduce.get(i)) == null
-                    || !analyzeRemovableWLOnly(conflictToReduce.get(i))) {
-                conflictToReduce.moveTo(j++, i);
-            }
-        }
-        conflictToReduce.shrink(i - j);
-        this.stats.incReducedliterals(i - j);
-    }
-
-    // Check if 'p' can be removed.' min_level' is used to abort early if
-    // visiting literals at a level that cannot be removed.
-    //
-    private boolean analyzeRemovableWLOnly(int p) {
-        assert this.voc.getReason(p) != null;
-        this.analyzestack.clear();
-        this.analyzestack.push(p);
-        final boolean[] seen = this.mseen;
-        int top = this.analyzetoclear.size();
-        while (this.analyzestack.size() > 0) {
-            int q = this.analyzestack.last();
-            assert this.voc.getReason(q) != null;
-            Constr c = this.voc.getReason(q);
-            this.analyzestack.pop();
-            for (int i = 1; i < c.size(); i++) {
-                int l = c.get(i);
-                if (!seen[var(l)] && this.voc.getLevel(l) != 0) {
-                    if (this.voc.getReason(l) == null) {
-                        for (int j = top; j < this.analyzetoclear.size(); j++) {
-                            seen[this.analyzetoclear.get(j) >> 1] = false;
-                        }
-                        this.analyzetoclear
-                                .shrink(this.analyzetoclear.size() - top);
-                        return false;
-                    }
-                    seen[l >> 1] = true;
-                    this.analyzestack.push(l);
-                    this.analyzetoclear.push(l);
-                }
-            }
-        }
-
-        return true;
-    }
-
-    // END Minisat 1.14 cut and paste
 
     /**
      * 
@@ -1068,9 +1069,6 @@ public class Solver<D extends DataStructureFactory>
         confl.incActivity(this.claInc);
         if (confl.getActivity() > CLAUSE_RESCALE_BOUND) {
             claRescalActivity();
-            // for (int i = 0; i < confl.size(); i++) {
-            // varBumpActivity(confl.get(i));
-            // }
         }
     }
 
@@ -1084,7 +1082,7 @@ public class Solver<D extends DataStructureFactory>
     }
 
     private void claRescalActivity() {
-        for (int i = 0; i < this.learnts.size(); i++) {
+        for (var i = 0; i < this.learnts.size(); i++) {
             this.learnts.get(i).rescaleBy(CLAUSE_RESCALE_FACTOR);
         }
         this.claInc *= CLAUSE_RESCALE_FACTOR;

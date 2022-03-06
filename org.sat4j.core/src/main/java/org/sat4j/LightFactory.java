@@ -80,7 +80,7 @@ public class LightFactory extends ASolverFactory<ISolver> {
                 new VarOrderHeap(new RSATPhaseSelectionStrategy()),
                 new ArminRestarts());
         learning.setSolver(solver);
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         solver.setSearchParams(new SearchParams(1.1, 100));
         return solver;
     }

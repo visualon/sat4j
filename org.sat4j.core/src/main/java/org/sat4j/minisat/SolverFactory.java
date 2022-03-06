@@ -114,13 +114,13 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
 
     public static ICDCL<DataStructureFactory> newMiniLearningHeapEZSimp() {
         Solver<DataStructureFactory> solver = newMiniLearningHeap();
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
     public static Solver<DataStructureFactory> newMiniLearningHeapExpSimp() {
         Solver<DataStructureFactory> solver = newMiniLearningHeap();
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -157,7 +157,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                 new VarOrderHeap(new RSATPhaseSelectionStrategy()),
                 new ArminRestarts());
         solver.setSearchParams(new SearchParams(1.1, 100));
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -172,7 +172,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                 new RandomWalkDecorator(
                         new VarOrderHeap(new RSATPhaseSelectionStrategy())),
                 new NoRestarts());
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -188,7 +188,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                         new VarOrderHeap(new RandomLiteralSelectionStrategy()),
                         1.0),
                 new NoRestarts());
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -235,7 +235,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
     public static ICDCL<DataStructureFactory> newBest17() {
         Solver<DataStructureFactory> solver = newBestCurrentSolverConfiguration(
                 new MixedDataStructureSingleWL());
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION_WLONLY);
+        solver.setSimplifier(solver.expensiveSimplificationWLOnly);
         solver.setLearnedConstraintsDeletionStrategy(
                 solver.activityBasedLowMemory);
         LimitedLearning<DataStructureFactory> learning = new PercentLengthLearning<>(
@@ -294,7 +294,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                 new SearchParams(Integer.MAX_VALUE), new VarOrderHeap(),
                 new MiniSATRestarts());
         learning.setSolver(solver);
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
@@ -308,7 +308,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                 new MixedDataStructureDanielWL(), new SearchParams(1000),
                 new VarOrderHeap(), new MiniSATRestarts());
         learning.setSolver(solver);
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
@@ -325,13 +325,13 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      */
     public static ICDCL<DataStructureFactory> newMiniSATHeapEZSimp() {
         Solver<DataStructureFactory> solver = newMiniSATHeap();
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 
     public static ICDCL<DataStructureFactory> newMiniSATHeapExpSimp() {
         Solver<DataStructureFactory> solver = newMiniSATHeap();
-        solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION);
+        solver.setSimplifier(solver.expensiveSimplification);
         return solver;
     }
 
@@ -476,7 +476,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
     public static Solver<DataStructureFactory> newUNSAT() {
         Solver<DataStructureFactory> solver = newGlucose21();
         solver.setRestartStrategy(new NoRestarts());
-        solver.setSimplifier(solver.SIMPLE_SIMPLIFICATION);
+        solver.setSimplifier(solver.simpleSimplification);
         return solver;
     }
 

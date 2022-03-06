@@ -262,7 +262,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
     @Override
     public String toString() {
         var stb = new StringBuilder();
-        for (int i = 0; i < lits.length; i++) {
+        for (var i = 0; i < lits.length; i++) {
             stb.append(lits[i]);
             stb.append("["); //$NON-NLS-1$
             stb.append(voc.valueToString(lits[i]));
