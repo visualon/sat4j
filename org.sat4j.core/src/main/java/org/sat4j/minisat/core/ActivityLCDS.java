@@ -49,7 +49,7 @@ public class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
         learnedConstrs.sort(solver.getActivityComparator());
         int i, j;
         for (i = j = 0; i < learnedConstrs.size() / 2; i++) {
-            Constr c = learnedConstrs.get(i);
+            var c = learnedConstrs.get(i);
             if (c.locked() || c.size() == 2) {
                 learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
@@ -65,7 +65,6 @@ public class ActivityLCDS implements LearnedConstraintsDeletionStrategy {
             solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
                     + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
                     + learnedConstrs.size());
-            // out.flush();
         }
         learnedConstrs.shrinkTo(j);
     }

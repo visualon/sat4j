@@ -95,12 +95,12 @@ public class Solver<D extends DataStructureFactory>
     /**
      * Set of original constraints.
      */
-    protected final IVec<Constr> constrs = new Vec<Constr>();
+    protected final IVec<Constr> constrs = new Vec<>();
 
     /**
      * Set of learned constraints.
      */
-    protected final IVec<Constr> learnts = new Vec<Constr>();
+    protected final IVec<Constr> learnts = new Vec<>();
 
     /**
      * Increment for clause activity.
@@ -155,13 +155,13 @@ public class Solver<D extends DataStructureFactory>
 
     private SearchParams params;
 
-    private final IVecInt __dimacs_out = new VecInt();
+    private final IVecInt internalDimacsReusableVector = new VecInt();
 
     protected SearchListener slistener = new VoidTracing();
 
     private RestartStrategy restarter;
 
-    private final Map<String, Counter> constrTypes = new HashMap<String, Counter>();
+    private final Map<String, Counter> constrTypes = new HashMap<>();
 
     private boolean isDBSimplificationAllowed = false;
 
@@ -195,18 +195,19 @@ public class Solver<D extends DataStructureFactory>
      * @since 2.3.6
      */
     public IVecInt dimacs2internal(IVecInt in) {
-        this.__dimacs_out.clear();
-        this.__dimacs_out.ensure(in.size());
+        this.internalDimacsReusableVector.clear();
+        this.internalDimacsReusableVector.ensure(in.size());
         int p;
-        for (int i = 0; i < in.size(); i++) {
+        for (var i = 0; i < in.size(); i++) {
             p = in.get(i);
             if (p == 0) {
                 throw new IllegalArgumentException(
                         "0 is not a valid variable identifier");
             }
-            this.__dimacs_out.unsafePush(this.voc.getFromPool(p));
+            this.internalDimacsReusableVector
+                    .unsafePush(this.voc.getFromPool(p));
         }
-        return this.__dimacs_out;
+        return this.internalDimacsReusableVector;
     }
 
     /*
@@ -287,7 +288,7 @@ public class Solver<D extends DataStructureFactory>
      * 
      * @see org.sat4j.minisat.core.ICDCL#getSearchListener()
      */
-    public <S extends ISolverService> SearchListener<S> getSearchListener() {
+    public SearchListener<? extends ISolverService> getSearchListener() {
         return this.slistener;
     }
 
@@ -412,6 +413,9 @@ public class Solver<D extends DataStructureFactory>
         return this.trailLim.size();
     }
 
+    /**
+     * @deprecated use {@link #newVar(int)} instead.
+     */
     @Deprecated
     public int newVar() {
         int index = this.voc.nVars() + 1;
@@ -496,7 +500,7 @@ public class Solver<D extends DataStructureFactory>
 
     public IConstr addExactly(IVecInt literals, int n)
             throws ContradictionException {
-        ConstrGroup group = new ConstrGroup(false);
+        var group = new ConstrGroup(false);
         group.add(addAtLeast(literals, n));
         group.add(addAtMost(literals, n));
         return group;
@@ -512,9 +516,9 @@ public class Solver<D extends DataStructureFactory>
         // Simplifie la base de clauses apres la premiere propagation des
         // clauses unitaires
         IVec<Constr>[] cs = new IVec[] { this.constrs, this.learnts };
-        for (int type = 0; type < 2; type++) {
-            int j = 0;
-            for (int i = 0; i < cs[type].size(); i++) {
+        for (var type = 0; type < 2; type++) {
+            var j = 0;
+            for (var i = 0; i < cs[type].size(); i++) {
                 if (cs[type].get(i).simplify()) {
                     // enleve les contraintes satisfaites de la base
                     cs[type].get(i).remove(this);
@@ -537,7 +541,7 @@ public class Solver<D extends DataStructureFactory>
             throw new UnsupportedOperationException(
                     "Call the solve method first!!!"); //$NON-NLS-1$
         }
-        int[] nmodel = new int[this.model.length];
+        var nmodel = new int[this.model.length];
         System.arraycopy(this.model, 0, nmodel, 0, this.model.length);
         return nmodel;
     }
@@ -599,15 +603,15 @@ public class Solver<D extends DataStructureFactory>
 
         outLearnt.clear();
         assert outLearnt.size() == 0;
-        for (int i = 0; i < seen.length; i++) {
+        for (var i = 0; i < seen.length; i++) {
             seen[i] = false;
         }
 
-        int counter = 0;
+        var counter = 0;
         int p = ILits.UNDEFINED;
         // placeholder for the asserting literal
         outLearnt.push(ILits.UNDEFINED);
-        int outBtlevel = 0;
+        var outBtlevel = 0;
         IConstr prevConfl = null;
 
         do {
@@ -618,7 +622,7 @@ public class Solver<D extends DataStructureFactory>
                 this.learnedConstraintsDeletionStrategy
                         .onConflictAnalysis(confl);
                 // Trace reason for p
-                for (int j = 0; j < preason.size(); j++) {
+                for (var j = 0; j < preason.size(); j++) {
                     int q = preason.get(j);
                     this.order.updateVar(q);
                     if (!seen[q >> 1]) {
@@ -693,7 +697,7 @@ public class Solver<D extends DataStructureFactory>
         }
 
         assert outLearnt.size() == 0;
-        for (int i = 0; i < seen.length; i++) {
+        for (var i = 0; i < seen.length; i++) {
             seen[i] = false;
         }
 
@@ -722,7 +726,7 @@ public class Solver<D extends DataStructureFactory>
             preason.clear();
             confl.calcReason(p, preason);
             // Trace reason for p
-            for (int j = 0; j < preason.size(); j++) {
+            for (var j = 0; j < preason.size(); j++) {
                 int q = preason.get(j);
                 if (!seen[q >> 1]) {
                     seen[q >> 1] = true;
@@ -1086,7 +1090,7 @@ public class Solver<D extends DataStructureFactory>
         this.claInc *= CLAUSE_RESCALE_FACTOR;
     }
 
-    final IVec<Propagatable> watched = new Vec<Propagatable>();
+    final IVec<Propagatable> watched = new Vec<>();
 
     /**
      * @return null if not conflict is found, else a conflicting constraint.
@@ -1120,32 +1124,24 @@ public class Solver<D extends DataStructureFactory>
         lwatched.clear();
         this.voc.watches(p).moveTo(lwatched);
         final int size = lwatched.size();
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             this.stats.incInspects();
-            // try shortcut
-            // shortcut = shortcuts.get(i);
-            // if (shortcut != ILits.UNDEFINED && voc.isSatisfied(shortcut))
-            // {
-            // voc.watch(p, watched.get(i), shortcut);
-            // stats.shortcuts++;
-            // continue;
-            // }
             if (!lwatched.get(i).propagate(this, p)) {
                 // Constraint is conflicting: copy remaining watches to
                 // watches[p]
                 // and return constraint
                 final int sizew = lwatched.size();
-                for (int j = i + 1; j < sizew; j++) {
+                for (var j = i + 1; j < sizew; j++) {
                     this.voc.watch(p, lwatched.get(j));
                 }
-                this.qhead = this.trail.size(); // propQ.clear();
+                this.qhead = this.trail.size();
                 return lwatched.get(i).toConstraint();
             }
         }
         return null;
     }
 
-    void record(Constr constr) {
+    void recordConstraint(Constr constr) {
         constr.assertConstraint(this);
         int p = toDimacs(constr.get(0));
         this.slistener.adding(p);
@@ -1174,7 +1170,6 @@ public class Solver<D extends DataStructureFactory>
      * Revert to the state before the last assume()
      */
     void cancel() {
-        // assert trail.size() == qhead || !undertimeout;
         int decisionvar = this.trail.unsafeGet(this.trailLim.last());
         this.slistener.backtracking(toDimacs(decisionvar));
         for (int c = this.trail.size() - this.trailLim.last(); c > 0; c--) {
@@ -1189,13 +1184,10 @@ public class Solver<D extends DataStructureFactory>
      */
     private void cancelLearntLiterals(int learnedLiteralsLimit) {
         this.learnedLiterals.clear();
-        // assert trail.size() == qhead || !undertimeout;
         while (this.trail.size() > learnedLiteralsLimit) {
             this.learnedLiterals.push(this.trail.last());
             undoOne();
         }
-        // qhead = 0;
-        // learnedLiterals = 0;
     }
 
     /**
@@ -1230,7 +1222,6 @@ public class Solver<D extends DataStructureFactory>
         this.stats.incStarts();
         int backjumpLevel;
 
-        // varDecay = 1 / params.varDecay;
         this.order.setVarDecay(1 / this.params.getVarDecay());
         this.claDecay = 1 / this.params.getClaDecay();
 
@@ -1258,7 +1249,6 @@ public class Solver<D extends DataStructureFactory>
                         cancelUntil(this.rootLevel);
                         return Lbool.TRUE;
                     } else {
-                        // this.sharedConflict;
                         if (decisionLevel() == rootLevel) {
                             confl = this.sharedConflict;
                             this.sharedConflict = null;
@@ -1292,8 +1282,8 @@ public class Solver<D extends DataStructureFactory>
                         if (p == ILits.UNDEFINED) {
                             // check (expensive) if all the constraints are not
                             // satisfied
-                            boolean allsat = true;
-                            for (int i = 0; i < this.constrs.size(); i++) {
+                            var allsat = true;
+                            for (var i = 0; i < this.constrs.size(); i++) {
                                 if (!this.constrs.get(i).isSatisfied()) {
                                     allsat = false;
                                     break;
@@ -1361,7 +1351,7 @@ public class Solver<D extends DataStructureFactory>
                 if (this.analysisResult.getReason() == null) {
                     return Lbool.FALSE;
                 }
-                record(this.analysisResult.getReason());
+                recordConstraint(this.analysisResult.getReason());
                 this.restarter.newLearnedClause(this.analysisResult.getReason(),
                         conflictTrailLevel);
                 this.analysisResult.setReason(null);
@@ -1406,14 +1396,14 @@ public class Solver<D extends DataStructureFactory>
         assignmentOrigins = new AssignmentOrigin[realNumberOfVariables()];
         this.userbooleanmodel = new boolean[realNumberOfVariables()];
         this.fullmodel = null;
-        AssignmentOrigin origin = AssignmentOrigin.UNASSIGNED;
+        AssignmentOrigin origin;
 
         Constr reason;
         if (classifyLiterals) {
-            StringBuffer stb = new StringBuffer(getLogPrefix());
+            var stb = new StringBuilder(getLogPrefix());
             int q;
             String str;
-            for (int i = 0; i < trailLim.size(); i++) {
+            for (var i = 0; i < trailLim.size(); i++) {
                 q = trail.get(trailLim.get(i));
                 stb.append(LiteralsUtils.toDimacs(q));
                 this.voc.unassign(q);
@@ -1430,7 +1420,7 @@ public class Solver<D extends DataStructureFactory>
                     }
                     int r;
                     TreeSet<Integer> levels = new TreeSet<>();
-                    for (int j = 0; j < reason.size(); j++) {
+                    for (var j = 0; j < reason.size(); j++) {
                         r = reason.get(j);
                         if (r != q) {
                             levels.add(this.voc.getLevel(r));
@@ -1438,7 +1428,7 @@ public class Solver<D extends DataStructureFactory>
                     }
 
                     stb.append(":");
-                    str = levels.toString().replaceAll(" ", "");
+                    str = levels.toString().replace(" ", "");
                     stb.append(str.substring(1, str.length() - 1));
                     if (voc.getLevel(q) == levels.last()) {
                         origin = AssignmentOrigin.DECIDED_CYCLE;
@@ -1454,7 +1444,7 @@ public class Solver<D extends DataStructureFactory>
             }
             System.out.println(stb);
         }
-        for (int i = 1; i <= nVars(); i++) {
+        for (var i = 1; i <= nVars(); i++) {
             if (this.voc.belongsToPool(i)) {
                 int p = this.voc.getFromPool(i);
                 if (!this.voc.isUnassigned(p)) {
@@ -1517,21 +1507,21 @@ public class Solver<D extends DataStructureFactory>
      * Forget a variable in the formula by falsifying both its positive and
      * negative literals.
      * 
-     * @param var
+     * @param variable
      *            a variable
-     * @return a conflicting constraint resulting from the disparition of those
+     * @return a conflicting constraint resulting from the removal of those
      *         literals.
      */
-    Constr forget(int var) {
-        boolean satisfied = this.voc.isSatisfied(toInternal(var));
-        this.voc.forgets(var);
+    Constr forget(int variable) {
+        boolean satisfied = this.voc.isSatisfied(toInternal(variable));
+        this.voc.forgets(variable);
         Constr confl;
         if (satisfied) {
             confl = reduceClausesContainingTheNegationOf(
-                    LiteralsUtils.toInternal(-var));
+                    LiteralsUtils.toInternal(-variable));
         } else {
             confl = reduceClausesContainingTheNegationOf(
-                    LiteralsUtils.toInternal(var));
+                    LiteralsUtils.toInternal(variable));
         }
         return confl;
     }
@@ -1565,8 +1555,8 @@ public class Solver<D extends DataStructureFactory>
         return this.prime[Math.abs(p)] == p;
     }
 
-    public boolean model(int var) {
-        if (var <= 0 || var > realNumberOfVariables()) {
+    public boolean model(int variable) {
+        if (variable <= 0 || variable > realNumberOfVariables()) {
             throw new IllegalArgumentException(
                     "Use a valid Dimacs var id as argument!"); //$NON-NLS-1$
         }
@@ -1574,7 +1564,7 @@ public class Solver<D extends DataStructureFactory>
             throw new UnsupportedOperationException(
                     "Call the solve method first!!!"); //$NON-NLS-1$
         }
-        return this.userbooleanmodel[var - 1];
+        return this.userbooleanmodel[variable - 1];
     }
 
     public void clearLearntClauses() {
@@ -1674,19 +1664,14 @@ public class Solver<D extends DataStructureFactory>
                     Solver.this.out.log(getLogPrefix() + "cleaning " //$NON-NLS-1$
                             + (Solver.this.learnts.size() - j)
                             + " clauses out of " + Solver.this.learnts.size()); //$NON-NLS-1$
-                    // out.flush();
                 }
                 Solver.this.learnts.shrinkTo(j);
             }
 
             public void onConflictAnalysis(Constr reason) {
-                // TODO Auto-generated method stub
-
             }
 
             public void onClauseLearning(Constr outLearnt) {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -1703,8 +1688,6 @@ public class Solver<D extends DataStructureFactory>
             }
 
             public void onPropagation(Constr from, int propagated) {
-                // TODO Auto-generated method stub
-
             }
         };
     }
@@ -1715,7 +1698,7 @@ public class Solver<D extends DataStructureFactory>
     /**
      * @since 2.1
      */
-    public final LearnedConstraintsDeletionStrategy activity_based_low_memory = new ActivityLCDS(
+    public final LearnedConstraintsDeletionStrategy activityBasedLowMemory = new ActivityLCDS(
             this, this.memoryTimer);
 
     private final ConflictTimer glucoseTimer = new GlucoseConflictTimer(this,
@@ -1724,28 +1707,28 @@ public class Solver<D extends DataStructureFactory>
     /**
      * @since 2.1
      */
-    public final LearnedConstraintsDeletionStrategy lbd_based = new Glucose2LCDS<D>(
+    public final LearnedConstraintsDeletionStrategy lbdBased = new Glucose2LCDS<D>(
             this, this.glucoseTimer);
 
     /**
      * @since 2.3.6
      */
-    public final LearnedConstraintsDeletionStrategy age_based = new AgeLCDS(
+    public final LearnedConstraintsDeletionStrategy ageBased = new AgeLCDS(this,
+            this.glucoseTimer);
+
+    /**
+     * @since 2.3.6
+     */
+    public final LearnedConstraintsDeletionStrategy activityBased = new ActivityLCDS(
             this, this.glucoseTimer);
 
     /**
      * @since 2.3.6
      */
-    public final LearnedConstraintsDeletionStrategy activity_based = new ActivityLCDS(
+    public final LearnedConstraintsDeletionStrategy sizeBased = new SizeLCDS(
             this, this.glucoseTimer);
 
-    /**
-     * @since 2.3.6
-     */
-    public final LearnedConstraintsDeletionStrategy size_based = new SizeLCDS(
-            this, this.glucoseTimer);
-
-    private LearnedConstraintsDeletionStrategy learnedConstraintsDeletionStrategy = this.lbd_based;
+    private LearnedConstraintsDeletionStrategy learnedConstraintsDeletionStrategy = this.lbdBased;
 
     /*
      * (non-Javadoc)
@@ -1865,7 +1848,7 @@ public class Solver<D extends DataStructureFactory>
             this.conflictCount
                     .add(this.learnedConstraintsDeletionStrategy.getTimer());
         }
-        boolean firstTimeGlobal = false;
+        var firstTimeGlobal = false;
         if (this.timeBasedTimeout) {
             if (!global || this.timer == null) {
                 firstTimeGlobal = true;
@@ -1975,7 +1958,7 @@ public class Solver<D extends DataStructureFactory>
         if (this.learnts.isEmpty()) {
             return;
         }
-        Map<String, Counter> learntTypes = new HashMap<String, Counter>();
+        Map<String, Counter> learntTypes = new HashMap<>();
         for (Iterator<Constr> it = this.learnts.iterator(); it.hasNext();) {
             String type = it.next().getClass().getName();
             Counter count = learntTypes.get(type);
@@ -2132,7 +2115,7 @@ public class Solver<D extends DataStructureFactory>
      * @see java.lang.Object#toString()
      */
     public String toString(String prefix) {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         Object[] objs = { this.dsfactory, this.learner, this.params, this.order,
                 this.simplifier, this.restarter,
                 this.learnedConstraintsDeletionStrategy };
@@ -2262,7 +2245,7 @@ public class Solver<D extends DataStructureFactory>
                 clause.push(-p);
             }
         } else {
-            for (int i = 0; i < decisions.size(); i++) {
+            for (var i = 0; i < decisions.size(); i++) {
                 clause.push(-decisions.get(i));
             }
         }
@@ -2383,7 +2366,7 @@ public class Solver<D extends DataStructureFactory>
      * @since 2.3.2
      */
     public Lbool truthValue(int literal) {
-        int p = LiteralsUtils.toInternal(literal);
+        var p = LiteralsUtils.toInternal(literal);
         if (this.voc.isFalsified(p)) {
             return Lbool.FALSE;
         }
@@ -2509,16 +2492,10 @@ public class Solver<D extends DataStructureFactory>
         this.keepHot = keepHot;
     }
 
-    private final Comparator<Integer> dimacsLevel = new Comparator<Integer>() {
-        public int compare(Integer i1, Integer i2) {
-            return voc.getLevel(Math.abs(i2)) - voc.getLevel(Math.abs(i1));
-        }
-    };
-
     private final Comparator<Integer> trailComparator() {
         return new Comparator<Integer>() {
 
-            private final Map<Integer, Integer> trailLevel = new HashMap<Integer, Integer>();
+            private final Map<Integer, Integer> trailLevel = new HashMap<>();
 
             {
                 for (int i = 0; i < trail.size(); i++) {
@@ -2541,7 +2518,7 @@ public class Solver<D extends DataStructureFactory>
     }
 
     public IConstr addClauseOnTheFly(int[] literals) {
-        List<Integer> lliterals = new ArrayList<Integer>();
+        List<Integer> lliterals = new ArrayList<>();
         for (Integer d : literals) {
             lliterals.add(d);
         }
@@ -2580,9 +2557,9 @@ public class Solver<D extends DataStructureFactory>
     }
 
     protected Set<Integer> fromLastDecisionLevel(IVecInt lits) {
-        Set<Integer> subset = new HashSet<Integer>();
+        Set<Integer> subset = new HashSet<>();
         int max = -1, q, level;
-        for (int i = 0; i < lits.size(); i++) {
+        for (var i = 0; i < lits.size(); i++) {
             q = lits.get(i);
             level = voc.getLevel(q);
             if (level > max) {
@@ -2617,7 +2594,7 @@ public class Solver<D extends DataStructureFactory>
                     "Can only call that method when the problem is satisfiable!");
         }
         int n = decisions.size();
-        int[] outdecisions = new int[n];
+        var outdecisions = new int[n];
         System.arraycopy(decisions.toArray(), 0, outdecisions, 0, n);
         return outdecisions;
     }

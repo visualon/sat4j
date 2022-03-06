@@ -55,14 +55,14 @@ public class CounterBasedPrimeImplicantStrategy
 
     public int[] compute(Solver<? extends DataStructureFactory> solver) {
         long begin = System.currentTimeMillis();
-        IVecInt[] watched = new IVecInt[solver.voc.nVars() * 2 + 2];
+        var watched = new IVecInt[solver.voc.nVars() * 2 + 2];
         for (int d : solver.fullmodel) {
             watched[toInternal(d)] = new VecInt();
         }
-        int[] count = new int[solver.constrs.size()];
+        var count = new int[solver.constrs.size()];
         Constr constr;
         IVecInt watch;
-        for (int i = 0; i < solver.constrs.size(); i++) {
+        for (var i = 0; i < solver.constrs.size(); i++) {
             constr = solver.constrs.get(i);
             if (!constr.canBeSatisfiedByCountingLiterals()) {
                 throw new IllegalStateException(
@@ -70,7 +70,7 @@ public class CounterBasedPrimeImplicantStrategy
                                 + constr.getClass());
             }
             count[i] = 0;
-            for (int j = 0; j < constr.size(); j++) {
+            for (var j = 0; j < constr.size(); j++) {
                 watch = watched[constr.get(j)];
                 if (watch != null) {
                     // satisfied literal
@@ -86,18 +86,18 @@ public class CounterBasedPrimeImplicantStrategy
         }
         this.prime = new int[solver.voc.nVars() + 1];
         int d;
-        for (int i = 0; i < this.prime.length; i++) {
+        for (var i = 0; i < this.prime.length; i++) {
             this.prime[i] = 0;
         }
         for (IteratorInt it = solver.implied.iterator(); it.hasNext();) {
             d = it.next();
             this.prime[Math.abs(d)] = d;
         }
-        int removed = 0;
-        int posremoved = 0;
-        int propagated = 0;
+        var removed = 0;
+        var posremoved = 0;
+        var propagated = 0;
         int constrNumber;
-        top: for (int i = 0; i < solver.decisions.size(); i++) {
+        top: for (var i = 0; i < solver.decisions.size(); i++) {
             d = solver.decisions.get(i);
             for (IteratorInt it = watched[toInternal(d)].iterator(); it
                     .hasNext();) {
@@ -118,8 +118,8 @@ public class CounterBasedPrimeImplicantStrategy
                 count[it.next()]--;
             }
         }
-        int[] implicant = new int[this.prime.length - removed - 1];
-        int index = 0;
+        var implicant = new int[this.prime.length - removed - 1];
+        var index = 0;
         for (int i : this.prime) {
             if (i != 0) {
                 implicant[index++] = i;

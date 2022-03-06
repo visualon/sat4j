@@ -44,8 +44,7 @@ public class Xor implements Constr, Propagatable {
 
     public static Xor createParityConstraint(IVecInt lits, boolean parity,
             ILits voc) {
-        // TODO ensure normal form
-        Xor xor = new Xor(lits, parity, voc);
+        var xor = new Xor(lits, parity, voc);
         xor.register();
         return xor;
     }
@@ -74,7 +73,6 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public double getActivity() {
-        // TODO: implement this method !
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
@@ -103,7 +101,7 @@ public class Xor implements Constr, Propagatable {
             nbSatisfied = 1;
         }
         // look for new literal to watch and counting satisfied literals
-        for (int i = 2; i < lits.length; i++) {
+        for (var i = 2; i < lits.length; i++) {
             if (this.voc.isSatisfied(lits[i])) {
                 nbSatisfied++;
             } else if (this.voc.isUnassigned(lits[i])) {
@@ -149,8 +147,8 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public void calcReason(int p, IVecInt outReason) {
-        int nbUnassigned = 0;
-        for (int i = 0; i < lits.length; i++) {
+        var nbUnassigned = 0;
+        for (var i = 0; i < lits.length; i++) {
             if (this.voc.isFalsified(lits[i])) {
                 outReason.push(lits[i] ^ 1);
             } else if (this.voc.isSatisfied(lits[i])) {
@@ -242,12 +240,15 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int l : lits) {
             stb.append(LiteralsUtils.toDimacs(l));
             stb.append(" ");
-            stb.append(voc.isUnassigned(l) ? "U"
-                    : (voc.isFalsified(l) ? "F" : "T"));
+            if (voc.isUnassigned(l)) {
+                stb.append("U");
+            } else {
+                stb.append(voc.isFalsified(l) ? "F" : "T");
+            }
             stb.append(" x ");
         }
         stb.append(parity);

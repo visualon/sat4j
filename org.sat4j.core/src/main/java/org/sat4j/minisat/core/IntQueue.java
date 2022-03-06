@@ -53,14 +53,13 @@ public final class IntQueue implements Serializable {
      *            the element to add
      */
     public void insert(final int x) {
-        // ensure(size + 1);
         assert this.size < this.myarray.length;
         this.myarray[this.size++] = x;
     }
 
     /**
-     * returns the nexdt element in the queue. Unexpected results if the queue
-     * is empty!
+     * returns the next element in the queue. Unexpected results if the queue is
+     * empty!
      * 
      * @return the firsst element on the queue
      */
@@ -94,7 +93,7 @@ public final class IntQueue implements Serializable {
      */
     public void ensure(final int nsize) {
         if (nsize >= this.myarray.length) {
-            int[] narray = new int[Math.max(nsize, this.size * 2)];
+            var narray = new int[Math.max(nsize, this.size * 2)];
             System.arraycopy(this.myarray, 0, narray, 0, this.size);
             this.myarray = narray;
         }
@@ -102,7 +101,7 @@ public final class IntQueue implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         stb.append(">"); //$NON-NLS-1$
         for (int i = this.first; i < this.size - 1; i++) {
             stb.append(this.myarray[i]);

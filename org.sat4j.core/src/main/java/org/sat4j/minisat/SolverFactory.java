@@ -146,7 +146,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
     public static Solver<DataStructureFactory> newGlucose21() {
         Solver<DataStructureFactory> solver = newMiniLearningHeapRsatExpSimp();
         solver.setRestartStrategy(new Glucose21Restarts());
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.lbdBased);
         return solver;
     }
 
@@ -237,7 +237,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
                 new MixedDataStructureSingleWL());
         solver.setSimplifier(solver.EXPENSIVE_SIMPLIFICATION_WLONLY);
         solver.setLearnedConstraintsDeletionStrategy(
-                solver.activity_based_low_memory);
+                solver.activityBasedLowMemory);
         LimitedLearning<DataStructureFactory> learning = new PercentLengthLearning<>(
                 10);
         solver.setLearningStrategy(learning);
@@ -249,7 +249,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      */
     public static Solver<DataStructureFactory> newGlucose() {
         Solver<DataStructureFactory> solver = newBestWL();
-        solver.setLearnedConstraintsDeletionStrategy(solver.lbd_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.lbdBased);
         solver.setRestartStrategy(new LubyRestarts(512));
         return solver;
     }
@@ -372,7 +372,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      */
     public static ISolver newAgeLCDS() {
         Solver<?> solver = newGlucose21();
-        solver.setLearnedConstraintsDeletionStrategy(solver.age_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.ageBased);
         return solver;
     }
 
@@ -382,7 +382,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      */
     public static ISolver newActivityLCDS() {
         Solver<?> solver = newGlucose21();
-        solver.setLearnedConstraintsDeletionStrategy(solver.activity_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.activityBased);
         return solver;
     }
 
@@ -392,7 +392,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
      */
     public static ISolver newSizeLCDS() {
         Solver<?> solver = newGlucose21();
-        solver.setLearnedConstraintsDeletionStrategy(solver.size_based);
+        solver.setLearnedConstraintsDeletionStrategy(solver.sizeBased);
         return solver;
     }
 
@@ -464,7 +464,7 @@ public final class SolverFactory extends ASolverFactory<ISolver> {
         Solver<DataStructureFactory> solver = newGlucose21();
         solver.setRestartStrategy(new LubyRestarts(100));
         solver.setLearnedConstraintsDeletionStrategy(
-                solver.activity_based_low_memory);
+                solver.activityBasedLowMemory);
         return solver;
     }
 

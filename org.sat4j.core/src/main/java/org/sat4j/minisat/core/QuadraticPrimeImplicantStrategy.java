@@ -81,7 +81,7 @@ public class QuadraticPrimeImplicantStrategy implements PrimeImplicantStrategy {
         }
         prime = new int[solver.realNumberOfVariables() + 1];
         int p, d;
-        for (int i = 0; i < prime.length; i++) {
+        for (var i = 0; i < prime.length; i++) {
             prime[i] = 0;
         }
         boolean noproblem;
@@ -94,13 +94,13 @@ public class QuadraticPrimeImplicantStrategy implements PrimeImplicantStrategy {
         }
         boolean canBeRemoved;
         int rightlevel;
-        int removed = 0;
-        int posremoved = 0;
-        int propagated = 0;
-        int tested = 0;
-        int l2propagation = 0;
+        var removed = 0;
+        var posremoved = 0;
+        var propagated = 0;
+        var tested = 0;
+        var l2propagation = 0;
 
-        for (int i = 0; i < solver.decisions.size(); i++) {
+        for (var i = 0; i < solver.decisions.size(); i++) {
             d = solver.decisions.get(i);
             assert !solver.voc.isFalsified(toInternal(d));
             if (solver.voc.isSatisfied(toInternal(d))) {

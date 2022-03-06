@@ -54,7 +54,7 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
         int i, j;
         for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
                 .size(); i++) {
-            Constr c = learnedConstrs.get(i);
+            var c = learnedConstrs.get(i);
             if (c.locked() || c.size() == 2) {
                 learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
@@ -66,7 +66,6 @@ final class SizeLCDS implements LearnedConstraintsDeletionStrategy {
             solver.out.log(solver.getLogPrefix() + "cleaning " //$NON-NLS-1$
                     + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
                     + learnedConstrs.size());
-            // out.flush();
         }
         learnedConstrs.shrinkTo(j);
     }

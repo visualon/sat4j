@@ -60,39 +60,39 @@ public final class Heap implements Serializable {
         return i >> 1;
     }
 
-    private final IVecInt heap = new VecInt(); // heap of ints
+    private final IVecInt variables = new VecInt(); // heap of ints
 
     private final IVecInt indices = new VecInt(); // int -> index in heap
 
     private final VariableComparator comparator;
 
     void percolateUp(int i) {
-        int x = this.heap.get(i);
+        int x = this.variables.get(i);
         int p = parent(i);
-        while (i != 1 && comparator.preferredTo(x, this.heap.get(p))) {
-            this.heap.set(i, this.heap.get(p));
-            this.indices.set(this.heap.get(p), i);
+        while (i != 1 && comparator.preferredTo(x, this.variables.get(p))) {
+            this.variables.set(i, this.variables.get(p));
+            this.indices.set(this.variables.get(p), i);
             i = p;
             p = parent(p);
         }
-        this.heap.set(i, x);
+        this.variables.set(i, x);
         this.indices.set(x, i);
     }
 
     void percolateDown(int i) {
-        int x = this.heap.get(i);
-        while (left(i) < this.heap.size()) {
-            int child = right(i) < this.heap.size()
-                    && comparator.preferredTo(this.heap.get(right(i)),
-                            this.heap.get(left(i))) ? right(i) : left(i);
-            if (!comparator.preferredTo(this.heap.get(child), x)) {
+        int x = this.variables.get(i);
+        while (left(i) < this.variables.size()) {
+            int child = right(i) < this.variables.size()
+                    && comparator.preferredTo(this.variables.get(right(i)),
+                            this.variables.get(left(i))) ? right(i) : left(i);
+            if (!comparator.preferredTo(this.variables.get(child), x)) {
                 break;
             }
-            this.heap.set(i, this.heap.get(child));
-            this.indices.set(this.heap.get(i), i);
+            this.variables.set(i, this.variables.get(child));
+            this.indices.set(this.variables.get(i), i);
             i = child;
         }
-        this.heap.set(i, x);
+        this.variables.set(i, x);
         this.indices.set(x, i);
     }
 
@@ -102,7 +102,7 @@ public final class Heap implements Serializable {
 
     public Heap(VariableComparator comparator) { // NOPMD
         this.comparator = comparator;
-        this.heap.push(-1);
+        this.variables.push(-1);
     }
 
     public void setBounds(int size) {
@@ -122,20 +122,20 @@ public final class Heap implements Serializable {
     }
 
     public boolean empty() {
-        return this.heap.size() == 1;
+        return this.variables.size() == 1;
     }
 
     public int size() {
-        return this.heap.size() - 1;
+        return this.variables.size() - 1;
     }
 
     public int get(int i) {
-        int r = this.heap.get(i);
-        this.heap.set(i, this.heap.last());
-        this.indices.set(this.heap.get(i), i);
+        int r = this.variables.get(i);
+        this.variables.set(i, this.variables.last());
+        this.indices.set(this.variables.get(i), i);
         this.indices.set(r, 0);
-        this.heap.pop();
-        if (this.heap.size() > 1) {
+        this.variables.pop();
+        if (this.variables.size() > 1) {
             percolateDown(1);
         }
         return r;
@@ -143,8 +143,8 @@ public final class Heap implements Serializable {
 
     public void insert(int n) {
         assert ok(n);
-        this.indices.set(n, this.heap.size());
-        this.heap.push(n);
+        this.indices.set(n, this.variables.size());
+        this.variables.push(n);
         percolateUp(this.indices.get(n));
     }
 
@@ -157,9 +157,9 @@ public final class Heap implements Serializable {
     }
 
     public boolean heapProperty(int i) {
-        return i >= this.heap.size()
-                || (parent(i) == 0 || !comparator.preferredTo(this.heap.get(i),
-                        this.heap.get(parent(i)))) && heapProperty(left(i))
+        return i >= this.variables.size()
+                || (parent(i) == 0 || !comparator.preferredTo(this.variables.get(i),
+                        this.variables.get(parent(i)))) && heapProperty(left(i))
                 && heapProperty(right(i));
     }
 

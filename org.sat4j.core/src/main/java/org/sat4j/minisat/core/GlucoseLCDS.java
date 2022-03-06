@@ -55,7 +55,6 @@ class GlucoseLCDS<D extends DataStructureFactory>
     private static final long serialVersionUID = 1L;
     private int[] flags = new int[0];
     private int flag = 0;
-    // private int wall = 0;
 
     private final ConflictTimer timer;
 
@@ -69,7 +68,7 @@ class GlucoseLCDS<D extends DataStructureFactory>
         int i, j;
         for (i = j = learnedConstrs.size() / 2; i < learnedConstrs
                 .size(); i++) {
-            Constr c = learnedConstrs.get(i);
+            var c = learnedConstrs.get(i);
             if (c.locked() || c.getActivity() <= 2.0) {
                 learnedConstrs.set(j++, learnedConstrs.get(i));
             } else {
@@ -83,7 +82,6 @@ class GlucoseLCDS<D extends DataStructureFactory>
                     + (learnedConstrs.size() - j) + " clauses out of " //$NON-NLS-1$
                     + learnedConstrs.size() + " with flag " //$NON-NLS-1$
                     + this.flag + "/" + solver.stats.getConflicts());
-            // out.flush();
         }
         learnedConstrs.shrinkTo(j);
 
@@ -105,7 +103,6 @@ class GlucoseLCDS<D extends DataStructureFactory>
 
     public void init() {
         final int howmany = solver.voc.nVars();
-        // wall = constrs.size() > 10000 ? constrs.size() : 10000;
         if (this.flags.length <= howmany) {
             this.flags = new int[howmany + 1];
         }
@@ -119,10 +116,10 @@ class GlucoseLCDS<D extends DataStructureFactory>
     }
 
     protected int computeLBD(Constr constr, int propagated) {
-        int nblevel = 1;
+        var nblevel = 1;
         this.flag++;
         int currentLevel;
-        for (int i = 1; i < constr.size(); i++) {
+        for (var i = 1; i < constr.size(); i++) {
             currentLevel = solver.voc.getLevel(constr.get(i));
             if (currentLevel >= 0 && this.flags[currentLevel] != this.flag) {
                 this.flags[currentLevel] = this.flag;

@@ -456,7 +456,7 @@ public class KTHLauncher {
 
             if (line.hasOption("deletion-strategy")) {
                 String value = line.getOptionValue("deletion-strategy");
-                ConflictTimer timer = cpsolver.lbd_based.getTimer();
+                ConflictTimer timer = cpsolver.lbdBased.getTimer();
                 if ("activity".equals(value)) {
                     LearnedConstraintsDeletionStrategy lcds = new PBActivityLCDS(
                             cpsolver, timer);

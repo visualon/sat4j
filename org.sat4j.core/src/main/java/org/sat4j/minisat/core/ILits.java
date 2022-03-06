@@ -109,11 +109,11 @@ public interface ILits {
      * are removed. It is equivalent in our implementation to falsify the two
      * phases of that variable.
      * 
-     * @param var
+     * @param variable
      *            a variable in Dimacs format.
      * @since 2.3.2
      */
-    void forgets(int var);
+    void forgets(int variable);
 
     /**
      * Check if a literal is satisfied.

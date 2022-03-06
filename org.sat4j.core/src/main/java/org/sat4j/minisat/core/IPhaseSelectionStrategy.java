@@ -64,12 +64,12 @@ public interface IPhaseSelectionStrategy extends Serializable {
      * initialize the phase of a given variable to the given value. That method
      * is suppose to be called AFTER init(int).
      * 
-     * @param var
+     * @param variable
      *            a variable
      * @param p
      *            it's initial phase
      */
-    void init(int var, int p);
+    void init(int variable, int p);
 
     /**
      * indicate that a literal has been satisfied.
@@ -82,12 +82,13 @@ public interface IPhaseSelectionStrategy extends Serializable {
      * selects the phase of the variable according to a phase selection
      * strategy.
      * 
-     * @param var
+     * @param variable
      *            a variable chosen by the heuristics
-     * @return either var or not var, depending of the selection strategy.
+     * @return either variable or not variable, depending of the selection
+     *         strategy.
      * 
      */
-    int select(int var);
+    int select(int variable);
 
     /**
      * Allow to perform a specific action when a literal of the current decision

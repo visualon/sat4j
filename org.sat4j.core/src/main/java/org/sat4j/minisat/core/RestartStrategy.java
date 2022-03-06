@@ -56,11 +56,12 @@ public interface RestartStrategy extends Serializable, ConflictTimer {
     void init(SearchParams params, SolverStats stats);
 
     /**
-     * Ask for the next restart in number of conflicts. Deprecated since 2.3.2
+     * Ask for the next restart in number of conflicts.
      * 
+     * @deprecated since 2.3.2
      * @return the delay in conflicts before the next restart.
      */
-    @Deprecated
+    @Deprecated(since = "2.3.2")
     long nextRestartNumberOfConflict();
 
     /**

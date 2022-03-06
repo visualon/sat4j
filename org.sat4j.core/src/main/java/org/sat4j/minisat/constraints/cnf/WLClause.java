@@ -69,7 +69,7 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
      * @param ps
      *            A VecInt that WILL BE EMPTY after calling that method.
      */
-    public WLClause(IVecInt ps, ILits voc) {
+    protected WLClause(IVecInt ps, ILits voc) {
         this.lits = new int[ps.size()];
         ps.moveTo(this.lits);
         assert ps.size() == 0;
@@ -83,8 +83,6 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
      * @see Constr#calcReason(Solver, Lit, Vec)
      */
     public void calcReason(int p, IVecInt outReason) {
-        // assert outReason.size() == 0
-        // && ((p == ILits.UNDEFINED) || (p == lits[0]));
         final int[] mylits = this.lits;
         for (int i = p == ILits.UNDEFINED ? 0 : 1; i < mylits.length; i++) {
             assert this.voc.isFalsified(mylits[i]);
@@ -122,14 +120,13 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
             mylits[0] = mylits[1];
             mylits[1] = p ^ 1;
         }
-        // assert mylits[1] == (p ^ 1);
         if (this.voc.isSatisfied(mylits[0])) {
             this.voc.watch(p, this);
             return true;
         }
         int previous = p ^ 1, tmp;
         // look for new literal to watch: applying move to front strategy
-        for (int i = 2; i < mylits.length; i++) {
+        for (var i = 2; i < mylits.length; i++) {
             if (this.voc.isFalsified(mylits[i])) {
                 tmp = previous;
                 previous = mylits[i];
@@ -141,7 +138,6 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
                 return true;
             }
         }
-        // assert voc.isFalsified(mylits[1]);
         // the clause is now either unit or null
         // move back the literals to their initial position
         System.arraycopy(mylits, 2, mylits, 1, mylits.length - 2);
@@ -171,7 +167,7 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
 
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int lit : this.lits) {
             stb.append(Lits.toString(lit));
             stb.append("["); //$NON-NLS-1$
@@ -188,7 +184,7 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
         if (mapper == null) {
             return toString();
         }
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int lit : this.lits) {
             stb.append(mapper.map(LiteralsUtils.toDimacs(lit)));
             stb.append("["); //$NON-NLS-1$
@@ -241,7 +237,7 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
     }
 
     public int[] getLits() {
-        int[] tmp = new int[size()];
+        var tmp = new int[size()];
         System.arraycopy(this.lits, 0, tmp, 0, size());
         return tmp;
     }
@@ -326,7 +322,7 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
 
     @Override
     public String dump() {
-        StringBuilder stb = new StringBuilder();
+        var stb = new StringBuilder();
         for (int p : lits) {
             stb.append(LiteralsUtils.toDimacs(p));
             stb.append(' ');
