@@ -9,7 +9,7 @@ public abstract class CommandComponent extends JPanel {
 	 */
     private static final long serialVersionUID = 1L;
 
-    public CommandComponent() {
+    protected CommandComponent() {
         super();
     }
 

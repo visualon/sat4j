@@ -29,30 +29,8 @@
  *******************************************************************************/
 package org.sat4j.sat;
 
-/**
- * This class is used to launch the SAT solvers from the command line. It is
- * compliant with the SAT competition (www.satcompetition.org) I/O format. The
- * launcher is to be used as follows:
- * 
- * <pre>
- *                [solvername] filename [key=value]*
- * </pre>
- * 
- * If no solver name is given, then the default solver of the solver factory is
- * used (@see org.sat4j.core.ASolverFactory#defaultSolver()).
- * 
- * This class is no longer used since 2.3.3 because it cannot launch maxsat problems.
- * 
- * @see Launcher
- * 
- * @author sroussel
- * 
- */
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.cli.CommandLine;
@@ -63,7 +41,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.sat4j.AbstractLauncher;
 import org.sat4j.ExitCode;
-import org.sat4j.ILauncherMode;
 import org.sat4j.OutputPrefix;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.ICDCL;
@@ -133,7 +110,7 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
      */
     @SuppressWarnings({ "nls", "unchecked" })
     @Override
-    protected ICDCL configureSolver(String[] args) {
+    protected ICDCL<?> configureSolver(String[] args) {
         Options options = createCLIOptions();
 
         try {
@@ -154,13 +131,13 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 Class<?> clazz = Class
                         .forName("org.sat4j." + framework + ".SolverFactory"); //$NON-NLS-1$ //$NON-NLS-2$
                 Class<?>[] params = {};
-                Method m = clazz.getMethod("instance", params); //$NON-NLS-1$
+                clazz.getMethod("instance", params); //$NON-NLS-1$
             } catch (Exception e) { // DLB Findbugs warning ok
                 log("Wrong framework: " + framework
                         + ". Using minisat instead.");
             }
 
-            ICDCL asolver = Solvers.configureSolver(args, this);
+            ICDCL<?> asolver = Solvers.configureSolver(args, this);
 
             this.launchRemoteControl = cmd.hasOption("remote");
 
@@ -414,15 +391,11 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
                 frame.activateTracing(this.modeTracing);
                 frame.setOptimisationMode(this.isModeOptimization);
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("FATAL " + e.getLocalizedMessage());
-        } catch (IOException e) {
+        } catch (IOException | ParseFormatException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());
         } catch (ContradictionException e) {
             this.setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
-        } catch (ParseFormatException e) {
-            System.err.println("FATAL " + e.getLocalizedMessage());
         }
     }
 

@@ -2,8 +2,6 @@ package org.sat4j.sat;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,7 +24,7 @@ public class PhaseCommandComponent extends CommandComponent {
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger("org.sat4j.sat");
-    
+
     private String currentPhaseSelectionStrategy;
 
     private JComboBox phaseList;
@@ -56,9 +54,11 @@ public class PhaseCommandComponent extends CommandComponent {
 
     public void createPhasePanel() {
 
-        this.setBorder(new CompoundBorder(new TitledBorder(null,
-                this.getName(), TitledBorder.LEFT, TitledBorder.TOP),
-                DetailedCommandPanel.BORDER5));
+        this.setBorder(
+                new CompoundBorder(
+                        new TitledBorder(null, this.getName(),
+                                TitledBorder.LEFT, TitledBorder.TOP),
+                        DetailedCommandPanel.BORDER5));
 
         this.setLayout(new BorderLayout());
 
@@ -75,11 +75,7 @@ public class PhaseCommandComponent extends CommandComponent {
 
         this.phaseApplyButton = new JButton(PHASE_APPLY);
 
-        this.phaseApplyButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnApplyPhase();
-            }
-        });
+        this.phaseApplyButton.addActionListener(e -> hasClickedOnApplyPhase());
 
         JPanel tmpPanel2 = new JPanel();
         tmpPanel2.add(this.phaseApplyButton);
@@ -93,8 +89,9 @@ public class PhaseCommandComponent extends CommandComponent {
         this.currentPhaseSelectionStrategy = phaseName;
         IPhaseSelectionStrategy phase = null;
         try {
-            phase = (IPhaseSelectionStrategy) Class.forName(
-                    PHASE_PATH_SAT + "." + phaseName).newInstance();
+            phase = (IPhaseSelectionStrategy) Class
+                    .forName(PHASE_PATH_SAT + "." + phaseName).getConstructor()
+                    .newInstance();
             phase.init(this.solverController.getNVar() + 1);
             this.solverController.setPhaseSelectionStrategy(phase);
 
@@ -104,6 +101,10 @@ public class PhaseCommandComponent extends CommandComponent {
             LOGGER.log(Level.INFO, "Invalid Phase Access error", e);
         } catch (InstantiationException e) {
             LOGGER.log(Level.INFO, "Invalid Phase Instanciation error", e);
+        } catch (ReflectiveOperationException e) {
+            LOGGER.log(Level.INFO, "Reflective Operation error", e);
+        } catch (SecurityException e) {
+            LOGGER.log(Level.INFO, "Security error", e);
         }
 
     }
@@ -117,7 +118,7 @@ public class PhaseCommandComponent extends CommandComponent {
 
     public List<String> getListOfPhaseStrategies() {
         List<String> resultRTSI = RTSI.find(PHASE_STRATEGY_CLASS);
-        List<String> finalResult = new ArrayList<String>();
+        List<String> finalResult = new ArrayList<>();
 
         for (String s : resultRTSI) {
             if (!s.contains("Remote")) {

@@ -5,8 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +20,6 @@ import org.sat4j.minisat.core.RestartStrategy;
 import org.sat4j.minisat.core.SearchParams;
 import org.sat4j.minisat.core.SolverStats;
 import org.sat4j.minisat.restarts.LubyRestarts;
-import org.sat4j.minisat.restarts.NoRestarts;
 import org.sat4j.specs.ILogAble;
 
 public class RestartCommandComponent extends CommandComponent {
@@ -35,8 +32,6 @@ public class RestartCommandComponent extends CommandComponent {
     private JLabel noParameterLabel;
     private JComboBox listeRestarts;
     private JButton restartButton;
-
-    private JButton changeRestartMode;
 
     private JLabel factorLabel;
     private static final String FACTOR = "Factor: ";
@@ -86,38 +81,32 @@ public class RestartCommandComponent extends CommandComponent {
         c1.weightx = 1;
         c1.gridx = 0;
 
-        chooseRestartPanel.setBorder(new CompoundBorder(new TitledBorder(null,
-                this.getName(), TitledBorder.LEFT, TitledBorder.TOP),
-                DetailedCommandPanel.BORDER5));
+        chooseRestartPanel
+                .setBorder(new CompoundBorder(
+                        new TitledBorder(null, this.getName(),
+                                TitledBorder.LEFT, TitledBorder.TOP),
+                        DetailedCommandPanel.BORDER5));
 
         JPanel tmpPanel1 = new JPanel();
         tmpPanel1.setLayout(new FlowLayout());
 
         this.chooseRestartStrategyLabel = new JLabel(CHOOSE_RESTART_STRATEGY);
 
-        this.listeRestarts = new JComboBox(getListOfRestartStrategies()
-                .toArray());
+        this.listeRestarts = new JComboBox(
+                getListOfRestartStrategies().toArray());
 
         this.listeRestarts.setSelectedItem(this.currentRestart);
 
-        this.listeRestarts.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                modifyRestartParamPanel();
-            }
-        });
+        this.listeRestarts.addActionListener(e -> modifyRestartParamPanel());
 
         tmpPanel1.add(this.chooseRestartStrategyLabel);
         tmpPanel1.add(this.listeRestarts);
 
-        this.changeRestartMode = new JButton(CHANGE_RESTART_STRATEGY);
+        JButton changeRestartMode = new JButton(CHANGE_RESTART_STRATEGY);
 
-        this.changeRestartMode.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnChange();
-            }
-        });
+        changeRestartMode.addActionListener(e -> hasClickedOnChange());
 
-        tmpPanel1.add(this.changeRestartMode);
+        tmpPanel1.add(changeRestartMode);
 
         this.noParameterLabel = new JLabel(NO_PARAMETER_FOR_THIS_STRATEGY);
 
@@ -131,17 +120,14 @@ public class RestartCommandComponent extends CommandComponent {
 
         this.restartButton = new JButton(RESTART);
 
-        this.restartButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnRestart();
-            }
-        });
+        this.restartButton.addActionListener(e -> hasClickedOnRestart());
 
         JPanel restartButtonPanel = new JPanel();
         restartButtonPanel.setName(MANUAL_RESTART);
-        restartButtonPanel.setBorder(new CompoundBorder(new TitledBorder(null,
-                restartButtonPanel.getName(), TitledBorder.LEFT,
-                TitledBorder.TOP), DetailedCommandPanel.BORDER5));
+        restartButtonPanel.setBorder(new CompoundBorder(
+                new TitledBorder(null, restartButtonPanel.getName(),
+                        TitledBorder.LEFT, TitledBorder.TOP),
+                DetailedCommandPanel.BORDER5));
 
         restartButtonPanel.add(this.restartButton);
 
@@ -161,8 +147,8 @@ public class RestartCommandComponent extends CommandComponent {
     public void initFactorParam() {
 
         this.factorLabel = new JLabel(FACTOR);
-        this.factorField = new JTextField(
-                LubyRestarts.DEFAULT_LUBY_FACTOR + "", 5);
+        this.factorField = new JTextField(LubyRestarts.DEFAULT_LUBY_FACTOR + "",
+                5);
 
     }
 
@@ -206,9 +192,8 @@ public class RestartCommandComponent extends CommandComponent {
         String choix = (String) this.listeRestarts.getSelectedItem();
 
         boolean isNotSameRestart = !choix.equals(this.currentRestart);
-        boolean shouldInit = isNotSameRestart;
 
-        RestartStrategy restart = new NoRestarts();
+        RestartStrategy restart;
         SearchParams params = this.controller.getSearchParams();
         SolverStats stats = this.controller.getSolverStats();
         if (choix.equals("LubyRestarts")) {
@@ -222,33 +207,28 @@ public class RestartCommandComponent extends CommandComponent {
                 restart = new LubyRestarts(factor);
                 this.controller.setRestartStrategy(restart);
             } else {
-                factorChanged = !(factor == ((LubyRestarts) this.controller
-                        .getRestartStrategy()).getFactor());
+                factorChanged = factor != ((LubyRestarts) this.controller
+                        .getRestartStrategy()).getFactor();
             }
             // if the factor has changed
             if (factorChanged) {
                 restart = this.controller.getRestartStrategy();
                 ((LubyRestarts) restart).setFactor(factor);
             }
-            shouldInit = isNotSameRestart || factorChanged;
-
-            if (shouldInit) {
+            if (isNotSameRestart || factorChanged) {
                 this.controller.init(params, stats);
             }
 
         } else {
             try {
-                restart = (RestartStrategy) Class.forName(
-                        RESTART_PATH + "." + choix).newInstance();
+                restart = (RestartStrategy) Class
+                        .forName(RESTART_PATH + "." + choix).getConstructor()
+                        .newInstance();
                 assert restart != null;
                 this.controller.setRestartStrategy(restart);
                 this.controller.init(params, stats);
 
-            } catch (ClassNotFoundException e) {
-                logger.log(e.getMessage());
-            } catch (IllegalAccessException e) {
-                logger.log(e.getMessage());
-            } catch (InstantiationException e) {
+            } catch (ReflectiveOperationException | SecurityException e) {
                 logger.log(e.getMessage());
             }
         }
@@ -263,7 +243,7 @@ public class RestartCommandComponent extends CommandComponent {
 
     public List<String> getListOfRestartStrategies() {
         List<String> resultRTSI = RTSI.find(RESTART_STRATEGY_CLASS);
-        List<String> finalResult = new ArrayList<String>();
+        List<String> finalResult = new ArrayList<>();
 
         for (String s : resultRTSI) {
             if (!s.contains("Remote")) {

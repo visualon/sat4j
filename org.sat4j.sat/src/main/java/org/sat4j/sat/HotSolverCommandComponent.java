@@ -1,8 +1,6 @@
 package org.sat4j.sat;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,9 +34,11 @@ public class HotSolverCommandComponent extends CommandComponent {
     }
 
     public void createHotSolverPanel() {
-        this.setBorder(new CompoundBorder(new TitledBorder(null,
-                this.getName(), TitledBorder.LEFT, TitledBorder.TOP),
-                DetailedCommandPanel.BORDER5));
+        this.setBorder(
+                new CompoundBorder(
+                        new TitledBorder(null, this.getName(),
+                                TitledBorder.LEFT, TitledBorder.TOP),
+                        DetailedCommandPanel.BORDER5));
 
         this.setLayout(new BorderLayout());
 
@@ -51,13 +51,10 @@ public class HotSolverCommandComponent extends CommandComponent {
         tmpPanel.add(this.applyHotSolver);
         this.add(tmpPanel, BorderLayout.SOUTH);
 
-        this.applyHotSolver.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                HotSolverCommandComponent.this.controller
-                        .setKeepSolverHot(HotSolverCommandComponent.this.keepSolverHotCB
-                                .isSelected());
-            }
-        });
+        this.applyHotSolver.addActionListener(
+                e -> HotSolverCommandComponent.this.controller.setKeepSolverHot(
+                        HotSolverCommandComponent.this.keepSolverHotCB
+                                .isSelected()));
     }
 
     public void setKeepSolverHotPanelEnabled(boolean enabled) {

@@ -33,7 +33,6 @@
 package org.sat4j.sat;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.JarURLConnection;
@@ -70,8 +69,8 @@ public class RTSI {
     }
 
     public static List<String> find(String tosubclassname, boolean fullname) {
-        alreadySeenPckges = new ArrayList<String>();
-        Set<String> v = new HashSet<String>();
+        alreadySeenPckges = new ArrayList<>();
+        Set<String> v = new HashSet<>();
         Set<String> tmp;
         try {
             Class<?> tosubclass = Class.forName(tosubclassname);
@@ -85,12 +84,12 @@ public class RTSI {
         } catch (ClassNotFoundException ex) {
             System.err.println("Class " + tosubclassname + " not found!");
         }
-        return new ArrayList<String>(v);
+        return new ArrayList<>(v);
     }
 
     public static Set<String> find(String pckname, String tosubclassname,
             boolean fullname) {
-        Set<String> v = new HashSet<String>();
+        Set<String> v = new HashSet<>();
         try {
             Class<?> tosubclass = Class.forName(tosubclassname);
             v = find(pckname, tosubclass, fullname);
@@ -103,7 +102,7 @@ public class RTSI {
     public static Set<String> find(String pckgname, Class<?> tosubclass,
             boolean fullname) {
         if (alreadySeenPckges.contains(pckgname)) {
-            return new HashSet<String>();
+            return new HashSet<>();
         } else {
             alreadySeenPckges.add(pckgname);
             return findnames(pckgname, tosubclass, fullname);
@@ -128,7 +127,7 @@ public class RTSI {
 
     public static Set<String> findnames(String pckgname, Class<?> tosubclass,
             boolean fullname) {
-        Set<String> v = new HashSet<String>();
+        Set<String> v = new HashSet<>();
 
         // Code from JWhich
         // ======
@@ -179,12 +178,9 @@ public class RTSI {
 
                 }
             }
-            File[] dirs = directory.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    return new File(dir.getAbsolutePath() + "/" + name)
-                            .isDirectory();
-                }
-            });
+            File[] dirs = directory.listFiles(
+                    (dir, n) -> new File(dir.getAbsolutePath() + "/" + n)
+                            .isDirectory());
             Set<String> tmp;
             for (File dir : dirs) {
                 String newName = pckgname + "." + dir.getName();
@@ -224,8 +220,8 @@ public class RTSI {
                                 if (fullname) {
                                     v.add(classname);
                                 } else {
-                                    v.add(classname.substring(classname
-                                            .lastIndexOf('.') + 1));
+                                    v.add(classname.substring(
+                                            classname.lastIndexOf('.') + 1));
                                 }
                             }
                         } catch (NoClassDefFoundError cnfex) {
@@ -246,11 +242,13 @@ public class RTSI {
         System.out.println(find(tosubclassname));
     }
 
-    public static void displayResultOfFind(String pckname, String tosubclassname) {
+    public static void displayResultOfFind(String pckname,
+            String tosubclassname) {
         System.out.println(find(pckname, tosubclassname));
     }
 
-    public static void displayResultOfFind(String pckgname, Class<?> tosubclass) {
+    public static void displayResultOfFind(String pckgname,
+            Class<?> tosubclass) {
         System.out.println(findnames(pckgname, tosubclass));
 
     }

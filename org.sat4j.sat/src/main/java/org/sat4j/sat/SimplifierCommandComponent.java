@@ -1,8 +1,6 @@
 package org.sat4j.sat;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -29,7 +27,6 @@ public class SimplifierCommandComponent extends CommandComponent {
     public static final String SIMPLIFICATION_EXPENSIVE = "Expensive reason simplification";
 
     private JButton simplificationApplyButton;
-    private ButtonGroup simplificationGroup;
     private JRadioButton simplificationNoRadio;
     private JRadioButton simplificationSimpleRadio;
     private JRadioButton simplificationExpensiveRadio;
@@ -54,7 +51,7 @@ public class SimplifierCommandComponent extends CommandComponent {
         this.setLayout(new BorderLayout());
 
         // simplificationRadio = new Radio
-        this.simplificationGroup = new ButtonGroup();
+        ButtonGroup simplificationGroup = new ButtonGroup();
         this.simplificationExpensiveRadio = new JRadioButton(
                 SIMPLIFICATION_EXPENSIVE);
         this.simplificationNoRadio = new JRadioButton(SIMPLIFICATION_NO);
@@ -63,9 +60,9 @@ public class SimplifierCommandComponent extends CommandComponent {
         JPanel tmpPanel1 = new JPanel();
         tmpPanel1.setLayout(new BoxLayout(tmpPanel1, BoxLayout.Y_AXIS));
 
-        this.simplificationGroup.add(this.simplificationNoRadio);
-        this.simplificationGroup.add(this.simplificationSimpleRadio);
-        this.simplificationGroup.add(this.simplificationExpensiveRadio);
+        simplificationGroup.add(this.simplificationNoRadio);
+        simplificationGroup.add(this.simplificationSimpleRadio);
+        simplificationGroup.add(this.simplificationExpensiveRadio);
 
         tmpPanel1.add(this.simplificationNoRadio);
         tmpPanel1.add(this.simplificationSimpleRadio);
@@ -73,11 +70,8 @@ public class SimplifierCommandComponent extends CommandComponent {
 
         this.simplificationApplyButton = new JButton(SIMPLIFICATION_APPLY);
 
-        this.simplificationApplyButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnApplySimplification();
-            }
-        });
+        this.simplificationApplyButton.addActionListener(e ->
+                hasClickedOnApplySimplification());
 
         JPanel tmpPanel2 = new JPanel();
         tmpPanel2.add(this.simplificationApplyButton);

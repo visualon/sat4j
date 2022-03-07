@@ -13,11 +13,11 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.minisat.core.DataStructureFactory;
 import org.sat4j.minisat.core.ICDCL;
@@ -70,7 +70,7 @@ public final class Solvers {
     private static final String PHASE_NAME = "org.sat4j.minisat.core.IPhaseSelectionStrategy";
     private static final String PARAMS_NAME = "org.sat4j.minisat.core.SearchParams";
 
-    private static final Map<String, String> QUALIF = new HashMap<String, String>();
+    private static final Map<String, String> QUALIF = new HashMap<>();
     static {
         QUALIF.put(ORDERS, PACKAGE_ORDERS);
         QUALIF.put(LEARNING, PACKAGE_LEARNING);
@@ -164,7 +164,7 @@ public final class Solvers {
 
             logger.log("configuring " + component);
             String[] config = configline.split("/");
-            T comp = (T) Class.forName(config[0]).newInstance();
+            T comp = (T) Class.forName(config[0]).getConstructor().newInstance();
             for (int i = 1; i < config.length; i++) {
                 String[] param = config[i].split(":"); //$NON-NLS-1$
                 assert param.length == 2;
@@ -177,11 +177,7 @@ public final class Solvers {
                 }
             }
             return comp;
-        } catch (InstantiationException e) {
-            logger.log(PROBLEM_WITH_COMPONENT + component + " " + e);
-        } catch (IllegalAccessException e) {
-            logger.log(PROBLEM_WITH_COMPONENT + component + " " + e);
-        } catch (ClassNotFoundException e) {
+        } catch (ReflectiveOperationException e) {
             logger.log(PROBLEM_WITH_COMPONENT + component + " " + e);
         }
         return null;
@@ -264,7 +260,7 @@ public final class Solvers {
     public static boolean containsOptValue(String[] args) {
         Options options = createCLIOptions();
         try {
-            CommandLine cmd = new PosixParser().parse(options, args);
+            CommandLine cmd = new DefaultParser().parse(options, args);
             return cmd.hasOption(OPT);
         } catch (ParseException e) {
             return false;
@@ -280,7 +276,7 @@ public final class Solvers {
             return null;
         }
         try {
-            CommandLine cmd = new PosixParser().parse(options, args);
+            CommandLine cmd = new DefaultParser().parse(options, args);
 
             boolean isModeOptimization = false;
             ASolverFactory<ISolver> factory;
@@ -413,7 +409,7 @@ public final class Solvers {
     }
 
     public static void showAvailableRestarts(ILogAble logger) {
-        List<String> classNames = new ArrayList<String>();
+        List<String> classNames = new ArrayList<>();
         List<String> resultRTSI = RTSI.find(RESTART_STRATEGY_NAME);
         Set<String> keySet;
         for (String name : resultRTSI) {
@@ -423,7 +419,7 @@ public final class Solvers {
                             .describe(
                                     Class.forName(
                                             Solvers.PACKAGE_RESTARTS + "."
-                                                    + name).newInstance())
+                                                    + name).getConstructor().newInstance())
                             .keySet();
                     keySet.remove(CLASS);
                     if (keySet.size() > 0) {
@@ -449,7 +445,7 @@ public final class Solvers {
     }
 
     public static void showAvailablePhase(ILogAble logger) {
-        List<String> classNames = new ArrayList<String>();
+        List<String> classNames = new ArrayList<>();
         List<String> resultRTSI = RTSI.find(PHASE_NAME);
         Set<String> keySet;
         for (String name : resultRTSI) {
@@ -458,7 +454,7 @@ public final class Solvers {
 
                     keySet = BeanUtils.describe(
                             Class.forName(PACKAGE_PHASE + "." + name)
-                                    .newInstance()).keySet();
+                            .getConstructor().newInstance()).keySet();
                     keySet.remove(CLASS);
                     if (keySet.size() > 0) {
                         classNames.add(name + keySet);
@@ -483,14 +479,14 @@ public final class Solvers {
     }
 
     public static void showAvailableLearning(ILogAble logger) {
-        List<String> classNames = new ArrayList<String>();
+        List<String> classNames = new ArrayList<>();
         List<String> resultRTSI = RTSI.find(LEARNING_NAME);
         Set<String> keySet;
         for (String name : resultRTSI) {
             try {
                 keySet = BeanUtils.describe(
                         Class.forName(PACKAGE_LEARNING + "." + name)
-                                .newInstance()).keySet();
+                                .getConstructor().newInstance()).keySet();
                 keySet.remove(CLASS);
                 if (keySet.size() > 0) {
                     classNames.add(name + keySet);
@@ -516,7 +512,7 @@ public final class Solvers {
     }
 
     public static void showAvailableOrders(ILogAble logger) {
-        List<String> classNames = new ArrayList<String>();
+        List<String> classNames = new ArrayList<>();
         List<String> resultRTSI = RTSI.find(ORDER_NAME);
         Set<String> keySet = null;
         for (String name : resultRTSI) {
@@ -527,12 +523,12 @@ public final class Solvers {
                                 .replaceFirst(MINISAT, PB);
                         keySet = BeanUtils.describe(
                                 Class.forName(namePackage + "." + name)
-                                        .newInstance()).keySet();
+                                .getConstructor().newInstance()).keySet();
                     } else {
                         keySet = BeanUtils.describe(
                                 Class.forName(
                                         Solvers.PACKAGE_ORDERS + "." + name)
-                                        .newInstance()).keySet();
+                                .getConstructor().newInstance()).keySet();
                     }
                     keySet.remove(CLASS);
 
@@ -563,7 +559,7 @@ public final class Solvers {
         Set<String> keySet = null;
         try {
             keySet = BeanUtils.describe(
-                    Class.forName(PARAMS_NAME).newInstance()).keySet();
+                    Class.forName(PARAMS_NAME).getConstructor().newInstance()).keySet();
             keySet.remove(CLASS);
         } catch (IllegalAccessException e) {
             logger.log(e.getMessage());

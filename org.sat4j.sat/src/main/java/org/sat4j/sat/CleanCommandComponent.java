@@ -2,8 +2,6 @@ package org.sat4j.sat;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -89,9 +87,11 @@ public class CleanCommandComponent extends CommandComponent {
     @Override
     public void createPanel() {
 
-        this.setBorder(new CompoundBorder(new TitledBorder(null,
-                this.getName(), TitledBorder.LEFT, TitledBorder.TOP),
-                DetailedCommandPanel.BORDER5));
+        this.setBorder(
+                new CompoundBorder(
+                        new TitledBorder(null, this.getName(),
+                                TitledBorder.LEFT, TitledBorder.TOP),
+                        DetailedCommandPanel.BORDER5));
 
         this.setLayout(new BorderLayout());
 
@@ -102,7 +102,7 @@ public class CleanCommandComponent extends CommandComponent {
         this.cleanSlider.setPaintTicks(true);
 
         // Create the label table
-        Dictionary<Integer, JLabel> cleanValuesTable = new Hashtable<Integer, JLabel>();
+        Dictionary<Integer, JLabel> cleanValuesTable = new Hashtable<>();
         cleanValuesTable.put(0, this.clean5000Label);
         cleanValuesTable.put(1, this.clean10000Label);
         cleanValuesTable.put(2, this.clean20000Label);
@@ -139,18 +139,14 @@ public class CleanCommandComponent extends CommandComponent {
 
         this.cleanAndEvaluationApplyButton = new JButton("Apply changes");
         this.cleanAndEvaluationApplyButton
-                .addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        hasChangedCleaningValue();
-                    }
-                });
+                .addActionListener( e-> hasChangedCleaningValue());
 
         JPanel tmpPanel5 = new JPanel();
         tmpPanel5.add(this.cleanAndEvaluationApplyButton);
 
         JPanel tmpPanel = new JPanel();
-        tmpPanel.setBorder(new CompoundBorder(new TitledBorder(null, "",
-                TitledBorder.LEFT, TitledBorder.TOP),
+        tmpPanel.setBorder(new CompoundBorder(
+                new TitledBorder(null, "", TitledBorder.LEFT, TitledBorder.TOP),
                 DetailedCommandPanel.BORDER5));
 
         tmpPanel.setLayout(new BorderLayout());
@@ -165,11 +161,7 @@ public class CleanCommandComponent extends CommandComponent {
 
         this.cleanButton = new JButton(CLEAN);
 
-        this.cleanButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnClean();
-            }
-        });
+        this.cleanButton.addActionListener(e -> hasClickedOnClean());
 
         tmpPanel2.add(this.manualCleanLabel);
         tmpPanel2.add(this.cleanButton);
@@ -178,11 +170,8 @@ public class CleanCommandComponent extends CommandComponent {
         this.cleanUseOriginalStrategyCB = new JCheckBox(USE_ORIGINAL_STRATEGY);
         this.cleanUseOriginalStrategyCB.setSelected(true);
 
-        this.cleanUseOriginalStrategyCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnUseOriginalStrategy();
-            }
-        });
+        this.cleanUseOriginalStrategyCB
+                .addActionListener(e -> hasClickedOnUseOriginalStrategy());
 
         tmpPanel3.add(this.cleanUseOriginalStrategyCB);
 
@@ -211,14 +200,14 @@ public class CleanCommandComponent extends CommandComponent {
         int nbConflicts = CLEAN_VALUES[this.cleanSlider.getValue()];
         this.controller.setNbClausesAtWhichWeShouldClean(nbConflicts);
         if (this.activityRadio.isSelected()) {
-            this.controller
-                    .setLearnedDeletionStrategyTypeToSolver(LearnedConstraintsEvaluationType.ACTIVITY);
+            this.controller.setLearnedDeletionStrategyTypeToSolver(
+                    LearnedConstraintsEvaluationType.ACTIVITY);
         } else if (this.lbdRadio.isSelected()) {
-            this.controller
-                    .setLearnedDeletionStrategyTypeToSolver(LearnedConstraintsEvaluationType.LBD);
+            this.controller.setLearnedDeletionStrategyTypeToSolver(
+                    LearnedConstraintsEvaluationType.LBD);
         } else if (this.lbd2Radio.isSelected()) {
-            this.controller
-                    .setLearnedDeletionStrategyTypeToSolver(LearnedConstraintsEvaluationType.LBD2);
+            this.controller.setLearnedDeletionStrategyTypeToSolver(
+                    LearnedConstraintsEvaluationType.LBD2);
         }
     }
 
@@ -229,8 +218,8 @@ public class CleanCommandComponent extends CommandComponent {
         this.controller
                 .setUseTelecomStrategyAsLearnedConstraintsDeletionStrategy();
 
-        this.controller
-                .setLearnedDeletionStrategyTypeToSolver(LearnedConstraintsEvaluationType.ACTIVITY);
+        this.controller.setLearnedDeletionStrategyTypeToSolver(
+                LearnedConstraintsEvaluationType.ACTIVITY);
         this.activityRadio.setSelected(true);
 
         setCleanPanelOriginalStrategyEnabled(false);

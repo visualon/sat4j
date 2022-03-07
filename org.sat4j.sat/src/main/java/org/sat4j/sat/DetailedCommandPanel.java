@@ -34,8 +34,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -127,8 +125,8 @@ import org.sat4j.tools.encoding.Policy;
  * @author sroussel
  * 
  */
-public class DetailedCommandPanel extends JPanel implements SolverController,
-        SearchListener<ISolverService>, ILogAble {
+public class DetailedCommandPanel extends JPanel
+        implements SolverController, SearchListener<ISolverService>, ILogAble {
 
     private static final String EXACTLY_1 = "Exactly 1:";
     private static final String EXACTLY_K = "Exactly K:";
@@ -192,11 +190,6 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
     private static final String LOWER = "Search solution by lower bounding instead of upper bounding";
     private JCheckBox lowerCB;
-
-    private JComboBox atMostKCB;
-    private JComboBox atMost1CB;
-    private JComboBox exactlyKCB;
-    private JComboBox exactly1CB;
 
     private JRadioButton solverLineParamLineRadio;
     private JRadioButton solverLineParamRemoteRadio;
@@ -301,7 +294,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
         this.restartPanel = new RestartCommandComponent(RESTART_PANEL, this,
                 this.telecomStrategy.getRestartStrategy().getClass()
-                        .getSimpleName(), this);
+                        .getSimpleName(),
+                this);
         this.rwPanel = new RandomWalkCommandComponent(RW_PANEL, this);
         this.cleanPanel = new CleanCommandComponent(CLEAN_PANEL, this);
         this.phasePanel = new PhaseCommandComponent(PHASE_PANEL, this,
@@ -315,8 +309,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         JScrollPane scrollPane = new JScrollPane(this.console);
 
         scrollPane.setPreferredSize(new Dimension(400, 200));
-        scrollPane.getVerticalScrollBar().setValue(
-                scrollPane.getVerticalScrollBar().getMaximum());
+        scrollPane.getVerticalScrollBar()
+                .setValue(scrollPane.getVerticalScrollBar().getMaximum());
 
         MyTabbedPane tabbedPane = new MyTabbedPane();
 
@@ -427,9 +421,10 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         this.instancePanel = new JPanel();
 
         this.instancePanel.setName(INSTANCE_PANEL);
-        this.instancePanel.setBorder(new CompoundBorder(new TitledBorder(null,
-                this.instancePanel.getName(), TitledBorder.LEFT,
-                TitledBorder.TOP), BORDER5));
+        this.instancePanel.setBorder(new CompoundBorder(
+                new TitledBorder(null, this.instancePanel.getName(),
+                        TitledBorder.LEFT, TitledBorder.TOP),
+                BORDER5));
 
         this.instancePanel.setLayout(new BorderLayout(0, 0));
 
@@ -441,11 +436,9 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
         this.browseButton = new JButton(BROWSE);
 
-        this.browseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                openFileChooser();
-                updateListOfSolvers();
-            }
+        this.browseButton.addActionListener(e -> {
+            openFileChooser();
+            updateListOfSolvers();
         });
 
         this.optimisationModeCB = new JCheckBox(OPTMIZATION_MODE);
@@ -468,26 +461,17 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         tmpPanel12.add(this.equivalenceCB);
         tmpPanel12.add(this.lowerCB);
 
-        this.optimisationModeCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setOptimisationMode(optimisationModeCB.isSelected());
-                log("use optimization mode: "
-                        + DetailedCommandPanel.this.optimizationMode);
-                updateListOfSolvers();
-            }
+        this.optimisationModeCB.addActionListener(e -> {
+            setOptimisationMode(optimisationModeCB.isSelected());
+            log("use optimization mode: "
+                    + DetailedCommandPanel.this.optimizationMode);
+            updateListOfSolvers();
         });
 
-        this.equivalenceCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                equivalenceMode = equivalenceCB.isSelected();
-            }
-        });
+        this.equivalenceCB.addActionListener(
+                e -> equivalenceMode = equivalenceCB.isSelected());
 
-        this.lowerCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                lowerMode = lowerCB.isSelected();
-            }
-        });
+        this.lowerCB.addActionListener(e -> lowerMode = lowerCB.isSelected());
 
         instancePanel.setLayout(new BoxLayout(instancePanel, BoxLayout.Y_AXIS));
 
@@ -499,12 +483,13 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         this.choixSolverPanel = new JPanel();
 
         this.choixSolverPanel.setName(CHOIX_SOLVER_PANEL);
-        this.choixSolverPanel.setBorder(new CompoundBorder(new TitledBorder(
-                null, this.choixSolverPanel.getName(), TitledBorder.LEFT,
-                TitledBorder.TOP), BORDER5));
+        this.choixSolverPanel.setBorder(new CompoundBorder(
+                new TitledBorder(null, this.choixSolverPanel.getName(),
+                        TitledBorder.LEFT, TitledBorder.TOP),
+                BORDER5));
 
-        this.choixSolverPanel.setLayout(new BoxLayout(choixSolverPanel,
-                BoxLayout.Y_AXIS));
+        this.choixSolverPanel
+                .setLayout(new BoxLayout(choixSolverPanel, BoxLayout.Y_AXIS));
 
         this.choixSolver = new JLabel(CHOIX_SOLVER);
 
@@ -518,28 +503,18 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
         this.startStopButton = new JButton(START);
 
-        this.startStopButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                manageStartStopButton();
-            }
-        });
+        this.startStopButton.addActionListener(e -> manageStartStopButton());
 
         this.pauseButton = new JButton(PAUSE);
         this.pauseButton.setEnabled(false);
 
-        this.pauseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (DetailedCommandPanel.this.pauseButton.getText().equals(
-                        PAUSE)) {
-                    DetailedCommandPanel.this.pauseButton.setText(RESUME);
-                    DetailedCommandPanel.this.telecomStrategy
-                            .setInterrupted(true);
-                } else {
-                    DetailedCommandPanel.this.pauseButton.setText(PAUSE);
-                    DetailedCommandPanel.this.telecomStrategy
-                            .setInterrupted(false);
-                }
-
+        this.pauseButton.addActionListener(e -> {
+            if (DetailedCommandPanel.this.pauseButton.getText().equals(PAUSE)) {
+                DetailedCommandPanel.this.pauseButton.setText(RESUME);
+                DetailedCommandPanel.this.telecomStrategy.setInterrupted(true);
+            } else {
+                DetailedCommandPanel.this.pauseButton.setText(PAUSE);
+                DetailedCommandPanel.this.telecomStrategy.setInterrupted(false);
             }
         });
 
@@ -549,24 +524,25 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         GridBagConstraints c = new GridBagConstraints();
 
         tmpPanel.setName("Cardinality Constraints Encodings");
-        tmpPanel.setBorder(new CompoundBorder(new TitledBorder(null, tmpPanel
-                .getName(), TitledBorder.LEFT, TitledBorder.TOP), BORDER5));
+        tmpPanel.setBorder(
+                new CompoundBorder(new TitledBorder(null, tmpPanel.getName(),
+                        TitledBorder.LEFT, TitledBorder.TOP), BORDER5));
 
         JLabel atMostKLabel = new JLabel(AT_MOST_K);
-        atMostKCB = new JComboBox(new DefaultComboBoxModel(getListOfEncodings(
-                AT_MOST_K).toArray()));
+        var atMostKCB = new JComboBox(new DefaultComboBoxModel(
+                getListOfEncodings(AT_MOST_K).toArray()));
 
         JLabel atMost1Label = new JLabel(AT_MOST_1);
-        atMost1CB = new JComboBox(new DefaultComboBoxModel(getListOfEncodings(
-                AT_MOST_1).toArray()));
+        var atMost1CB = new JComboBox(new DefaultComboBoxModel(
+                getListOfEncodings(AT_MOST_1).toArray()));
 
         JLabel exactlyKLabel = new JLabel(EXACTLY_K);
-        exactlyKCB = new JComboBox(new DefaultComboBoxModel(getListOfEncodings(
-                EXACTLY_K).toArray()));
+        var exactlyKCB = new JComboBox(new DefaultComboBoxModel(
+                getListOfEncodings(EXACTLY_K).toArray()));
 
         JLabel exactly1Label = new JLabel(EXACTLY_1);
-        exactly1CB = new JComboBox(new DefaultComboBoxModel(getListOfEncodings(
-                EXACTLY_1).toArray()));
+        var exactly1CB = new JComboBox(new DefaultComboBoxModel(
+                getListOfEncodings(EXACTLY_1).toArray()));
 
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0.2;
@@ -617,8 +593,9 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         c2.gridx = 0;
 
         tmpPanel2.setName(CHOOSE_START_CONFIG);
-        tmpPanel2.setBorder(new CompoundBorder(new TitledBorder(null, tmpPanel2
-                .getName(), TitledBorder.LEFT, TitledBorder.TOP), BORDER5));
+        tmpPanel2.setBorder(
+                new CompoundBorder(new TitledBorder(null, tmpPanel2.getName(),
+                        TitledBorder.LEFT, TitledBorder.TOP), BORDER5));
 
         this.solverLineParamLineRadio = new JRadioButton(
                 SOLVER_LINE_PARAM_LINE_CONFIG);
@@ -657,70 +634,43 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         this.choixSolverPanel.add(tmpPanel2);
         this.choixSolverPanel.add(tmpPanel3);
 
-        atMostKCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                encodingPolicy.setAtMostKEncoding((EncodingStrategy) atMostKCB
-                        .getSelectedItem());
+        atMostKCB.addActionListener(e -> encodingPolicy.setAtMostKEncoding(
+                (EncodingStrategy) atMostKCB.getSelectedItem()));
+
+        atMost1CB.addActionListener(e -> encodingPolicy.setAtMostOneEncoding(
+                (EncodingStrategy) atMost1CB.getSelectedItem()));
+
+        exactlyKCB.addActionListener(e -> encodingPolicy.setExactlyKEncoding(
+                (EncodingStrategy) exactlyKCB.getSelectedItem()));
+
+        exactly1CB.addActionListener(e -> encodingPolicy.setExactlyOneEncoding(
+                (EncodingStrategy) exactly1CB.getSelectedItem()));
+
+        this.solverLineParamLineRadio.addActionListener(e -> {
+            if (DetailedCommandPanel.this.solverLineParamLineRadio
+                    .isSelected()) {
+                DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LINE_PARAM_LINE;
             }
         });
 
-        atMost1CB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                encodingPolicy
-                        .setAtMostOneEncoding((EncodingStrategy) atMost1CB
-                                .getSelectedItem());
+        this.solverLineParamRemoteRadio.addActionListener(e -> {
+            if (DetailedCommandPanel.this.solverLineParamRemoteRadio
+                    .isSelected()) {
+                DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LINE_PARAM_REMOTE;
             }
         });
 
-        exactlyKCB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                encodingPolicy
-                        .setExactlyKEncoding((EncodingStrategy) exactlyKCB
-                                .getSelectedItem());
+        this.solverListParamListRadio.addActionListener(e -> {
+            if (DetailedCommandPanel.this.solverListParamListRadio
+                    .isSelected()) {
+                DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LIST_PARAM_DEFAULT;
             }
         });
 
-        exactly1CB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                encodingPolicy
-                        .setExactlyOneEncoding((EncodingStrategy) exactly1CB
-                                .getSelectedItem());
-            }
-        });
-
-        this.solverLineParamLineRadio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (DetailedCommandPanel.this.solverLineParamLineRadio
-                        .isSelected()) {
-                    DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LINE_PARAM_LINE;
-                }
-            }
-        });
-
-        this.solverLineParamRemoteRadio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (DetailedCommandPanel.this.solverLineParamRemoteRadio
-                        .isSelected()) {
-                    DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LINE_PARAM_REMOTE;
-                }
-            }
-        });
-
-        this.solverListParamListRadio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (DetailedCommandPanel.this.solverListParamListRadio
-                        .isSelected()) {
-                    DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LIST_PARAM_DEFAULT;
-                }
-            }
-        });
-
-        this.solverListParamRemoteRadio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (DetailedCommandPanel.this.solverListParamRemoteRadio
-                        .isSelected()) {
-                    DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LIST_PARAM_REMOTE;
-                }
+        this.solverListParamRemoteRadio.addActionListener(e -> {
+            if (DetailedCommandPanel.this.solverListParamRemoteRadio
+                    .isSelected()) {
+                DetailedCommandPanel.this.startConfig = StartSolverEnum.SOLVER_LIST_PARAM_REMOTE;
             }
         });
 
@@ -810,8 +760,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
             } else {
                 factory = org.sat4j.maxsat.SolverFactory.instance();
             }
-            this.solver = (ICDCL<?>) factory
-                    .createSolverByName(partsSelectedSolver[1]);
+            this.solver = factory.createSolverByName(partsSelectedSolver[1]);
 
             cdclSolver = (ICDCL<?>) this.solver.getSolvingEngine();
 
@@ -819,8 +768,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
             cdclSolver.setRestartStrategy(this.telecomStrategy);
             cdclSolver.setOrder(this.randomWalk);
-            cdclSolver.getOrder().setPhaseSelectionStrategy(
-                    this.telecomStrategy);
+            cdclSolver.getOrder()
+                    .setPhaseSelectionStrategy(this.telecomStrategy);
 
             this.restartPanel.hasClickedOnRestart();
             this.rwPanel.hasClickedOnApplyRW();
@@ -834,8 +783,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
             cdclSolver = (ICDCL<?>) this.solver.getSolvingEngine();
 
             this.telecomStrategy.setSolver(cdclSolver);
-            this.telecomStrategy.setRestartStrategy(cdclSolver
-                    .getRestartStrategy());
+            this.telecomStrategy
+                    .setRestartStrategy(cdclSolver.getRestartStrategy());
             cdclSolver.setRestartStrategy(this.telecomStrategy);
 
             this.restartPanel.setCurrentRestart(this.telecomStrategy
@@ -864,14 +813,14 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
             this.randomWalk.setProbability(proba);
             this.rwPanel.setProba(proba);
             cdclSolver.setOrder(this.randomWalk);
-            this.telecomStrategy.setPhaseSelectionStrategy(cdclSolver
-                    .getOrder().getPhaseSelectionStrategy());
-            cdclSolver.getOrder().setPhaseSelectionStrategy(
-                    this.telecomStrategy);
+            this.telecomStrategy.setPhaseSelectionStrategy(
+                    cdclSolver.getOrder().getPhaseSelectionStrategy());
+            cdclSolver.getOrder()
+                    .setPhaseSelectionStrategy(this.telecomStrategy);
             this.phasePanel.setPhaseListSelectedItem(this.telecomStrategy
                     .getPhaseSelectionStrategy().getClass().getSimpleName());
-            this.simplifierPanel.setSelectedSimplification(cdclSolver
-                    .getSimplifier().toString());
+            this.simplifierPanel.setSelectedSimplification(
+                    cdclSolver.getSimplifier().toString());
 
             this.phasePanel.repaint();
             break;
@@ -883,8 +832,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
             cdclSolver.setRestartStrategy(this.telecomStrategy);
             cdclSolver.setOrder(this.randomWalk);
-            cdclSolver.getOrder().setPhaseSelectionStrategy(
-                    this.telecomStrategy);
+            cdclSolver.getOrder()
+                    .setPhaseSelectionStrategy(this.telecomStrategy);
 
             this.restartPanel.hasClickedOnRestart();
             this.rwPanel.hasClickedOnApplyRW();
@@ -914,8 +863,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
             cdclSolver = (ICDCL<?>) this.solver.getSolvingEngine();
 
             this.telecomStrategy.setSolver(cdclSolver);
-            this.telecomStrategy.setRestartStrategy(cdclSolver
-                    .getRestartStrategy());
+            this.telecomStrategy
+                    .setRestartStrategy(cdclSolver.getRestartStrategy());
             cdclSolver.setRestartStrategy(this.telecomStrategy);
 
             this.restartPanel.setCurrentRestart(this.telecomStrategy
@@ -946,14 +895,14 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
             cdclSolver.setOrder(this.randomWalk);
 
-            this.telecomStrategy.setPhaseSelectionStrategy(cdclSolver
-                    .getOrder().getPhaseSelectionStrategy());
+            this.telecomStrategy.setPhaseSelectionStrategy(
+                    cdclSolver.getOrder().getPhaseSelectionStrategy());
             this.phasePanel.setPhaseListSelectedItem(this.telecomStrategy
                     .getPhaseSelectionStrategy().getClass().getSimpleName());
-            cdclSolver.getOrder().setPhaseSelectionStrategy(
-                    this.telecomStrategy);
-            this.simplifierPanel.setSelectedSimplification(cdclSolver
-                    .getSimplifier().toString());
+            cdclSolver.getOrder()
+                    .setPhaseSelectionStrategy(this.telecomStrategy);
+            this.simplifierPanel.setSelectedSimplification(
+                    cdclSolver.getSimplifier().toString());
             break;
         }
 
@@ -1023,11 +972,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                 break;
             }
 
-        } catch (FileNotFoundException e) {
-            log(e.getMessage());
-        } catch (ParseFormatException e) {
-            log(e.getMessage());
-        } catch (IOException e) {
+        } catch (ParseFormatException | IOException e) {
             log(e.getMessage());
         } catch (ContradictionException e) {
             log("Unsatisfiable (trivial)!");
@@ -1038,9 +983,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                 + this.solver.getSolvingEngine().getClass().getSimpleName());
         log("# on instance " + this.instancePath);
         log("# Optimisation = " + this.optimizationMode);
-        log("# Restart strategy = "
-                + this.telecomStrategy.getRestartStrategy().getClass()
-                        .getSimpleName());
+        log("# Restart strategy = " + this.telecomStrategy.getRestartStrategy()
+                .getClass().getSimpleName());
         log("# Random walk probability = " + this.randomWalk.getProbability());
         log("# variables : " + this.solver.nVars());
 
@@ -1056,18 +1000,17 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                         if (DetailedCommandPanel.this.problem instanceof OptToPBSATAdapter) {
                             log(((OptToPBSATAdapter) DetailedCommandPanel.this.problem)
                                     .getCurrentObjectiveValue() + "");
-                            DetailedCommandPanel.this.reader
-                                    .decode(((OptToPBSATAdapter) DetailedCommandPanel.this.problem)
+                            DetailedCommandPanel.this.reader.decode(
+                                    ((OptToPBSATAdapter) DetailedCommandPanel.this.problem)
                                             .model(new PrintWriter(
                                                     DetailedCommandPanel.this.stringWriter)),
-                                            new PrintWriter(
-                                                    DetailedCommandPanel.this.stringWriter));
+                                    new PrintWriter(
+                                            DetailedCommandPanel.this.stringWriter));
                         } else {
-                            DetailedCommandPanel.this.reader
-                                    .decode(DetailedCommandPanel.this.problem
-                                            .model(),
-                                            new PrintWriter(
-                                                    DetailedCommandPanel.this.stringWriter));
+                            DetailedCommandPanel.this.reader.decode(
+                                    DetailedCommandPanel.this.problem.model(),
+                                    new PrintWriter(
+                                            DetailedCommandPanel.this.stringWriter));
                         }
                         log(DetailedCommandPanel.this.stringWriter.toString());
                     } else {
@@ -1087,7 +1030,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     }
 
     public void initSearchListeners() {
-        List<SearchListener<ISolverService>> listeners = new ArrayList<SearchListener<ISolverService>>();
+        List<SearchListener<ISolverService>> listeners = new ArrayList<>();
 
         if (this.isPlotActivated) {
             if (this.gnuplotBased) {
@@ -1095,8 +1038,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                         this.visuPreferences, this.solver.nVars(),
                         this.instancePath, this);
                 if (this.visuPreferences.isDisplayClausesEvaluation()) {
-                    listeners.add(new LearnedTracing(
-                            new FileBasedVisualizationTool(
+                    listeners.add(
+                            new LearnedTracing(new FileBasedVisualizationTool(
                                     this.whereToWriteFiles + "-learned")));
                 }
                 if (this.visuPreferences.isDisplayClausesSize()) {
@@ -1112,30 +1055,26 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                                             + "-learned-clauses-size-clean")));
                 }
                 if (this.visuPreferences.isDisplayConflictsDecision()) {
-                    listeners
-                            .add(new ConflictLevelTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-conflict-level"),
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-conflict-level-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-conflict-level-clean")));
+                    listeners.add(new ConflictLevelTracing(
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles + "-conflict-level"),
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles
+                                            + "-conflict-level-restart"),
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles
+                                            + "-conflict-level-clean")));
                 }
                 if (this.visuPreferences.isDisplayConflictsTrail()) {
-                    listeners
-                            .add(new ConflictDepthTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-conflict-depth"),
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-conflict-depth-restart"),
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-conflict-depth-clean")));
+                    listeners.add(new ConflictDepthTracing(
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles + "-conflict-depth"),
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles
+                                            + "-conflict-depth-restart"),
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles
+                                            + "-conflict-depth-clean")));
                 }
 
                 if (this.visuPreferences.isDisplayDecisionIndexes()) {
@@ -1155,16 +1094,14 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                 }
 
                 if (this.visuPreferences.isDisplaySpeed()) {
-                    listeners
-                            .add(new SpeedTracing(
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles + "-speed"),
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-speed-clean"),
-                                    new FileBasedVisualizationTool(
-                                            this.whereToWriteFiles
-                                                    + "-speed-restart")));
+                    listeners.add(new SpeedTracing(
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles + "-speed"),
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles + "-speed-clean"),
+                            new FileBasedVisualizationTool(
+                                    this.whereToWriteFiles
+                                            + "-speed-restart")));
                 }
                 if (this.visuPreferences.isDisplayVariablesEvaluation()) {
                     listeners.add(new HeuristicsTracing(
@@ -1185,99 +1122,91 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                 ((JChartBasedSolverVisualisation) this.solverVisu)
                         .setnVar(this.solver.nVars());
                 if (this.visuPreferences.isDisplayClausesEvaluation()) {
-                    listeners
-                            .add(new LearnedTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getClausesEvaluationTrace())));
+                    listeners.add(
+                            new LearnedTracing(new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getClausesEvaluationTrace())));
                 }
                 if (this.visuPreferences.isDisplayClausesSize()) {
-                    listeners
-                            .add(new LearnedClausesSizeTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getLearnedClausesSizeTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getLearnedClausesSizeRestartTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getLearnedClausesSizeCleanTrace())));
+                    listeners.add(new LearnedClausesSizeTracing(
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getLearnedClausesSizeTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getLearnedClausesSizeRestartTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getLearnedClausesSizeCleanTrace())));
                 }
                 if (this.visuPreferences.isDisplayConflictsDecision()) {
-                    listeners
-                            .add(new ConflictLevelTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getConflictLevelTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getConflictLevelRestartTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getConflictLevelCleanTrace())));
+                    listeners.add(new ConflictLevelTracing(
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getConflictLevelTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getConflictLevelRestartTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getConflictLevelCleanTrace())));
                 }
                 if (this.visuPreferences.isDisplayConflictsTrail()) {
-                    listeners
-                            .add(new ConflictDepthTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getConflictDepthTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getConflictDepthRestartTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getConflictDepthCleanTrace())));
+                    listeners.add(new ConflictDepthTracing(
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getConflictDepthTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getConflictDepthRestartTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getConflictDepthCleanTrace())));
                 }
                 if (this.visuPreferences.isDisplayDecisionIndexes()) {
-                    listeners
-                            .add(new DecisionTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getPositiveDecisionTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getNegativeDecisionTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            new TraceComposite(
-                                                    ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                            .getRestartPosDecisionTrace(),
-                                                    ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                            .getRestartNegDecisionTrace())),
-                                    new ChartBasedVisualizationTool(
-                                            new TraceComposite(
-                                                    ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                            .getCleanPosDecisionTrace(),
-                                                    ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                            .getCleanNegDecisionTrace()))));
+                    listeners.add(new DecisionTracing(
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getPositiveDecisionTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getNegativeDecisionTrace()),
+                            new ChartBasedVisualizationTool(new TraceComposite(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getRestartPosDecisionTrace(),
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getRestartNegDecisionTrace())),
+                            new ChartBasedVisualizationTool(new TraceComposite(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getCleanPosDecisionTrace(),
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getCleanNegDecisionTrace()))));
                 }
                 if (this.visuPreferences.isDisplaySpeed()) {
-                    listeners
-                            .add(new SpeedTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getSpeedTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getSpeedCleanTrace()),
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getSpeedRestartTrace())));
+                    listeners.add(new SpeedTracing(
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getSpeedTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getSpeedCleanTrace()),
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getSpeedRestartTrace())));
                 }
                 if (this.visuPreferences.isDisplayVariablesEvaluation()) {
-                    listeners
-                            .add(new HeuristicsTracing(
-                                    new ChartBasedVisualizationTool(
-                                            ((JChartBasedSolverVisualisation) this.solverVisu)
-                                                    .getHeuristicsTrace())));
+                    listeners.add(new HeuristicsTracing(
+                            new ChartBasedVisualizationTool(
+                                    ((JChartBasedSolverVisualisation) this.solverVisu)
+                                            .getHeuristicsTrace())));
                 }
             }
 
         }
         listeners.add(this);
 
-        this.solver.setSearchListener(new MultiTracing<ISolverService>(listeners));
+        this.solver
+                .setSearchListener(new MultiTracing<ISolverService>(listeners));
 
     }
 
@@ -1327,7 +1256,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
     public void setUseTelecomStrategyAsLearnedConstraintsDeletionStrategy() {
         this.telecomStrategy
-                .setUseTelecomStrategyAsLearnedConstraintsDeletionStrategy(true);
+                .setUseTelecomStrategyAsLearnedConstraintsDeletionStrategy(
+                        true);
         log("Solver now cleans clauses every "
                 + this.cleanPanel.getCleanSliderValue()
                 + " conflicts and bases evaluation of clauses on activity");
@@ -1396,7 +1326,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public List<String> getListOfSolvers() {
         ASolverFactory<?> factory;
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         factory = org.sat4j.minisat.SolverFactory.instance();
         for (String s : factory.solverNames()) {
@@ -1423,7 +1353,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public List<String> getListOfSatSolvers() {
         ASolverFactory<?> factory;
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         factory = org.sat4j.minisat.SolverFactory.instance();
         for (String s : factory.solverNames()) {
@@ -1437,7 +1367,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public List<String> getListOfPBSolvers() {
         ASolverFactory<?> factory;
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         factory = org.sat4j.pb.SolverFactory.instance();
         for (String s : factory.solverNames()) {
@@ -1451,7 +1381,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public List<String> getListOfMaxsatSolvers() {
         ASolverFactory<?> factory;
 
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         factory = org.sat4j.pb.SolverFactory.instance();
         for (String s : factory.solverNames()) {
@@ -1463,7 +1393,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     }
 
     public List<EncodingStrategy> getListOfEncodings(String typeOfConstraint) {
-        List<EncodingStrategy> v = new ArrayList<EncodingStrategy>();
+        List<EncodingStrategy> v = new ArrayList<>();
 
         v.add(EncodingStrategy.NATIVE);
 
@@ -1494,8 +1424,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public void logsameline(String message) {
         if (this.console != null) {
             this.console.append(message);
-            this.console.setCaretPosition(this.console.getDocument()
-                    .getLength());
+            this.console
+                    .setCaretPosition(this.console.getDocument().getLength());
             this.console.repaint();
         }
         this.repaint();
@@ -1517,7 +1447,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         switch (problemType) {
         case CNF_MAXSAT:
         case WCNF_MAXSAT:
-            instance = new MSInstanceReader((WeightedMaxSatDecorator) theSolver);
+            instance = new MSInstanceReader(
+                    (WeightedMaxSatDecorator) theSolver);
             break;
         case PB_OPT:
         case PB_SAT:
@@ -1532,7 +1463,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     }
 
     public void updateListOfSolvers() {
-        List<String> theList = new ArrayList<String>();
+        List<String> theList = new ArrayList<>();
         String defaultSolver = "";
 
         if (instancePath == null || instancePath.length() == 0) {
@@ -1671,8 +1602,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         if (this.end - this.begin >= 2000) {
             long tmp = this.end - this.begin;
 
-            this.cleanPanel.setSpeedLabeltext(this.propagationsCounter / tmp
-                    * 1000 + "");
+            this.cleanPanel.setSpeedLabeltext(
+                    this.propagationsCounter / tmp * 1000 + "");
 
             this.begin = System.currentTimeMillis();
             this.propagationsCounter = 0;
@@ -1680,9 +1611,9 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
         this.propagationsCounter++;
     }
 
-    public void enqueueing(int p, IConstr reason) {        
+    public void enqueueing(int p, IConstr reason) {
     }
-    
+
     public void backtracking(int p) {
     }
 
@@ -1695,9 +1626,9 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public void delete(IConstr c) {
     }
 
-    public void learnUnit(int p) {        
+    public void learnUnit(int p) {
     }
-    
+
     public void conflictFound(IConstr confl, int dlevel, int trailLevel) {
         this.conflictCounter++;
     }
@@ -1705,7 +1636,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public void conflictFound(int p) {
     }
 
-    public void solutionFound(int[] model,RandomAccessModel lazyModel) {
+    public void solutionFound(int[] model, RandomAccessModel lazyModel) {
         log("Found a solution !! ");
         logsameline(this.stringWriter.toString());
         this.stringWriter.getBuffer().delete(0,
@@ -1725,8 +1656,9 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
     public void restarting() {
         this.end = System.currentTimeMillis();
         if (this.end != this.begin) {
-            this.cleanPanel.setSpeedLabeltext(this.propagationsCounter
-                    / (this.end - this.begin) * 1000 + "");
+            this.cleanPanel.setSpeedLabeltext(
+                    this.propagationsCounter / (this.end - this.begin) * 1000
+                            + "");
         }
     }
 
@@ -1735,8 +1667,8 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
 
     public void cleaning() {
         this.end = System.currentTimeMillis();
-        this.cleanPanel.setSpeedLabeltext(this.propagationsCounter
-                / (this.end - this.begin) * 1000 + "");
+        this.cleanPanel.setSpeedLabeltext(
+                this.propagationsCounter / (this.end - this.begin) * 1000 + "");
     }
 
     public class MyTabbedPane extends JTabbedPane {
@@ -1782,7 +1714,7 @@ public class DetailedCommandPanel extends JPanel implements SolverController,
                 }
             }
             super.setSelectedIndex(index);
-        };
+        }
     }
 
 }

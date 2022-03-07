@@ -29,15 +29,14 @@
  *******************************************************************************/
 package org.sat4j.sat;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.sat4j.AbstractLauncher;
 import org.sat4j.DecisionMode;
 import org.sat4j.ExitCode;
@@ -56,7 +55,6 @@ import org.sat4j.reader.Reader;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ILogAble;
 import org.sat4j.specs.ISolver;
-import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ConflictDepthTracing;
 import org.sat4j.tools.ConflictLevelTracing;
 import org.sat4j.tools.DecisionTracing;
@@ -152,7 +150,7 @@ public class Launcher extends AbstractLauncher implements ILogAble {
         Options options = Solvers.createCLIOptions();
 
         try {
-            CommandLine cmd = new PosixParser().parse(options, args);
+            CommandLine cmd = new DefaultParser().parse(options, args);
 
             this.isModeOptimization = cmd.hasOption("opt");
 
@@ -195,14 +193,10 @@ public class Launcher extends AbstractLauncher implements ILogAble {
                 setSilent(true);
             }
 
-            if (cmd.hasOption("k")) {
-                Integer myk = Integer.valueOf(cmd.getOptionValue("k"));
-            }
-
             if (cmd.hasOption("r")) {
                 this.modeTracing = true;
                 if (!cmd.hasOption("remote")) {
-                    asolver.setSearchListener(new MultiTracing(
+                    asolver.setSearchListener(new MultiTracing<>(
                             new ConflictLevelTracing(
                                     new FileBasedVisualizationTool(
                                             this.filename + "-conflict-level"),
@@ -249,7 +243,7 @@ public class Launcher extends AbstractLauncher implements ILogAble {
             case CNF_MAXSAT:
             case WCNF_MAXSAT:
                 setLauncherMode(OptimizationMode.instance());
-                asolver = new WeightedMaxSatDecorator((IPBCDCLSolver) asolver,
+                asolver = new WeightedMaxSatDecorator((IPBCDCLSolver<?>) asolver,
                         equivalence);
                 if (cmd.hasOption("lo")) {
                     this.problem = new ConstraintRelaxingPseudoOptDecorator(
@@ -329,15 +323,11 @@ public class Launcher extends AbstractLauncher implements ILogAble {
                 frame.activateTracing(this.modeTracing);
                 frame.setOptimisationMode(this.isModeOptimization);
             }
-        } catch (FileNotFoundException e) {
-            System.err.println("FATAL " + e.getLocalizedMessage());
-        } catch (IOException e) {
+        } catch (IOException | ParseFormatException e) {
             System.err.println("FATAL " + e.getLocalizedMessage());
         } catch (ContradictionException e) {
             getLauncherMode().setExitCode(ExitCode.UNSATISFIABLE);
             log("(trivial inconsistency)"); //$NON-NLS-1$
-        } catch (ParseFormatException e) {
-            System.err.println("FATAL " + e.getLocalizedMessage());
         }
     }
 

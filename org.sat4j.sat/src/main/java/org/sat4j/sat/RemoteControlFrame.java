@@ -31,8 +31,6 @@ package org.sat4j.sat;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -64,8 +62,8 @@ import org.sat4j.specs.ILogAble;
 public class RemoteControlFrame extends JFrame implements ILogAble {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private JMenuItem activateTracing;
@@ -152,8 +150,8 @@ public class RemoteControlFrame extends JFrame implements ILogAble {
 
     public void clickOnAboutSolver() {
         if (this.commandePanel.getSolver() != null) {
-            JOptionPane.showMessageDialog(this, this.commandePanel.getSolver()
-                    .toString());
+            JOptionPane.showMessageDialog(this,
+                    this.commandePanel.getSolver().toString());
         } else {
             JOptionPane.showMessageDialog(this,
                     "No solver is running at the moment. Please start solver.");
@@ -183,12 +181,9 @@ public class RemoteControlFrame extends JFrame implements ILogAble {
         this.activateTracing = new JMenuItem(DEACTIVATE);
         menu.add(this.activateTracing);
 
-        this.activateTracing.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                activateTracing(RemoteControlFrame.this.activateTracing
-                        .getText().equals(ACTIVATE));
-            }
-        });
+        this.activateTracing.addActionListener(
+                e -> activateTracing(RemoteControlFrame.this.activateTracing
+                        .getText().equals(ACTIVATE)));
 
         menu.addSeparator();
 
@@ -201,29 +196,25 @@ public class RemoteControlFrame extends JFrame implements ILogAble {
 
         menu.add(gnuplotBasedRadio);
 
-        gnuplotBasedRadio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                RemoteControlFrame.this.commandePanel.setGnuplotBased(true);
-                RemoteControlFrame.this.commandePanel.setChartBased(false);
-                RemoteControlFrame.this.commandePanel
-                        .activateGnuplotTracing(RemoteControlFrame.this.activateTracing
-                                .getText().equals(DEACTIVATE));
-                log("Use gnuplot tracing");
-            }
+        gnuplotBasedRadio.addActionListener(e -> {
+            RemoteControlFrame.this.commandePanel.setGnuplotBased(true);
+            RemoteControlFrame.this.commandePanel.setChartBased(false);
+            RemoteControlFrame.this.commandePanel.activateGnuplotTracing(
+                    RemoteControlFrame.this.activateTracing.getText()
+                            .equals(DEACTIVATE));
+            log("Use gnuplot tracing");
         });
         jChartBasedRadio.setSelected(true);
 
         menu.add(jChartBasedRadio);
 
-        jChartBasedRadio.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                RemoteControlFrame.this.commandePanel.setGnuplotBased(false);
-                RemoteControlFrame.this.commandePanel.setChartBased(true);
-                RemoteControlFrame.this.commandePanel
-                        .activateGnuplotTracing(RemoteControlFrame.this.activateTracing
-                                .getText().equals(DEACTIVATE));
-                log("Use java tracing");
-            }
+        jChartBasedRadio.addActionListener(e -> {
+            RemoteControlFrame.this.commandePanel.setGnuplotBased(false);
+            RemoteControlFrame.this.commandePanel.setChartBased(true);
+            RemoteControlFrame.this.commandePanel.activateGnuplotTracing(
+                    RemoteControlFrame.this.activateTracing.getText()
+                            .equals(DEACTIVATE));
+            log("Use java tracing");
         });
 
         menu.addSeparator();
@@ -231,22 +222,18 @@ public class RemoteControlFrame extends JFrame implements ILogAble {
         JMenuItem quit = new JMenuItem("Exit");
         menu.add(quit);
 
-        quit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        quit.addActionListener(e -> {
                 RemoteControlFrame.this.commandePanel.stopVisu();
                 System.exit(NORMAL);
             }
-        });
+        );
 
         JMenu preferences = new JMenu("Preferences");
         JMenuItem gnuplotPreferencesItem = new JMenuItem(
                 "Visualisation preferences");
 
-        gnuplotPreferencesItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                RemoteControlFrame.this.visuFrame.setVisible(true);
-            }
-        });
+        gnuplotPreferencesItem.addActionListener(
+                e -> RemoteControlFrame.this.visuFrame.setVisible(true));
 
         preferences.add(gnuplotPreferencesItem);
 
@@ -270,22 +257,13 @@ public class RemoteControlFrame extends JFrame implements ILogAble {
         URL url = RemoteControlFrame.class.getResource("/sat4j.version"); //$NON-NLS-1$
         String s = "";
         if (url == null) {
-            s = "no version file found!!!"; //$NON-NLS-1$			
+            s = "no version file found!!!"; //$NON-NLS-1$
         } else {
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(new InputStreamReader(url.openStream()));
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(url.openStream()))) {
                 s = "version " + in.readLine(); //$NON-NLS-1$
             } catch (IOException e) {
                 s = "c ERROR: " + e.getMessage();
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        s = "c ERROR: " + e.getMessage();
-                    }
-                }
             }
         }
         return s;
@@ -302,12 +280,10 @@ public class RemoteControlFrame extends JFrame implements ILogAble {
             this.commandePanel.stopVisu();
             this.commandePanel.setPlotActivated(false);
         }
-        if (this.commandePanel.getStartStopText().equals("Stop")
-                && this.activateTracing.getText().equals(ACTIVATE)) {
-            this.activateTracing.setEnabled(false);
-        } else {
-            this.activateTracing.setEnabled(true);
-        }
+        this.activateTracing.setEnabled(
+                !this.commandePanel.getStartStopText().equals("Stop")
+                        || !this.activateTracing.getText().equals(ACTIVATE));
+
     }
 
     public void setOptimisationMode(boolean optimizationMode) {

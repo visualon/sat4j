@@ -151,11 +151,13 @@ public class RemoteControlStrategy implements RestartStrategy,
         this.logger = logger;
     }
 
+    @Override
     public void init(SearchParams params, SolverStats stats) {
         this.restart.init(params, stats);
     }
 
     @Deprecated
+    @Override
     public long nextRestartNumberOfConflict() {
         return this.restart.nextRestartNumberOfConflict();
     }
@@ -169,10 +171,12 @@ public class RemoteControlStrategy implements RestartStrategy,
         return this.restart.shouldRestart();
     }
 
+    @Override
     public void onRestart() {
         this.restart.onRestart();
     }
 
+    @Override
     public void onBackjumpToRootLevel() {
         this.restart.onBackjumpToRootLevel();
     }
@@ -207,18 +211,22 @@ public class RemoteControlStrategy implements RestartStrategy,
         }
     }
 
+    @Override
     public void updateVar(int p) {
         this.phaseSelectionStrategy.updateVar(p);
     }
 
+    @Override
     public void init(int nlength) {
         this.phaseSelectionStrategy.init(nlength);
     }
 
-    public void init(int var, int p) {
-        this.phaseSelectionStrategy.init(var, p);
+    @Override
+    public void init(int variable, int p) {
+        this.phaseSelectionStrategy.init(variable, p);
     }
 
+    @Override
     public void assignLiteral(int p) {
         while (this.isInterrupted) {
             try {
@@ -231,10 +239,11 @@ public class RemoteControlStrategy implements RestartStrategy,
         this.phaseSelectionStrategy.assignLiteral(p);
     }
 
-    public int select(int var) {
-        return this.phaseSelectionStrategy.select(var);
+    public int select(int variable) {
+        return this.phaseSelectionStrategy.select(variable);
     }
 
+    @Override
     public void updateVarAtDecisionLevel(int q) {
         this.phaseSelectionStrategy.updateVarAtDecisionLevel(q);
     }
@@ -257,6 +266,7 @@ public class RemoteControlStrategy implements RestartStrategy,
         }
     }
 
+    @Override
     public void newLearnedClause(Constr learned, int trailLevel) {
         this.restart.newLearnedClause(learned, trailLevel);
     }

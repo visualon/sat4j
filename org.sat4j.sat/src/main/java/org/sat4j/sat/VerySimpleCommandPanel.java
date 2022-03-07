@@ -30,8 +30,6 @@
 package org.sat4j.sat;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -70,19 +68,11 @@ public class VerySimpleCommandPanel extends JPanel {
 
         this.restartButton = new JButton(RESTART);
 
-        this.restartButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnRestart();
-            }
-        });
+        this.restartButton.addActionListener(e -> hasClickedOnRestart());
 
         this.cleanButton = new JButton(CLEAN);
 
-        this.cleanButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnClean();
-            }
-        });
+        this.cleanButton.addActionListener(e -> hasClickedOnClean());
 
         this.console = new JTextArea();
 

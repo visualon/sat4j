@@ -2,8 +2,6 @@ package org.sat4j.sat;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,7 +27,8 @@ public class RandomWalkCommandComponent extends CommandComponent {
     private static final String RW_LABEL = "Probabilty : ";
     private static final String RW_APPLY = "Apply";
 
-    public RandomWalkCommandComponent(String name, SolverController controller) {
+    public RandomWalkCommandComponent(String name,
+            SolverController controller) {
         this.controller = controller;
         this.setName(name);
         createPanel();
@@ -42,9 +41,11 @@ public class RandomWalkCommandComponent extends CommandComponent {
 
     public void createRWPanel() {
 
-        this.setBorder(new CompoundBorder(new TitledBorder(null,
-                this.getName(), TitledBorder.LEFT, TitledBorder.TOP),
-                DetailedCommandPanel.BORDER5));
+        this.setBorder(
+                new CompoundBorder(
+                        new TitledBorder(null, this.getName(),
+                                TitledBorder.LEFT, TitledBorder.TOP),
+                        DetailedCommandPanel.BORDER5));
 
         this.setLayout(new BorderLayout());
 
@@ -62,11 +63,7 @@ public class RandomWalkCommandComponent extends CommandComponent {
         JPanel tmpPanel2 = new JPanel();
         this.applyRWButton = new JButton(RW_APPLY);
 
-        this.applyRWButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hasClickedOnApplyRW();
-            }
-        });
+        this.applyRWButton.addActionListener(e -> hasClickedOnApplyRW());
 
         tmpPanel2.add(this.applyRWButton);
 

@@ -7,11 +7,11 @@ import java.net.URL;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
 import org.sat4j.minisat.core.ConflictTimer;
 import org.sat4j.minisat.core.LearnedConstraintsDeletionStrategy;
 import org.sat4j.minisat.learning.MiniSATLearning;
@@ -40,7 +40,6 @@ import org.sat4j.pb.constraints.pb.PostProcessToCard;
 import org.sat4j.pb.constraints.pb.PostProcessToClause;
 import org.sat4j.pb.constraints.pb.PreProcessReduceConflict;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
-import org.sat4j.pb.core.PBDataStructureFactory;
 import org.sat4j.pb.core.PBSolverCP;
 import org.sat4j.pb.lcds.PBActivityLCDS;
 import org.sat4j.pb.lcds.PBGlucoseLCDS;
@@ -152,24 +151,14 @@ public class KTHLauncher {
         log("SAT4J PB solver for KTH experiments");
         URL url = KTHLauncher.class.getResource("/sat4j.version");
         if (url != null) {
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(
-                        new InputStreamReader(url.openStream()));
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(url.openStream()))) {
                 log("version " + in.readLine()); //$NON-NLS-1$
             } catch (IOException e) {
                 log("c ERROR: " + e.getMessage());
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        log("c ERROR: " + e.getMessage());
-                    }
-                }
             }
         }
-        CommandLineParser parser = new PosixParser();
+        CommandLineParser parser = new DefaultParser();
         Options options = createCLIOptions();
         if (args.length == 0) {
             HelpFormatter formatter = new HelpFormatter();
@@ -192,14 +181,14 @@ public class KTHLauncher {
                             cpsolver);
                 } else if ("inproc".equals(value)) {
                     InprocCardConstrLearningSolver solver = new InprocCardConstrLearningSolver(
-                            new MiniSATLearning<PBDataStructureFactory>(),
+                            new MiniSATLearning<>(),
                             new PBMaxClauseCardConstrDataStructure(),
                             new VarOrderHeap(), true, SkipStrategy.NO_SKIP);
                     solver.setDetectCardFromAllConstraintsInCflAnalysis(true);
                     cpsolver = solver;
                 } else if ("lazy".equals(value)) {
                     cpsolver = new InprocCardConstrLearningSolver(
-                            new MiniSATLearning<PBDataStructureFactory>(),
+                            new MiniSATLearning<>(),
                             new PBMaxClauseCardConstrDataStructure(),
                             new VarOrderHeap(), true, SkipStrategy.NO_SKIP);
                 } else {
@@ -539,7 +528,7 @@ public class KTHLauncher {
                 if (line.hasOption("dot-output")) {
                     String dotfilename = line.getOptionValue("dot-output");
                     if (dotfilename != null) {
-                        DotSearchTracing<String> dotTracing = new DotSearchTracing<String>(
+                        DotSearchTracing<String> dotTracing = new DotSearchTracing<>(
                                 dotfilename);
                         cpsolver.setSearchListener(dotTracing);
                         dotTracing.setMapping(reader.getMapping());
