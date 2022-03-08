@@ -36,36 +36,36 @@ import java.io.PrintStream;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
-public class ConflictTracing extends SearchListenerAdapter<ISolverService> {
+public class ConflictTracing implements SearchListener<ISolverService> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final String filename;
-	private PrintStream out;
-	private long index = 1;
+    private final String filename;
+    private PrintStream out;
+    private long index = 1;
 
-	public ConflictTracing(String filename) {
-		this.filename = filename;
-		updateWriter();
-	}
+    public ConflictTracing(String filename) {
+        this.filename = filename;
+        updateWriter();
+    }
 
-	private void updateWriter() {
-		try {
-			this.out = new PrintStream(new FileOutputStream(this.filename
-					+ ".dat"));
-		} catch (FileNotFoundException e) {
-			this.out = System.out;
-		}
-	}
+    private void updateWriter() {
+        try {
+            this.out = new PrintStream(
+                    new FileOutputStream(this.filename + ".dat"));
+        } catch (FileNotFoundException e) {
+            this.out = System.out;
+        }
+    }
 
-	@Override
-	public void learn(IConstr c) {
-		PBConstr myConstr = (PBConstr) c;
-		if (myConstr.size() > 0) {
-			this.out.printf("%d %d %d%n", this.index++, myConstr.getCoef(0),
-					myConstr.size());
-		}
-	}
+    @Override
+    public void learn(IConstr c) {
+        PBConstr myConstr = (PBConstr) c;
+        if (myConstr.size() > 0) {
+            this.out.printf("%d %d %d%n", this.index++, myConstr.getCoef(0),
+                    myConstr.size());
+        }
+    }
 }

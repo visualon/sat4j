@@ -44,7 +44,7 @@ import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
 import org.sat4j.specs.RandomAccessModel;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.VarMapper;
 
 /**
@@ -61,8 +61,8 @@ import org.sat4j.specs.VarMapper;
  * @since 2.2
  */
 @Feature("searchlistener")
-public class DotSearchTracing<T> extends SearchListenerAdapter<ISolverService>
-        implements VarMapper {
+public class DotSearchTracing<T>
+        implements SearchListener<ISolverService>, VarMapper {
 
     /**
      * 

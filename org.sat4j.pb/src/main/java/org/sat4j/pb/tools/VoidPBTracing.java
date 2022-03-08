@@ -2,7 +2,7 @@ package org.sat4j.pb.tools;
 
 import org.sat4j.pb.IPBSolverService;
 
-public class VoidPBTracing extends PBSearchListenerAdapter<IPBSolverService> {
+public class VoidPBTracing implements PBSearchListener<IPBSolverService> {
 
     /**
      * 

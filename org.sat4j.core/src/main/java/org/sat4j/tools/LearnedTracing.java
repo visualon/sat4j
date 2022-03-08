@@ -34,10 +34,10 @@ import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.RandomAccessModel;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
 @Feature("searchlistener")
-public class LearnedTracing extends SearchListenerAdapter<ISolverService> {
+public class LearnedTracing implements SearchListener<ISolverService> {
 
     /**
      * 

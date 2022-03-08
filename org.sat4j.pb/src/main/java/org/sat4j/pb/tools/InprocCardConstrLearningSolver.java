@@ -22,7 +22,7 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
 
 public class InprocCardConstrLearningSolver extends PBSolverCP {
@@ -100,7 +100,7 @@ public class InprocCardConstrLearningSolver extends PBSolverCP {
     }
 
     private void configureSolver() {
-        this.setSearchListener(new SearchListenerAdapter<IPBSolverService>() {
+        this.setSearchListener(new SearchListener<IPBSolverService>() {
             private static final long serialVersionUID = 1L;
 
             @Override

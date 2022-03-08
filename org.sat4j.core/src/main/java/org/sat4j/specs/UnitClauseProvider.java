@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 import org.sat4j.annotations.Feature;
 
 /**
@@ -39,10 +41,17 @@ import org.sat4j.annotations.Feature;
  * 
  */
 @Feature(value = "unitclauseprovider", parent = "expert")
-public interface UnitClauseProvider {
+public interface UnitClauseProvider extends Serializable {
 
-    UnitClauseProvider VOID = upl -> {
+    UnitClauseProvider VOID = new UnitClauseProvider() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
     };
 
-    void provideUnitClauses(UnitPropagationListener upl);
+    default void provideUnitClauses(UnitPropagationListener upl) {
+
+    }
 }

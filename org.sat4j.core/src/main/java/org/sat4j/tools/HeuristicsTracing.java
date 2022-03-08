@@ -32,10 +32,10 @@ package org.sat4j.tools;
 import org.sat4j.annotations.Feature;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.RandomAccessModel;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
 @Feature("searchlistener")
-public class HeuristicsTracing extends SearchListenerAdapter<ISolverService> {
+public class HeuristicsTracing implements SearchListener<ISolverService> {
 
     /**
      * 

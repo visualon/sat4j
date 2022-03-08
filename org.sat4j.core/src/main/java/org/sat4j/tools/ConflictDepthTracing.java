@@ -33,14 +33,13 @@ import org.sat4j.annotations.Feature;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
 /**
  * @since 2.2
  */
 @Feature("searchlistener")
-public class ConflictDepthTracing
-        extends SearchListenerAdapter<ISolverService> {
+public class ConflictDepthTracing implements SearchListener<ISolverService> {
 
     /**
      * 

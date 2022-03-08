@@ -40,7 +40,7 @@ import org.sat4j.core.LiteralsUtils;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
 /**
  * Output an unsat proof using the reverse unit propagation (RUP) format.
@@ -53,7 +53,7 @@ import org.sat4j.specs.SearchListenerAdapter;
  */
 @Feature("searchlistener")
 public class RupSearchListener<S extends ISolverService>
-        extends SearchListenerAdapter<S> {
+        implements SearchListener<S> {
 
     /**
      * 

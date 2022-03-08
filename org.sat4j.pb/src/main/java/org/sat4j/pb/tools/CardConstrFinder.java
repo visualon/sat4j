@@ -11,12 +11,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,11 +27,9 @@ import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.IteratorInt;
 import org.sat4j.specs.SearchListener;
-import org.sat4j.specs.SearchListenerAdapter;
 import org.sat4j.specs.TimeoutException;
 
-public class CardConstrFinder
-        implements Iterable<AtLeastCard> {
+public class CardConstrFinder implements Iterable<AtLeastCard> {
 
     private final IPBSolver coSolver;
 
@@ -39,14 +37,12 @@ public class CardConstrFinder
 
     private final SearchListener<ISolverService> oldListener;
 
-    private final SortedSet<AtLeastCard> atLeastCards = new TreeSet<AtLeastCard>(
+    private final SortedSet<AtLeastCard> atLeastCards = new TreeSet<>(
             new AtLeastCardDegreeComparator());
 
-    private final Map<Integer, List<BitSet>> atLeastCardCache = new HashMap<Integer, List<BitSet>>();
+    private final Map<Integer, List<BitSet>> atLeastCardCache = new HashMap<>();
 
-    private final Map<BitSet, Integer> atLeastCardDegree = new HashMap<BitSet, Integer>();
-
-    private Iterator<Entry<BitSet, Integer>> cardIt;
+    private final Map<BitSet, Integer> atLeastCardDegree = new HashMap<>();
 
     private int initNumberOfConstraints;
 
@@ -60,7 +56,7 @@ public class CardConstrFinder
 
     private boolean verbose = false;
 
-    private final Map<BitSet, BitSet> implied = new HashMap<BitSet, BitSet>();
+    private final Map<BitSet, BitSet> implied = new HashMap<>();
 
     public CardConstrFinder(IPBSolver coSolver) {
         this.coSolver = coSolver;
@@ -105,7 +101,7 @@ public class CardConstrFinder
                 try {
                     for (int i = 0; i < words.length - 2; ++i)
                         lits.push(Integer.valueOf(words[i]));
-                    int degree = Integer.valueOf(words[words.length - 1]);
+                    int degree = Integer.parseInt(words[words.length - 1]);
                     if (verbose)
                         System.out.println("c riss extracted: "
                                 + new AtMostCard(lits, degree));
@@ -140,7 +136,6 @@ public class CardConstrFinder
                 cardIt.remove();
             }
         }
-        this.cardIt = this.atLeastCardDegree.entrySet().iterator();
     }
 
     public void searchCards() {
@@ -179,7 +174,6 @@ public class CardConstrFinder
             }
         }
         timerStatus.cancel();
-        this.cardIt = this.atLeastCardDegree.entrySet().iterator();
     }
 
     public IVecInt searchCardFromClause(IVecInt clause) {
@@ -257,7 +251,7 @@ public class CardConstrFinder
             List<BitSet> cardsList = this.atLeastCardCache
                     .get(cur - this.coSolver.realNumberOfVariables());
             if (cardsList == null) {
-                cardsList = new LinkedList<BitSet>();
+                cardsList = new LinkedList<>();
                 this.atLeastCardCache.put(
                         cur - this.coSolver.realNumberOfVariables(), cardsList);
             }
@@ -277,7 +271,7 @@ public class CardConstrFinder
     }
 
     private Set<Integer> expendAtMostCard(BitSet atMostLits, int degree) {
-        Set<Integer> res = new HashSet<Integer>();
+        Set<Integer> res = new HashSet<>();
         BitSet candidates = computeInitialCandidates(atMostLits, degree);
         if (candidates == null || candidates.isEmpty())
             return res;
@@ -323,7 +317,7 @@ public class CardConstrFinder
     private BitSet computeInitialCandidates(BitSet atMostLits, int degree) {
         BitSet candidates = null;
         Iterator<BitSet> combIt = new CombinationIterator(degree - 1,
-                    atMostLits).BitSetIterator();
+                atMostLits).BitSetIterator();
         while (combIt.hasNext()) {
             BitSet nextBitSet = combIt.next();
             BitSet implied = impliedBy(nextBitSet);
@@ -376,13 +370,13 @@ public class CardConstrFinder
     }
 
     public void setAuthorizedExtLits(IVecInt lits) {
-        this.authorizedExtLits = new HashSet<Integer>();
+        this.authorizedExtLits = new HashSet<>();
         for (IteratorInt it = lits.iterator(); it.hasNext();)
             this.authorizedExtLits.add(it.next());
     }
 
     private class CardConstrFinderListener
-            extends SearchListenerAdapter<IPBSolverService> {
+            implements SearchListener<IPBSolverService> {
 
         private static final long serialVersionUID = 1L;
         private final CardConstrFinder ccf;
@@ -429,8 +423,8 @@ public class CardConstrFinder
     }
 
     public Iterator<AtLeastCard> iterator() {
-        final Iterator<Entry<BitSet, Integer>> superCardIt = this.atLeastCardDegree.entrySet()
-                .iterator();
+        final Iterator<Entry<BitSet, Integer>> superCardIt = this.atLeastCardDegree
+                .entrySet().iterator();
         final int superCoSolverNVars = this.coSolver.realNumberOfVariables();
         return new Iterator<AtLeastCard>() {
 

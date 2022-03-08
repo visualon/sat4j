@@ -11,7 +11,7 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVec;
 import org.sat4j.specs.IVecInt;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 import org.sat4j.specs.TimeoutException;
 
 public class LevelBasedVarOrderTest {
@@ -29,9 +29,9 @@ public class LevelBasedVarOrderTest {
         order.addLevel(new int[] { 4, 5 });
         order.addLevel(new int[] { 2, 3 });
         final IVec<IVecInt> expected = new Vec<IVecInt>();
-        expected.push(new VecInt(new int[] { 2, 3 })).push(
-                new VecInt(new int[] { 4, 5 }));
-        solver.setSearchListener(new SearchListenerAdapter<ISolverService>() {
+        expected.push(new VecInt(new int[] { 2, 3 }))
+                .push(new VecInt(new int[] { 4, 5 }));
+        solver.setSearchListener(new SearchListener<ISolverService>() {
             private static final long serialVersionUID = 1L;
 
             @Override

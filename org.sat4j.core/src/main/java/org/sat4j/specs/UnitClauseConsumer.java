@@ -29,14 +29,21 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author leberre
  * @since 2.3.6
  */
-public interface UnitClauseConsumer {
+public interface UnitClauseConsumer extends Serializable {
 
-    UnitClauseConsumer VOID = p -> {
+    UnitClauseConsumer VOID = new UnitClauseConsumer() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
     };
 
     /**
@@ -46,6 +53,8 @@ public interface UnitClauseConsumer {
      *            a literal in Dimacs format.
      * @since 2.3.4
      */
-    void learnUnit(int p);
+    default void learnUnit(int p) {
+
+    }
 
 }

@@ -46,6 +46,14 @@ import org.sat4j.annotations.Feature;
 public interface SearchListener<S extends ISolverService>
         extends UnitClauseConsumer, Serializable {
 
+    SearchListener<ISolverService> VOID = new SearchListener<>() {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+    };
+
     /**
      * Provide access to the solver's controllable interface.
      * 
@@ -53,21 +61,27 @@ public interface SearchListener<S extends ISolverService>
      *            a way to safely control the solver.
      * @since 2.3.2
      */
-    void init(S solverService);
+    default void init(S solverService) {
+
+    }
 
     /**
      * decision variable
      * 
      * @param p
      */
-    void assuming(int p);
+    default void assuming(int p) {
+
+    }
 
     /**
      * Unit propagation
      * 
      * @param p
      */
-    void propagating(int p);
+    default void propagating(int p) {
+
+    }
 
     /**
      * Fixes the truth value of a variable before propagating it. For all calls
@@ -79,31 +93,41 @@ public interface SearchListener<S extends ISolverService>
      * @param reason
      *            it's reason
      */
-    void enqueueing(int p, IConstr reason);
+    default void enqueueing(int p, IConstr reason) {
+
+    }
 
     /**
      * backtrack on a decision variable
      * 
      * @param p
      */
-    void backtracking(int p);
+    default void backtracking(int p) {
+
+    }
 
     /**
      * adding forced variable (conflict driven assignment)
      */
-    void adding(int p);
+    default void adding(int p) {
+
+    }
 
     /**
      * learning a new clause
      * 
      * @param c
      */
-    void learn(IConstr c);
+    default void learn(IConstr c) {
+
+    }
 
     /**
      * delete a clause
      */
-    void delete(IConstr c);
+    default void delete(IConstr c) {
+
+    }
 
     /**
      * a conflict has been found.
@@ -116,7 +140,9 @@ public interface SearchListener<S extends ISolverService>
      *            the trail level
      * 
      */
-    void conflictFound(IConstr confl, int dlevel, int trailLevel);
+    default void conflictFound(IConstr confl, int dlevel, int trailLevel) {
+
+    }
 
     /**
      * a conflict has been found while propagating values.
@@ -124,7 +150,9 @@ public interface SearchListener<S extends ISolverService>
      * @param p
      *            the conflicting value.
      */
-    void conflictFound(int p);
+    default void conflictFound(int p) {
+
+    }
 
     /**
      * a solution is found.
@@ -135,18 +163,24 @@ public interface SearchListener<S extends ISolverService>
      *            a way to access the model lazily
      * 
      */
-    void solutionFound(int[] model, RandomAccessModel lazyModel);
+    default void solutionFound(int[] model, RandomAccessModel lazyModel) {
+
+    }
 
     /**
      * starts a propagation
      */
-    void beginLoop();
+    default void beginLoop() {
+
+    }
 
     /**
      * Start the search.
      * 
      */
-    void start();
+    default void start() {
+
+    }
 
     /**
      * End the search.
@@ -154,22 +188,30 @@ public interface SearchListener<S extends ISolverService>
      * @param result
      *            the result of the search.
      */
-    void end(Lbool result);
+    default void end(Lbool result) {
+
+    }
 
     /**
      * The solver restarts the search.
      */
-    void restarting();
+    default void restarting() {
+
+    }
 
     /**
      * The solver is asked to backjump to a given decision level.
      * 
      * @param backjumpLevel
      */
-    void backjump(int backjumpLevel);
+    default void backjump(int backjumpLevel) {
+
+    }
 
     /**
      * The solver is going to delete some learned clauses.
      */
-    void cleaning();
+    default void cleaning() {
+
+    }
 }

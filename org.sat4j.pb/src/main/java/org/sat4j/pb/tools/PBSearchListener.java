@@ -24,14 +24,18 @@ public interface PBSearchListener<S extends ISolverService>
      * 
      * @param constr
      */
-    void onConflict(PBConstr constr);
+    default void onConflict(PBConstr constr) {
+
+    }
 
     /**
      * Called when considering a reason for conflict analysis.
      * 
      * @param constr
      */
-    void withReason(PBConstr constr);
+    default void withReason(PBConstr constr) {
+
+    }
 
     /**
      * Weaken the current reason on a specific literal.
@@ -39,7 +43,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param p
      *            a literal in dimacs format
      */
-    void weakenOnReason(int p);
+    default void weakenOnReason(int p) {
+
+    }
 
     /**
      * Weaken the current reason on a specific literal.
@@ -49,7 +55,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param p
      *            a literal in dimacs format
      */
-    void weakenOnReason(BigInteger coeff, int p);
+    default void weakenOnReason(BigInteger coeff, int p) {
+
+    }
 
     /**
      * Weaken the current conflict on a specific literal.
@@ -57,7 +65,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param p
      *            a literal in dimacs format
      */
-    void weakenOnConflict(int p);
+    default void weakenOnConflict(int p) {
+
+    }
 
     /**
      * Weaken the current conflict on a specific literal.
@@ -67,7 +77,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param p
      *            a literal in dimacs format
      */
-    void weakenOnConflict(BigInteger coeff, int p);
+    default void weakenOnConflict(BigInteger coeff, int p) {
+
+    }
 
     /**
      * Multiply the current reason by an integer.
@@ -75,7 +87,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param coeff
      *            the coefficient to apply of the reason
      */
-    void multiplyReason(BigInteger coeff);
+    default void multiplyReason(BigInteger coeff) {
+
+    }
 
     /**
      * Divide the current reason by an integer.
@@ -83,7 +97,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param coeff
      *            the coefficient to apply of the reason
      */
-    void divideReason(BigInteger coeff);
+    default void divideReason(BigInteger coeff) {
+
+    }
 
     /**
      * Multiply the current reason by an integer.
@@ -91,7 +107,9 @@ public interface PBSearchListener<S extends ISolverService>
      * @param coeff
      *            the coefficient to apply of the reason
      */
-    void multiplyConflict(BigInteger coeff);
+    default void multiplyConflict(BigInteger coeff) {
+
+    }
 
     /**
      * Divide the current reason by an integer.
@@ -99,20 +117,28 @@ public interface PBSearchListener<S extends ISolverService>
      * @param coeff
      *            the coefficient to apply of the reason
      */
-    void divideConflict(BigInteger coeff);
+    default void divideConflict(BigInteger coeff) {
+
+    }
 
     /**
      * Apply saturation on the reason side.
      */
-    void saturateReason();
+    default void saturateReason() {
+
+    }
 
     /**
      * Apply saturation on the conflict side.
      */
-    void saturateConflict();
+    default void saturateConflict() {
+
+    }
 
     /**
      * Add the reason and the conflict.
      */
-    void addReasonAndConflict();
+    default void addReasonAndConflict() {
+
+    }
 }

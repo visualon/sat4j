@@ -34,10 +34,10 @@ import org.sat4j.specs.Constr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
 @Feature("searchlistener")
-public class LBDTracing extends SearchListenerAdapter<ISolverService> {
+public class LBDTracing implements SearchListener<ISolverService> {
 
     /**
      * 

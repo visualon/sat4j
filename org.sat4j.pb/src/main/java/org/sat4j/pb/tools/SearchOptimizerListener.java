@@ -38,12 +38,12 @@ import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.Lbool;
 import org.sat4j.specs.RandomAccessModel;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 import org.sat4j.tools.SolutionFoundListener;
 
 @Feature("searchlistener")
 public final class SearchOptimizerListener
-        extends SearchListenerAdapter<IPBSolverService> {
+        implements SearchListener<IPBSolverService> {
 
     /**
      * 

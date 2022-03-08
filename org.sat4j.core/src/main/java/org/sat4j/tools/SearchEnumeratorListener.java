@@ -34,7 +34,7 @@ import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.Lbool;
 import org.sat4j.specs.RandomAccessModel;
-import org.sat4j.specs.SearchListenerAdapter;
+import org.sat4j.specs.SearchListener;
 
 /**
  * That class allows to iterate over the models from the inside: conflicts are
@@ -45,7 +45,7 @@ import org.sat4j.specs.SearchListenerAdapter;
  */
 @Feature("searchlistener")
 public class SearchEnumeratorListener
-        extends SearchListenerAdapter<ISolverService> {
+        implements SearchListener<ISolverService> {
 
     /**
      * 
