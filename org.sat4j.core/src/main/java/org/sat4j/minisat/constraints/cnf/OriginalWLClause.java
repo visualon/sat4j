@@ -83,20 +83,6 @@ public final class OriginalWLClause extends WLClause {
         return c;
     }
 
-    /**
-     * @since 2.1
-     */
-    public void forwardActivity(double claInc) {
-        this.activity += claInc;
-    }
-
-    /**
-     * @param claInc
-     */
-    public void incActivity(double claInc) {
-
-    }
-
     private int savedindex = 2;
 
     public void propagatePI(MandatoryLiteralListener s, int p) {

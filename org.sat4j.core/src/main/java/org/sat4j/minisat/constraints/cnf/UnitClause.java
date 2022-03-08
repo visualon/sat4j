@@ -46,6 +46,10 @@ import org.sat4j.specs.VarMapper;
 @Feature("constraint")
 public class UnitClause implements Constr {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     protected final int literal;
     protected double activity;
 
@@ -131,10 +135,6 @@ public class UnitClause implements Constr {
 
     public int size() {
         return 1;
-    }
-
-    public void forwardActivity(double claInc) {
-        // silent to prevent problems with xplain trick.
     }
 
     @Override

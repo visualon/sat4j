@@ -192,29 +192,6 @@ public class MinWatchCard
     }
 
     /**
-     * Returns the activity of the constraint
-     * 
-     * @return activity value of the constraint
-     * @see Constr#getActivity()
-     */
-    public double getActivity() {
-        return 0;
-    }
-
-    /**
-     * Increments activity of the constraint
-     * 
-     * @param claInc
-     *            value to be added to the activity of the constraint
-     * @see Constr#incActivity(double claInc)
-     */
-    public void incActivity(double claInc) {
-    }
-
-    public void setActivity(double d) {
-    }
-
-    /**
      * Returns wether the constraint is learnt or not.
      * 
      * @return false : a MinWatchCard cannot be learnt.
@@ -405,15 +382,6 @@ public class MinWatchCard
         for (var i = 0; i < Math.min(this.degree + 1, this.lits.length); i++) {
             this.voc.watches(this.lits[i] ^ 1).remove(this);
         }
-    }
-
-    /**
-     * Rescales the activity value of the constraint
-     * 
-     * @param d
-     *            rescale factor
-     */
-    public void rescaleBy(double d) {
     }
 
     /**
@@ -628,13 +596,6 @@ public class MinWatchCard
         }
         sum += this.degree;
         return (int) sum / (this.lits.length + 1);
-    }
-
-    /**
-     * @since 2.1
-     */
-    public void forwardActivity(double claInc) {
-        // do nothing
     }
 
     public boolean canBePropagatedMultipleTimes() {

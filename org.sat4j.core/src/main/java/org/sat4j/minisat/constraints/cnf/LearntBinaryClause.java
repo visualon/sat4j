@@ -58,10 +58,6 @@ public class LearntBinaryClause extends BinaryClause {
         return true;
     }
 
-    public void forwardActivity(double claInc) {
-
-    }
-
     /**
      * @param claInc
      */

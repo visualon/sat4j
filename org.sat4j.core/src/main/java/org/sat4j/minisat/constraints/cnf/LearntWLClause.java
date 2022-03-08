@@ -83,15 +83,9 @@ public final class LearntWLClause extends WLClause {
     }
 
     /**
-     * @since 2.1
-     */
-    public void forwardActivity(double claInc) {
-
-    }
-
-    /**
      * @param claInc
      */
+    @Override
     public void incActivity(double claInc) {
         this.activity += claInc;
     }

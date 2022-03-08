@@ -64,16 +64,9 @@ public class UnitClauses implements Constr {
 
     }
 
+    @Override
     public double getActivity() {
         throw new UnsupportedOperationException();
-    }
-
-    public void incActivity(double claInc) {
-        // silent to prevent problems with xplain trick.
-    }
-
-    public void setActivity(double claInc) {
-        // do nothing
     }
 
     public boolean locked() {
@@ -95,6 +88,7 @@ public class UnitClauses implements Constr {
         }
     }
 
+    @Override
     public void rescaleBy(double d) {
         throw new UnsupportedOperationException();
     }
@@ -121,10 +115,6 @@ public class UnitClauses implements Constr {
 
     public int size() {
         throw new UnsupportedOperationException();
-    }
-
-    public void forwardActivity(double claInc) {
-        // silent to prevent problems with xplain trick.
     }
 
     public boolean canBePropagatedMultipleTimes() {

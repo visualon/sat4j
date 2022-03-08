@@ -94,10 +94,6 @@ public interface Constr extends IConstr {
                     "A tautology cannot be a reason");
         }
 
-        public void incActivity(double claInc) {
-            // do nothing
-        }
-
         public void forwardActivity(double claInc) {
             // do nothing
         }
@@ -111,14 +107,6 @@ public interface Constr extends IConstr {
         }
 
         public void register() {
-            // do nothing
-        }
-
-        public void rescaleBy(double d) {
-            // do nothing
-        }
-
-        public void setActivity(double d) {
             // do nothing
         }
 
@@ -211,7 +199,9 @@ public interface Constr extends IConstr {
      * @param claInc
      *            the value to increase the activity with
      */
-    void incActivity(double claInc);
+    default void incActivity(double claInc) {
+
+    }
 
     /**
      * 
@@ -220,10 +210,12 @@ public interface Constr extends IConstr {
      * 
      */
     @Deprecated
-    void forwardActivity(double claInc);
+    default void forwardActivity(double claInc) {
+
+    }
 
     /**
-     * Indicate wether a constraint is responsible from an assignment.
+     * Indicate weather a constraint is responsible from an assignment.
      * 
      * @return true if a constraint is a "reason" for an assignment.
      */
@@ -246,7 +238,9 @@ public interface Constr extends IConstr {
      * @param d
      *            the value to rescale the clause activity with.
      */
-    void rescaleBy(double d);
+    default void rescaleBy(double d) {
+
+    }
 
     /**
      * Set the activity at a specific value
@@ -255,7 +249,9 @@ public interface Constr extends IConstr {
      *            the new activity
      * @since 2.3.1
      */
-    void setActivity(double d);
+    default void setActivity(double d) {
+
+    }
 
     /**
      * Method called when the constraint is to be asserted. It means that the

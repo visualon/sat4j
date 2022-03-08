@@ -87,21 +87,6 @@ public class OriginalHTClause extends HTClause {
         return c;
     }
 
-    public void forwardActivity(double claInc) {
-        this.activity += claInc;
-    }
-
-    /**
-     * @param claInc
-     */
-    public void incActivity(double claInc) {
-
-    }
-
-    public void setActivity(double claInc) {
-        // do nothing
-    }
-
     public void propagatePI(MandatoryLiteralListener l, int p) {
         if (this.head == neg(p)) {
             final int[] mylits = this.middleLits;

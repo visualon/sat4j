@@ -143,23 +143,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see org.sat4j.minisat.Constr#incActivity(double)
-     */
-    public void incActivity(double claInc) {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.minisat.Constr#getActivity()
-     */
-    public double getActivity() {
-        return 0;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see org.sat4j.minisat.Constr#locked()
      */
     public boolean locked() {
@@ -180,14 +163,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
      * @see org.sat4j.minisat.Constr#register()
      */
     public void register() {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.minisat.Constr#rescaleBy(double)
-     */
-    public void rescaleBy(double d) {
     }
 
     /*

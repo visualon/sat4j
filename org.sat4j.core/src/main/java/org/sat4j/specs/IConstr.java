@@ -67,7 +67,9 @@ public interface IConstr extends Serializable {
      * @return the activity of the clause.
      * @since 2.1
      */
-    double getActivity();
+    default double getActivity() {
+        return 0.0;
+    }
 
     /**
      * Partition constraints into the ones that only propagate once (e.g.

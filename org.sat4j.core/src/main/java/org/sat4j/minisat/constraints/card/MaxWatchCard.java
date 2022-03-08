@@ -164,29 +164,6 @@ public final class MaxWatchCard
     }
 
     /**
-     * Obtenir la valeur de l'activit? de la contrainte
-     * 
-     * @return la valeur de l'activit? de la contrainte
-     * @see Constr#getActivity()
-     */
-    public double getActivity() {
-        return 0;
-    }
-
-    /**
-     * Incr?mente la valeur de l'activit? de la contrainte
-     * 
-     * @param claInc
-     *            incr?ment de l'activit? de la contrainte
-     * @see Constr#incActivity(double claInc)
-     */
-    public void incActivity(double claInc) {
-    }
-
-    public void setActivity(double d) {
-    }
-
-    /**
      * D?termine si la contrainte est apprise
      * 
      * @return true si la contrainte est apprise, false sinon
@@ -328,15 +305,6 @@ public final class MaxWatchCard
         for (int q : this.lits) {
             this.voc.watches(q ^ 1).remove(this);
         }
-    }
-
-    /**
-     * Permet le r??chantillonage de l'activit? de la contrainte
-     * 
-     * @param d
-     *            facteur d'ajustement
-     */
-    public void rescaleBy(double d) {
     }
 
     /**

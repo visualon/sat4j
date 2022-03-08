@@ -73,19 +73,4 @@ public class OriginalBinaryClause extends BinaryClause {
         c.register();
         return c;
     }
-
-    public void forwardActivity(double claInc) {
-        this.activity += claInc;
-    }
-
-    /**
-     * @param claInc
-     */
-    public void incActivity(double claInc) {
-
-    }
-
-    public void setActivity(double claInc) {
-        // do nothing
-    }
 }

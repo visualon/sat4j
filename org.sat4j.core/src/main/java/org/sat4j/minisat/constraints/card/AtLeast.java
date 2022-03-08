@@ -235,26 +235,6 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.minisat.datatype.Constr#getActivity()
-     */
-    public double getActivity() {
-        return 0;
-    }
-
-    public void setActivity(double d) {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.minisat.datatype.Constr#incActivity(double)
-     */
-    public void incActivity(double claInc) {
-    }
-
-    /*
      * For learnt clauses only @author leberre
      */
     public boolean locked() {
@@ -324,12 +304,6 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
         stb.append(size() - this.maxUnsatisfied);
 
         return stb.toString();
-    }
-
-    /**
-     * @since 2.1
-     */
-    public void forwardActivity(double claInc) {
     }
 
     public boolean canBePropagatedMultipleTimes() {
