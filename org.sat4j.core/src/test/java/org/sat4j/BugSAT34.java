@@ -63,9 +63,11 @@ public class BugSAT34 {
         Collection<Object[]> solvers = new ArrayList<Object[]>();
         for (String name : SolverFactory.instance().solverNames()) {
             if (!"DimacsOutput".equals(name) && !"Statistics".equals(name)) {
-                solvers.add(new Object[] {
-                        SolverFactory.instance().createSolverByName(name),
-                        name });
+                solvers.add(
+                        new Object[] {
+                                SolverFactory.instance()
+                                        .createSolverByName(name).orElseThrow(),
+                                name });
             }
         }
         return solvers;
