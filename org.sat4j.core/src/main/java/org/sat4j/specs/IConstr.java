@@ -68,7 +68,7 @@ public interface IConstr extends Serializable {
      * @since 2.1
      */
     default double getActivity() {
-        return 0.0;
+        throw new UnsupportedOperationException();
     }
 
     /**

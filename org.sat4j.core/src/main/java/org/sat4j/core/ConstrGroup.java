@@ -46,6 +46,10 @@ import org.sat4j.specs.VarMapper;
 @Feature("constraint")
 public class ConstrGroup implements IConstr {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final IVec<IConstr> constrs = new Vec<>();
     private final boolean disallowNullConstraints;
 
@@ -98,10 +102,6 @@ public class ConstrGroup implements IConstr {
             return false;
         }
         return this.constrs.get(0).learnt();
-    }
-
-    public double getActivity() {
-        return 0;
     }
 
     public int get(int i) {

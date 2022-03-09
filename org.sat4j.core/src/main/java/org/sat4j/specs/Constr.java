@@ -50,6 +50,11 @@ public interface Constr extends IConstr {
 
     Constr TAUTOLOGY = new Constr() {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         public boolean learnt() {
             return false;
         }

@@ -142,10 +142,6 @@ public final class MaxSatDecorator extends AbstractSelectorVariablesDecorator {
         return result;
     }
 
-    public void discard() throws ContradictionException {
-        discardCurrentSolution();
-    }
-
     /**
      * @since 2.1
      */

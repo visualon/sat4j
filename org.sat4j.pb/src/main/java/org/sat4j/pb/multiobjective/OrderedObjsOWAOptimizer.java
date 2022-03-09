@@ -216,18 +216,13 @@ public class OrderedObjsOWAOptimizer extends AbstractLinMultiObjOptimizer {
         BigInteger weigthsSum = BigInteger.ZERO;
         for (BigInteger weight : weights)
             weigthsSum = weigthsSum.add(weight);
-        if(weigthsSum.equals(BigInteger.ZERO)) {
+        if (weigthsSum.equals(BigInteger.ZERO)) {
             throw new IllegalStateException("null weight sum");
         }
         BigInteger res = super.objectiveValue.divide(weigthsSum);
         res = res.add(BigInteger.ONE);
         res = res.multiply(BigInteger.valueOf(super.objs.size()));
         return res;
-    }
-
-    @Override
-    public void discard() throws ContradictionException {
-        discardCurrentSolution();
     }
 
     @Override

@@ -134,36 +134,35 @@ public class MinCostDecorator extends PBSolverDecorator implements
         this.coeffs.set(variable - 1, BigInteger.valueOf(cost));
     }
 
+    @Override
     public boolean admitABetterSolution() throws TimeoutException {
         return admitABetterSolution(VecInt.EMPTY);
     }
 
+    @Override
     public boolean admitABetterSolution(IVecInt assumps)
             throws TimeoutException {
         this.isSolutionOptimal = false;
         boolean result = super.isSatisfiable(assumps, true);
         if (result) {
             this.prevmodel = super.model();
-            calculateObjective();
+            this.objectivevalue = calculateDegree(this.prevmodel);
         } else {
             this.isSolutionOptimal = true;
         }
         return result;
     }
 
+    @Override
     public boolean hasNoObjectiveFunction() {
         return false;
     }
 
+    @Override
     public boolean nonOptimalMeansSatisfiable() {
         return true;
     }
-
-    public Number calculateObjective() {
-        this.objectivevalue = calculateDegree(this.prevmodel);
-        return this.objectivevalue;
-    }
-
+    
     private int calculateDegree(int[] prevmodel2) {
         var tmpcost = 0;
         for (var i = 1; i < this.costs.length; i++) {
@@ -174,6 +173,7 @@ public class MinCostDecorator extends PBSolverDecorator implements
         return tmpcost;
     }
 
+    @Override
     public void discardCurrentSolution() throws ContradictionException {
         if (this.prevConstr != null) {
             super.removeSubsumedConstr(this.prevConstr);
@@ -199,24 +199,24 @@ public class MinCostDecorator extends PBSolverDecorator implements
         return this.prevmodel;
     }
 
+    @Override
     public Number getObjectiveValue() {
         return this.objectivevalue;
     }
 
-    public void discard() throws ContradictionException {
-        discardCurrentSolution();
-    }
-
+    @Override
     public void forceObjectiveValueTo(Number forcedValue)
             throws ContradictionException {
         super.addPseudoBoolean(this.vars, this.coeffs, false,
                 (BigInteger) forcedValue);
     }
 
+    @Override
     public boolean isOptimal() {
         return this.isSolutionOptimal;
     }
 
+    @Override
     public void setTimeoutForFindingBetterSolution(int seconds) {
         throw new UnsupportedOperationException("No implemented yet");
     }

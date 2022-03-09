@@ -153,14 +153,10 @@ public class ConstraintRelaxingPseudoOptDecorator extends PBSolverDecorator
 
     public void forceObjectiveValueTo(Number forcedValue)
             throws ContradictionException {
-        this.addedConstr = super.addPseudoBoolean(getObjectiveFunction()
-                .getVars(), getObjectiveFunction().getCoeffs(), false,
+        this.addedConstr = super.addPseudoBoolean(
+                getObjectiveFunction().getVars(),
+                getObjectiveFunction().getCoeffs(), false,
                 BigInteger.valueOf(forcedValue.longValue()));
-    }
-
-    @Deprecated
-    public void discard() {
-        discardCurrentSolution();
     }
 
     public void discardCurrentSolution() {

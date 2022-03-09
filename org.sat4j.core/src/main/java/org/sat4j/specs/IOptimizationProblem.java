@@ -123,20 +123,6 @@ public interface IOptimizationProblem extends IProblem {
     boolean nonOptimalMeansSatisfiable();
 
     /**
-     * Compute the value of the objective function for the current solution. A
-     * call to that method only makes sense if hasNoObjectiveFunction()==false.
-     * 
-     * DO NOT CALL THAT METHOD THAT WILL BE CALLED AUTOMATICALLY. USE
-     * getObjectiveValue() instead!
-     * 
-     * @return the value of the objective function.
-     * @see #getObjectiveValue()
-     * @deprecated use {@link #getObjectiveValue()} instead
-     */
-    @Deprecated
-    Number calculateObjective();
-
-    /**
      * Read only access to the value of the objective function for the current
      * solution.
      * 
@@ -155,20 +141,6 @@ public interface IOptimizationProblem extends IProblem {
      */
     void forceObjectiveValueTo(Number forcedValue)
             throws ContradictionException;
-
-    /**
-     * Discard the current solution in the optimization problem.
-     * 
-     * THE NAME WAS NOT NICE. STILL AVAILABLE TO AVOID BREAKING THE API. PLEASE
-     * USE THE LONGER discardCurrentSolution() instead.
-     * 
-     * @throws ContradictionException
-     *             if a trivial inconsistency is detected.
-     * @see #discardCurrentSolution()
-     * @deprecated use {@link #discardCurrentSolution()} instead
-     */
-    @Deprecated
-    void discard() throws ContradictionException;
 
     /**
      * Discard the current solution in the optimization problem.

@@ -301,8 +301,8 @@ public class PseudoOptDecorator extends PBSolverDecorator
     @Override
     public String toString(String prefix) {
         return prefix + "Pseudo Boolean Optimization by upper bound\n"
-                + (useAnImplicantForEvaluation
-                        ? prefix + "using prime implicants for evaluating the objective function\n"
+                + (useAnImplicantForEvaluation ? prefix
+                        + "using prime implicants for evaluating the objective function\n"
                         : "")
                 + super.toString(prefix);
     }
@@ -313,10 +313,6 @@ public class PseudoOptDecorator extends PBSolverDecorator
         final BigInteger factor = decorated().getObjectiveFunction()
                 .getCorrectionFactor();
         return this.objectiveValue.multiply(factor).add(offset);
-    }
-
-    public void discard() throws ContradictionException {
-        discardCurrentSolution();
     }
 
     public void forceObjectiveValueTo(Number forcedValue)

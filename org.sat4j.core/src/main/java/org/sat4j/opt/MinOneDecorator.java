@@ -153,10 +153,6 @@ public final class MinOneDecorator extends SolverDecorator<ISolver>
         return this.counter;
     }
 
-    public void discard() throws ContradictionException {
-        discardCurrentSolution();
-    }
-
     /**
      * @since 2.1
      */

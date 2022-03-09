@@ -184,11 +184,6 @@ public class LexicoDecorator<T extends ISolver> extends SolverDecorator<T>
         throw new UnsupportedOperationException();
     }
 
-    public void discard() throws ContradictionException {
-        discardCurrentSolution();
-
-    }
-
     public void discardCurrentSolution() throws ContradictionException {
         if (this.prevConstr != null) {
             super.removeSubsumedConstr(this.prevConstr);

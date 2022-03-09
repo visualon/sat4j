@@ -42,8 +42,8 @@ import org.sat4j.specs.TimeoutException;
  * @since 2.3.6
  * 
  */
-public class PBSolverHandle extends PBSolverDecorator implements
-        IOptimizationProblem {
+public class PBSolverHandle extends PBSolverDecorator
+        implements IOptimizationProblem {
 
     /**
      * 
@@ -81,10 +81,6 @@ public class PBSolverHandle extends PBSolverDecorator implements
                 .nonOptimalMeansSatisfiable();
     }
 
-    public Number calculateObjective() {
-        return ((IOptimizationProblem) decorated()).calculateObjective();
-    }
-
     public Number getObjectiveValue() {
         return ((IOptimizationProblem) decorated()).getObjectiveValue();
     }
@@ -92,10 +88,6 @@ public class PBSolverHandle extends PBSolverDecorator implements
     public void forceObjectiveValueTo(Number forcedValue)
             throws ContradictionException {
         ((IOptimizationProblem) decorated()).forceObjectiveValueTo(forcedValue);
-    }
-
-    public void discard() throws ContradictionException {
-        ((IOptimizationProblem) decorated()).discard();
     }
 
     public void discardCurrentSolution() throws ContradictionException {
