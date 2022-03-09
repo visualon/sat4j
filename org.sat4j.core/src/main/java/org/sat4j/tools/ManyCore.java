@@ -34,6 +34,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.sat4j.annotations.Feature;
@@ -106,14 +107,18 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
         this.numberOfSolvers = solverNames.length;
         this.solvers = new ArrayList<>(this.numberOfSolvers);
         S solver;
+        Optional<S> result;
         for (var i = 0; i < this.numberOfSolvers; i++) {
-            solver = factory.createSolverByName(this.availableSolvers[i]);
-            solver.setUnitClauseConsumer(this);
-            if (shareLearnedUnitClauses) {
-                solver.setUnitClauseProvider(this);
+            result = factory.createSolverByName(this.availableSolvers[i]);
+            if (result.isPresent()) {
+                solver = result.get();
+                solver.setUnitClauseConsumer(this);
+                if (shareLearnedUnitClauses) {
+                    solver.setUnitClauseProvider(this);
+                }
+                this.solvers.add(solver);
+                this.solversStats.push(new Counter(0));
             }
-            this.solvers.add(solver);
-            this.solversStats.push(new Counter(0));
         }
     }
 

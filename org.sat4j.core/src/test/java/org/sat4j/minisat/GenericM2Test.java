@@ -61,7 +61,7 @@ public class GenericM2Test extends AbstractM2Test<ISolver> {
      */
     @Override
     protected ISolver createSolver() {
-        return FACTORY.createSolverByName(this.solvername);
+        return FACTORY.createSolverByName(this.solvername).orElseThrow();
     }
 
     public static TestSuite suite() {

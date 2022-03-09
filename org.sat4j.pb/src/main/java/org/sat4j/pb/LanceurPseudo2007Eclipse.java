@@ -49,7 +49,8 @@ public class LanceurPseudo2007Eclipse extends LanceurPseudo2007 {
     protected ISolver configureSolver(String[] args) {
         IPBSolver theSolver;
         if (args.length > 1) {
-            theSolver = SolverFactory.instance().createSolverByName(args[0]);
+            theSolver = SolverFactory.instance().createSolverByName(args[0])
+                    .orElseGet(SolverFactory::newDefault);
         } else {
             theSolver = SolverFactory.newDefault();
         }

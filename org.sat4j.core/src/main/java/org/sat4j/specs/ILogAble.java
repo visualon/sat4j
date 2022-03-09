@@ -40,6 +40,7 @@ import java.io.Serializable;
  * @author sroussel
  * @since 2.3.3
  */
+@FunctionalInterface
 public interface ILogAble extends Serializable {
     ILogAble CONSOLE = System.out::println;
 

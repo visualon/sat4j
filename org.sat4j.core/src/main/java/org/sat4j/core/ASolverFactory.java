@@ -34,6 +34,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.sat4j.specs.ISolver;
 
@@ -84,17 +85,16 @@ public abstract class ASolverFactory<T extends ISolver>
      *         solvername doesn't map one of the method of the factory.
      */
     @SuppressWarnings("unchecked")
-    public T createSolverByName(String solvername) {
+    public Optional<T> createSolverByName(String solvername) {
         try {
             Class<?>[] paramtypes = {};
             var m = this.getClass().getMethod("new" + solvername, //$NON-NLS-1$
                     paramtypes);
-            return (T) m.invoke(null, (Object[]) null);
+            return Optional.of((T) m.invoke(null, (Object[]) null));
         } catch (SecurityException | IllegalArgumentException
                 | ReflectiveOperationException e) {
-            System.err.println(e.getLocalizedMessage());
+            return Optional.empty();
         }
-        return null;
     }
 
     /**

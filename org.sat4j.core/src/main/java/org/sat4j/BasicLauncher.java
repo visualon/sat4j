@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j;
 
+import java.util.Optional;
+
 import org.sat4j.core.ASolverFactory;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.reader.InstanceReader;
@@ -78,7 +80,8 @@ public class BasicLauncher<T extends ISolver> extends AbstractLauncher {
     protected ISolver configureSolver(String[] args) {
         ISolver asolver;
         if (args.length >= 2) {
-            asolver = this.factory.createSolverByName(args[0]);
+            Optional<T> result = this.factory.createSolverByName(args[0]);
+            asolver = result.orElseGet(this.factory::defaultSolver);
         } else {
             asolver = this.factory.defaultSolver();
         }

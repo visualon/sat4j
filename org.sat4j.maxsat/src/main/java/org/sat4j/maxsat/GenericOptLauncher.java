@@ -179,7 +179,7 @@ public class GenericOptLauncher extends AbstractLauncher {
                                 equivalence);
                     } else {
                         this.wmsd = new WeightedMaxSatDecorator(
-                                org.sat4j.pb.SolverFactory.instance().createSolverByName(aPBSolverName), equivalence);
+                                org.sat4j.pb.SolverFactory.instance().createSolverByName(aPBSolverName).orElseThrow(), equivalence);
                     }
                     if (cmd.hasOption("l")) {
                         asolver = new ConstraintRelaxingPseudoOptDecorator(

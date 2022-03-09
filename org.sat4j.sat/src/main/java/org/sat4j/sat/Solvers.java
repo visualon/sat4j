@@ -329,7 +329,7 @@ public final class Solvers {
                             + Arrays.asList(factory.solverNames()));
                     asolver = (ICDCL<?>) factory.defaultSolver();
                 } else {
-                    asolver = (ICDCL<?>) factory.createSolverByName(solvername);
+                    asolver = (ICDCL<?>) factory.createSolverByName(solvername).orElseGet(factory::defaultSolver);
                 }
             } else {
                 asolver = (ICDCL<?>) factory.defaultSolver();

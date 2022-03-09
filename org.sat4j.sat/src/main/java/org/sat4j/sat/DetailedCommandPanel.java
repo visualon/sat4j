@@ -760,7 +760,7 @@ public class DetailedCommandPanel extends JPanel
             } else {
                 factory = org.sat4j.maxsat.SolverFactory.instance();
             }
-            this.solver = factory.createSolverByName(partsSelectedSolver[1]);
+            this.solver = factory.createSolverByName(partsSelectedSolver[1]).orElseThrow();
 
             cdclSolver = (ICDCL<?>) this.solver.getSolvingEngine();
 
@@ -858,7 +858,7 @@ public class DetailedCommandPanel extends JPanel
                 factory = org.sat4j.maxsat.SolverFactory.instance();
             }
 
-            this.solver = factory.createSolverByName(partsSelectedSolver[1]);
+            this.solver = factory.createSolverByName(partsSelectedSolver[1]).orElseThrow();
 
             cdclSolver = (ICDCL<?>) this.solver.getSolvingEngine();
 
@@ -1210,6 +1210,7 @@ public class DetailedCommandPanel extends JPanel
 
     }
 
+    @Override
     public int getNVar() {
         if (this.solver != null) {
             return this.solver.nVars();
@@ -1217,43 +1218,52 @@ public class DetailedCommandPanel extends JPanel
         return 0;
     }
 
+    @Override
     public void setPhaseSelectionStrategy(IPhaseSelectionStrategy phase) {
         this.telecomStrategy.setPhaseSelectionStrategy(phase);
         log("Told the solver to apply a new phase strategy :"
                 + phase.getClass().getSimpleName());
     }
 
+    @Override
     public void shouldRestartNow() {
         this.telecomStrategy.setHasClickedOnRestart(true);
     }
 
+    @Override
     public void setRestartStrategy(RestartStrategy strategy) {
         this.telecomStrategy.setRestartStrategy(strategy);
         log("Set Restart to " + strategy);
     }
 
+    @Override
     public RestartStrategy getRestartStrategy() {
         return this.telecomStrategy.getRestartStrategy();
     }
 
+    @Override
     public SearchParams getSearchParams() {
         return this.telecomStrategy.getSearchParams();
     }
 
+    @Override
     public SolverStats getSolverStats() {
         return this.telecomStrategy.getSolverStats();
     }
 
+    @Override
     public void init(SearchParams params, SolverStats stats) {
         this.telecomStrategy.init(params, stats);
         log("Init restart with params");
     }
 
+    @Override
     public void setNbClausesAtWhichWeShouldClean(int nbConflicts) {
         this.telecomStrategy.setNbClausesAtWhichWeShouldClean(nbConflicts);
         log("Changed number of conflicts before cleaning to " + nbConflicts);
     }
 
+    @Override
     public void setUseTelecomStrategyAsLearnedConstraintsDeletionStrategy() {
         this.telecomStrategy
                 .setUseTelecomStrategyAsLearnedConstraintsDeletionStrategy(
@@ -1263,6 +1273,7 @@ public class DetailedCommandPanel extends JPanel
                 + " conflicts and bases evaluation of clauses on activity");
     }
 
+    @Override
     public void setLearnedDeletionStrategyTypeToSolver(
             LearnedConstraintsEvaluationType type) {
         ((ICDCL<?>) this.solver.getSolvingEngine())
@@ -1275,11 +1286,13 @@ public class DetailedCommandPanel extends JPanel
         return LearnedConstraintsEvaluationType.ACTIVITY;
     }
 
+    @Override
     public void shouldCleanNow() {
         log("Told the solver to clean");
         this.telecomStrategy.setHasClickedOnClean(true);
     }
 
+    @Override
     public void setKeepSolverHot(boolean keepHot) {
         this.solver.setKeepSolverHot(keepHot);
         if (keepHot) {
@@ -1313,11 +1326,13 @@ public class DetailedCommandPanel extends JPanel
         this.isPlotActivated = isPlotActivated;
     }
 
+    @Override
     public void setRandomWalkProba(double proba) {
         this.randomWalk.setProbability(proba);
         log("Set probability to " + proba);
     }
 
+    @Override
     public void setSimplifier(SimplificationType type) {
         ((ICDCL<?>) this.solver.getSolvingEngine()).setSimplifier(type);
         log("Told the solver to use " + type);
@@ -1417,6 +1432,7 @@ public class DetailedCommandPanel extends JPanel
         return v;
     }
 
+    @Override
     public void log(String message) {
         logsameline(message + "\n");
     }
@@ -1590,13 +1606,16 @@ public class DetailedCommandPanel extends JPanel
 
     }
 
+    @Override
     public void init(ISolverService solverService) {
         this.conflictCounter = 0;
     }
 
+    @Override
     public void assuming(int p) {
     }
 
+    @Override
     public void propagating(int p) {
         this.end = System.currentTimeMillis();
         if (this.end - this.begin >= 2000) {
@@ -1611,31 +1630,40 @@ public class DetailedCommandPanel extends JPanel
         this.propagationsCounter++;
     }
 
+    @Override
     public void enqueueing(int p, IConstr reason) {
     }
 
+    @Override
     public void backtracking(int p) {
     }
 
+    @Override
     public void adding(int p) {
     }
 
+    @Override
     public void learn(IConstr c) {
     }
 
+    @Override
     public void delete(IConstr c) {
     }
 
+    @Override
     public void learnUnit(int p) {
     }
 
+    @Override
     public void conflictFound(IConstr confl, int dlevel, int trailLevel) {
         this.conflictCounter++;
     }
 
+    @Override
     public void conflictFound(int p) {
     }
 
+    @Override
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
         log("Found a solution !! ");
         logsameline(this.stringWriter.toString());
@@ -1644,15 +1672,19 @@ public class DetailedCommandPanel extends JPanel
         this.outSolutionFound.println(this.conflictCounter + "\t");
     }
 
+    @Override
     public void beginLoop() {
     }
 
+    @Override
     public void start() {
     }
 
+    @Override
     public void end(Lbool result) {
     }
 
+    @Override
     public void restarting() {
         this.end = System.currentTimeMillis();
         if (this.end != this.begin) {
@@ -1662,9 +1694,11 @@ public class DetailedCommandPanel extends JPanel
         }
     }
 
+    @Override
     public void backjump(int backjumpLevel) {
     }
 
+    @Override
     public void cleaning() {
         this.end = System.currentTimeMillis();
         this.cleanPanel.setSpeedLabeltext(

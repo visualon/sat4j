@@ -112,7 +112,8 @@ public class LanceurPseudo2005 extends AbstractLauncher implements ILogAble {
             solverName = solverName.substring("Lower".length());
         }
         if (args.length > 1) {
-            theSolver = this.factory.createSolverByName(solverName);
+            theSolver = this.factory.createSolverByName(solverName)
+                    .orElseGet(this.factory::defaultSolver);
         } else {
             theSolver = this.factory.defaultSolver();
         }
