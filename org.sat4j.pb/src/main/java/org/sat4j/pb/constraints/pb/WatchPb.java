@@ -633,12 +633,6 @@ public abstract class WatchPb
         return (int) sum / this.lits.length;
     }
 
-    public void forwardActivity(double claInc) {
-        if (!this.learnt) {
-            this.activity += claInc;
-        }
-    }
-
     public boolean canBePropagatedMultipleTimes() {
         return true;
     }

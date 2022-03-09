@@ -63,6 +63,7 @@ public interface Constr extends IConstr {
                     "No elements in a tautology");
         }
 
+        @Override
         public double getActivity() {
             return 0.0;
         }
@@ -92,10 +93,6 @@ public interface Constr extends IConstr {
                 IVecInt outReason) {
             throw new UnsupportedOperationException(
                     "A tautology cannot be a reason");
-        }
-
-        public void forwardActivity(double claInc) {
-            // do nothing
         }
 
         public boolean locked() {
@@ -200,17 +197,6 @@ public interface Constr extends IConstr {
      *            the value to increase the activity with
      */
     default void incActivity(double claInc) {
-
-    }
-
-    /**
-     * 
-     * @param claInc
-     * @since 2.1
-     * 
-     */
-    @Deprecated
-    default void forwardActivity(double claInc) {
 
     }
 

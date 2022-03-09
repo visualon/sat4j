@@ -611,12 +611,6 @@ public abstract class WatchPbLong
         return (int) sum / this.lits.length;
     }
 
-    public void forwardActivity(double claInc) {
-        if (!this.learnt) {
-            this.activity += claInc;
-        }
-    }
-
     public void remove(UnitPropagationListener upl) {
     }
 

@@ -166,16 +166,6 @@ public class Xor implements Constr, Propagatable {
     }
 
     @Override
-    public void incActivity(double claInc) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    @Override
-    public void forwardActivity(double claInc) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    @Override
     public boolean locked() {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
@@ -191,16 +181,6 @@ public class Xor implements Constr, Propagatable {
         this.voc.watch(this.lits[0] ^ 1, this);
         this.voc.watch(this.lits[1], this);
         this.voc.watch(this.lits[1] ^ 1, this);
-    }
-
-    @Override
-    public void rescaleBy(double d) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    @Override
-    public void setActivity(double d) {
-        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     @Override

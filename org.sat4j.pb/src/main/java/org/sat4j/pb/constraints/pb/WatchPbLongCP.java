@@ -645,12 +645,6 @@ public abstract class WatchPbLongCP
         return (int) sum / this.lits.length;
     }
 
-    public void forwardActivity(double claInc) {
-        if (!this.learnt) {
-            this.activity += claInc;
-        }
-    }
-
     public long[] getLongCoefs() {
         long[] coefsBis = new long[this.coefs.length];
         System.arraycopy(this.coefs, 0, coefsBis, 0, this.coefs.length);
