@@ -31,7 +31,6 @@ package org.sat4j.specs;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -39,7 +38,7 @@ import java.util.NoSuchElementException;
  * 
  * @author leberre
  */
-public interface IVec<T> extends Serializable, Cloneable {
+public interface IVec<T> extends Serializable, Cloneable, Iterable<T> {
 
     /**
      * @return the number of elements contained in the vector
@@ -210,8 +209,6 @@ public interface IVec<T> extends Serializable, Cloneable {
      * @since 1.6
      */
     boolean isEmpty();
-
-    Iterator<T> iterator();
 
     /**
      * 
