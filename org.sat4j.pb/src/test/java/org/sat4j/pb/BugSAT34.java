@@ -62,9 +62,11 @@ public class BugSAT34 {
         for (String name : SolverFactory.instance().solverNames()) {
             if (!"DimacsOutput".equals(name) && !"OPBStringSolver".equals(name)
                     && !name.contains("DetectCards")) {
-                solvers.add(new Object[] {
-                        SolverFactory.instance().createSolverByName(name),
-                        name });
+                solvers.add(
+                        new Object[] {
+                                SolverFactory.instance()
+                                        .createSolverByName(name).orElseThrow(),
+                                name });
             }
         }
         return solvers;
