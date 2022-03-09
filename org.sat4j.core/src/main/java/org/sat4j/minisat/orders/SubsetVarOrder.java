@@ -60,14 +60,14 @@ public class SubsetVarOrder extends VarOrderHeap {
         this.heap = new Heap(
                 new ActivityBasedVariableComparator(this.activity));
         this.heap.setBounds(nlength);
-        for (int var : this.varsToTest) {
-            assert var > 0;
-            assert var <= this.lits.nVars() : "" + this.lits.nVars() + "/" //$NON-NLS-1$ //$NON-NLS-2$
-                    + var;
-            this.inSubset[var] = true;
-            this.activity[var] = 0.0;
-            if (this.lits.belongsToPool(var)) {
-                this.heap.insert(var);
+        for (int variable : this.varsToTest) {
+            assert variable > 0;
+            assert variable <= this.lits.nVars() : "" + this.lits.nVars() + "/" //$NON-NLS-1$ //$NON-NLS-2$
+                    + variable;
+            this.inSubset[variable] = true;
+            this.activity[variable] = 0.0;
+            if (this.lits.belongsToPool(variable)) {
+                this.heap.insert(variable);
             }
         }
     }

@@ -191,6 +191,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
     /**
      * @return the activity of the clause
      */
+    @Override
     public double getActivity() {
         return this.activity;
     }
@@ -238,6 +239,7 @@ public abstract class HTClause implements Propagatable, Constr, Serializable {
     /**
      * @param d
      */
+    @Override
     public void rescaleBy(double d) {
         this.activity *= d;
     }

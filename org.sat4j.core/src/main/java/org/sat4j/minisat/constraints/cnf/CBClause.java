@@ -168,6 +168,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      * 
      * @see org.sat4j.minisat.core.Constr#incActivity(double)
      */
+    @Override
     public void incActivity(double claInc) {
         activity += claInc;
     }
@@ -177,6 +178,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      * 
      * @see org.sat4j.minisat.core.Constr#getActivity()
      */
+    @Override
     public double getActivity() {
         return activity;
     }
@@ -224,6 +226,7 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
      * 
      * @see org.sat4j.minisat.core.Constr#rescaleBy(double)
      */
+    @Override
     public void rescaleBy(double d) {
         activity *= d;
     }
@@ -285,14 +288,6 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    public void forwardActivity(double claInc) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    public void setActivity(double d) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 

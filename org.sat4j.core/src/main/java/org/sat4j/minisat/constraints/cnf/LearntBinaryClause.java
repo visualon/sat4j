@@ -61,10 +61,12 @@ public class LearntBinaryClause extends BinaryClause {
     /**
      * @param claInc
      */
+    @Override
     public void incActivity(double claInc) {
         this.activity += claInc;
     }
 
+    @Override
     public void setActivity(double d) {
         this.activity = d;
     }

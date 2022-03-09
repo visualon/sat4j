@@ -30,7 +30,6 @@
 package org.sat4j.minisat.constraints.card;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -400,32 +399,8 @@ public final class MaxWatchCard
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.minisat.constraints.pb.PBConstr#getCoefficient(int)
-     */
-    public BigInteger getCoef(int literal) {
-        return BigInteger.ONE;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.minisat.constraints.pb.PBConstr#getDegree()
-     */
-    public BigInteger getDegree() {
-        return BigInteger.valueOf(this.degree);
-    }
-
     public ILits getVocabulary() {
         return this.voc;
-    }
-
-    /**
-     * @since 2.1
-     */
-    public void forwardActivity(double claInc) {
     }
 
     public boolean canBePropagatedMultipleTimes() {

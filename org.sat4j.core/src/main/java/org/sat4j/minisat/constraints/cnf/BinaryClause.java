@@ -144,6 +144,7 @@ public abstract class BinaryClause
     /**
      * @return the activity of the clause
      */
+    @Override
     public double getActivity() {
         return this.activity;
     }
@@ -186,6 +187,7 @@ public abstract class BinaryClause
     /**
      * @param d
      */
+    @Override
     public void rescaleBy(double d) {
         this.activity *= d;
     }

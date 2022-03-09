@@ -214,14 +214,6 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    public void forwardActivity(double claInc) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    public void setActivity(double d) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
         throw new UnsupportedOperationException("Not implemented yet!");
     }

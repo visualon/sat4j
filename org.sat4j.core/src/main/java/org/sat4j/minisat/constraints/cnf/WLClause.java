@@ -157,10 +157,12 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
     /**
      * @return the activity of the clause
      */
+    @Override
     public double getActivity() {
         return this.activity;
     }
 
+    @Override
     public void setActivity(double d) {
         this.activity = d;
     }
@@ -212,6 +214,7 @@ public abstract class WLClause implements Propagatable, Constr, Serializable {
     /**
      * @param d
      */
+    @Override
     public void rescaleBy(double d) {
         this.activity *= d;
     }

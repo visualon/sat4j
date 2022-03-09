@@ -264,10 +264,6 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
         return this.lits[i];
     }
 
-    public void rescaleBy(double d) {
-        throw new UnsupportedOperationException();
-    }
-
     public void assertConstraint(UnitPropagationListener s) {
         var ret = true;
         for (Integer lit : this.lits) {
