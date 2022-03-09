@@ -157,7 +157,7 @@ public class Solver<D extends DataStructureFactory>
 
     private final IVecInt internalDimacsReusableVector = new VecInt();
 
-    protected SearchListener slistener = SearchListener.VOID;
+    protected SearchListener slistener = SearchListener.voidSearchListener();
 
     private RestartStrategy restarter;
 

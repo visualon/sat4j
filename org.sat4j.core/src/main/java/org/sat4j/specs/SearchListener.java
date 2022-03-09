@@ -46,13 +46,14 @@ import org.sat4j.annotations.Feature;
 public interface SearchListener<S extends ISolverService>
         extends UnitClauseConsumer, Serializable {
 
-    SearchListener<ISolverService> VOID = new SearchListener<>() {
-
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
-    };
+    static <T extends ISolverService> SearchListener<T> voidSearchListener() {
+        return new SearchListener<>() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+        };
+    }
 
     /**
      * Provide access to the solver's controllable interface.

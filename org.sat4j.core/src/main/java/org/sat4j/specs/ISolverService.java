@@ -137,7 +137,7 @@ public interface ISolverService {
      * 
      * @return the constraints learned and kept so far by the solver.
      */
-    IVec<? extends IConstr> getLearnedConstraints();
+    IVec<Constr> getLearnedConstraints();
 
     /**
      * Read-Only access to the number of variables declared in the solver.

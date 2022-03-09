@@ -36,6 +36,10 @@ import org.sat4j.specs.VarMapper;
 @Feature("constraint")
 public class UnitWeightedClause implements IConstr {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private static final UnitWeightedClause INSTANCE = new UnitWeightedClause();
 
     public static UnitWeightedClause instance() {
@@ -46,26 +50,32 @@ public class UnitWeightedClause implements IConstr {
         // singleton design pattern
     }
 
+    @Override
     public boolean learnt() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int size() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public int get(int i) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public double getActivity() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public boolean canBePropagatedMultipleTimes() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public String toString(VarMapper mapper) {
         throw new UnsupportedOperationException();
     }
