@@ -42,8 +42,8 @@ import org.sat4j.specs.UnitPropagationListener;
  * 
  * @param <D>
  */
-public interface ICDCL<D extends DataStructureFactory> extends ISolver,
-        UnitPropagationListener, ActivityListener, Learner {
+public interface ICDCL<D extends DataStructureFactory>
+        extends ISolver, UnitPropagationListener, ActivityListener, Learner {
 
     /**
      * Change the internal representation of the constraints. Note that the
@@ -53,15 +53,6 @@ public interface ICDCL<D extends DataStructureFactory> extends ISolver,
      *            the internal factory
      */
     void setDataStructureFactory(D dsf);
-
-    /**
-     * 
-     * @since 2.2
-     * @deprecated renamed into setLearningStrategy()
-     * @see #setLearningStrategy(LearningStrategy)
-     */
-    @Deprecated
-    void setLearner(LearningStrategy<D> learner);
 
     /**
      * Allow to change the learning strategy, i.e. to decide which

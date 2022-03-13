@@ -59,12 +59,6 @@ public class FixedPeriodRestarts implements RestartStrategy {
         this.conflictCount = 0;
     }
 
-    @Deprecated
-    @Override
-    public long nextRestartNumberOfConflict() {
-        return period;
-    }
-
     public boolean shouldRestart() {
         return conflictCount >= period;
     }

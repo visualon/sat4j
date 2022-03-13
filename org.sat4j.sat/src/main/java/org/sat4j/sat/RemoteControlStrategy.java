@@ -156,12 +156,7 @@ public class RemoteControlStrategy implements RestartStrategy,
         this.restart.init(params, stats);
     }
 
-    @Deprecated
     @Override
-    public long nextRestartNumberOfConflict() {
-        return this.restart.nextRestartNumberOfConflict();
-    }
-
     public boolean shouldRestart() {
         if (this.hasClickedOnRestart) {
             this.hasClickedOnRestart = false;
@@ -197,10 +192,12 @@ public class RemoteControlStrategy implements RestartStrategy,
         this.solver = solver;
     }
 
+    @Override
     public void reset() {
         this.restart.newConflict();
     }
 
+    @Override
     public void newConflict() {
         this.restart.newConflict();
         this.conflictNumber++;
@@ -239,6 +236,7 @@ public class RemoteControlStrategy implements RestartStrategy,
         this.phaseSelectionStrategy.assignLiteral(p);
     }
 
+    @Override
     public int select(int variable) {
         return this.phaseSelectionStrategy.select(variable);
     }

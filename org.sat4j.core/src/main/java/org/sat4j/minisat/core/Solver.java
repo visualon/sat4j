@@ -296,16 +296,6 @@ public class Solver<D extends DataStructureFactory>
     /*
      * (non-Javadoc)
      * 
-     * @see org.sat4j.minisat.core.ICDCL#setLearner(org.sat4j.minisat.core.
-     * LearningStrategy)
-     */
-    public void setLearner(LearningStrategy<D> strategy) {
-        setLearningStrategy(strategy);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see
      * org.sat4j.minisat.core.ICDCL#setLearningStrategy(org.sat4j.minisat.core.
      * LearningStrategy)

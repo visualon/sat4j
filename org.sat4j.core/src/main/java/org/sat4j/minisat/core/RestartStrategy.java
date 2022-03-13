@@ -58,17 +58,6 @@ public interface RestartStrategy extends Serializable, ConflictTimer {
     }
 
     /**
-     * Ask for the next restart in number of conflicts.
-     * 
-     * @deprecated since 2.3.2
-     * @return the delay in conflicts before the next restart.
-     */
-    @Deprecated(since = "2.3.2")
-    default long nextRestartNumberOfConflict() {
-        throw new UnsupportedOperationException("Deprecated");
-    }
-
-    /**
      * Ask the strategy if the solver should restart.
      * 
      * @return true if the solver should restart, else false.

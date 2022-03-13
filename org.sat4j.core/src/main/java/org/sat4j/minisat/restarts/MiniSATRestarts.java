@@ -62,12 +62,6 @@ public final class MiniSATRestarts implements RestartStrategy {
     }
 
     @Override
-    @Deprecated
-    public long nextRestartNumberOfConflict() {
-        return Math.round(this.nofConflicts);
-    }
-
-    @Override
     public void onRestart() {
         this.nofConflicts *= this.params.getConflictBoundIncFactor();
     }

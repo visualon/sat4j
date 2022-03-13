@@ -116,12 +116,6 @@ public final class LubyRestarts implements RestartStrategy {
     }
 
     @Override
-    @Deprecated
-    public long nextRestartNumberOfConflict() {
-        return this.bound;
-    }
-
-    @Override
     public void onRestart() {
         this.bound = nextLuby() * this.factor;
         this.conflictcount = 0;

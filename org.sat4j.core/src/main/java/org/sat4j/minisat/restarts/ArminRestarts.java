@@ -65,11 +65,6 @@ public final class ArminRestarts implements RestartStrategy {
     }
 
     @Override
-    public long nextRestartNumberOfConflict() {
-        return this.conflicts;
-    }
-
-    @Override
     public void onRestart() {
         if (this.inner >= this.outer) {
             this.outer *= this.params.getConflictBoundIncFactor();
