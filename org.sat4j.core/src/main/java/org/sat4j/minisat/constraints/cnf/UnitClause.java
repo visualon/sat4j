@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
@@ -78,14 +80,17 @@ public class UnitClause implements Constr {
         }
     }
 
+    @Override
     public double getActivity() {
         return activity;
     }
 
+    @Override
     public void incActivity(double claInc) {
         // silent to prevent problems with xplain trick.
     }
 
+    @Override
     public void setActivity(double claInc) {
         activity = claInc;
     }
@@ -94,6 +99,7 @@ public class UnitClause implements Constr {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void register() {
     }
 
@@ -151,7 +157,7 @@ public class UnitClause implements Constr {
     }
 
     public void propagatePi(MandatoryLiteralListener m) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
 
     }
 

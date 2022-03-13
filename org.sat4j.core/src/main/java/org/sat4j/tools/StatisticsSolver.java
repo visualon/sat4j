@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -55,8 +57,6 @@ import org.sat4j.specs.UnitClauseProvider;
 
 @Feature("solver")
 public class StatisticsSolver implements ISolver {
-
-    private static final String NOT_IMPLEMENTED_YET = "Not implemented yet!";
 
     private static final String THAT_SOLVER_ONLY_COMPUTE_STATISTICS = "That solver only compute statistics";
 

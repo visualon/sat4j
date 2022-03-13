@@ -88,6 +88,6 @@ public final class FakeConstr implements IConstr {
 
     @Override
     public String dump() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(FAKE_I_CONSTR_MSG);
     }
 }

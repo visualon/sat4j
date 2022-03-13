@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.card;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -412,11 +414,11 @@ public final class MaxWatchCard
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
 
     }
 
@@ -429,7 +431,7 @@ public final class MaxWatchCard
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {

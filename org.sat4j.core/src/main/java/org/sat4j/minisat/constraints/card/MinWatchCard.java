@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.card;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -665,7 +667,7 @@ public class MinWatchCard
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {

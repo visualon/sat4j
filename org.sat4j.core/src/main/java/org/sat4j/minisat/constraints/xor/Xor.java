@@ -1,5 +1,7 @@
 package org.sat4j.minisat.constraints.xor;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import org.sat4j.annotations.Feature;
 import org.sat4j.core.LiteralsUtils;
 import org.sat4j.minisat.core.ILits;
@@ -73,7 +75,7 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public double getActivity() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
@@ -83,7 +85,7 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public String toString(VarMapper mapper) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
@@ -162,17 +164,17 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public boolean locked() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public void setLearnt() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
@@ -185,12 +187,12 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public void assertConstraint(UnitPropagationListener s) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
@@ -200,22 +202,22 @@ public class Xor implements Constr, Propagatable {
 
     @Override
     public int requiredNumberOfSatisfiedLiterals() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public String dump() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override

@@ -46,6 +46,8 @@ import org.sat4j.tools.xplain.Xplain;
 
 public class MUSLauncher extends AbstractLauncher {
 
+    private static final String HIGH_LEVEL = "high level ";
+
     /**
      * 
      */
@@ -199,19 +201,19 @@ public class MUSLauncher extends AbstractLauncher {
                             + (System.currentTimeMillis() - beginmus) / 1000.0);
                 } else {
                     log("Size of initial "
-                            + (this.highLevel ? "high level " : "")
+                            + (this.highLevel ? HIGH_LEVEL : "")
                             + "unsat subformula: "
                             + this.solver.unsatExplanation().size());
-                    log("Computing " + (this.highLevel ? "high level " : "")
+                    log("Computing " + (this.highLevel ? HIGH_LEVEL : "")
                             + "MUS ...");
                     this.mus = this.xplain.minimalExplanation();
-                    log("Size of the " + (this.highLevel ? "high level " : "")
+                    log("Size of the " + (this.highLevel ? HIGH_LEVEL : "")
                             + "MUS: " + this.mus.length);
                     log("Unsat core  computation wall clock time (in seconds) : "
                             + (System.currentTimeMillis() - beginmus) / 1000.0);
                 }
             } catch (TimeoutException e) {
-                log("Cannot compute " + (this.highLevel ? "high level " : "")
+                log("Cannot compute " + (this.highLevel ? HIGH_LEVEL : "")
                         + "MUS within the timeout.");
             }
         }

@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints.pb;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.math.BigInteger;
 
 import org.sat4j.minisat.core.ILits;
@@ -486,7 +488,7 @@ public class MinWatchPbLong extends WatchPbLong {
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
 
     }
 

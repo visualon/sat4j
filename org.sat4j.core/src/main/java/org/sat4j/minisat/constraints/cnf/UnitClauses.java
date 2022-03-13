@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import org.sat4j.annotations.Feature;
 import org.sat4j.specs.Constr;
 import org.sat4j.specs.IVecInt;
@@ -126,15 +128,15 @@ public class UnitClauses implements Constr {
     }
 
     public void propagatePi(MandatoryLiteralListener m) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean canBeSatisfiedByCountingLiterals() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int requiredNumberOfSatisfiedLiterals() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSatisfied() {
@@ -142,11 +144,11 @@ public class UnitClauses implements Constr {
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public String toString(VarMapper mapper) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override

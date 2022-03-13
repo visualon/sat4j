@@ -1,5 +1,7 @@
 package org.sat4j.pb;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.math.BigInteger;
 import java.util.Iterator;
 
@@ -170,12 +172,12 @@ public class GroupPBSelectorSolver extends GroupClauseSelectorSolver<IPBSolver>
 
     public IConstr addExactly(IVecInt literals, IVecInt coeffs, int weight,
             int groupId) throws ContradictionException {
-        throw new UnsupportedOperationException("not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public IConstr addExactly(IVecInt literals, IVec<BigInteger> coeffs,
             BigInteger weight, int groupId) throws ContradictionException {
-        throw new UnsupportedOperationException("not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
 }

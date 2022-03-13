@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
 import static org.sat4j.core.LiteralsUtils.neg;
 
 import org.sat4j.annotations.Feature;
@@ -103,7 +104,7 @@ public class LearntHTClause extends HTClause {
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
 
     }
 }

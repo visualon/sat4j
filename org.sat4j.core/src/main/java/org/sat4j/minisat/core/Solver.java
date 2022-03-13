@@ -29,6 +29,7 @@
  *******************************************************************************/
 package org.sat4j.minisat.core;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
 import static org.sat4j.core.LiteralsUtils.toDimacs;
 import static org.sat4j.core.LiteralsUtils.toInternal;
 import static org.sat4j.core.LiteralsUtils.var;
@@ -2373,14 +2374,14 @@ public class Solver<D extends DataStructureFactory>
      * @since 2.3.2
      */
     public int[] getLiteralsPropagatedAt(int decisionLevel) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     /**
      * @since 2.3.2
      */
     public void suggestNextLiteralToBranchOn(int l) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     protected boolean isNeedToReduceDB() {

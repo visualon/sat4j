@@ -39,6 +39,8 @@ import java.util.ResourceBundle;
  * 
  */
 public final class Messages {
+    public static final String NOT_IMPLEMENTED_YET = "Not implemented yet!";
+
     private static final String BUNDLE_NAME = "org.sat4j.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle

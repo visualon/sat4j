@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.PrintWriter;
 
 import org.sat4j.annotations.Feature;
@@ -190,7 +192,7 @@ public final class OptimizationMode implements ILauncherMode {
 
     @Override
     public void onSolutionFound(IVecInt solution) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void setExitCode(ExitCode exitCode) {

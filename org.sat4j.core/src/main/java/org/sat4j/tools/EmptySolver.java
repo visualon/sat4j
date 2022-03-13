@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -65,41 +67,41 @@ public abstract class EmptySolver implements ISolver {
     private int nbClauses;
 
     public int[] model() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int[] primeImplicant() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean primeImplicant(int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSatisfiable() throws TimeoutException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSatisfiable(IVecInt assumps, boolean globalTimeout)
             throws TimeoutException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSatisfiable(boolean globalTimeout)
             throws TimeoutException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSatisfiable(IVecInt assumps) throws TimeoutException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int[] findModel() throws TimeoutException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int[] findModel(IVecInt assumps) throws TimeoutException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int nConstraints() {
@@ -116,15 +118,15 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public void printInfos(PrintWriter out, String prefix) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void printInfos(PrintWriter out) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean model(int variable) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int newVar() {
@@ -133,11 +135,11 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public int nextFreeVarId(boolean reserve) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void registerLiteral(int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void setExpectedNumberOfClauses(int nb) {
@@ -158,7 +160,7 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public IVecInt createBlockingClauseForCurrentModel() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean removeConstr(IConstr c) {
@@ -171,7 +173,7 @@ public abstract class EmptySolver implements ISolver {
 
     public void addAllClauses(IVec<IVecInt> clauses)
             throws ContradictionException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public IConstr addAtMost(IVecInt literals, int degree)
@@ -206,15 +208,15 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public int getTimeout() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public long getTimeoutMs() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void expireTimeout() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void reset() {
@@ -222,19 +224,19 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public void printStat(PrintStream out, String prefix) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void printStat(PrintWriter out, String prefix) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void printStat(PrintWriter out) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public Map<String, Number> getStat() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public String toString(String prefix) {
@@ -255,19 +257,19 @@ public abstract class EmptySolver implements ISolver {
 
     public <S extends ISolverService> void setSearchListener(
             SearchListener<S> sl) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void setUnitClauseProvider(UnitClauseProvider ucp) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public <S extends ISolverService> SearchListener<S> getSearchListener() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isVerbose() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void setVerbose(boolean value) {
@@ -275,35 +277,35 @@ public abstract class EmptySolver implements ISolver {
     }
 
     public void setLogPrefix(String prefix) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public String getLogPrefix() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public IVecInt unsatExplanation() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int[] modelWithInternalVariables() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int realNumberOfVariables() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSolverKeptHot() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void setKeepSolverHot(boolean keepHot) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public ISolver getSolvingEngine() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
 }

@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
@@ -231,25 +233,25 @@ public class DimacsOutputSolver extends AbstractOutputSolver
     }
 
     public Collection<Integer> getAddedVars() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public IConstr addParity(IVecInt literals, boolean even) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public AssignmentOrigin getOriginInModel(int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public void setUnitClauseConsumer(UnitClauseConsumer ucc) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public int[] decisions() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 }

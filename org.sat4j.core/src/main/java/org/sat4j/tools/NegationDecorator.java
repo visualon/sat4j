@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -83,19 +85,19 @@ public class NegationDecorator<T extends ISolver>
     @Override
     public IConstr addAtMost(IVecInt literals, int degree)
             throws ContradictionException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public IConstr addAtLeast(IVecInt literals, int degree)
             throws ContradictionException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public IConstr addExactly(IVecInt literals, int n)
             throws ContradictionException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override

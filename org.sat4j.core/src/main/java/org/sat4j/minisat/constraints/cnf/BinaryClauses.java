@@ -27,6 +27,8 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.cnf;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.Serializable;
 
 import org.sat4j.annotations.Feature;
@@ -192,7 +194,7 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
     }
 
     public String toString(VarMapper mapper) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
@@ -211,31 +213,31 @@ public class BinaryClauses implements Constr, Propagatable, Serializable {
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void assertConstraintIfNeeded(UnitPropagationListener s) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean canBeSatisfiedByCountingLiterals() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int requiredNumberOfSatisfiedLiterals() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     @Override
     public String dump() {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 }

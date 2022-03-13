@@ -29,6 +29,8 @@
  *******************************************************************************/
 package org.sat4j.pb.constraints.pb;
 
+import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 
@@ -694,11 +696,11 @@ public abstract class WatchPbLongCP
     }
 
     public void calcReasonOnTheFly(int p, IVecInt trail, IVecInt outReason) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void propagatePI(MandatoryLiteralListener l, int p) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
 
     }
 
