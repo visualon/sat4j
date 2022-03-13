@@ -46,6 +46,8 @@ import org.sat4j.specs.TimeoutException;
 @Feature("solutionlistener")
 public class CheckMUSSolutionListener implements SolutionFoundListener {
 
+    private static final String ORG_SAT4J_CORE = "org.sat4j.core";
+
     /**
      * 
      */
@@ -96,11 +98,11 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
             }
 
         } catch (ContradictionException e) {
-            Logger.getLogger("org.sat4j.core").log(Level.INFO,
+            Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                     "Trivial inconsistency", e);
             result = true;
         } catch (TimeoutException e) {
-            Logger.getLogger("org.sat4j.core").log(Level.INFO,
+            Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                     "Timeout when checking unsatisfiability", e);
         }
 
@@ -121,11 +123,11 @@ public class CheckMUSSolutionListener implements SolutionFoundListener {
                 }
             }
         } catch (ContradictionException e) {
-            Logger.getLogger("org.sat4j.core").log(Level.INFO,
+            Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                     "Trivial inconsistency", e);
             result = false;
         } catch (TimeoutException e) {
-            Logger.getLogger("org.sat4j.core").log(Level.INFO,
+            Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                     "Timeout when checking satisfiability", e);
         }
 

@@ -58,6 +58,8 @@ import org.sat4j.specs.UnitClauseConsumer;
 public class DimacsStringSolver extends AbstractOutputSolver
         implements IGroupSolver {
 
+    private static final String NOT_A_CLAUSAL_PROBLEM_DEGREE = "Not a clausal problem! degree ";
+
     /**
      * 
      */
@@ -130,7 +132,7 @@ public class DimacsStringSolver extends AbstractOutputSolver
             throws ContradictionException {
         if (degree > 1) {
             throw new UnsupportedOperationException(
-                    "Not a clausal problem! degree " + degree);
+                    NOT_A_CLAUSAL_PROBLEM_DEGREE + degree);
         }
         assert degree == 1;
         if (this.firstConstr) {
@@ -159,7 +161,7 @@ public class DimacsStringSolver extends AbstractOutputSolver
             throws ContradictionException {
         if (n > 1) {
             throw new UnsupportedOperationException(
-                    "Not a clausal problem! degree " + n);
+                    NOT_A_CLAUSAL_PROBLEM_DEGREE + n);
         }
         assert n == 1;
         addAtMost(literals, n);
@@ -171,7 +173,7 @@ public class DimacsStringSolver extends AbstractOutputSolver
             throws ContradictionException {
         if (degree > 1) {
             throw new UnsupportedOperationException(
-                    "Not a clausal problem! degree " + degree);
+                    NOT_A_CLAUSAL_PROBLEM_DEGREE + degree);
         }
         assert degree == 1;
         return addClause(literals);

@@ -31,7 +31,6 @@ package org.sat4j.tools;
 
 import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Locale;
@@ -157,17 +156,7 @@ public class StatisticsSolver implements ISolver {
         return this.nbvars;
     }
 
-    @Deprecated
-    public void printInfos(PrintWriter out, String prefix) {
-
-    }
-
     public void printInfos(PrintWriter out) {
-    }
-
-    @Deprecated
-    public int newVar() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public int nextFreeVarId(boolean reserve) {
@@ -287,16 +276,6 @@ public class StatisticsSolver implements ISolver {
     }
 
     public void reset() {
-    }
-
-    @Deprecated
-    public void printStat(PrintStream out, String prefix) {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
-    }
-
-    @Deprecated
-    public void printStat(PrintWriter out, String prefix) {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 
     public void printStat(PrintWriter out) {

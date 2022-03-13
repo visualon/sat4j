@@ -73,82 +73,76 @@ public class TextOutputTracing<T> implements SearchListener<ISolverService> {
         return Integer.toString(dimacs);
     }
 
+    @Override
     public void assuming(int p) {
         System.out.println("assuming " + node(p));
     }
 
-    /**
-     * @since 2.1
-     */
+    @Override
     public void propagating(int p) {
         System.out.println("propagating " + node(p));
     }
 
+    @Override
     public void enqueueing(int p, IConstr reason) {
         System.out.println("enqueueing " + node(p));
     }
 
+    @Override
     public void backtracking(int p) {
         System.out.println("backtracking " + node(p));
     }
 
+    @Override
     public void adding(int p) {
         System.out.println("adding " + node(p));
     }
 
-    /**
-     * @since 2.1
-     */
+    @Override
     public void learn(IConstr clause) {
         System.out.println("learning " + clause);
 
     }
 
-    /**
-     * @since 2.3.4
-     */
+    @Override
     public void learnUnit(int p) {
         System.out.println("learning unit " + p);
 
     }
 
+    @Override
     public void delete(IConstr c) {
 
     }
 
-    /**
-     * @since 2.1
-     */
+    @Override
     public void conflictFound(IConstr confl, int dlevel, int trailLevel) {
         System.out.println("conflict ");
     }
 
-    /**
-     * @since 2.1
-     */
+    @Override
     public void conflictFound(int p) {
         System.out.println("conflict during propagation");
     }
 
+    @Override
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
         System.out.println("solution found ");
     }
 
+    @Override
     public void beginLoop() {
     }
 
+    @Override
     public void start() {
     }
 
-    /**
-     * @since 2.1
-     */
+    @Override
     public void end(Lbool result) {
     }
 
-    /**
-     * @since 2.2
-     */
+    @Override
     public void restarting() {
         System.out.println("restarting ");
     }
@@ -157,15 +151,11 @@ public class TextOutputTracing<T> implements SearchListener<ISolverService> {
         System.out.println("backjumping to decision level " + backjumpLevel);
     }
 
-    /**
-     * @since 2.3.2
-     */
+    @Override
     public void init(ISolverService solverService) {
     }
 
-    /**
-     * @since 2.3.2
-     */
+    @Override
     public void cleaning() {
         System.out.println("cleaning");
     }

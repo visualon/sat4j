@@ -51,6 +51,8 @@ import org.sat4j.specs.TimeoutException;
  */
 public class AllMUSes implements Serializable {
 
+    private static final String ORG_SAT4J_CORE = "org.sat4j.core";
+
     /**
      * 
      */
@@ -197,7 +199,7 @@ public class AllMUSes implements Serializable {
                 }
             }
         } catch (TimeoutException e) {
-            Logger.getLogger("org.sat4j.core").log(Level.INFO,
+            Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                     "Timeout when computing all muses", e);
         }
         if (css.isVerbose()) {
@@ -290,14 +292,14 @@ public class AllMUSes implements Serializable {
                 try {
                     css.addBlockingClause(blockingClause);
                 } catch (ContradictionException e) {
-                    Logger.getLogger("org.sat4j.core").log(Level.INFO,
+                    Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                             "Trivial inconsistency", e);
                     break;
                 }
             }
 
         } catch (TimeoutException e) {
-            Logger.getLogger("org.sat4j.core").log(Level.INFO,
+            Logger.getLogger(ORG_SAT4J_CORE).log(Level.INFO,
                     "Timeout during the first stage", e);
         }
         if (css.isVerbose()) {

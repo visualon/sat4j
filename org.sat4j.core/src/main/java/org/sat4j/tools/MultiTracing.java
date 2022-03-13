@@ -66,6 +66,7 @@ public class MultiTracing<T extends ISolverService>
         this.listeners.addAll(listenersList);
     }
 
+    @Override
     public void assuming(int p) {
         for (SearchListener<T> sl : this.listeners) {
             sl.assuming(p);
@@ -73,24 +74,28 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void propagating(int p) {
         for (SearchListener<T> sl : this.listeners) {
             sl.propagating(p);
         }
     }
 
+    @Override
     public void enqueueing(int p, IConstr reason) {
         for (SearchListener<T> sl : this.listeners) {
             sl.enqueueing(p, reason);
         }
     }
 
+    @Override
     public void backtracking(int p) {
         for (SearchListener<T> sl : this.listeners) {
             sl.backtracking(p);
         }
     }
 
+    @Override
     public void adding(int p) {
         for (SearchListener<T> sl : this.listeners) {
             sl.adding(p);
@@ -98,6 +103,7 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void learn(IConstr c) {
         for (SearchListener<T> sl : this.listeners) {
             sl.learn(c);
@@ -105,12 +111,14 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void learnUnit(int p) {
         for (SearchListener<T> sl : this.listeners) {
             sl.learnUnit(p);
         }
     }
 
+    @Override
     public void delete(IConstr c) {
         for (SearchListener<T> sl : this.listeners) {
             sl.delete(c);
@@ -118,6 +126,7 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void conflictFound(IConstr confl, int dlevel, int trailLevel) {
         for (SearchListener<T> sl : this.listeners) {
             sl.conflictFound(confl, dlevel, trailLevel);
@@ -125,6 +134,7 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void conflictFound(int p) {
         for (SearchListener<T> sl : this.listeners) {
             sl.conflictFound(p);
@@ -132,6 +142,7 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
         for (SearchListener<T> sl : this.listeners) {
             sl.solutionFound(model, lazyModel);
@@ -139,12 +150,14 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void beginLoop() {
         for (SearchListener<T> sl : this.listeners) {
             sl.beginLoop();
         }
     }
 
+    @Override
     public void start() {
         for (SearchListener<T> sl : this.listeners) {
             sl.start();
@@ -152,12 +165,14 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void end(Lbool result) {
         for (SearchListener<T> sl : this.listeners) {
             sl.end(result);
         }
     }
 
+    @Override
     public void restarting() {
         for (SearchListener<T> sl : this.listeners) {
             sl.restarting();
@@ -165,6 +180,7 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void backjump(int backjumpLevel) {
         for (SearchListener<T> sl : this.listeners) {
             sl.backjump(backjumpLevel);
@@ -172,12 +188,14 @@ public class MultiTracing<T extends ISolverService>
 
     }
 
+    @Override
     public void init(T solverService) {
         for (SearchListener<T> sl : this.listeners) {
             sl.init(solverService);
         }
     }
 
+    @Override
     public void cleaning() {
         for (SearchListener<T> sl : this.listeners) {
             sl.cleaning();

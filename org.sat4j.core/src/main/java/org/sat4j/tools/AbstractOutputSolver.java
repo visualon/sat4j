@@ -46,6 +46,8 @@ import org.sat4j.specs.UnitClauseProvider;
 
 public abstract class AbstractOutputSolver implements ISolver {
 
+    private static final String THERE_IS_NO_REAL_SOLVER_BEHIND = "There is no real solver behind!";
+
     protected int nbvars;
 
     protected int nbclauses;
@@ -94,11 +96,11 @@ public abstract class AbstractOutputSolver implements ISolver {
 
     public boolean isSatisfiable(IVecInt assumps, boolean global)
             throws TimeoutException {
-        throw new TimeoutException("There is no real solver behind!");
+        throw new TimeoutException(THERE_IS_NO_REAL_SOLVER_BEHIND);
     }
 
     public boolean isSatisfiable(boolean global) throws TimeoutException {
-        throw new TimeoutException("There is no real solver behind!");
+        throw new TimeoutException(THERE_IS_NO_REAL_SOLVER_BEHIND);
     }
 
     public void printInfos(PrintWriter output, String prefix) {
@@ -140,11 +142,11 @@ public abstract class AbstractOutputSolver implements ISolver {
     }
 
     public boolean isSatisfiable() throws TimeoutException {
-        throw new TimeoutException("There is no real solver behind!");
+        throw new TimeoutException(THERE_IS_NO_REAL_SOLVER_BEHIND);
     }
 
     public boolean isSatisfiable(IVecInt assumps) throws TimeoutException {
-        throw new TimeoutException("There is no real solver behind!");
+        throw new TimeoutException(THERE_IS_NO_REAL_SOLVER_BEHIND);
     }
 
     public int[] findModel() throws TimeoutException {
