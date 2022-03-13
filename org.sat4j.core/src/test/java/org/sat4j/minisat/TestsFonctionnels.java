@@ -31,8 +31,6 @@ package org.sat4j.minisat;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.core.DataStructureFactory;
 import org.sat4j.minisat.core.Solver;
@@ -42,6 +40,8 @@ import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
+
+import junit.framework.TestCase;
 
 /*
  * Created on 11 nov. 2003
@@ -118,24 +118,6 @@ public class TestsFonctionnels extends TestCase {
             vec.push(1);
             this.solver.addClause(vec);
             vec.clear();
-            vec.push(-2);
-            this.solver.addClause(vec);
-            assertTrue(this.solver.isSatisfiable());
-        } catch (ContradictionException e) {
-            fail();
-        }
-    }
-
-    @Deprecated
-    public void testTrivialSatNewVar() throws TimeoutException {
-        try {
-            this.solver.newVar(0);
-            this.solver.newVar();
-            IVecInt vec = new VecInt();
-            vec.push(1);
-            this.solver.addClause(vec);
-            vec.clear();
-            this.solver.newVar();
             vec.push(-2);
             this.solver.addClause(vec);
             assertTrue(this.solver.isSatisfiable());
@@ -246,15 +228,15 @@ public class TestsFonctionnels extends TestCase {
         IVecInt c1 = new VecInt().push(1);
         try {
             this.solver.addClause(c1);
-            assertTrue("isImplied(1) ", this.solver.getVocabulary()
-                    .isImplied(2));
-            assertFalse("isImplied(2) :", this.solver.getVocabulary()
-                    .isImplied(4));
+            assertTrue("isImplied(1) ",
+                    this.solver.getVocabulary().isImplied(2));
+            assertFalse("isImplied(2) :",
+                    this.solver.getVocabulary().isImplied(4));
             this.solver.propagate();
-            assertTrue("isImplied(1) ", this.solver.getVocabulary()
-                    .isImplied(2));
-            assertFalse("isImplied(2) :", this.solver.getVocabulary()
-                    .isImplied(4));
+            assertTrue("isImplied(1) ",
+                    this.solver.getVocabulary().isImplied(2));
+            assertFalse("isImplied(2) :",
+                    this.solver.getVocabulary().isImplied(4));
         } catch (ContradictionException e) {
             fail();
         }
@@ -272,7 +254,8 @@ public class TestsFonctionnels extends TestCase {
         assertTrue("isImplied(1) ", this.solver.getVocabulary().isImplied(2));
         assertFalse("isSatisfiedl(1)",
                 this.solver.getVocabulary().isSatisfied(2));
-        assertTrue("isFalsified(1)", this.solver.getVocabulary().isFalsified(2));
+        assertTrue("isFalsified(1)",
+                this.solver.getVocabulary().isFalsified(2));
     }
 
     public void testWhenNewVarNotCalled() {

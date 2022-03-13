@@ -75,11 +75,6 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
         return decorated.model();
     }
 
-    @SuppressWarnings("deprecation")
-    public int newVar() {
-        return decorated.newVar();
-    }
-
     public IConstr addPseudoBoolean(IVecInt lits, IVec<BigInteger> coeffs,
             boolean moreThan, BigInteger d) throws ContradictionException {
         return decorated.addPseudoBoolean(lits, coeffs, moreThan, d);

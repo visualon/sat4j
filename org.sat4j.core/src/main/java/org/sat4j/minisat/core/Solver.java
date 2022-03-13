@@ -414,16 +414,6 @@ public class Solver<D extends DataStructureFactory>
         return this.trailLim.size();
     }
 
-    /**
-     * @deprecated use {@link #newVar(int)} instead.
-     */
-    @Deprecated
-    public int newVar() {
-        int index = this.voc.nVars() + 1;
-        this.voc.ensurePool(index);
-        return index;
-    }
-
     public int newVar(int howmany) {
         if (this.declaredMaxVarId > 0 && howmany > this.declaredMaxVarId
                 && this.voc.nVars() > this.declaredMaxVarId) {

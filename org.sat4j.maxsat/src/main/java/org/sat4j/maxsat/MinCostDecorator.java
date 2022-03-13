@@ -77,16 +77,6 @@ public class MinCostDecorator extends PBSolverDecorator implements
         super(solver);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.tools.SolverDecorator#newVar()
-     */
-    @Override
-    public int newVar() {
-        throw new UnsupportedOperationException();
-    }
-
     /**
      * Setup the number of variables to use inside the solver.
      * 

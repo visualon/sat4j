@@ -530,10 +530,6 @@ public class SumLeximinDecompositionOWAOptimizer
         return solver.addExactly(var, degree);
     }
 
-    public int newVar() {
-        return solver.newVar();
-    }
-
     public IConstr addExactly(IVecInt literals, IVec<BigInteger> coeffs,
             IVec<IntegerVariable> integerVars,
             IVec<BigInteger> integerVarsCoeffs, BigInteger weight)

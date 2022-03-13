@@ -217,11 +217,6 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
         this.solver = solver;
     }
 
-    @Deprecated
-    public int newVar() {
-        return this.solver.newVar();
-    }
-
     /*
      * (non-Javadoc)
      * 

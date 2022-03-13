@@ -45,21 +45,6 @@ import org.sat4j.annotations.Feature;
 public interface ISolver extends IProblem, Serializable {
 
     /**
-     * Create a new variable in the solver (and thus in the vocabulary).
-     * 
-     * WE STRONGLY ENCOURAGE TO PRECOMPUTE THE NUMBER OF VARIABLES NEEDED AND TO
-     * USE newVar(howmany) INSTEAD. IF YOU EXPERIENCE A PROBLEM OF EFFICIENCY
-     * WHEN READING/BUILDING YOUR SAT INSTANCE, PLEASE CHECK THAT YOU ARE NOT
-     * USING THAT METHOD.
-     * 
-     * @return the number of variables available in the vocabulary, which is the
-     *         identifier of the new variable.
-     * @deprecated use {@link #newVar(int)} instead
-     */
-    @Deprecated
-    int newVar();
-
-    /**
      * Ask the solver for a free variable identifier, in Dimacs format (i.e. a
      * positive number). Note that a previous call to newVar(max) will reserve
      * in the solver the variable identifier from 1 to max, so nextFreeVarId()
