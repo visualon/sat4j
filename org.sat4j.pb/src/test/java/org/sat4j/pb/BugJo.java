@@ -8,7 +8,6 @@ import java.io.StringReader;
 import org.junit.Test;
 import org.sat4j.pb.reader.OPBReader2012;
 import org.sat4j.reader.ParseFormatException;
-import org.sat4j.reader.Reader;
 import org.sat4j.specs.ContradictionException;
 
 public class BugJo {
@@ -17,7 +16,7 @@ public class BugJo {
     public void testJoUnit()
             throws ParseFormatException, ContradictionException, IOException {
         IPBSolver solver = SolverFactory.newDefault();
-        Reader reader = new OPBReader2012(
+        OPBReader2012 reader = new OPBReader2012(
                 new PBSolverHandle(new PseudoOptDecorator(solver)));
         reader.parseInstance(new StringReader(
                 "* #variable= 1 #constraint= 1\n*\n+1 x1 >= 1 ;\n"));
@@ -30,7 +29,7 @@ public class BugJo {
     public void testJoBinary()
             throws ParseFormatException, ContradictionException, IOException {
         IPBSolver solver = SolverFactory.newDefault();
-        Reader reader = new OPBReader2012(
+        OPBReader2012 reader = new OPBReader2012(
                 new PBSolverHandle(new PseudoOptDecorator(solver)));
         reader.parseInstance(new StringReader(
                 "* #variable= 2 #constraint= 1\n*\n+1 x1 +1 x2 >= 1 ;\n"));

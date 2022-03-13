@@ -318,26 +318,6 @@ public class OPBReader2007 extends OPBReader2006 {
     }
 
     @Override
-    public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
-        int p;
-        for (int element : model) {
-            p = element;
-            if (Math.abs(p) <= this.nbVars) {
-                if (p < 0) {
-                    stb.append("-x");
-                    stb.append(-p);
-                } else {
-                    stb.append("x");
-                    stb.append(p);
-                }
-                stb.append(" ");
-            }
-        }
-        return stb.toString();
-    }
-
-    @Override
     public void decode(int[] model, PrintWriter out) {
         int p;
         for (int element : model) {

@@ -149,48 +149,6 @@ public abstract class Reader implements Serializable {
             throws ParseFormatException, ContradictionException, IOException;
 
     /**
-     * Read a file from a reader.
-     * 
-     * Do not use that method, it is no longer supported.
-     * 
-     * @param in
-     *            a stream containing the benchmark.
-     * @return the problem to solve (an ISolver in fact).
-     * @throws ParseFormatException
-     *             if an error occurs during parsing.
-     * @throws IOException
-     *             if an I/O error occurs.
-     * @throws ContradictionException
-     *             if the problem is found trivially inconsistent.
-     * @see #parseInstance(InputStream)
-     * @deprecated use {@link #parseInstance(InputStream)} instead
-     */
-    @Deprecated
-    public IProblem parseInstance(java.io.Reader in)
-            throws ParseFormatException, ContradictionException, IOException {
-        throw new UnsupportedOperationException(
-                "Use #parseInstance(InputStream) instead");
-    }
-
-    /**
-     * Produce a model using the reader format.
-     * 
-     * Note that the approach of building a string representation of the model
-     * may be quite inefficient when the model is rather large. For that reason,
-     * the preferred way to proceed is to directly output the textual
-     * representation in a specific PrintWriter using
-     * {@link #decode(int[], PrintWriter)}
-     * 
-     * @param model
-     *            a model using the Dimacs format.
-     * @return a human readable view of the model.
-     * @see #decode(int[], PrintWriter)
-     * @deprecated use {@link #decode(int[], PrintWriter)} instead
-     */
-    @Deprecated
-    public abstract String decode(int[] model);
-
-    /**
      * Produce a model using the reader format on a provided printwriter.
      * 
      * @param model

@@ -177,15 +177,6 @@ public class JSONReader<S extends ISolver> extends Reader {
         return solver;
     }
 
-    /**
-     * @deprecated use {@link #decode(int[], PrintWriter)} instead
-     */
-    @Override
-    @Deprecated
-    public String decode(int[] model) {
-        return "[" + new VecInt(model) + "]";
-    }
-
     @Override
     public void decode(int[] model, PrintWriter out) {
         out.print("[");

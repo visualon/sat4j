@@ -67,6 +67,8 @@ import org.sat4j.tools.DotSearchTracing;
  */
 public class KTHLauncher {
 
+    private static final PrintWriter out = new PrintWriter(System.out);
+    
     public static Options createCLIOptions() {
         Options options = new Options();
         options.addOption("cl", "coeflim", true,
@@ -520,7 +522,7 @@ public class KTHLauncher {
                     // stop the solver before displaying solutions
 
                     optimizer.expireTimeout();
-                    optimizer.printStat(new PrintWriter(System.out));
+                    optimizer.printStat(out);
                 }
             };
             Runtime.getRuntime().addShutdownHook(shutdownHook);
@@ -541,7 +543,9 @@ public class KTHLauncher {
                     } else {
                         log("SATISFIABLE", "s ");
                     }
-                    log(reader.decode(optimizer.model()) + " 0", "v ");
+                    out.print("v ");
+                    reader.decode(optimizer.model(),out);
+                    out.println(" 0");
                 } else {
                     log("UNSATISFIABLE", "s ");
                 }

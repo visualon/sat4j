@@ -754,7 +754,6 @@ public class OPBReader2005 extends Reader implements Serializable {
         }
     }
 
-    @Override
     public IProblem parseInstance(final java.io.Reader input)
             throws ParseFormatException, ContradictionException {
         IProblem problem = parseInstance(new LineNumberReader(input));
@@ -781,23 +780,6 @@ public class OPBReader2005 extends Reader implements Serializable {
                     + (input.getLineNumber() + 1) + ", " + e.toString(), e);
 
         }
-    }
-
-    @Override
-    public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
-
-        for (int i = 0; i < model.length; i++) {
-            if (model[i] < 0) {
-                stb.append("-x");
-                stb.append(-model[i]);
-            } else {
-                stb.append("x");
-                stb.append(model[i]);
-            }
-            stb.append(" ");
-        }
-        return stb.toString();
     }
 
     @Override

@@ -68,15 +68,6 @@ public class AIGReader extends Reader {
     }
 
     @Override
-    public String decode(int[] model) {
-        var stb = new StringBuilder();
-        for (var i = 0; i < this.nbinputs; i++) {
-            stb.append(model[i] > 0 ? 1 : 0);
-        }
-        return stb.toString();
-    }
-
-    @Override
     public void decode(int[] model, PrintWriter out) {
         for (var i = 0; i < this.nbinputs; i++) {
             out.print(model[i] > 0 ? 1 : 0);

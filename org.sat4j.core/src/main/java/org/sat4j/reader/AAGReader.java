@@ -49,6 +49,11 @@ import org.sat4j.tools.GateTranslator;
 @Feature(value = "reader", parent = "expert")
 public class AAGReader extends Reader {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private static final int FALSE = 0;
 
     private static final int TRUE = 1;
@@ -61,15 +66,6 @@ public class AAGReader extends Reader {
 
     AAGReader(ISolver s) {
         this.solver = new GateTranslator(s);
-    }
-
-    @Override
-    public String decode(int[] model) {
-        var stb = new StringBuilder();
-        for (var i = 0; i < this.nbinputs; i++) {
-            stb.append(model[i] > 0 ? 1 : 0);
-        }
-        return stb.toString();
     }
 
     @Override

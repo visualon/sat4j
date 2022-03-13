@@ -49,6 +49,11 @@ import org.sat4j.specs.ISolver;
 @Feature(value = "reader", parent = "expert")
 public class InstanceReader extends Reader {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private AAGReader aag;
 
     private AIGReader aig;
@@ -143,12 +148,6 @@ public class InstanceReader extends Reader {
             return getAIGReader();
         }
         return getDefaultSATReader();
-    }
-
-    @Override
-    @Deprecated
-    public String decode(int[] model) {
-        return this.reader.decode(model);
     }
 
     @Override

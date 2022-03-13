@@ -79,7 +79,6 @@ public class GoodOPBReader extends Reader implements Serializable {
         this.solver = solver;
     }
 
-    @Override
     public final IProblem parseInstance(final java.io.Reader in)
             throws ParseFormatException, ContradictionException, IOException {
         return parseInstance(new LineNumberReader(in));
@@ -197,21 +196,6 @@ public class GoodOPBReader extends Reader implements Serializable {
                 assert coeffs.size() == lits.size();
             }
         }
-    }
-
-    @Override
-    public String decode(int[] model) {
-        StringBuilder stb = new StringBuilder();
-        for (int i = 0; i < model.length; i++) {
-            if (model[i] < 0) {
-                stb.append("-");
-                stb.append(this.decode.get(-model[i] - 1));
-            } else {
-                stb.append(this.decode.get(model[i] - 1));
-            }
-            stb.append(" ");
-        }
-        return stb.toString();
     }
 
     @Override
