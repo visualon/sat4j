@@ -1,6 +1,5 @@
 package org.sat4j.pb.multiobjective;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -390,16 +389,6 @@ public class SumLeximinDecompositionOWAOptimizer
 
     public int nVars() {
         return solver.nVars();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void printStat(PrintStream out, String prefix) {
-        solver.printStat(out, prefix);
-    }
-
-    @SuppressWarnings("deprecation")
-    public void printStat(PrintWriter out, String prefix) {
-        solver.printStat(out, prefix);
     }
 
     public void printStat(PrintWriter out) {

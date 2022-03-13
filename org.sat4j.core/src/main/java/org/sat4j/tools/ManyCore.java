@@ -29,7 +29,6 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -241,26 +240,6 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
             result = this.solvers.get(i).newVar(howmany);
         }
         return result;
-    }
-
-    @Deprecated
-    public void printStat(PrintStream out, String prefix) {
-        for (var i = 0; i < this.numberOfSolvers; i++) {
-            out.printf(
-                    "%s>>>>>>>>>> Solver number %d (%d answers) <<<<<<<<<<<<<<<<<<%n",
-                    prefix, i, this.solversStats.get(i).getValue());
-            this.solvers.get(i).printStat(out, prefix);
-        }
-    }
-
-    @Deprecated
-    public void printStat(PrintWriter out, String prefix) {
-        for (var i = 0; i < this.numberOfSolvers; i++) {
-            out.printf(
-                    "%s>>>>>>>>>> Solver number %d (%d answers) <<<<<<<<<<<<<<<<<<%n",
-                    prefix, i, this.solversStats.get(i).getValue());
-            this.solvers.get(i).printStat(out, prefix);
-        }
     }
 
     public boolean removeConstr(IConstr c) {

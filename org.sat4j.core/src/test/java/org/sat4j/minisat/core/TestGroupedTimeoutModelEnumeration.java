@@ -82,6 +82,5 @@ public class TestGroupedTimeoutModelEnumeration {
             this.solver.model(); // needed to discard that solution
 
         }
-        this.solver.printStat(System.out, ">");
     }
 }

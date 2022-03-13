@@ -29,7 +29,6 @@
  *******************************************************************************/
 package org.sat4j.tools;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Map;
 
@@ -175,22 +174,6 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
     @Override
     public String toString() {
         return this.solver.toString();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.specs.ISolver#printStat(java.io.PrintStream,
-     * java.lang.String)
-     */
-    @Deprecated
-    public void printStat(PrintStream out, String prefix) {
-        this.solver.printStat(out, prefix);
-    }
-
-    @Deprecated
-    public void printStat(PrintWriter out, String prefix) {
-        this.solver.printStat(out, prefix);
     }
 
     public void printStat(PrintWriter out) {

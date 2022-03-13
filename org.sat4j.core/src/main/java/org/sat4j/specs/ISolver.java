@@ -29,7 +29,6 @@
  *******************************************************************************/
 package org.sat4j.specs;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Map;
@@ -325,31 +324,6 @@ public interface ISolver extends IProblem, Serializable {
      * solver will keep timer threads alive and exhausts memory.
      */
     void reset();
-
-    /**
-     * Display statistics to the given output stream Please use writers instead
-     * of stream.
-     * 
-     * @param out
-     * @param prefix
-     *            the prefix to put in front of each line
-     * @see #printStat(PrintWriter, String)
-     */
-    @Deprecated
-    void printStat(PrintStream out, String prefix);
-
-    /**
-     * Display statistics to the given output writer
-     * 
-     * @param out
-     * @param prefix
-     *            the prefix to put in front of each line
-     * @since 1.6
-     * @deprecated using the prefix does no longer makes sense because the
-     *             solver owns it.
-     */
-    @Deprecated
-    void printStat(PrintWriter out, String prefix);
 
     /**
      * Display statistics to the given output writer

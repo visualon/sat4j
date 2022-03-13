@@ -1,6 +1,5 @@
 package org.sat4j.pb.tools;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -239,18 +238,6 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
     @Override
     public Map<String, Number> getStat() {
         return this.solvers.get(solverIndex).getStat();
-    }
-
-    @Override
-    @Deprecated
-    public void printStat(PrintStream out, String prefix) {
-        this.solvers.get(0).printStat(out, prefix);
-    }
-
-    @Override
-    @Deprecated
-    public void printStat(PrintWriter out, String prefix) {
-        this.solvers.get(0).printStat(out, prefix);
     }
 
     @Override

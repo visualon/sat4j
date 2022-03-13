@@ -3,6 +3,7 @@ package org.sat4j.sat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 
 import org.apache.commons.cli.CommandLine;
@@ -519,7 +520,7 @@ public class KTHLauncher {
                     // stop the solver before displaying solutions
 
                     optimizer.expireTimeout();
-                    optimizer.printStat(System.out, "c ");
+                    optimizer.printStat(new PrintWriter(System.out));
                 }
             };
             Runtime.getRuntime().addShutdownHook(shutdownHook);

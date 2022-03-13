@@ -29,7 +29,6 @@
  *******************************************************************************/
 package org.sat4j.pb.core;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -337,16 +336,6 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
 
     public void reset() {
         decorated.reset();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void printStat(PrintStream out, String prefix) {
-        decorated.printStat(out, prefix);
-    }
-
-    @SuppressWarnings("deprecation")
-    public void printStat(PrintWriter out, String prefix) {
-        decorated.printStat(out, prefix);
     }
 
     public void printStat(PrintWriter out) {

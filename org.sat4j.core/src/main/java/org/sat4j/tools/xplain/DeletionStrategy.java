@@ -78,7 +78,7 @@ public class DeletionStrategy implements MinimizationStrategy {
                 System.out.print(" ");
             }
             System.out.println();
-            solver.printStat(new PrintWriter(System.out, true), "c ");
+            solver.printStat(new PrintWriter(System.out, true));
         }
         for (var i = 0; i < firstExplanation.size();) {
             if (assumps.contains(firstExplanation.get(i))) {
