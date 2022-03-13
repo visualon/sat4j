@@ -84,6 +84,8 @@ import org.sat4j.specs.UnitClauseProvider;
 public class Solver<D extends DataStructureFactory>
         implements ISolverService, ICDCL<D> {
 
+    private static final String CALL_THE_SOLVE_METHOD_FIRST = "Call the solve method first!!!";
+
     private static final long serialVersionUID = 1L;
 
     private static final double CLAUSE_RESCALE_FACTOR = 1e-20;
@@ -520,7 +522,7 @@ public class Solver<D extends DataStructureFactory>
     public int[] model() {
         if (this.model == null) {
             throw new UnsupportedOperationException(
-                    "Call the solve method first!!!"); //$NON-NLS-1$
+                    CALL_THE_SOLVE_METHOD_FIRST);
         }
         var nmodel = new int[this.model.length];
         System.arraycopy(this.model, 0, nmodel, 0, this.model.length);
@@ -1541,7 +1543,7 @@ public class Solver<D extends DataStructureFactory>
         }
         if (this.userbooleanmodel == null) {
             throw new UnsupportedOperationException(
-                    "Call the solve method first!!!"); //$NON-NLS-1$
+                    CALL_THE_SOLVE_METHOD_FIRST);
         }
         return this.userbooleanmodel[variable - 1];
     }
@@ -2287,7 +2289,7 @@ public class Solver<D extends DataStructureFactory>
     public int[] modelWithInternalVariables() {
         if (this.model == null) {
             throw new UnsupportedOperationException(
-                    "Call the solve method first!!!"); //$NON-NLS-1$
+                    CALL_THE_SOLVE_METHOD_FIRST);
         }
         int[] nmodel;
         if (nVars() == realNumberOfVariables()) {
