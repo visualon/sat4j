@@ -631,10 +631,6 @@ public class SumLeximinDecompositionOWAOptimizer
         solver.addAllClauses(clauses);
     }
 
-    public void printInfos(PrintWriter out, String prefix) {
-        solver.printInfos(out, prefix);
-    }
-
     public IConstr addExactly(IVecInt literals, IVec<BigInteger> coeffs,
             BigInteger weight) throws ContradictionException {
         return solver.addExactly(literals, coeffs, weight);

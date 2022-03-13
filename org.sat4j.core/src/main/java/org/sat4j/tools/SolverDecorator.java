@@ -83,17 +83,6 @@ public abstract class SolverDecorator<T extends ISolver> implements ISolver {
      * @see org.sat4j.specs.IProblem#printInfos(java.io.PrintWriter,
      * java.lang.String)
      */
-    @Deprecated
-    public void printInfos(PrintWriter out, String prefix) {
-        this.solver.printInfos(out, prefix);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.sat4j.specs.IProblem#printInfos(java.io.PrintWriter,
-     * java.lang.String)
-     */
     public void printInfos(PrintWriter out) {
         this.solver.printInfos(out);
     }

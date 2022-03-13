@@ -298,12 +298,6 @@ public class PreprocCardConstrLearningSolver<S extends IPBSolver>
         return this.solvers.get(solverIndex).model(var);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void printInfos(PrintWriter out, String prefix) {
-        this.solvers.get(solverIndex).printInfos(out, prefix);
-    }
-
     @Override
     public <I extends ISolverService> void setSearchListener(
             SearchListener<I> sl) {

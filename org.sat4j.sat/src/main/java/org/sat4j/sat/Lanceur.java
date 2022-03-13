@@ -340,8 +340,8 @@ public class Lanceur extends AbstractLauncher implements ILogAble {
         System.out.flush();
         PrintWriter out = getLogWriter();
         out.flush();
-        this.solver.printStat(out, OutputPrefix.COMMENT_PREFIX.toString());
-        this.solver.printInfos(out, OutputPrefix.COMMENT_PREFIX.toString());
+        this.solver.printStat(out);
+        this.solver.printInfos(out);
         ExitCode exitCode = getExitCode();
         out.printf("%s%s%n", OutputPrefix.ANSWER_PREFIX, exitCode);
         if (exitCode == ExitCode.SATISFIABLE

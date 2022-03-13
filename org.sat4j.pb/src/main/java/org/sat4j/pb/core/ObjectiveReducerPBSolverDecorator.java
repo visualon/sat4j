@@ -211,11 +211,6 @@ public class ObjectiveReducerPBSolverDecorator implements IPBSolver {
         return decorated.nVars();
     }
 
-    @SuppressWarnings("deprecation")
-    public void printInfos(PrintWriter out, String prefix) {
-        decorated.printInfos(out, prefix);
-    }
-
     public IConstr addAtMost(IVecInt literals, int degree)
             throws ContradictionException {
         if (degree == 1) {

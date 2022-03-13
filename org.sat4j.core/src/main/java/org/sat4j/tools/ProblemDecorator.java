@@ -94,12 +94,6 @@ public class ProblemDecorator<T extends IProblem> implements IProblem {
     }
 
     @Override
-    @Deprecated
-    public void printInfos(PrintWriter out, String prefix) {
-        decorated.printInfos(out, prefix);
-    }
-
-    @Override
     public void printInfos(PrintWriter out) {
         decorated.printInfos(out);
     }

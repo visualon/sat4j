@@ -402,14 +402,6 @@ public class ManyCore<S extends ISolver> implements ISolver, OutcomeListener,
         return this.solvers.get(0).nVars();
     }
 
-    public void printInfos(PrintWriter out, String prefix) {
-        for (var i = 0; i < this.numberOfSolvers; i++) {
-            out.printf("%s>>>>>>>>>> Solver number %d <<<<<<<<<<<<<<<<<<%n",
-                    prefix, i);
-            this.solvers.get(i).printInfos(out, prefix);
-        }
-    }
-
     public synchronized void onFinishWithAnswer(boolean finished,
             boolean result, int index) {
         if (finished && !this.solved) {
