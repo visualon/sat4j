@@ -715,7 +715,7 @@ public class OPBReader2005 extends Reader implements Serializable {
         mapping = null;
 
         readMetaData();
-
+        skipComments();
         if (mapping != null) {
             readVariablesExplanation();
         }

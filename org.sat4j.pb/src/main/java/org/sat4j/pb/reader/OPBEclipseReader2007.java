@@ -30,6 +30,7 @@
 package org.sat4j.pb.reader;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.sat4j.core.VecInt;
 import org.sat4j.pb.IPBSolver;
@@ -43,8 +44,8 @@ import org.sat4j.specs.IVecInt;
 public class OPBEclipseReader2007 extends OPBReader2007 {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     private final IVecInt varExplain = new VecInt();
@@ -68,6 +69,12 @@ public class OPBEclipseReader2007 extends OPBReader2007 {
     protected void endListOfVariables() {
     }
 
+    @Override
+    protected void readMetaData() throws IOException, ParseFormatException {
+        super.readMetaData();
+        startsMapping();
+    }
+
     /**
      * read the list for variables explanation (if any) calls
      * beginListOfVariables and endListOfVariables
@@ -76,8 +83,8 @@ public class OPBEclipseReader2007 extends OPBReader2007 {
      * @throws ParseException
      */
     @Override
-    protected void readVariablesExplanation() throws IOException,
-            ParseFormatException {
+    protected void readVariablesExplanation()
+            throws IOException, ParseFormatException {
         char c;
         StringBuilder var = new StringBuilder();
 
