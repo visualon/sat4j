@@ -1,7 +1,10 @@
 {
     "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
     "@type": "SoftwareSourceCode",
-    "license": "https://spdx.org/licenses/EPL-1.0",
+    "license": [
+        "https://spdx.org/licenses/EPL-1.0",
+        "https://spdx.org/licenses/LGPL-2.1"
+    ],
     "codeRepository": "https://gitlab.ow2.org/sat4j/sat4j/",
     "contIntegration": "https://gitlab.ow2.org/sat4j/sat4j/-/pipelines",
     "dateModified": "2020-12-20",
