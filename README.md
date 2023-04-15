@@ -3,7 +3,7 @@
 
 # HOW TO DOWNLOAD SAT4J JAR FILES
 
-- Older releases are available from [OW2 download repository](https://dllegacy.ow2.org/sat4j/) 
+- Older releases are available from [OW2 download repository](http://www.sat4j.org/ARCHIVE/) 
 - Recent releases are available from [OW2 gitlab release page](https://gitlab.ow2.org/sat4j/sat4j/-/releases)
 - Nighlty builds are available from [OW2 gitlab continuous integration](https://gitlab.ow2.org/sat4j/sat4j/pipelines)
 
