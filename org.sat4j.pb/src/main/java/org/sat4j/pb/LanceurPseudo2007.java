@@ -37,6 +37,7 @@ import org.sat4j.pb.tools.OptimalModelIterator;
 import org.sat4j.pb.tools.PBSearchListener;
 import org.sat4j.pb.tools.VERIPBSearchListener;
 import org.sat4j.reader.DimacsReader;
+import org.sat4j.reader.KlauseReader;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.ISolverService;
@@ -73,6 +74,8 @@ public class LanceurPseudo2007 extends LanceurPseudo2005 {
         }
         if (problemname.endsWith(".cnf"))
             return new DimacsReader(theSolver);
+        if (problemname.endsWith(".knf"))
+            return new KlauseReader(theSolver);
         return new OPBReader2012(handle);
     }
 
