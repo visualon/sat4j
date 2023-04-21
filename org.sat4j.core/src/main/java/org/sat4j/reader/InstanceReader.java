@@ -62,6 +62,8 @@ public class InstanceReader extends Reader {
 
     private LecteurDimacs dimacs;
 
+    private KlauseReader knf;
+
     private Reader reader = null;
 
     private final ISolver solver;
@@ -101,6 +103,13 @@ public class InstanceReader extends Reader {
             this.aag = new AAGReader(this.solver);
         }
         return this.aag;
+    }
+
+    private Reader getKNFGReader() {
+        if (this.knf == null) {
+            this.knf = new KlauseReader(this.solver);
+        }
+        return this.knf;
     }
 
     protected Collection<String> getReservedPrefixes() {
@@ -146,6 +155,9 @@ public class InstanceReader extends Reader {
         }
         if (fname.endsWith(".aig")) {
             return getAIGReader();
+        }
+        if (fname.endsWith(".knf")) {
+            return getKNFGReader();
         }
         return getDefaultSATReader();
     }
