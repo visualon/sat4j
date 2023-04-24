@@ -43,4 +43,14 @@ public class CombinationIteratorTest {
         assertFalse(iterator.hasNext());
         assertNotNull(iterator.next());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCombSizeIsNotEnough() {
+        new CombinationIterator(0, 3).IntSetIterator();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCombSizeIsTooMuch() {
+        new CombinationIterator(4, 3).IntSetIterator();
+    }
 }

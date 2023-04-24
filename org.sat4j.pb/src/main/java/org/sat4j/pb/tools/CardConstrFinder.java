@@ -316,7 +316,7 @@ public class CardConstrFinder implements Iterable<AtLeastCard> {
 
     private BitSet computeInitialCandidates(BitSet atMostLits, int degree) {
         BitSet candidates = null;
-        Iterator<BitSet> combIt = new CombinationIterator(degree - 1,
+        Iterator<BitSet> combIt = new CombinationIterator(degree,
                 atMostLits).BitSetIterator();
         while (combIt.hasNext()) {
             BitSet nextBitSet = combIt.next();

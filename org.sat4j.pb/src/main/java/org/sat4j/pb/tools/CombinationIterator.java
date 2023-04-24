@@ -12,17 +12,11 @@ import java.util.stream.Collectors;
 
 public class CombinationIterator {
 
-    /* contains a combination of indexes ; ascending order */
-    // private int indexes[] = null;
-
-    /* contains items ; ascending order */
     private int items[] = null;
 
     private final int combSize;
 
     private final int itemsSize;
-
-    // private boolean hasNext = true;
 
     public CombinationIterator(int combSize, int itemsSize) {
         this.combSize = combSize;
@@ -31,7 +25,6 @@ public class CombinationIterator {
         for (int i = 0; i < this.itemsSize; ++i) {
             this.items[i] = i;
         }
-        // computeNext();
     }
 
     public CombinationIterator(int combSize, Set<Integer> items) {
@@ -42,7 +35,6 @@ public class CombinationIterator {
         for (Integer item : items) {
             this.items[i++] = item;
         }
-        // computeNext();
     }
 
     public CombinationIterator(int combSize, BitSet items) {
@@ -57,12 +49,7 @@ public class CombinationIterator {
         for (int i = items.nextSetBit(0); i >= 0; i = items.nextSetBit(i + 1)) {
             this.items[index++] = i + offset;
         }
-        // computeNext();
     }
-
-    // public Iterator<Set<Integer>> iterator() {
-    // return this;
-    // }
 
     public Iterator<Set<Integer>> IntSetIterator() {
         return new CombinationIteratorBase<>(this.items, this.combSize,
@@ -81,70 +68,6 @@ public class CombinationIterator {
                 }));
     }
 
-    // public Iterator<Set<Integer>> iterator() {
-    //     final int[] superItems = this.items;
-    //     final int superCombSize = this.combSize;
-    //     final int superItemSize = this.itemsSize;
-    //     return new Iterator<Set<Integer>>() {
-
-    //         private int indexes[] = null;
-
-    //         private int items[] = superItems;
-
-    //         private boolean hasNext = true;
-
-    //         private final int combSize = superCombSize;
-
-    //         private final int itemsSize = superItemSize;
-
-    //         public boolean hasNext() {
-    //             return this.hasNext;
-    //         }
-
-    //         public Set<Integer> next() {
-    //             if (this.indexes == null) {
-    //                 computeNext();
-    //             }
-    //             if (!this.hasNext) {
-    //                 throw new NoSuchElementException();
-    //             }
-    //             Set<Integer> nextSet = new HashSet<>();
-    //             for (Integer i : this.indexes) {
-    //                 nextSet.add(this.items[i]);
-    //             }
-    //             computeNext();
-    //             return nextSet;
-    //         }
-
-    //         private void computeNext() {
-    //             if (this.indexes == null) {
-    //                 this.indexes = new int[this.combSize];
-    //                 for (int i = 0; i < this.combSize; ++i) {
-    //                     this.indexes[i] = i;
-    //                 }
-    //                 return;
-    //             }
-    //             int j;
-    //             for (j = this.combSize - 1; j >= 0; --j) {
-    //                 ++this.indexes[j];
-    //                 if (this.indexes[j] == this.itemsSize - this.combSize + j
-    //                         + 1) {
-    //                     if (j == 0) {
-    //                         this.hasNext = false;
-    //                         return;
-    //                     }
-    //                 } else {
-    //                     break;
-    //                 }
-    //             }
-    //             for (int k = j + 1; k < this.combSize; ++k) {
-    //                 this.indexes[k] = this.indexes[k - 1] + 1;
-    //             }
-    //         }
-
-    //     };
-    // }
-
     private class CombinationIteratorBase<T> implements Iterator<T> {
         private int indexes[] = null;
 
@@ -160,6 +83,9 @@ public class CombinationIterator {
 
         private CombinationIteratorBase(int items[], int combSize,
                 int itemsSize, Function<List<Integer>, T> nextProvider) {
+            if(combSize < 1 || combSize > itemsSize) {
+                throw new IllegalArgumentException("combination size must be between 1 and the number of items ("+itemsSize+"); got "+combSize);
+            }
             this.items = items;
             this.combSize = combSize;
             this.itemsSize = itemsSize;
@@ -208,13 +134,4 @@ public class CombinationIterator {
             }
         }
     }
-
-    // public BitSet nextBitSet() {
-    // BitSet nextSet = new BitSet();
-    // for (Integer i : this.indexes) {
-    // nextSet.set(this.items[i]);
-    // }
-    // computeNext();
-    // return nextSet;
-    // }
 }
