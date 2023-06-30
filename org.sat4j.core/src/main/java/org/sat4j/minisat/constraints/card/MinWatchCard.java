@@ -29,8 +29,6 @@
  *******************************************************************************/
 package org.sat4j.minisat.constraints.card;
 
-import static org.sat4j.Messages.NOT_IMPLEMENTED_YET;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -667,7 +665,13 @@ public class MinWatchCard
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+        int sum = 0;
+        for (int i = 0; i < size(); i++) {
+            if (this.voc.isSatisfied(get(i))) {
+                sum++;
+            }
+        }
+        return moreThan ? sum >= degree : sum <= degree;
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {

@@ -714,7 +714,13 @@ public abstract class WatchPbLongCP
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        long sum = 0;
+        for (int i = 0; i < size(); i++) {
+            if (this.voc.isSatisfied(get(i))) {
+                sum += coefs[i];
+            }
+        }
+        return sum >= degree;
     }
 
     public String toString(VarMapper mapper) {
