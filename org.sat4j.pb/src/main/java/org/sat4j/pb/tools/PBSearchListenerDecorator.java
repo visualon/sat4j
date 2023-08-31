@@ -1,8 +1,5 @@
 package org.sat4j.pb.tools;
 
-import java.math.BigInteger;
-
-import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.ISolverService;
 import org.sat4j.specs.Lbool;
@@ -120,57 +117,5 @@ public class PBSearchListenerDecorator<S extends ISolverService>
     @Override
     public void learnUnit(int p) {
         listener.learnUnit(p);
-    }
-
-    @Override
-    public void onConflict(PBConstr constr) {
-    }
-
-    @Override
-    public void withReason(PBConstr constr) {
-    }
-
-    @Override
-    public void weakenOnReason(int p) {
-    }
-
-    @Override
-    public void weakenOnReason(BigInteger coeff, int p) {
-    }
-
-    @Override
-    public void weakenOnConflict(int p) {
-    }
-
-    @Override
-    public void weakenOnConflict(BigInteger coeff, int p) {
-    }
-
-    @Override
-    public void multiplyReason(BigInteger coeff) {
-    }
-
-    @Override
-    public void divideReason(BigInteger coeff) {
-    }
-
-    @Override
-    public void multiplyConflict(BigInteger coeff) {
-    }
-
-    @Override
-    public void divideConflict(BigInteger coeff) {
-    }
-
-    @Override
-    public void saturateReason() {
-    }
-
-    @Override
-    public void saturateConflict() {
-    }
-
-    @Override
-    public void addReasonAndConflict() {
     }
 }
