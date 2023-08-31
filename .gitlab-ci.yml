@@ -7,8 +7,8 @@ variables:
   # `installAtEnd` and `deployAtEnd`are only effective with recent version of the corresponding plugins.
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
-maven38-java11-sonar:
-    image: maven:3.8.1-jdk-11-slim
+maven39-java11-sonar:
+    image: maven:3.9.4-eclipse-temurin-11-alpine
     stage: build
     only: 
       - master
@@ -19,8 +19,8 @@ maven38-java11-sonar:
        paths:
         - .m2/repository 
 
-maven38-java11:
-    image: maven:3.8.4-jdk-11-slim
+maven39-java11:
+    image: maven:3.9.4-eclipse-temurin-11-alpine
     stage: build
     except: 
       - master
@@ -30,8 +30,8 @@ maven38-java11:
        paths:
         - .m2/repository 
 
-maven38-java17:
-    image: maven:3.8.4-openjdk-17-slim
+maven39-java17:
+    image: maven:3.9.4-eclipse-temurin-17-alpine
     stage: test
     script:
       - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
