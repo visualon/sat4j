@@ -215,4 +215,13 @@ public interface SearchListener<S extends ISolverService>
     default void cleaning() {
 
     }
+
+    /**
+     * A new blocking clause is added.
+     * 
+     * @since 3.0
+     */
+    default void blockClause(IVecInt literals) {
+
+    }
 }

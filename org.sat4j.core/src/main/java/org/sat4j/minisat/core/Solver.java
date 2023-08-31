@@ -2195,7 +2195,9 @@ public class Solver<D extends DataStructureFactory>
      */
     public IConstr addBlockingClause(IVecInt literals)
             throws ContradictionException {
-        return addClause(literals);
+        IConstr blockingClause = addClause(literals);
+        slistener.blockClause(literals);
+        return blockingClause;
     }
 
     public IConstr discardCurrentModel() throws ContradictionException {
