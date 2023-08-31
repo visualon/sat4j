@@ -90,7 +90,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
     <pluginRepositories>
         <pluginRepository>
             <id>apache.snapshots</id>
-            <url>http://repository.apache.org/snapshots/</url>
+            <url>https://repository.apache.org/snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
     <modules>
