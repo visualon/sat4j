@@ -65,6 +65,7 @@ import org.sat4j.pb.constraints.PBMinDataStructure;
 import org.sat4j.pb.constraints.PuebloPBMinClauseAtLeastConstrDataStructure;
 import org.sat4j.pb.constraints.PuebloPBMinClauseCardConstrDataStructure;
 import org.sat4j.pb.constraints.PuebloPBMinDataStructure;
+import org.sat4j.pb.constraints.ResolutionPBLongHTClauseCardConstrDataStructure;
 import org.sat4j.pb.constraints.pb.ConflictMapDivideByPivot;
 import org.sat4j.pb.constraints.pb.SkipStrategy;
 import org.sat4j.pb.core.PBDataStructureFactory;
@@ -326,6 +327,11 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
     public static PBSolverResolution newCompetPBResLongWLMixedConstraintsObjectiveExpSimp() {
         return newCompetPBResMixedConstraintsObjectiveExpSimp(
                 new CompetResolutionPBLongMixedWLClauseCardConstrDataStructure());
+    }
+
+    public static PBSolverResolution newCompetPBResLongHTConstraintsObjectiveExpSimp() {
+        return newCompetPBResMixedConstraintsObjectiveExpSimp(
+                new ResolutionPBLongHTClauseCardConstrDataStructure());
     }
 
     public static PBSolverResolution newCompetMinPBResLongWLMixedConstraintsObjectiveExpSimp() {
@@ -911,7 +917,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      * @return the best available resolution based solver of the library.
      */
     public static PBSolverResolution newResolutionGlucose() {
-        PBSolverResolution solver = newCompetPBResLongWLMixedConstraintsObjectiveExpSimp();
+        PBSolverResolution solver = newCompetPBResLongHTConstraintsObjectiveExpSimp();
         solver.setSimplifier(Solver.NO_SIMPLIFICATION);
         solver.setRestartStrategy(new Glucose21Restarts());
         solver.setLearnedConstraintsDeletionStrategy(solver.lbdBased);
@@ -983,7 +989,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      * @return the best available resolution based solver of the library.
      */
     public static IPBSolver newResolutionSimpleRestarts() {
-        PBSolverResolution solver = newCompetPBResLongWLMixedConstraintsObjectiveExpSimp();
+        PBSolverResolution solver = newCompetPBResLongHTConstraintsObjectiveExpSimp();
         solver.setLearnedConstraintsDeletionStrategy(solver.lbdBased);
         solver.setRestartStrategy(new MiniSATRestarts());
         return solver;
@@ -998,7 +1004,7 @@ public final class SolverFactory extends ASolverFactory<IPBSolver> {
      * @return the best available resolution based solver of the library.
      */
     public static IPBSolver newResolutionMaxMemory() {
-        PBSolverResolution solver = newCompetPBResLongWLMixedConstraintsObjectiveExpSimp();
+        PBSolverResolution solver = newCompetPBResLongHTConstraintsObjectiveExpSimp();
         solver.setLearnedConstraintsDeletionStrategy(
                 solver.activityBasedLowMemory);
         return solver;
