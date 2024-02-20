@@ -19,7 +19,7 @@ public class BugSAT155 {
         IPBSolver solver = SolverFactory.newDefault();
         IVecInt literals = new VecInt(new int[] { 1, 2, 3 });
         IConstr c1 = solver.addClause(literals);
-        assertEquals("1 2 3 0", c1.dump());
+        assertEquals("+1 x1 +1 x2 +1 x3 >= 1", c1.dump());
 
     }
 
@@ -46,7 +46,7 @@ public class BugSAT155 {
         IPBSolver solver = SolverFactory.newDefault();
         IVecInt literals = new VecInt(new int[] { 1, 2, 3 });
         IConstr c1 = solver.addAtLeast(literals, 2);
-        assertEquals("x1 + x2 + x3 >= 2", c1.dump());
+        assertEquals("+1 x1 +1 x2 +1 x3 >= 2", c1.dump());
     }
 
     @Test

@@ -306,7 +306,12 @@ public class CBClause implements Constr, Undoable, Propagatable, Serializable {
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+        for (int p : this.lits) {
+            if (voc.isSatisfied(p)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {

@@ -431,7 +431,13 @@ public final class MaxWatchCard
     }
 
     public boolean isSatisfied() {
-        throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
+        int sum = 0;
+        for (int i = 0; i < size(); i++) {
+            if (this.voc.isSatisfied(get(i))) {
+                sum++;
+            }
+        }
+        return moreThan ? sum >= degree : sum <= degree;
     }
 
     public int getAssertionLevel(IVecInt trail, int decisionLevel) {
