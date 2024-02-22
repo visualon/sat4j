@@ -59,6 +59,8 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
 
     private SolutionFoundListener sfl;
 
+    private int[] prevmodel;
+
     public OptToPBSATAdapter(IOptimizationProblem problem) {
         this(problem, SolutionFoundListener.VOID);
     }
@@ -98,7 +100,8 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
         try {
             while (this.problem.admitABetterSolution(myAssumps)) {
                 satisfiable = true;
-                sfl.onSolutionFound(this.problem.model());
+                this.prevmodel = this.problem.model();
+                sfl.onSolutionFound(this.prevmodel);
                 this.problem.discardCurrentSolution();
                 if (isVerbose()) {
                     System.out.println(getLogPrefix()
@@ -136,7 +139,7 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
     @Override
     public int[] findModel() throws TimeoutException {
         if (isSatisfiable()) {
-            return this.problem.model();
+            return this.prevmodel;
         }
         return null;
     }
@@ -144,7 +147,7 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
     @Override
     public int[] findModel(IVecInt assumps) throws TimeoutException {
         if (isSatisfiable(assumps)) {
-            return this.problem.model();
+            return this.prevmodel;
         }
         return null;
     }
@@ -163,12 +166,13 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
      * @since 2.3.2
      */
     public int[] model(PrintWriter out) {
-        return this.problem.model();
+        return this.prevmodel;
     }
 
     @Override
     public boolean model(int var) {
-        return this.problem.model(var);
+        throw new UnsupportedOperationException("To be computed properly");
+        // return this.problem.model(var);
     }
 
     @Override
