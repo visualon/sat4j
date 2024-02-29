@@ -1,6 +1,7 @@
 package org.sat4j.tools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -16,8 +17,8 @@ import org.sat4j.specs.TimeoutException;
 public class BugSAT175 {
 
     @Test
-    public void test() throws ParseFormatException, IOException,
-            ContradictionException, TimeoutException {
+    public void testWithInternalIterator() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
         var satSolver = SolverFactory.newDefault();
         var reader = new LecteurDimacs(satSolver);
         var p = reader.parseInstance("src/test/testfiles/bug175.cnf");
@@ -34,6 +35,20 @@ public class BugSAT175 {
         satSolver.setSearchListener(enumerator);
         assertTrue(satSolver.isSatisfiable());
         assertEquals(2, enumerator.getNumberOfSolutionFound());
+    }
+
+    @Test
+    public void testWithExternalIterator() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
+        var satSolver = SolverFactory.newDefault();
+        var reader = new LecteurDimacs(satSolver);
+        var p = reader.parseInstance("src/test/testfiles/bug175.cnf");
+
+        var enumerator = new ModelIterator(satSolver);
+        while (enumerator.isSatisfiable()) {
+            assertNotNull(enumerator.model());
+        }
+        assertEquals(2, enumerator.numberOfModelsFoundSoFar());
     }
 
 }
