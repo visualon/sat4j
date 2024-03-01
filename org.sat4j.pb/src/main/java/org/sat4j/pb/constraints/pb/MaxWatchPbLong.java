@@ -404,7 +404,7 @@ public final class MaxWatchPbLong extends WatchPbLong {
         }
     }
 
-    public int getAssertionLevel(IVecInt trail, int decisionLevel) {
+    public int getAssertionLevel(IVecInt trail, int decisionLevel, ILits voc) {
         Set<Integer> litsSet = new HashSet<>();
         for (Integer i : this.lits)
             litsSet.add(i);
