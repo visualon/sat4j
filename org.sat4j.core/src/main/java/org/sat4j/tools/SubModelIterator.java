@@ -44,6 +44,7 @@ import org.sat4j.specs.IteratorInt;
  * 
  * <pre>
  * IVecInt subsetVars = new VecInt();
+ * // select a subset of variables
  * ISolver solver = new SubModelIterator(SolverFactory.OneSolver(), subsetVars);
  * boolean unsat = true;
  * while (solver.isSatisfiable()) {
@@ -59,7 +60,7 @@ import org.sat4j.specs.IteratorInt;
  * It is also possible to limit the number of models returned:
  * 
  * <pre>
- * ISolver solver = new OneModelIterator(SolverFactory.OneSolver(), subsetVars,
+ * ISolver solver = new SubModelIterator(SolverFactory.OneSolver(), subsetVars,
  *         10);
  * </pre>
  * 

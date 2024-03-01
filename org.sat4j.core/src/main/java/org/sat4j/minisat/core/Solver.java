@@ -1183,7 +1183,7 @@ public class Solver<D extends DataStructureFactory>
     }
 
     protected void cancelUntilTrailLevel(int level) {
-        while (!trail.isEmpty() && trailLim.size() > level) {
+        while (!trail.isEmpty() && trail.size() > level) {
             undoOne();
             if (!trailLim.isEmpty() && trailLim.last() == trail.size()) {
                 trailLim.pop();
@@ -1234,8 +1234,8 @@ public class Solver<D extends DataStructureFactory>
                             confl = this.sharedConflict;
                             this.sharedConflict = null;
                         } else {
-                            int level = this.sharedConflict
-                                    .getAssertionLevel(trail, decisionLevel());
+                            int level = this.sharedConflict.getAssertionLevel(
+                                    trail, decisionLevel(), this.voc);
                             cancelUntilTrailLevel(level);
                             this.qhead = this.trail.size();
                             this.sharedConflict.assertConstraint(this);
