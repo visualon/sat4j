@@ -1183,7 +1183,7 @@ public class Solver<D extends DataStructureFactory>
     }
 
     protected void cancelUntilTrailLevel(int level) {
-        while (!trail.isEmpty() && trail.size() > level) {
+        while (!trail.isEmpty() && trailLim.size() > level) {
             undoOne();
             if (!trailLim.isEmpty() && trailLim.last() == trail.size()) {
                 trailLim.pop();
