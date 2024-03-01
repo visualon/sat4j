@@ -51,7 +51,7 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
      */
     private static final long serialVersionUID = 1L;
 
-    IOptimizationProblem problem;
+    private final IOptimizationProblem problem;
 
     private final IVecInt assumps = new VecInt();
 
@@ -94,7 +94,11 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
         myAssumps.copyTo(this.assumps);
         this.begin = System.currentTimeMillis();
         if (this.problem.hasNoObjectiveFunction()) {
-            return this.problem.isSatisfiable(myAssumps);
+            boolean isSat = this.problem.isSatisfiable(myAssumps);
+            if (isSat) {
+                this.prevmodel = this.problem.model();
+            }
+            return isSat;
         }
         boolean satisfiable = false;
         try {
@@ -171,8 +175,10 @@ public class OptToPBSATAdapter extends PBSolverDecorator {
 
     @Override
     public boolean model(int var) {
+        if (this.problem.model() != null) {
+            return this.problem.model(var);
+        }
         throw new UnsupportedOperationException("To be computed properly");
-        // return this.problem.model(var);
     }
 
     @Override
