@@ -289,6 +289,7 @@ public class LecteurDimacs extends Reader implements Serializable {
         return car;
     }
 
+    @Override
     public Optional<IVecInt> getSubsetOfVariable() {
         if (this.subsetOfVariables == null) {
             return Optional.empty();
