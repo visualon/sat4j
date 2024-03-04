@@ -6,6 +6,7 @@ import org.sat4j.pb.IPBSolver;
 import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.pb.PBSolverDecorator;
 import org.sat4j.specs.ContradictionException;
+import org.sat4j.specs.FakeConstr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IVecInt;
 import org.sat4j.specs.TimeoutException;
@@ -146,7 +147,7 @@ public class OptimalModelIterator extends PBSolverDecorator {
             return super.discardCurrentModel();
         } catch (ContradictionException ce) {
             this.trivialfalsity = true;
-            return null;
+            return FakeConstr.instance();
         }
     }
 }
