@@ -19,9 +19,45 @@ public class BugSAT175 {
     @Test
     public void testWithInternalIterator() throws ParseFormatException,
             IOException, ContradictionException, TimeoutException {
+        checkCountWithInternal("src/test/testfiles/bug175.cnf", 2);
+    }
+
+    @Test
+    public void testWithInternalIteratorOne() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
+        checkCountWithInternal("src/test/testfiles/bug175-1.cnf", 2);
+    }
+
+    @Test
+    public void testWithInternalIteratorTwo() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
+        checkCountWithInternal("src/test/testfiles/bug175-2.cnf", 3);
+    }
+
+    @Test
+    public void testWithInternalIteratorThree() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
+        checkCountWithInternal("src/test/testfiles/bug175-3.cnf", 4);
+    }
+
+    @Test
+    public void testWithInternalIteratorFour() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
+        checkCountWithInternal("src/test/testfiles/bug175-4.cnf", 6);
+    }
+
+    @Test
+    public void testWithInternalIteratorFive() throws ParseFormatException,
+            IOException, ContradictionException, TimeoutException {
+        checkCountWithInternal("src/test/testfiles/bug175-5.cnf", 4);
+    }
+
+    private void checkCountWithInternal(String file, int expectedNumberOfModels)
+            throws ParseFormatException, IOException, ContradictionException,
+            TimeoutException {
         var satSolver = SolverFactory.newDefault();
         var reader = new LecteurDimacs(satSolver);
-        var p = reader.parseInstance("src/test/testfiles/bug175.cnf");
+        var p = reader.parseInstance(file);
         var counter = new Counter();
         SolutionFoundListener sfl = new SolutionFoundListener() {
 
@@ -34,7 +70,8 @@ public class BugSAT175 {
         var enumerator = new SearchEnumeratorListener(sfl);
         satSolver.setSearchListener(enumerator);
         assertTrue(satSolver.isSatisfiable());
-        assertEquals(2, enumerator.getNumberOfSolutionFound());
+        assertEquals(expectedNumberOfModels,
+                enumerator.getNumberOfSolutionFound());
     }
 
     @Test
