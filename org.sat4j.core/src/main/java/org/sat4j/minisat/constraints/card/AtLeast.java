@@ -363,7 +363,7 @@ public class AtLeast implements Propagatable, Constr, Undoable, Serializable {
         return false;
     }
 
-    public int getAssertionLevel(IVecInt trail, int decisionLevel, ILits voc) {
+    public int getAssertionLevel(IVecInt trail, IVecInt trailLim, int decisionLevel, ILits voc) {
         var nUnsat = 0;
         Set<Integer> litsSet = new HashSet<>();
         for (Integer i : this.lits)

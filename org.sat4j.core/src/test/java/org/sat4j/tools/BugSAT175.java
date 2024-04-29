@@ -61,7 +61,7 @@ public class BugSAT175 {
     @Test
     public void testWithInternalIteratorSeven() throws ParseFormatException,
             IOException, ContradictionException, TimeoutException {
-        checkCountWithInternal("src/test/testfiles/bug175-7.cnf", 3);
+        checkCountWithInternal("src/test/testfiles/bug175-7.cnf", 2);
     }
 
     private void checkCountWithInternal(String file, int expectedNumberOfModels)

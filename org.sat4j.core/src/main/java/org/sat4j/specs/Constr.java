@@ -133,7 +133,7 @@ public interface Constr extends IConstr {
             return true;
         }
 
-        public int getAssertionLevel(IVecInt trail, int decisionLevel, ILits voc) {
+        public int getAssertionLevel(IVecInt trail, IVecInt trailLim, int decisionLevel, ILits voc) {
             return 0;
         }
 
@@ -310,6 +310,7 @@ public interface Constr extends IConstr {
      * 
      * @param trail
      *            the internal solver trail
+     * @param trailLim TODO
      * @param decisionLevel
      *            the current decision level
      * @param voc TODO
@@ -318,5 +319,5 @@ public interface Constr extends IConstr {
      * @since 2.3.6
      * @see #canBePropagatedMultipleTimes()
      */
-    int getAssertionLevel(IVecInt trail, int decisionLevel, ILits voc);
+    int getAssertionLevel(IVecInt trail, IVecInt trailLim, int decisionLevel, ILits voc);
 }

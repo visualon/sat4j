@@ -144,7 +144,7 @@ public class UnitClauses implements Constr {
         return true;
     }
 
-    public int getAssertionLevel(IVecInt trail, int decisionLevel, ILits voc) {
+    public int getAssertionLevel(IVecInt trail, IVecInt trailLim, int decisionLevel, ILits voc) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED_YET);
     }
 

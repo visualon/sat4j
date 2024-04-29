@@ -1235,7 +1235,7 @@ public class Solver<D extends DataStructureFactory>
                             this.sharedConflict = null;
                         } else {
                             int level = this.sharedConflict.getAssertionLevel(
-                                    trail, decisionLevel(), this.voc);
+                                    trail, trailLim, decisionLevel(), this.voc);
                             cancelUntilTrailLevel(level);
                             this.qhead = this.trail.size();
                             this.sharedConflict.assertConstraint(this);
