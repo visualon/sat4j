@@ -34,6 +34,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 
+import org.sat4j.pb.IPBSolverService;
+import org.sat4j.pb.ObjectiveFunction;
 import org.sat4j.pb.constraints.pb.PBConstr;
 import org.sat4j.specs.IConstr;
 import org.sat4j.specs.IProblem;
@@ -51,6 +53,7 @@ public class VERIPBSearchListener implements PBSearchListener<ISolverService> {
     private int nConstraints;
     private boolean foundContradiction;
     private FileWriter fw;
+    private ObjectiveFunction obj;
 
     public VERIPBSearchListener(String problemname) {
         int positionDot;
@@ -78,6 +81,7 @@ public class VERIPBSearchListener implements PBSearchListener<ISolverService> {
     public void init(ISolverService solverService) {
         this.nConstraints = ((IProblem) solverService).nConstraints();
         this.foundContradiction = false;
+        this.obj = ((IPBSolverService) solverService).getObjectiveFunction();
         try {
             fw.write("pseudo-Boolean proof version 1.0\n");
             fw.write("f " + this.nConstraints + "\n");
@@ -150,14 +154,41 @@ public class VERIPBSearchListener implements PBSearchListener<ISolverService> {
 
     @Override
     public void conflictFound(IConstr confl, int dlevel, int trailLevel) {
+        this.conflict = new StringBuilder("" + confl.getId());
     }
 
     @Override
     public void conflictFound(int p) {
     }
 
+    String convert(int[] model) {
+        StringBuilder stb = new StringBuilder();
+        for (int l : model) {
+            if (l < 0) {
+                stb.append("~x");
+                stb.append(-l);
+                stb.append(' ');
+            } else {
+                stb.append('x');
+                stb.append(l);
+                stb.append(' ');
+            }
+        }
+        return stb.toString();
+    }
+
     @Override
     public void solutionFound(int[] model, RandomAccessModel lazyModel) {
+        try {
+            if (obj != null) {
+                fw.write("soli " + convert(model) + "\n");
+
+            } else {
+                fw.write("sol " + convert(model) + "\n");
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override

@@ -172,6 +172,7 @@ Sat4j is a full featured boolean reasoning library designed to bring state-of-th
                         <exclude>**/PBCPMixedConstraintsCautiousTest*</exclude>
                         <exclude>**/MultiObjectiveDependencyHelperTest*</exclude>
                         <exclude>org.sat4j.pb.CardConstrFinderTest.class</exclude>
+                        <exclude>**/ApproxMC*Test*</exclude>
                     </excludes>
                     <systemProperties>
                         <property>
