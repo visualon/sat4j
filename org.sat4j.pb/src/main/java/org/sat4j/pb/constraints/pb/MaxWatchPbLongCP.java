@@ -352,7 +352,9 @@ public final class MaxWatchPbLongCP extends WatchPbLongCP {
         return new MaxWatchPbLongCP(voc, mpb);
     }
 
-    public int getAssertionLevel(IVecInt trail, int decisionLevel, ILits voc) {
+    @Override
+    public int getAssertionLevel(IVecInt trail, IVecInt trailLim,
+            int decisionLevel, ILits voc) {
         throw new UnsupportedOperationException("To be done");
     }
 
