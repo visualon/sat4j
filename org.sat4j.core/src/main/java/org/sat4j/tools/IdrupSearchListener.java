@@ -95,7 +95,7 @@ public class IdrupSearchListener<S extends ISolverService>
             out.println("0");
         } else if (result == Lbool.TRUE) {
             out.println("s SATISFIABLE");
-            out.println("m ");
+            out.print("m ");
             int[] model = solverService.model();
             for (var i = 0; i < model.length; i++) {
                 out.print(model[i]);
