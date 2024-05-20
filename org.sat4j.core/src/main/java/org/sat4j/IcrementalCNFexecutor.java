@@ -52,6 +52,9 @@ public class IcrementalCNFexecutor {
             break;
         case "i":
             solver.addClause(toVecInt(tokens));
+            if (status != Lbool.UNDEFINED) {
+                status = Lbool.UNDEFINED;
+            }
             break;
         case "q":
             if (solver.isSatisfiable(toVecInt(tokens), true)) {
@@ -71,6 +74,10 @@ public class IcrementalCNFexecutor {
                     throw new IllegalStateException(
                             "Formula should be found UNSAT");
                 }
+            } else {
+                // status == Lbool.UNDEFINED
+                throw new IllegalStateException(
+                        "Satisfiability of the formula could not be decided");
             }
             break;
         case "u":
