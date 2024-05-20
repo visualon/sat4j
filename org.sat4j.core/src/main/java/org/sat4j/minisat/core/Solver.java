@@ -691,16 +691,35 @@ public class Solver<D extends DataStructureFactory>
             seen[conflictingLiteral >> 1] = true;
         }
 
-        // if confl == null, a propagation or previous
+        // if confl == null and conflictingLiteral exists, a propagation or
+        // previous
         // propagation assigned the literal in the opposite direction
         // trying to find a propagation
-        confl = this.voc.getReason(conflictingLiteral ^ 1);
+        int p = ILits.UNDEFINED;
+        if (conflictingLiteral != ILits.UNDEFINED) {
+            confl = this.voc.getReason(conflictingLiteral ^ 1);
+            if (confl == null) {
+                assert assumps.contains(toDimacs(conflictingLiteral ^ 1));
+                outLearnt.push(toDimacs(conflictingLiteral ^ 1));
+                return outLearnt;
+            }
+            p = conflictingLiteral ^ 1;
+        }
+        while (confl == null && this.trail.size() > 0
+                && this.trailLim.size() > 0) {
+            p = this.trail.last();
+            confl = this.voc.getReason(p);
+            undoOne();
+            if (confl == null && p == (conflictingLiteral ^ 1)) {
+                outLearnt.push(toDimacs(p));
+            }
+            if (this.trail.size() <= this.trailLim.last()) {
+                this.trailLim.pop();
+            }
+        }
         if (confl == null) {
-            assert assumps.contains(toDimacs(conflictingLiteral ^ 1));
-            outLearnt.push(toDimacs(conflictingLiteral ^ 1));
             return outLearnt;
         }
-        int p = ILits.UNDEFINED;
         do {
             preason.clear();
             confl.calcReason(p, preason);
