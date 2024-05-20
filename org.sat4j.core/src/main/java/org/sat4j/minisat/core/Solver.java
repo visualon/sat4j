@@ -699,8 +699,10 @@ public class Solver<D extends DataStructureFactory>
         if (conflictingLiteral != ILits.UNDEFINED) {
             confl = this.voc.getReason(conflictingLiteral ^ 1);
             if (confl == null) {
-                assert assumps.contains(toDimacs(conflictingLiteral ^ 1));
-                outLearnt.push(toDimacs(conflictingLiteral ^ 1));
+                if (assumps.contains(toDimacs(conflictingLiteral ^ 1))) {
+                    outLearnt.push(toDimacs(conflictingLiteral ^ 1));
+                } // else the literal is resulting from propagation at decision
+                  // level 0, so is not part of the explanation
                 return outLearnt;
             }
             p = conflictingLiteral ^ 1;
