@@ -404,6 +404,10 @@ public class Solver<D extends DataStructureFactory>
         }
     }
 
+    public void ignore(Constr c) {
+        this.slistener.ignore(c);
+    }
+
     public final int decisionLevel() {
         return this.trailLim.size();
     }
