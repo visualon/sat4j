@@ -9,7 +9,7 @@
 
 # HOW TO GET HELP?
 
-It iw possible to get help from the community on [our RocketChat channel](https://rocketchat.ow2.org/channel/sat4j).
+It is possible to get help from the community on [our RocketChat channel](https://rocketchat.ow2.org/channel/sat4j).
 
 # HOW TO BUILD SAT4J FROM SOURCE
 
