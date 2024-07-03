@@ -7,6 +7,10 @@
 - Recent releases are available from [OW2 gitlab release page](https://gitlab.ow2.org/sat4j/sat4j/-/releases)
 - Nighlty builds are available from [OW2 gitlab continuous integration](https://gitlab.ow2.org/sat4j/sat4j/pipelines)
 
+# HOW TO GET HELP?
+
+It iw possible to get help from the community on [our RocketChat channel](https://rocketchat.ow2.org/channel/sat4j).
+
 # HOW TO BUILD SAT4J FROM SOURCE
 
 ## Using Maven (library users)
