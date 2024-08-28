@@ -437,7 +437,7 @@ public class Solver<D extends DataStructureFactory>
         }
         Constr c = (Constr) co;
         // We expect the constraint to be in the solver
-        if (this.constrs.contains(c)) {
+        if (!this.isDBSimplificationAllowed() || this.constrs.contains(c)) {
             c.remove(this);
             this.constrs.removeFromLast(c);
             clearLearntClauses();
