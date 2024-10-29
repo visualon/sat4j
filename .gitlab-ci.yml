@@ -40,6 +40,13 @@ maven39-java17:
   - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
   allow_failure: true
 
+maven39-java21:
+  image: maven:3.9.4-eclipse-temurin-21-alpine
+  stage: test
+  script:
+  - mvn $MAVEN_CLI_OPTS clean package -Dmaven.javadoc.skip=true -Djacoco.skip=true
+  allow_failure: true
+
 jars-j17:
     image: dleberre/dlb-ant
     stage: build
